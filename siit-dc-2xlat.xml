@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY RFC2119 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2827 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2827.xml">
+<!ENTITY RFC6052 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6052.xml">
+<!ENTITY RFC6145 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6145.xml">
+<!ENTITY RFC6877 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6877.xml">
+<!ENTITY I-D.anderson-siit-dc SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.draft-anderson-siit-dc-00.xml">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<?rfc strict="yes" ?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes" ?>
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<rfc category="std" docName="draft-anderson-sunset4-siit-dc-2xlat-00" ipr="trust200902">
+
+  <front>
+    <title abbrev="SIIT-DC-2XLAT">SIIT-DC: Dual Translation Mode</title>
+    <author fullname="Tore Anderson" initials="T.A." surname="Anderson">
+      <organization>Redpill Linpro</organization>
+      <address>
+        <postal>
+          <street>Vitaminveien 1A</street>
+          <city>NO-0485 Oslo</city>
+          <country>NORWAY</country>
+        </postal>
+        <phone>+47 959 31 212</phone>
+        <email>tore@redpill-linpro.com</email>
+      </address>
+    </author>
+    <date year="2014" />
+    <area>General</area>
+    <workgroup>Sunsetting IPv4</workgroup>
+    <abstract>
+      <t>
+      This document describes an extension of the <xref
+      target="I-D.anderson-siit-dc">SIIT-DC</xref> architecture, which allows
+      applications that are incompatible with SIIT and/or Network Address
+      Translation in general to operate correctly in an SIIT-DC environment.
+      </t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Introduction">
+      <t>
+      <xref target="I-D.anderson-siit-dc">SIIT-DC</xref> describes an
+      architecture where IPv4-only users can access IPv6-only services through
+      a stateless translation gateway. However, this only works for
+      applications that are compatible with Network Address Translation (NAT),
+      due to the fact that the SIIT gateway will rewrite the addresses in the
+      IP header as part of the translation process. SIIT-DC will also fail to
+      work correctly for applications that make use of legacy IPv4-only socket
+      calls.
+      </t>
+      <t>
+      This document aims to remedy this problem by defining an extension to
+      SIIT-DC. Translation performed by the SIIT gateway will also be done in
+      reverse by a host agent running on the server. The resulting IPv4 packet
+      is then passed to the application. This way, the application will be
+      able to use legacy IPv4-only socket calls and/or include references to
+      its own IPv4 address in the application payload, while maintaining
+      correct operation.
+      </t>
+      <t>
+      The approach is heavily inspired by and very similar to <xref
+      target="RFC6877">464XLAT</xref>. The described SIIT host agent in this
+      document is almost identical to the CLAT agent described by 464XLAT,
+      except for the fact that it will be located on a server, rather than on
+      the customer-side node. The SIIT gateway described in <xref
+      target="I-D.anderson-siit-dc"/> is used instead of the PLAT described by
+      464XLAT.
+      </t>
+    </section>
+    <section title="SIIT Host Agent Specification">
+      <t>
+      The SIIT host agent runs on the servers hosting application which do not
+      work correctly with the SIIT-DC architecture as specified by <xref
+      target="I-D.anderson-siit-dc"/>. Its task is the performing the exact
+      same packet translation as the SIIT gateway, but in reverse. It
+      therefore shares the same implementation requirements as the SIIT
+      gateway defined in <xref
+      target="I-D.anderson-siit-dc">I-D.anderson-siit-dc section 4</xref>,
+      with one exception: The SIIT host agent is not required to support
+      configuring an arbitrary number of static mappings, but it must support
+      at least one.
+      </t>
+      <t>
+      The SIIT host agent must be configured with a static IPv4:IPv6 mapping
+      that corresponds exactly with the same mapping found on the SIIT
+      gateway. The IPv4 address must be configured on a virtual network
+      interface which applications running on the server can bind to, and the
+      server is expected to install a default IPv4 route poining to this
+      virtual IPv4 interface. The IPv6 address must be a secondary address
+      that is routed to the server and dedicated to the SIIT host agent
+      function.
+      </t>
+    </section>
+    <section title="Architectural Overview">
+      <t>
+      The following figure shows how an application (that is presumably
+      incompatible with SIIT-DC) is being made available to the IPv4 Internet
+      on the IPv4 address 198.51.0.1. The application will be able to know
+      that this is its local address and thus be able to provide correct
+      references to it in application payload.
+      </t>
+      <t>
+      The figure also shows how the same application is available over IPv6 on
+      the address 2001:db8:12:34::1. This is included to illustrate how native
+      IPv6 connectivity is not impacted by the SIIT host agent, and also to
+      illustrate how the address assigned to the SIIT host agent
+      (2001:db8:12:34::2) is separate from the primary IPv6 address of the
+      server. It is however important to note that the application in question
+      does not have to be dual-stack capable at all. IPv4-only applications
+      would also be able to operate behind a SIIT host agent in the exact same
+      manner.
+      </t>
+      <t>
+      <figure anchor="fig_architecture" align="center">
+        <preamble>SIIT Host Agent Architecture</preamble>
+        <artwork align="center"><![CDATA[
+  +-------------------+         +----------------+
+  | IPv6-capable user |         | IPv4-only user |
+  | ================= |         | ============== |
+  |                   |         |                |
+  +-<2001:db8::ab:cd>-+         +-<203.0.113.50>-+
+      |                                  |
+      |                                  |
+   (the IPv6 internet)         (the IPv4 Internet)
+      |                                  |
+      |                                  |
+      |        +-----------------<198.51.0.0/24>--+
+      |        |                                  |
+      |        |           SIIT Gateway           |
+      |        |           ============           |
+      |        |                                  |
+      |        |       Translation prefix:        |
+      |        |         2001:db8:46::/96         |
+      |        |                                  |
+      |        |     Static address mapping:      |
+      |        | 198.51.0.1 <=> 2001:db8:12:34::2 |
+      |        |                                  |
+      |        +--------------<2001:db8:46::/96>--+
+      |                               |
+      |                               |
+     (the IPv6-only data centre network)
+      |                               |
+      |                               |
++--<2001:db8:12:34::1>-------<2001:db8:12:34::2>----+
+|     |                               |             |
+|     |          IPv6-only server     |             |
+|     |          ================     |             |
+|     |                               |             |
+|     |        +-------------<2001:db8:12:34::2>--+ |
+|     |        |                                  | |
+|     |        |         SIIT Host Agent          | |
+|     |        |         ===============          | |
+|     |        |                                  | |
+|     |        |       Translation prefix:        | |
+|     |        |         2001:db8:46::/96         | |
+|     |        |                                  | |
+|     |        |     Static address mapping:      | |
+|     |        | 198.51.0.1 <=> 2001:db8:12:34::2 | |
+|     |        |                                  | |
+|     |        +---------------------<198.51.0.1>-+ |
+|     |                                   |         |
+|     |                                   |         |
+| +-[2001:db8:12:34::1]--------------[198.51.0.1]-+ |
+| |      AF_INET6                      AF_INET    | |
+| |                                               | |
+| |           Dual-stacked application            | |
+| |                                               | |
+| +-----------------------------------------------+ |
++---------------------------------------------------+
+        ]]></artwork>
+      </figure>
+      </t>
+    </section>
+    <section anchor="deployment_considerations" title="Deployment Considerations">
+      <section anchor="ipv6_pmtu" title="IPv6 Path MTU">
+        <t>
+        The IPv6 Path MTU between the SIIT host agent and the SIIT gateway
+        will typically be larger than the default value defined in <xref
+        target="RFC6145">section 4 of RFC6145</xref> (1280), as it will
+        typically contained within a single administrative domain. Therefore,
+        it is recommended that the IPv6 Path MTU configured in the SIIT-HA is
+        raised accordingly. It is RECOMMENDED that the SIIT host agent and the
+        SIIT gateway use identical configured IPv6 Path MTU values.
+        </t>
+      </section>
+      <section anchor="ipv4_mtu" title="IPv4 MTU">
+        <t>
+        In order to avoid fragmentation, it is RECOMMENDED that the virtual
+        IPv4 interface is configured with an MTU value identical to the
+        configured IPv6 Path MTU - 20. This ensures that the application may
+        do its part in avoiding IP-level fragmentation from occurring, e.g.,
+        by segmenting/fragmenting outbound packets at the application layer,
+        and advertising the maximum size its peer may use for inbound packets
+        (e.g., through the use of the TCP MSS option).
+        </t>
+      </section>
+    </section>
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>
+      The author would like to especially thank the authors of <xref
+      target="RFC6877">464XLAT</xref>: Masataka Mawatari, Masanobu Kawashima,
+      and Cameron Byrne. The architecture described by this document is merely
+      an adaptation of their work to a data centre environment, and could not
+      have happened without them.
+      </t>
+      <t>
+      The author would like also to thank the following individuals for their
+      contributions, suggestions, corrections, and criticism: [YOUR NAME GOES
+      HERE].
+      </t>
+    </section>
+    <section title="Requirements Language">
+      <t>
+      The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+      "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+      document are to be interpreted as described in <xref target="RFC2119"/>.
+      </t>
+    </section>
+    <section anchor="IANA" title="IANA Considerations">
+      <t>
+      This draft makes no request of the IANA.
+      </t>
+    </section>
+    <section anchor="Security" title="Security Considerations">
+      <t>
+      This section discussues security considerations specific to the use of a
+      SIIT host agent. See the <xref target="I-D.anderson-siit-dc">Security
+      Considerations in I-D.anderson-siit-dc</xref> for additional security
+      considerations applicable to the SIIT architecture in general.
+      </t>
+      <section anchor="sec_loops"
+               title="Address Spoofing">
+        <t>
+        If the SIIT host agent receives an IPv4 packet from the application
+        from a different source address than the one it has a static mapping
+        for, the both the source and destination addresses will be rewritten
+        according to <xref target="RFC6052"/>. After undergoing the reverse
+        translation in the SIIT gateway, the resulting IPv4 packet routed to
+        the IPv4 network will have a spoofed IPv4 source address. The SIIT
+        host agent should therefore ensure that ingress filtering (cf. <xref
+        target="RFC2827">BCP38</xref> is used on the SIIT host agent's IPv4
+        interface, so that such packets are immediately discarded.
+        </t>
+        <t>
+        If the SIIT host agent receives an IPv6 packet with both the source
+        and destination address equal to the one it has a static mapping from,
+        the resulting packet would appear to the application as locally
+        generated, as both the source address and the destination address will
+        be the same address as the one configured on the virtual IPv4
+        interface. This could trick the application into thinking this packet
+        came from a trusted source, and give elevated privileges accordingly.
+        To prevent this, the SIIT host agent should discard any received IPv6
+        packets that have a source address that is equal either to either the
+        IPv4 (after undergoing <xref target="RFC6052"/> translation) or the
+        IPv6 address in the static mapping.
+        </t>
+      </section>
+    </section>
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      &RFC2119;
+      &I-D.anderson-siit-dc;
+    </references>
+    <references title="Informative References">
+      &RFC2827;
+      &RFC6052;
+      &RFC6145;
+      &RFC6877;
+    </references>
+  </back>
+
+</rfc>
+<!-- Change Log
+v00 2014-08-05	tore	Initial version
+-->
+<!-- vim: syntax=xml tw=78 ai fo=2 et:
+-->
