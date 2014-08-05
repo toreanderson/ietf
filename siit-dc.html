@@ -1,0 +1,975 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>SIIT-DC: Stateless IP/ICMP Translation in IPv6 Data Centre Environments</title>
+
+  <style type="text/css" title="Xml2Rfc (sans serif)">
+  /*<![CDATA[*/
+	  a {
+	  text-decoration: none;
+	  }
+	  a.smpl {
+	  color: black;
+	  }
+	  a:hover {
+	  text-decoration: underline;
+	  }
+	  a:active {
+	  text-decoration: underline;
+	  }
+	  address {
+	  margin-top: 1em;
+	  margin-left: 2em;
+	  font-style: normal;
+	  }
+	  body {
+	  color: black;
+	  font-family: verdana, helvetica, arial, sans-serif;
+	  font-size: 10pt;
+	  max-width: 55em;
+	  
+	  }
+	  cite {
+	  font-style: normal;
+	  }
+	  dd {
+	  margin-right: 2em;
+	  }
+	  dl {
+	  margin-left: 2em;
+	  }
+	
+	  ul.empty {
+	  list-style-type: none;
+	  }
+	  ul.empty li {
+	  margin-top: .5em;
+	  }
+	  dl p {
+	  margin-left: 0em;
+	  }
+	  dt {
+	  margin-top: .5em;
+	  }
+	  h1 {
+	  font-size: 14pt;
+	  line-height: 21pt;
+	  page-break-after: avoid;
+	  }
+	  h1.np {
+	  page-break-before: always;
+	  }
+	  h1 a {
+	  color: #333333;
+	  }
+	  h2 {
+	  font-size: 12pt;
+	  line-height: 15pt;
+	  page-break-after: avoid;
+	  }
+	  h3, h4, h5, h6 {
+	  font-size: 10pt;
+	  page-break-after: avoid;
+	  }
+	  h2 a, h3 a, h4 a, h5 a, h6 a {
+	  color: black;
+	  }
+	  img {
+	  margin-left: 3em;
+	  }
+	  li {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol p {
+	  margin-left: 0em;
+	  }
+	  p {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  pre {
+	  margin-left: 3em;
+	  background-color: lightyellow;
+	  padding: .25em;
+	  }
+	  pre.text2 {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f0f0f0;
+	  width: 69em;
+	  }
+	  pre.inline {
+	  background-color: white;
+	  padding: 0em;
+	  }
+	  pre.text {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  width: 69em;
+	  }
+	  pre.drawing {
+	  border-style: solid;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  padding: 2em;
+	  }
+	  table {
+	  margin-left: 2em;
+	  }
+	  table.tt {
+	  vertical-align: top;
+	  }
+	  table.full {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.headers {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.tt td {
+	  vertical-align: top;
+	  }
+	  table.full td {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.tt th {
+	  vertical-align: top;
+	  }
+	  table.full th {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.headers th {
+	  border-style: none none inset none;
+	  border-width: 1px;
+	  }
+	  table.left {
+	  margin-right: auto;
+	  }
+	  table.right {
+	  margin-left: auto;
+	  }
+	  table.center {
+	  margin-left: auto;
+	  margin-right: auto;
+	  }
+	  caption {
+	  caption-side: bottom;
+	  font-weight: bold;
+	  font-size: 9pt;
+	  margin-top: .5em;
+	  }
+	
+	  table.header {
+	  border-spacing: 1px;
+	  width: 95%;
+	  font-size: 10pt;
+	  color: white;
+	  }
+	  td.top {
+	  vertical-align: top;
+	  }
+	  td.topnowrap {
+	  vertical-align: top;
+	  white-space: nowrap; 
+	  }
+	  table.header td {
+	  background-color: gray;
+	  width: 50%;
+	  }
+	  table.header a {
+	  color: white;
+	  }
+	  td.reference {
+	  vertical-align: top;
+	  white-space: nowrap;
+	  padding-right: 1em;
+	  }
+	  thead {
+	  display:table-header-group;
+	  }
+	  ul.toc, ul.toc ul {
+	  list-style: none;
+	  margin-left: 1.5em;
+	  margin-right: 0em;
+	  padding-left: 0em;
+	  }
+	  ul.toc li {
+	  line-height: 150%;
+	  font-weight: bold;
+	  font-size: 10pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  ul.toc li li {
+	  line-height: normal;
+	  font-weight: normal;
+	  font-size: 9pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  li.excluded {
+	  font-size: 0pt;
+	  }
+	  ul p {
+	  margin-left: 0em;
+	  }
+	
+	  .comment {
+	  background-color: yellow;
+	  }
+	  .center {
+	  text-align: center;
+	  }
+	  .error {
+	  color: red;
+	  font-style: italic;
+	  font-weight: bold;
+	  }
+	  .figure {
+	  font-weight: bold;
+	  text-align: center;
+	  font-size: 9pt;
+	  }
+	  .filename {
+	  color: #333333;
+	  font-weight: bold;
+	  font-size: 12pt;
+	  line-height: 21pt;
+	  text-align: center;
+	  }
+	  .fn {
+	  font-weight: bold;
+	  }
+	  .hidden {
+	  display: none;
+	  }
+	  .left {
+	  text-align: left;
+	  }
+	  .right {
+	  text-align: right;
+	  }
+	  .title {
+	  color: #990000;
+	  font-size: 18pt;
+	  line-height: 18pt;
+	  font-weight: bold;
+	  text-align: center;
+	  margin-top: 36pt;
+	  }
+	  .vcardline {
+	  display: block;
+	  }
+	  .warning {
+	  font-size: 14pt;
+	  background-color: yellow;
+	  }
+	
+	
+	  @media print {
+	  .noprint {
+		display: none;
+	  }
+	
+	  a {
+		color: black;
+		text-decoration: none;
+	  }
+	
+	  table.header {
+		width: 90%;
+	  }
+	
+	  td.header {
+		width: 50%;
+		color: black;
+		background-color: white;
+		vertical-align: top;
+		font-size: 12pt;
+	  }
+	
+	  ul.toc a::after {
+		content: leader('.') target-counter(attr(href), page);
+	  }
+	
+	  ul.ind li li a {
+		content: target-counter(attr(href), page);
+	  }
+	
+	  .print2col {
+		column-count: 2;
+		-moz-column-count: 2;
+		column-fill: auto;
+	  }
+	  }
+	
+	  @page {
+	  @top-left {
+		   content: "Internet-Draft"; 
+	  } 
+	  @top-right {
+		   content: "December 2010"; 
+	  } 
+	  @top-center {
+		   content: "Abbreviated Title";3
+	  } 
+	  @bottom-left {
+		   content: "Doe"; 
+	  } 
+	  @bottom-center {
+		   content: "Expires June 2011"; 
+	  } 
+	  @bottom-right {
+		   content: "[Page " counter(page) "]"; 
+	  } 
+	  }
+	
+	  @page:first { 
+		@top-left {
+		  content: normal;
+		}
+		@top-right {
+		  content: normal;
+		}
+		@top-center {
+		  content: normal;
+		}
+	  }
+  /*]]>*/
+  </style>
+
+  <link href="#rfc.toc" rel="Contents"/>
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
+<link href="#rfc.section.1.1" rel="Chapter" title="1.1 Motivation and Goals"/>
+<link href="#rfc.section.1.1.1" rel="Chapter" title="1.1.1 Single Stack IPv6 Operation"/>
+<link href="#rfc.section.1.1.2" rel="Chapter" title="1.1.2 Stateless Operation"/>
+<link href="#rfc.section.1.1.3" rel="Chapter" title="1.1.3 No Loss of End User's Source Address"/>
+<link href="#rfc.section.1.1.4" rel="Chapter" title="1.1.4 No Forklift Upgrades Required"/>
+<link href="#rfc.section.1.1.5" rel="Chapter" title="1.1.5 No Architectural Dependency on IPv4"/>
+<link href="#rfc.section.1.2" rel="Chapter" title="1.2 Comparison to Other IPv6 Migration Strategies"/>
+<link href="#rfc.section.1.2.1" rel="Chapter" title="1.2.1 IPv4-only Service with Translation for IPv6 Users"/>
+<link href="#rfc.section.1.2.2" rel="Chapter" title="1.2.2 Dual Stack"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Architectural Overview"/>
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 DNS Configuration"/>
+<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Example Packet Flow"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 Deployment Guidelines for Operators"/>
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Application Support for NAT"/>
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Application Support for IPv6"/>
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Application Communication Pattern"/>
+<link href="#rfc.section.3.4" rel="Chapter" title="3.4 Choice of Translation Prefix"/>
+<link href="#rfc.section.3.5" rel="Chapter" title="3.5 Routing Considerations"/>
+<link href="#rfc.section.3.6" rel="Chapter" title="3.6 Location of the Translators"/>
+<link href="#rfc.section.3.7" rel="Chapter" title="3.7 Migration from Dual Stack"/>
+<link href="#rfc.section.3.8" rel="Chapter" title="3.8 Packet Size and Fragmentation Considerations"/>
+<link href="#rfc.section.3.8.1" rel="Chapter" title="3.8.1 IP Header Size Difference"/>
+<link href="#rfc.section.3.8.2" rel="Chapter" title="3.8.2 Minimum Path MTU Difference"/>
+<link href="#rfc.section.3.8.3" rel="Chapter" title="3.8.3 &quot;Atomic Fragments&quot;"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Implementation Requirements"/>
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Basic Requirements"/>
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Static Address Mapping Function"/>
+<link href="#rfc.section.4.3" rel="Chapter" title="4.3 Support for Increasing the IPv6 Path MTU"/>
+<link href="#rfc.section.4.4" rel="Chapter" title="4.4 Support for Disabling &quot;Atomic Fragments&quot;"/>
+<link href="#rfc.section.4.5" rel="Chapter" title="4.5 Feature for Handling IPv4 Path MTUs Lower than 1260"/>
+<link href="#rfc.section.4.6" rel="Chapter" title="4.6 Loop Prevention Mechanism"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Acknowledgements"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 Requirements Language"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations"/>
+<link href="#rfc.section.8" rel="Chapter" title="8 Security Considerations"/>
+<link href="#rfc.section.8.1" rel="Chapter" title="8.1 Mistaking the Translation Prefix for a Trusted Network"/>
+<link href="#rfc.section.8.2" rel="Chapter" title="8.2 Packets Looping Through the SIIT Function"/>
+<link href="#rfc.references" rel="Chapter" title="9 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References"/>
+<link href="#rfc.appendix.A" rel="Chapter" title="A Complete SIIT topology example"/>
+<link href="#rfc.authors" rel="Chapter"/>
+
+
+  <meta name="generator" content="xml2rfc version 2.4.2 - http://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Anderson, T." />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-anderson-sunset4-siit-dc-00" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-8-05" />
+  <meta name="dct.abstract" content="This document describes the use of Stateless IP/ICMP Translation (SIIT) in data centre environments in order to simultaneously facilitate IPv6 deployment and IPv4 address conservation. It describes the overall architecture, and provides guidelines for both operators and implementers.  " />
+  <meta name="description" content="This document describes the use of Stateless IP/ICMP Translation (SIIT) in data centre environments in order to simultaneously facilitate IPv6 deployment and IPv4 address conservation. It describes the overall architecture, and provides guidelines for both operators and implementers.  " />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+  <td class="left">Sunsetting IPv4</td>
+  <td class="right">T. Anderson</td>
+</tr>
+<tr>
+  <td class="left">Internet-Draft</td>
+  <td class="right">Redpill Linpro</td>
+</tr>
+<tr>
+  <td class="left">Intended status: Standards Track</td>
+  <td class="right">August 05, 2014</td>
+</tr>
+<tr>
+  <td class="left">Expires: February 06, 2015</td>
+  <td class="right"></td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">SIIT-DC: Stateless IP/ICMP Translation in IPv6 Data Centre Environments<br />
+  <span class="filename">draft-anderson-sunset4-siit-dc-00</span></p>
+  
+  <h1 id="rfc.abstract">
+  <a href="#rfc.abstract">Abstract</a>
+</h1>
+<p>This document describes the use of Stateless IP/ICMP Translation (SIIT) in data centre environments in order to simultaneously facilitate IPv6 deployment and IPv4 address conservation. It describes the overall architecture, and provides guidelines for both operators and implementers.  </p>
+<h1 id="rfc.status">
+  <a href="#rfc.status">Status of This Memo</a>
+</h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on February 06, 2015.</p>
+<h1 id="rfc.copyrightnotice">
+  <a href="#rfc.copyrightnotice">Copyright Notice</a>
+</h1>
+<p>Copyright (c) 2014 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
+<li>1.1.   <a href="#rfc.section.1.1">Motivation and Goals</a></li>
+<li>1.1.1.   <a href="#rfc.section.1.1.1">Single Stack IPv6 Operation</a></li>
+<li>1.1.2.   <a href="#rfc.section.1.1.2">Stateless Operation</a></li>
+<li>1.1.3.   <a href="#rfc.section.1.1.3">No Loss of End User's Source Address</a></li>
+<li>1.1.4.   <a href="#rfc.section.1.1.4">No Forklift Upgrades Required</a></li>
+<li>1.1.5.   <a href="#rfc.section.1.1.5">No Architectural Dependency on IPv4</a></li>
+<li>1.2.   <a href="#rfc.section.1.2">Comparison to Other IPv6 Migration Strategies</a></li>
+<li>1.2.1.   <a href="#rfc.section.1.2.1">IPv4-only Service with Translation for IPv6 Users</a></li>
+<li>1.2.2.   <a href="#rfc.section.1.2.2">Dual Stack</a></li>
+<li>2.   <a href="#rfc.section.2">Architectural Overview</a></li>
+<li>2.1.   <a href="#rfc.section.2.1">DNS Configuration</a></li>
+<li>2.2.   <a href="#rfc.section.2.2">Example Packet Flow</a></li>
+<li>3.   <a href="#rfc.section.3">Deployment Guidelines for Operators</a></li>
+<li>3.1.   <a href="#rfc.section.3.1">Application Support for NAT</a></li>
+<li>3.2.   <a href="#rfc.section.3.2">Application Support for IPv6</a></li>
+<li>3.3.   <a href="#rfc.section.3.3">Application Communication Pattern</a></li>
+<li>3.4.   <a href="#rfc.section.3.4">Choice of Translation Prefix</a></li>
+<li>3.5.   <a href="#rfc.section.3.5">Routing Considerations</a></li>
+<li>3.6.   <a href="#rfc.section.3.6">Location of the Translators</a></li>
+<li>3.7.   <a href="#rfc.section.3.7">Migration from Dual Stack</a></li>
+<li>3.8.   <a href="#rfc.section.3.8">Packet Size and Fragmentation Considerations</a></li>
+<li>3.8.1.   <a href="#rfc.section.3.8.1">IP Header Size Difference</a></li>
+<li>3.8.2.   <a href="#rfc.section.3.8.2">Minimum Path MTU Difference</a></li>
+<li>3.8.3.   <a href="#rfc.section.3.8.3">"Atomic Fragments"</a></li>
+<li>4.   <a href="#rfc.section.4">Implementation Requirements</a></li>
+<li>4.1.   <a href="#rfc.section.4.1">Basic Requirements</a></li>
+<li>4.2.   <a href="#rfc.section.4.2">Static Address Mapping Function</a></li>
+<li>4.3.   <a href="#rfc.section.4.3">Support for Increasing the IPv6 Path MTU</a></li>
+<li>4.4.   <a href="#rfc.section.4.4">Support for Disabling "Atomic Fragments"</a></li>
+<li>4.5.   <a href="#rfc.section.4.5">Feature for Handling IPv4 Path MTUs Lower than 1260</a></li>
+<li>4.6.   <a href="#rfc.section.4.6">Loop Prevention Mechanism</a></li>
+<li>5.   <a href="#rfc.section.5">Acknowledgements</a></li>
+<li>6.   <a href="#rfc.section.6">Requirements Language</a></li>
+<li>7.   <a href="#rfc.section.7">IANA Considerations</a></li>
+<li>8.   <a href="#rfc.section.8">Security Considerations</a></li>
+<li>8.1.   <a href="#rfc.section.8.1">Mistaking the Translation Prefix for a Trusted Network</a></li>
+<li>8.2.   <a href="#rfc.section.8.2">Packets Looping Through the SIIT Function</a></li>
+<li>9.   <a href="#rfc.references">References</a></li>
+<li>9.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>9.2.   <a href="#rfc.references.2">Informative References</a></li>
+<li>Appendix A.   <a href="#rfc.appendix.A">Complete SIIT topology example</a></li>
+<li><a href="#rfc.authors">Author's Address</a></li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> Introduction</h1>
+<p id="rfc.section.1.p.1">This document describes deploying <a href="#RFC6145">SIIT</a> <cite title="NONE">[RFC6145]</cite> as a network-centric stateless translation service that allows a data centre operator or Internet content provider to run a data centre network, servers, and applications using exclusively IPv6, while at the same time ensuring that end users that have only IPv4 connectivity will be able to continue to access the services and applications.  </p>
+<h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> Motivation and Goals</h1>
+<p id="rfc.section.1.1.p.1">Historically, <a href="#RFC4213">dual stack</a> <cite title="NONE">[RFC4213]</cite> has been the recommended way to transition from an IPv4-only environment to one capable of serving IPv6 users. For data centre and Internet content providers, dual stack operation has a number of disadvantages compared to single stack operation. In particular, the increased complexity and operational overhead, and very low expected return of investment in the short to medium term, as there are practically no end-users who have only connectivity to the IPv6 Internet. Furthermore, the dual stack approach does not in any way help with the depletion of the IPv4 address space.  </p>
+<p id="rfc.section.1.1.p.2">Therefore, a better approach is needed. The design goals are: </p>
+
+<ul>
+  <li>To promote the deployment of native IPv6 services</li>
+  <li>To provide IPv4 service availability for legacy users with no loss of performance or functionality</li>
+  <li>To ensure that that the legacy users' IPv4 addresses remain available to the servers and applications</li>
+  <li>To conserve and maximise the utilisation of IPv4 addresses</li>
+  <li>To avoid introducing more complexity than absolutely necessary, especially on the servers and applications</li>
+  <li>To be easy to scale and deploy in a fault-tolerant manner</li>
+</ul>
+
+<p> SIIT meets all of these requirements, which will be elaborated on in the following subsections.  </p>
+<h1 id="rfc.section.1.1.1"><a href="#rfc.section.1.1.1">1.1.1.</a> Single Stack IPv6 Operation</h1>
+<p id="rfc.section.1.1.1.p.1">SIIT allows an operator to build their applications on an IPv6-only foundation. IPv4 end-user connectivity becomes a service provided by the network, which systems administration and application development staff do not need to concern themselves with.  </p>
+<p id="rfc.section.1.1.1.p.2">Obviously, this will promote universal IPv6 deployment for all the provider's services and applications.  </p>
+<h1 id="rfc.section.1.1.2"><a href="#rfc.section.1.1.2">1.1.2.</a> Stateless Operation</h1>
+<p id="rfc.section.1.1.2.p.1">Unlike other solutions that provide either dual stack availability to single-stack services (e.g., <a href="#RFC6146">Stateful NAT64</a> <cite title="NONE">[RFC6146]</cite> and Layer-4/7 proxies), or that provide conservation of IPv4 addresses (e.g., <a href="#RFC3022">NAT44</a> <cite title="NONE">[RFC3022]</cite>), a SIIT Gateway does not keep any state between each packet in a single connection/flow. In this sense it operates exactly like a normal IP router, and has similar scaling properties - the limiting factors are packets per second and bandwidth. The number of concurrent flows and flow initiation rates are irrelevant for performance.  </p>
+<p id="rfc.section.1.1.2.p.2">This not only allows individual SIIT Gateways to easily attain "line rate" performance, it also allows for per-packet load balancing between multiple gateways using <a href="#RFC2991">Equal-Cost Multipath Routing</a> <cite title="NONE">[RFC2991]</cite>. Asymmetric routing is also acceptable, which makes it easy to avoid sub-optimal traffic patterns; the prefixes involved may be anycasted from all the SIIT gateways in the provider's network, thus ensuring that the most optimal path through the network is used, even the optimal path in one direction differs from the optimal path in the opposite direction.  </p>
+<p id="rfc.section.1.1.2.p.3">Finally, stateless operation means that high availability is easily achieved. If an SIIT Gateway should fail, its traffic can be re-routed onto another SIIT Gateway using a standard IP routing protocol. This does not impact existing flows any more than what any other IP re-routing event would.  </p>
+<h1 id="rfc.section.1.1.3"><a href="#rfc.section.1.1.3">1.1.3.</a> No Loss of End User's Source Address</h1>
+<p id="rfc.section.1.1.3.p.1">SIIT will map the entire end-user's source address into an predefined IPv6 translation prefix. This allows the application server to identify the user by an IPv4 address, which is useful for performing tasks like Geo-Location, logging, abuse handling, and so forth.  </p>
+<h1 id="rfc.section.1.1.4"><a href="#rfc.section.1.1.4">1.1.4.</a> No Forklift Upgrades Required</h1>
+<p id="rfc.section.1.1.4.p.1">Except for the introduction of the SIIT Gateways themselves, there is no change required in the network, servers, applications, or anywhere else to specifically support SIIT, compared to a dual stack deployment. From the clients', the servers', the IPv6 data centre network's, and the IPv4 Internet's point of view, SIIT is practically invisible. It will work with any standards-compliant IPv4 or IPv6 stack.  </p>
+<h1 id="rfc.section.1.1.5"><a href="#rfc.section.1.1.5">1.1.5.</a> No Architectural Dependency on IPv4</h1>
+<p id="rfc.section.1.1.5.p.1">SIIT will allow an ICP or data centre operator to build infrastructure and applications entirely on IPv6. This means that when the day comes to discontinue support for IPv4, no change needs to be made to the overall architecture - it's only a matter of shutting off the SIIT Gateways. Therefore, by deploying native IPv6 along with SIIT, operators will avoid future migration or deployment projects relating to IPv6 roll-out and/or IPv4 sun-setting.  </p>
+<h1 id="rfc.section.1.2"><a href="#rfc.section.1.2">1.2.</a> Comparison to Other IPv6 Migration Strategies</h1>
+<h1 id="rfc.section.1.2.1"><a href="#rfc.section.1.2.1">1.2.1.</a> IPv4-only Service with Translation for IPv6 Users</h1>
+<p id="rfc.section.1.2.1.p.1">Typically, this migration strategy involves having an IPv4-only application stack, with some front-end device that the IPv6 client connect to. The front-end device will then translate or proxy the traffic to the IPv4-only system. This approach is probably the easiest to retrofit to an existing IPv6 service environment, however it does have a few shortcomings not shared by SIIT. In particular: </p>
+
+<ul>
+  <li>No conservation of IPv4 addresses, as the entire application stack and access network remains dependent on IPv4 numbering.</li>
+  <li>The translator/proxy must be a stateful device, requiring traffic to flow symmetrically across a single instance, in turn giving the solution poor scaling properties and routing flexibility</li>
+  <li>A fail-over event will disrupt all active flows, unless there is some state replication mechanism (which would likely increase complexity and hurt performance and scaling properties)</li>
+  <li>Loss of the client's source IP address, if it cannot be injected into application-layer headers such as HTTP's X-Forwarded-For (which is impossible if the application layer is using encryption)</li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.1.2.2"><a href="#rfc.section.1.2.2">1.2.2.</a> Dual Stack</h1>
+<p id="rfc.section.1.2.2.p.1">Dual stack, unlike SIIT, considerably increases complexity and operational overhead compared to single stack operation for a number of reasons. Some examples of this include: </p>
+
+<ul>
+  <li>Duplicate work for design, set-up, documentation, and monitoring</li>
+  <li>Duplicate ACLs in both network components and applications</li>
+  <li>An exponential increase in possible failure scenarios</li>
+  <li>Increased application development and maintenance costs</li>
+  <li>Increased need for staff training and competency</li>
+</ul>
+
+<p> Furthermore, dual stack does not help conserve IPv4 addresses.  </p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#overview" id="overview">Architectural Overview</a></h1>
+<div id="rfc.figure.1"/>
+<div id="fig_architecture"/>
+<p id="rfc.section.2.p.1">This section describes the basic SIIT architecture.  </p>
+
+<p>SIIT Architecture</p>
+<pre>
+  +-------------------+         +----------------+
+  | IPv6-capable user |         | IPv4-only user |
+  | ================= |         | ============== |
+  |                   |         |                |
+  +-&lt;2001:db8::ab:cd&gt;-+         +-&lt;203.0.113.50&gt;-+
+      |                                  |
+      |                                  |
+   (the IPv6 internet)         (the IPv4 Internet)
+      |                                  |
+      |                                  |
+      |        +-----------------&lt;198.51.0.0/24&gt;--+
+      |        |                                  |
+      |        |           SIIT Gateway           |
+      |        |           ============           |
+      |        |                                  |
+      |        |       Translation prefix:        |
+      |        |         2001:db8:46::/96         |
+      |        |                                  |
+      |        |     Static address mapping:      |
+      |        | 198.51.0.1 &lt;=&gt; 2001:db8:12:34::1 |
+      |        |                                  |
+      |        +--------------&lt;2001:db8:46::/96&gt;--+
+      |                               |
+      |                               |
+     (the IPv6-only data centre network)
+      |                               |
+      | ------------------------------/
+      |/
+      |
++--&lt;2001:db8:12:34::1&gt;------------------------------+
+|     |                                             |
+|     |          IPv6-only server                   |
+|     |          ================                   |
+|     |                                             |
+| +-[2001:db8:12:34::1]---------------------------+ |
+| |      AF_INET6                                 | |
+| |                                               | |
+| |             IPv6-only application             | |
+| |                                               | |
+| +-----------------------------------------------+ |
++---------------------------------------------------+
+        </pre>
+<p class="figure">Figure 1</p>
+<p id="rfc.section.2.p.2">198.51.0.0/24 is allocated as a pool from which individual IPv4 service addresses are drawn. The provider must route this prefix to the SIIT Gateway's IPv4 interface. Note that there are no restrictions on how many IPv4 service address pools are used or their prefix length, as long as they are all routed to the SIIT gateway's IPv4 interface.  </p>
+<p id="rfc.section.2.p.3">The static address mappings are used for translating the service's IPv6 address into IPv4 and vice versa. When translating from IPv4 to IPv6, any IPv4 address found in the list of static mappings will be rewritten to its corresponding IPv6 address, and vice versa when translating from IPv6 to IPv4.  </p>
+<p id="rfc.section.2.p.4">2001:db8:46::/96 is the IPv6 prefix into which the entire IPv4 address space is mapped. It is used for translation of the end user's IPv4 address to IPv6 and vice versa according to the algorithm defined in section 2.2 of <a href="#RFC6052">[RFC6052]</a>. This algorithmic mapping has a lower precedence than the static mappings.  </p>
+<p id="rfc.section.2.p.5">The SIIT gateway itself can be either a separate device or a logical function in another multi-purpose device, for example an IP router.  Any number of SIIT gateways may exist simultaneously in an operators infrastructure, as long as they all have the same translation prefix and list of static mappings configured.  </p>
+<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> DNS Configuration</h1>
+<p id="rfc.section.2.1.p.1">The native IPv6 address of the publicly available services should be registered in DNS using AAAA records, while the corresponding IPv4 address (according to the static mapping), should be registered using an A record. This results in the following DNS records: </p>
+<pre>
+app.domain.tld.    IN AAAA  2001:db8:12:34::1
+app.domain.tld.    IN A     198.51.0.1
+      </pre>
+<p class="figure"></p>
+<h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> Example Packet Flow</h1>
+<pre>
++-------------------------------------------------+
+| IP Version:           4                         |
+| Source Address:       203.0.113.50              |
+| Destination Address:  198.51.0.1                |
+| Protocol:             TCP                       |
+|-------------------------------------------------|
+| TCP SYN [...]                                   |
++-------------------------------------------------+
+        </pre>
+<p class="figure"></p>
+<pre>
++-------------------------------------------------+
+| IP Version:           6                         |
+| Source Address:       2001:db8:46::203.0.113.50 |
+| Destination Address:  2001:db8:12:34::1         |
+| Next Header:          TCP                       |
+|-------------------------------------------------|
+| TCP SYN [...]                                   |
++-------------------------------------------------+
+        </pre>
+<p class="figure"></p>
+<p id="rfc.section.2.2.p.1">In this example, "IPv4-only user" initiates a request to the application running on the IPv6-only server. He starts by looking up the IPv4 address of "app.domain.tld" in DNS, and attempts to connect to this address on the service by transmitting the following IPv4 packet: <a href="#RFC6052">[RFC6052]</a> mapping (because it did not match any static mappings). The rest of the IP header was translated according to <a href="#RFC6145">[RFC6145]</a>. The Layer 4 payload is copied verbatim, with the exception of the TCP checksum being recalculated.  </p>
+<p id="rfc.section.2.2.p.2">Note that the IPv6 address 2001:db8:46::203.0.113.50 may also be expressed as 2001:db8:46::cb00:7132, cf <a href="#RFC2373">section 2.2 of RFC2373</a> <cite title="NONE">[RFC2373]</cite>.  </p>
+<pre>
++-------------------------------------------------+
+| IP Version:           6                         |
+| Source Address:       2001:db8:12:34::1         |
+| Destination Address:  2001:db8:46::203.0.113.50 |
+| Next Header:          TCP                       |
+|-------------------------------------------------|
+| TCP SYN+ACK [...]                               |
++-------------------------------------------------+
+        </pre>
+<p class="figure"></p>
+<pre>
++-------------------------------------------------+
+| IP Version:           4                         |
+| Source Address:       198.51.0.2                |
+| Destination Address:  203.0.113.50              |
+| Protocol:             TCP                       |
+|-------------------------------------------------|
+| TCP SYN+ACK [...]                               |
++-------------------------------------------------+
+        </pre>
+<p class="figure"></p>
+<p id="rfc.section.2.2.p.3">Next, the application receives receives this IPv6 packet and responds to it like it would with any other IPv6 packet: <a href="#RFC6052">[RFC6052]</a>. The rest of the packet was translated according to <a href="#RFC6145">[RFC6145]</a>.  </p>
+<p id="rfc.section.2.2.p.4">The resulting IPv4 packet is transmitted back to the end user over the IPv4 Internet. Subsequent packets in the flow will follow the exact same translation pattern. They may or may not cross the same translators as earlier packets in the same flow.  </p>
+<p id="rfc.section.2.2.p.5">The end user's IPv4 stack has no idea that it is communicating with an IPv6 server, nor does the server's IPv6 stack have any idea that is is communicating with an IPv4 client. To them, it's just plain IPv4 or IPv6, respectively. However, the applications running on the server may optionally be updated to recognise and strip the translation prefix, so that the end user's IPv4 address may be used for logging, Geo-Location, abuse handling, and so forth.  </p>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> Deployment Guidelines for Operators</h1>
+<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> Application Support for NAT</h1>
+<p id="rfc.section.3.1.p.1">As a general rule, if an application layer protocol does work through standard NAT44 (see <a href="#RFC3235">[RFC3235]</a>), it will most likely work through SIIT as described in this document too.  </p>
+<p id="rfc.section.3.1.p.2">As noted in <a href="#RFC2663">[RFC2663]</a>, <a href="#RFC2993">[RFC2993]</a>, and <a href="#RFC3022">[RFC3022]</a>, higher-level protocols that embed addresses as part of their payload, will most likely not work through any form of address translation, which includes SIIT. One well-known example of such a protocol is <a href="#RFC0959">FTP</a> <cite title="NONE">[RFC0959]</cite>. However, by introducing a host agent that reverses the translation performed by the SIIT gateway before passing the packets to the application software, such applications will be able to work correctly in an SIIT environment as well. See [I-D.anderson-sunset4-siit-2xlat] for a description of this approach.  </p>
+<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> Application Support for IPv6</h1>
+<p id="rfc.section.3.2.p.1">SIIT requires that the application software supports IPv6 networking, and that it has no dependency on IPv4 networking. If this is not the case, the approach described in [I-D.anderson-sunset4-siit-2xlat] may be used, as it provides the application with seemingly native IPv4 connectivity.  </p>
+<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> Application Communication Pattern</h1>
+<p id="rfc.section.3.3.p.1">SIIT is ideally suited for applications where IPv4-only nodes on the Internet initiate traffic towards the IPv6-only services, which in turn are only passively listening for inbound traffic and responding as necessary. One well-known example of such a protocol is  <a href="#RFC2616">HTTP</a> <cite title="NONE">[RFC2616]</cite>. This is due to the fact that in this case, an IPv4 user looks exactly like an ordinary IPv6 user from the host and application's point of view, and requires no special treatment.  </p>
+<p id="rfc.section.3.3.p.2">It is possible to combine SIIT with <a href="#RFC6147">DNS64</a> <cite title="NONE">[RFC6147]</cite> in order to allow an IPv6-only application to initiate communication with IPv4-only nodes through an SIIT gateway. However, in this case, care must be taken so that all outgoing communication is sourced from the IPv6 address that has a static mapping configured on the SIIT gateway. If another unmapped address is used, the SIIT gateway will discard the packet.  </p>
+<p id="rfc.section.3.3.p.3">An alternative approach to the above would be to make use of an SIIT host agent as described in [I-D.anderson-sunset4-siit-2xlat]. This provides the application with seemingly native IPv4 connectivity, which it may use for both inbound and outbond communication without requiring the application to select a specific source address for its outbound communications.  </p>
+<h1 id="rfc.section.3.4"><a href="#rfc.section.3.4">3.4.</a> Choice of Translation Prefix</h1>
+<p id="rfc.section.3.4.p.1">Either a Network-Specific Prefix (NSP) from the provider's own IPv6 address space or the IANA-allocated Well-Known Prefix 64:ff9b::/96 (WKP) may be used. From a technical point of view, both should work equally well, however as only a single WKP exists, if a provider would like to deploy more than one instance of SIIT in his network, or <a href="#RFC6146">Stateful NAT64</a> <cite title="NONE">[RFC6146]</cite>, an NSP must be used anyway for all but one of those deployments.  </p>
+<p id="rfc.section.3.4.p.2">Furthermore, the WKP cannot be used in inter-domain routing. By using an NSP, a provider will have the possibility to provide SIIT service to other operators across Autonomous System borders.  </p>
+<p id="rfc.section.3.4.p.3">For these reasons, this document recommends that an NSP is used.  Section 3.3 of <a href="#RFC6052">[RFC6052]</a> discusses the choice of translation prefix in more detail.  </p>
+<p id="rfc.section.3.4.p.4">The prefix may use any of the lengths described in section 2.2 of <a href="#RFC6052">[RFC6052]</a>, but /96 has two distinct advantages over the others. First, converting it to IPv4 can be done in a single operation by simply stripping off the first 96 bits; second, it allows for IPv4 addresses to be embedded directly into the text representation of an IPv6 address using the familiar dotted quad notation, e.g., "2001:db8::192.0.2.10" (see section 2.4 of <a href="#RFC6052">[RFC6052]</a>), instead of being converted to hexadecimal notation. This makes it easier to write IPV6 ACLs and similar that match translated endpoints in the IPv4 Internet. Use of a /96 prefix length is therefore recommended.  </p>
+<h1 id="rfc.section.3.5"><a href="#rfc.section.3.5">3.5.</a> Routing Considerations</h1>
+<p id="rfc.section.3.5.p.1">The IPv4 service address prefix(es) and the IPv6 translation prefix may be routed to the SIIT gateway(s) as any other IPv4 or IPv6 route in the provider's network.  </p>
+<p id="rfc.section.3.5.p.2">If more than one SIIT gateway is being deployed, it is recommended that a dynamic routing protocol (such as BGP, IS-IS, or OSPF) is being used to advertise the routes within the provider's network. This will ensure that the traffic that is to be translated will reach the closest translator, reducing or eliminating traffic trampolines, as well as provide high availability - if one translator fails, the dynamic routing protocol will automatically redirect the traffic to the next-best translator.  </p>
+<h1 id="rfc.section.3.6"><a href="#rfc.section.3.6">3.6.</a> Location of the Translators</h1>
+<p id="rfc.section.3.6.p.1">It is optimal to place the translators as close as possible to the direct path between the servers and the end users. If the closest translator is located a long way from the optimal path, all packets in both directions must make a detour. This would increase the RTT between the server and the end user by 4x the extra latency, as well as cause unneccesary load on the network links on the detour path.  </p>
+<p id="rfc.section.3.6.p.2">The ideal location of the SIIT gateways would be a logical function within the IP routers would handle the traffic anyway (if it wasn't to be translated). This way, the translation service would not need separate networks ports to be assigned (which might become saturated and impacted the service), nor would it need extra rack space or energy. Some good choices of the location could be within a data centre's access routers, or inside the provider's border routers. If every single application in the data centre or the provider's network eventually get single-stacked, there would no need to run IPv4 on the inside of the translators - thus allowing the operator to reclaim IPv4 addresses from the network infrastructure that may instead be used for translated services.  </p>
+<h1 id="rfc.section.3.7"><a href="#rfc.section.3.7">3.7.</a> Migration from Dual Stack</h1>
+<p id="rfc.section.3.7.p.1">While this document discusses the use of IPv6-only servers and applications, there is no technical requirement that the servers are IPv4 free. SIIT works equally well for a dual stacked servers, which makes migration easy - after setting up the translation function, the DNS A record for the service is updated to point to the IPv4 address that will be translated to IPv6, the previously used IPv4 service address may continue to be assigned to the server. This makes roll-back to dual stack easy, as it is only a matter of changing the DNS record back to what it was before.  </p>
+<p id="rfc.section.3.7.p.2">For high-volume services migrating to SIIT from dual stack, DNS Round Robin may be used to gradually migrate the service's IPv4 traffic from its native IPv4 address(es) to the translated one(s).  </p>
+<h1 id="rfc.section.3.8"><a href="#rfc.section.3.8">3.8.</a> Packet Size and Fragmentation Considerations</h1>
+<p id="rfc.section.3.8.p.1">There are two key differences between IPv4 and IPv6 relating to packet sizes that one should consider when deploying SIIT. They result in a few problematic corner cases, which can be dealt with in a few different ways.  </p>
+<p id="rfc.section.3.8.p.2">The operator may find that relying on fragmentation in the IPv6 domain is undesired or even operationally impossible <a href="#I-D.taylor-v6ops-fragdrop">[I-D.taylor-v6ops-fragdrop]</a>.  For this reason, the recommendations in this section seeks to minimise the use of IPv6 fragmentation.  </p>
+<p id="rfc.section.3.8.p.3">Unless otherwise stated, this section assumes that the MTU in both the IPv4 and IPv6 domains is 1500 bytes.  </p>
+<h1 id="rfc.section.3.8.1"><a href="#rfc.section.3.8.1">3.8.1.</a> IP Header Size Difference</h1>
+<p id="rfc.section.3.8.1.p.1">The IPv6 header is up to 20 bytes larger than the IPv4 header. This means that a full-size 1500 bytes large IPv4 packet cannot be translated to IPv6 without being fragmented, otherwise it would likely have resulted in a 1520 bytes large IPv6 packet.  </p>
+<p id="rfc.section.3.8.1.p.2">If the transport protocol used is TCP, this is generally not a problem, as the IPv6 server will advertise a TCP MSS of 1440 bytes.  This causes the client to never send larger packets than what can be translated to a single full-size IPv6 packet, eliminating any need for fragmentation.  </p>
+<p id="rfc.section.3.8.1.p.3">For other transport protocols, full-size IPv4 packets with the DF flag cleared will need to be fragmented by the SIIT gateway. The only way to avoid this is to increase the Path MTU between the SIIT gateway and the servers to 1520 bytes. Note that the servers' MTU SHOULD NOT be increased accordingly, as that would cause them to undergo Path MTU Discovery for most native IPv6 destinations.  However, the servers would need to be able to accept and process incoming packets larger than their own MTU. However, if the server's IPv6 implementation allows the MTU to be set differently for specific destinations, it MAY be increased to 1520 for destinations within the translation prefix specifically.  </p>
+<h1 id="rfc.section.3.8.2"><a href="#rfc.section.3.8.2">3.8.2.</a> Minimum Path MTU Difference</h1>
+<p id="rfc.section.3.8.2.p.1">The minimum allowed MTU in IPv6 is 1280 bytes, while no such restriction exists in IPv4. This means that an 1280 byte large IPv6 packet sent to an IPv4 client may need to be fragmented by a router in the IPv4 network.  </p>
+<p id="rfc.section.3.8.2.p.2">By default, an SIIT gateway will set the DF flag when translating from IPv6 to IPv4, resulting in a situation where the IPv6 server may receive an ICMPv6 Packet Too Big where the indicated MTU value is less than the IPv6 minimum of 1280. In this situation, the IPv6 server has two choices on how to proceed, according to the last paragraph of section 5 of <a href="#RFC2460">[RFC2460]</a>: <a href="#feat_smallv4pmtu">Section 4.5</a>.  </p>
+
+<ul>
+  <li>It may reduce its Path MTU value to the value indicated in the Packet Too Big. This causes no problems for the SIIT function.</li>
+  <li>It may reduce its Path MTU value to 1280, and also include a Fragmentation header in each subsequent packet sent to that destination. This instructs the SIIT gateway to clear the DF flag in the resulting IPv4 packet, and also provides the Identification value.</li>
+</ul>
+
+<p> If the use of the IPv6 Fragmentation header is problematic, and the operator has IPv6 servers that implement the second option above, the operator should enable a feature on the SIIT gateways which ensures that the resulting MTU field is always set to 1280 or higher when translating ICMPv4 Need to Fragment into ICMPv6 Packet Too Big, and that when translating IPv6 packets smaller or equal to 1280 bytes the resulting IPv4 packets will have the DF flag cleared and an Identification value generated, cf. </p>
+<h1 id="rfc.section.3.8.3"><a href="#rfc.section.3.8.3">3.8.3.</a> "Atomic Fragments"</h1>
+<p id="rfc.section.3.8.3.p.1">By default, an SIIT gateway will include a Fragmentation header in the resulting IPv6 packet when translating from an IPv4 packet with the DF flag cleared, cf. section 4 of <a href="#RFC6145">[RFC6145]</a>.  </p>
+<p id="rfc.section.3.8.3.p.2">This happens even though the resulting IPv6 packets aren't actually fragmented into several pieces, resulting in "Atomic Fragments" <a href="#RFC6946">[RFC6946]</a>. This is generally not useful in a data centre environment, and it is therefore recommended that this behaviour is disabled at the SIIT gateways. See <a href="#feat_noatomicfrags">Section 4.4</a>.  </p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> Implementation Requirements</h1>
+<p><a href="#RFC6145">[RFC6145]</a> and <a href="#RFC6052">[RFC6052]</a> specifies the basic SIIT gateway. However, they specify some optional features that are very desirable when deploying SIIT in a data centre environment.  This section list which additional features are required for an SIIT gateway optimised for a data centre environment.  </p>
+<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> Basic Requirements</h1>
+<p id="rfc.section.4.1.p.1">The implementation MUST implement <a href="#RFC6145">[RFC6145]</a> with the algorithmic address mapping defined in <a href="#RFC6052">[RFC6052]</a>. It MUST NOT create any per-session state under any circumstance.  </p>
+<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> Static Address Mapping Function</h1>
+<p id="rfc.section.4.2.p.1">The implementation MUST allow the operator to configure an arbitrary number of static mappings which override the default <a href="#RFC6052">[RFC6052]</a> algorithm. It SHOULD be possible to specify a single bi-directional mapping that will be used in both the IPv4=&gt;IPv6 and IPv6=&gt;IPv4 directions, but it MAY additionally (or alternatively) support unidirectional mappings.  </p>
+<p id="rfc.section.4.2.p.2">An example of such a bidirectional static mapping would be: <a href="#RFC6052">[RFC6052]</a> mapping MUST be used.  </p>
+
+<ul>
+  <li>198.51.0.1 &lt;=&gt; 2001:db8:12:34::1</li>
+</ul>
+
+<p> To accomplish the same using unidirectional mappings, the following two mappings must instead be configured: </p>
+
+<ul>
+  <li>198.51.0.1 =&gt; 2001:db8:12:34::1</li>
+  <li>2001:db8:12:34::1 =&gt; 198.51.0.1</li>
+</ul>
+
+<p> In both cases, if the gateway receives an IPv6 packet that has 2001:db8:12:34::c in either of the source and destination fields of the IP header, it MUST rewrite this field to 198.51.0.1 when translating to IPv4. Similarly, if the gateway receives an IPv4 packet that has 198.51.0.1 as the either the source or destination fields of the IP header, it MUST rewrite this field to 2001:db8:12:34::c. For all IPv4 or IPv6 source or destination field values for which there is no static mapping, </p>
+<h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> <a href="#feat_incrv6pmtu" id="feat_incrv6pmtu">Support for Increasing the IPv6 Path MTU</a></h1>
+<p id="rfc.section.4.3.p.1">In order to prevent unnecessary use of the IPv6 Fragmentation header, the implementation MUST support increasing the IPv6 Path MTU from its default value of 1280, as described in section 4 of <a href="#RFC6145">[RFC6145]</a>.  </p>
+<h1 id="rfc.section.4.4"><a href="#rfc.section.4.4">4.4.</a> <a href="#feat_noatomicfrags" id="feat_noatomicfrags">Support for Disabling "Atomic Fragments"</a></h1>
+<p id="rfc.section.4.4.p.1">The translator MUST provide a configuration function that allows the translator not to include the Fragment Header for non-fragmented IPv6 packets, cf. section 4 of <a href="#RFC6145">[RFC6145]</a>.  </p>
+<h1 id="rfc.section.4.5"><a href="#rfc.section.4.5">4.5.</a> <a href="#feat_smallv4pmtu" id="feat_smallv4pmtu">Feature for Handling IPv4 Path MTUs Lower than 1260</a></h1>
+<p id="rfc.section.4.5.p.1">In order to prevent unnecessary fragments, the implementation MUST support a feature which, if enabled by the operator, changes the translator's default behaviour accordingly: <a href="#RFC6145">[RFC6145]</a>. The default state of the feature SHOULD be disabled.  </p>
+
+<ul>
+  <li>When translating an ICMPv4 Need To Fragment packet indicating a Path MTU smaller than or equal to 1260, the MTU field in the resulting ICMPv6 Packet Too Big is set to 1280.</li>
+  <li>When translating an IPv6 packet that is smaller or equal to 1280 bytes, the DF flag in the resulting IPv4 packet is cleared, and an Identification value is generated. The translator MUST NOT generate any state as a result of this.</li>
+</ul>
+
+<p> This is a modified version of the second approach described in section 6 of </p>
+<p id="rfc.section.4.5.p.2">For the definition of an "Atomic Fragment", see <a href="#RFC6946">[RFC6946]</a>.  </p>
+<h1 id="rfc.section.4.6"><a href="#rfc.section.4.6">4.6.</a> Loop Prevention Mechanism</h1>
+<p id="rfc.section.4.6.p.1">As noted in <a href="#sec_loops">Section 8.2</a>, there is a potential for packets looping through the SIIT function if it receives an IPv4 packet for which there is no static mapping. It is therefore RECOMMENDED that the implementation has a mechanism that automatically prevents this behaviour. One way this could be accomplished would be to discard any IPv4 packets that would be translated into an IPv6 packet that would be routed straight back into the SIIT function.  </p>
+<p id="rfc.section.4.6.p.2">If such a mechanism isn't provided, the implementation MUST provide a way to manually filter or null-route the destination addresses that would otherwise cause loops.  </p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#Acknowledgements" id="Acknowledgements">Acknowledgements</a></h1>
+<p id="rfc.section.5.p.1">The author would like to thank the following individuals for their contributions, suggestions, corrections, and criticisms: Cameron Byrne, Dagfinn Ilmari Mannsaaker, Lars Olafsen, [YOUR NAME GOES HERE].  </p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> Requirements Language</h1>
+<p id="rfc.section.6.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.  </p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
+<p id="rfc.section.7.p.1">This draft makes no request of the IANA.  </p>
+<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#Security" id="Security">Security Considerations</a></h1>
+<h1 id="rfc.section.8.1"><a href="#rfc.section.8.1">8.1.</a> Mistaking the Translation Prefix for a Trusted Network</h1>
+<p id="rfc.section.8.1.p.1">If a Network-Specific Prefix from the provider's own address space is chosen for the translation prefix, as is recommended, care must be taken if the translation service is used in front of services that have application-level ACLs that distinguish between the operator's own networks and the Internet at large, as the translated IPv4 end users on the Internet will appear to come from within the provider's own IPv6 address space. It is therefore important that the translation prefix is treated the same as the Internet at large, rather than as a trusted network.  </p>
+<h1 id="rfc.section.8.2"><a href="#rfc.section.8.2">8.2.</a> <a href="#sec_loops" id="sec_loops">Packets Looping Through the SIIT Function</a></h1>
+<p id="rfc.section.8.2.p.1">The SIIT gateway receives an IPv4 packet destined to an address for which there is no static mapping, its destination address will be rewritten according to <a href="#RFC6052">[RFC6052]</a>, making the resulting IPv6 packet have a destination address within the translation prefix, which is likely routed to back to the SIIT function. This will cause the packet to loop until its Time To Live / Hop Limit reaches zero, potentially creating a Denial Of Service vulnerability.  </p>
+<p id="rfc.section.8.2.p.2">To avoid this, it should be ensured that packets sent to IPv4 destinations addresses for which there are no static mappings, or whose resulting IPv6 address does not have a more-specific route to the IPv6 network, are immediately discarded.  </p>
+<h1 id="rfc.references"><a href="#rfc.references">9.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">9.1.</a> Normative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="RFC2119">[RFC2119]</b>
+      </td>
+      <td class="top"><a href="mailto:sob@harvard.edu" title="Harvard University">Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, March 1997.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6052">[RFC6052]</b>
+      </td>
+      <td class="top"><a>Bao, C.</a>, <a>Huitema, C.</a>, <a>Bagnulo, M.</a>, <a>Boucadair, M.</a> and <a>X. Li</a>, "<a href="http://tools.ietf.org/html/rfc6052">IPv6 Addressing of IPv4/IPv6 Translators</a>", RFC 6052, October 2010.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6145">[RFC6145]</b>
+      </td>
+      <td class="top"><a>Li, X.</a>, <a>Bao, C.</a> and <a>F. Baker</a>, "<a href="http://tools.ietf.org/html/rfc6145">IP/ICMP Translation Algorithm</a>", RFC 6145, April 2011.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">9.2.</a> Informative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="I-D.taylor-v6ops-fragdrop">[I-D.taylor-v6ops-fragdrop]</b>
+      </td>
+      <td class="top"><a>Jaeggli, J.</a>, <a>Colitti, L.</a>, <a>Kumari, W.</a>, <a>Vyncke, E.</a>, <a>Kaeo, M.</a> and <a>T. Taylor</a>, "<a href="http://tools.ietf.org/html/draft-taylor-v6ops-fragdrop-02">Why Operators Filter Fragments and What It Implies</a>", Internet-Draft draft-taylor-v6ops-fragdrop-02, December 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC0959">[RFC0959]</b>
+      </td>
+      <td class="top"><a title="Information Sciences Institute (ISI)">Postel, J.</a> and <a>J. Reynolds</a>, "<a href="http://tools.ietf.org/html/rfc959">File Transfer Protocol</a>", STD 9, RFC 959, October 1985.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC2373">[RFC2373]</b>
+      </td>
+      <td class="top"><a href="mailto:hinden@iprg.nokia.com" title="Nokia">Hinden, R.</a> and <a href="mailto:deering@cisco.com" title="Cisco Systems, Inc.">S. Deering</a>, "<a href="http://tools.ietf.org/html/rfc2373">IP Version 6 Addressing Architecture</a>", RFC 2373, July 1998.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC2460">[RFC2460]</b>
+      </td>
+      <td class="top"><a href="mailto:deering@cisco.com" title="Cisco Systems, Inc.">Deering, S.</a> and <a href="mailto:hinden@iprg.nokia.com" title="Nokia">R. Hinden</a>, "<a href="http://tools.ietf.org/html/rfc2460">Internet Protocol, Version 6 (IPv6) Specification</a>", RFC 2460, December 1998.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC2616">[RFC2616]</b>
+      </td>
+      <td class="top"><a href="mailto:fielding@ics.uci.edu" title="Department of Information and Computer Science">Fielding, R.</a>, <a href="mailto:jg@w3.org" title="World Wide Web Consortium">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com" title="Compaq Computer Corporation">Mogul, J.</a>, <a href="mailto:frystyk@w3.org" title="World Wide Web Consortium">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com" title="Xerox Corporation">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com" title="Microsoft Corporation">Leach, P.</a> and <a href="mailto:timbl@w3.org" title="World Wide Web Consortium">T. Berners-Lee</a>, "<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>", RFC 2616, June 1999.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC2663">[RFC2663]</b>
+      </td>
+      <td class="top"><a href="mailto:srisuresh@lucent.com" title="Lucent Technologies">Srisuresh, P.</a> and <a href="mailto:holdrege@lucent.com" title="Lucent Technologiesv">M. Holdrege</a>, "<a href="http://tools.ietf.org/html/rfc2663">IP Network Address Translator (NAT) Terminology and Considerations</a>", RFC 2663, August 1999.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC2991">[RFC2991]</b>
+      </td>
+      <td class="top"><a>Thaler, D.</a> and <a>C. Hopps</a>, "<a href="http://tools.ietf.org/html/rfc2991">Multipath Issues in Unicast and Multicast Next-Hop Selection</a>", RFC 2991, November 2000.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC2993">[RFC2993]</b>
+      </td>
+      <td class="top"><a>Hain, T.</a>, "<a href="http://tools.ietf.org/html/rfc2993">Architectural Implications of NAT</a>", RFC 2993, November 2000.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC3022">[RFC3022]</b>
+      </td>
+      <td class="top"><a>Srisuresh, P.</a> and <a>K. Egevang</a>, "<a href="http://tools.ietf.org/html/rfc3022">Traditional IP Network Address Translator (Traditional NAT)</a>", RFC 3022, January 2001.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC3235">[RFC3235]</b>
+      </td>
+      <td class="top"><a>Senie, D.</a>, "<a href="http://tools.ietf.org/html/rfc3235">Network Address Translator (NAT)-Friendly Application Design Guidelines</a>", RFC 3235, January 2002.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC4213">[RFC4213]</b>
+      </td>
+      <td class="top"><a>Nordmark, E.</a> and <a>R. Gilligan</a>, "<a href="http://tools.ietf.org/html/rfc4213">Basic Transition Mechanisms for IPv6 Hosts and Routers</a>", RFC 4213, October 2005.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6146">[RFC6146]</b>
+      </td>
+      <td class="top"><a>Bagnulo, M.</a>, <a>Matthews, P.</a> and <a>I. van Beijnum</a>, "<a href="http://tools.ietf.org/html/rfc6146">Stateful NAT64: Network Address and Protocol Translation from IPv6 Clients to IPv4 Servers</a>", RFC 6146, April 2011.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6147">[RFC6147]</b>
+      </td>
+      <td class="top"><a>Bagnulo, M.</a>, <a>Sullivan, A.</a>, <a>Matthews, P.</a> and <a>I. van Beijnum</a>, "<a href="http://tools.ietf.org/html/rfc6147">DNS64: DNS Extensions for Network Address Translation from IPv6 Clients to IPv4 Servers</a>", RFC 6147, April 2011.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6946">[RFC6946]</b>
+      </td>
+      <td class="top"><a>Gont, F.</a>, "<a href="http://tools.ietf.org/html/rfc6946">Processing of IPv6 "Atomic" Fragments</a>", RFC 6946, May 2013.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> Complete SIIT topology example</h1>
+<div id="rfc.figure.2"/>
+<div id="fig_topology"/>
+<p id="rfc.section.A.p.1">This figure shows a more complete SIITA topology, in order to better demonstrate the beneficial properties it has. In particular, it tries to highlight the following: </p>
+
+<ul>
+  <li>Stateless operation: Any number of SIIT gateways may be deployed side-by side, or indeed anywhere in the IPv6 network, as any standard routing mechanism may be used to direct traffic to them (shown here with BGP on the IPv4 side and ECMP on the IPv6 side). This in turn leads to high availability, should one of the SIIT gateways fail or become unavailable, those standard routing mechanisms will ensure that traffic is automatically redirect one of the remaining SIIT gateways.</li>
+  <li>IPv4 address conservation: Even though the to customers in the example have several hundred servers, most of them are not used for externally available services, and thus do not require an IPv4 address. The network between the servers and the SIIT gateways require no IPv4 addresses, either. Furthermore, the IPv4 addresses that are used do not have to be assigned to customers in the form of aggregated blocks or prefixes; which makes it easy to achieve 100% effective utilisation of the IPv4 service address pools.</li>
+  <li>Application support: The translation-friendly applications HTTP and SMTP will work through SIIT without requiring any special customisation. Furthermore, translation-unfriendly applications such as FTP will also work if an host agent in present, cf.  [I-D.anderson-sunset4-siit-2xlat].</li>
+  <li>Native IPv6 as the foundation: Every server, application, and network component has access to native and untranslated IPv6 connectivity to each other and to the Internet. Traffic through the SIIT gateways will diminish over time as IPv6 is deployed throughout the Internet. Eventually they may be shut down entirely, which causes no disruption to the application stacks' ability to deliver their services over native IPv6.</li>
+</ul>
+
+<p> </p>
+
+<p>Example data centre topology using SIIT</p>
+<pre>
+                /---------------------------------\ /---------------\
+                |          IPv4 Internet          | | IPv6 Internet |
+                \-+-----------------------------+-/ \--------+------/
+                  |                             |            |
+                  | &lt;----------[BGP]----------&gt; |            |
+                  |                             |            |
++---------&lt;198.51.0.0/24&gt;----------+ +--&lt;198.51.0.0/24&gt;---+  |
+|                                  | |                    |  |
+|          SIIT Gateway 1          | |   SIIT Gateway 2   |  |
+|          ==============          | |   ==============   |  |
+|                                  | |                    |  |
+|       Translation prefix:        | |                    |  |
+|         2001:db8:46::/96         | |                    |  |
+|                                  | |                    |  |
+|     Static address mappings:     | |  Exactly the same  |  |
+| 198.51.0.1 &lt;=&gt; 2001:db8:12:34::1 | |  configuration as  |  |
+| 198.51.0.2 &lt;=&gt; 2001:db8:12:34::3 | |   SIIT Gateway 1   |  |
+| 198.51.0.3 &lt;=&gt; 2001:db8:fe:dc::1 | |                    |  |
+| 198.51.0.4 &lt;=&gt; 2001:db8:12:34::4 | |                    |  |
+| [...]                            | |                    |  |
+|                                  | |                    |  |
++--------&lt;2001:db8:46::/96&gt;--------+ +-&lt;2001:db8:46::/96&gt;-+  |
+                  |                             |            |
+                  | &lt;---------[ECMP]----------&gt; |            |
+                  |                             |            |
+/-----------------+-----------------------------+-\          |
+|            IPv6 data centre network             +----------+
+\-+-----------------------------------+-----------/
+  |                                   |
+  | Customer A's server LAN           | Customer B's server LAN
+  | 2001:db8:12:34::/64               | 2001:db8:fe:dc::/64
+  |                                   |
+  |                                   |
+  +-- www      ::1 (IPv6+SIIT)        +-- www ::1 (IPv6+SIIT)
+  |                                   |
+  +-- ftp      ::2 (IPv6)             +-- file01 ::f:01 (IPv6)
+  |            ::3 (SIIT/Host Agent)  |   [...]
+  |                                   +-- file99 ::f:99 (IPv6)
+  +-- mta      ::4 (IPv6+SIIT)
+  |
+  +-- app01 ::a:01 (IPv6)
+  |   [...]
+  +-  app99 ::a:99 (IPv6)
+  |
+  +-- db01  ::d:01 (IPv6)
+  |   [..]
+  +-- db99  ::d:99 (IPv6)
+        </pre>
+<p class="figure">Figure 2</p>
+<h1 id="rfc.authors">
+  <a href="#rfc.authors">Author's Address</a>
+</h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Tore Anderson</span> 
+	  <span class="n hidden">
+		<span class="family-name">Anderson</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Redpill Linpro</span>
+	<span class="adr">
+	  <span>Vitaminveien 1A</span>
+
+	  <span class="vcardline">
+		<span class="locality">NO-0485 Oslo</span>,  
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline">NORWAY</span>
+	</span>
+	<span class="vcardline">Phone: +47 959 31 212</span>
+
+<span class="vcardline">EMail: <a href="mailto:tore@redpill-linpro.com">tore@redpill-linpro.com</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>
