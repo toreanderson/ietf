@@ -497,10 +497,10 @@ app.domain.tld.    IN A     198.51.0.1
         that a dynamic routing protocol (such as BGP, IS-IS, or OSPF) is being
         used to advertise the routes within the provider's network. This will
         ensure that the traffic that is to be translated will reach the
-        closest translator, reducing or eliminating traffic trampolines, as
-        well as provide high availability - if one translator fails, the
-        dynamic routing protocol will automatically redirect the traffic to
-        the next-best translator.
+        closest translator, reducing or eliminating sub-optimal traffic
+        patterns, as well as provide high availability - if one translator
+        fails, the dynamic routing protocol will automatically redirect the
+        traffic to the next-best translator.
         </t>
       </section>
       <section title="Location of the Translators">
