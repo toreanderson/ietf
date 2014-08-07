@@ -41,6 +41,10 @@
       applications that are incompatible with SIIT and/or Network Address
       Translation in general to operate correctly in an SIIT-DC environment.
       </t>
+      <t>
+      The reader is expected to be familiar with the general SIIT-DC described
+      in <xref target="I-D.anderson-siit-dc"/>.
+      </t>
     </abstract>
   </front>
 
@@ -103,20 +107,26 @@
       <t>
       The following figure shows how an application (that is presumably
       incompatible with SIIT-DC) is being made available to the IPv4 Internet
-      on the IPv4 address 198.51.0.1. The application will be able to know
+      on the IPv4 address 198.51.0.2. The application will be able to know
       that this is its local address and thus be able to provide correct
       references to it in application payload.
       </t>
       <t>
       The figure also shows how the same application is available over IPv6 on
-      the address 2001:db8:12:34::1. This is included to illustrate how native
+      the address 2001:db8:12:34::2. This is included to illustrate how native
       IPv6 connectivity is not impacted by the SIIT host agent, and also to
       illustrate how the address assigned to the SIIT host agent
-      (2001:db8:12:34::2) is separate from the primary IPv6 address of the
+      (2001:db8:12:34::3) is separate from the primary IPv6 address of the
       server. It is however important to note that the application in question
       does not have to be dual-stack capable at all. IPv4-only applications
       would also be able to operate behind a SIIT host agent in the exact same
       manner.
+      </t>
+      <t>
+      Note that the figure below could be considered a more detailed view of
+      Customer A's FTP server from the example topology figure in <xref
+      target="I-D.anderson-siit-dc">appendix A</xref>. Both figures
+      intentionally use the exact same example IP addresses.
       </t>
       <t>
       <figure anchor="fig_architecture" align="center">
@@ -141,7 +151,7 @@
       |        |         2001:db8:46::/96         |
       |        |                                  |
       |        |     Static address mapping:      |
-      |        | 198.51.0.1 <=> 2001:db8:12:34::2 |
+      |        | 198.51.0.2 <=> 2001:db8:12:34::3 |
       |        |                                  |
       |        +--------------<2001:db8:46::/96>--+
       |                               |
@@ -149,12 +159,12 @@
      (the IPv6-only data centre network)
       |                               |
       |                               |
-+--<2001:db8:12:34::1>-------<2001:db8:12:34::2>----+
++--<2001:db8:12:34::2>-------<2001:db8:12:34::3>----+
 |     |                               |             |
 |     |          IPv6-only server     |             |
 |     |          ================     |             |
 |     |                               |             |
-|     |        +-------------<2001:db8:12:34::2>--+ |
+|     |        +-------------<2001:db8:12:34::3>--+ |
 |     |        |                                  | |
 |     |        |         SIIT Host Agent          | |
 |     |        |         ===============          | |
@@ -163,12 +173,12 @@
 |     |        |         2001:db8:46::/96         | |
 |     |        |                                  | |
 |     |        |     Static address mapping:      | |
-|     |        | 198.51.0.1 <=> 2001:db8:12:34::2 | |
+|     |        | 198.51.0.2 <=> 2001:db8:12:34::3 | |
 |     |        |                                  | |
-|     |        +---------------------<198.51.0.1>-+ |
+|     |        +---------------------<198.51.0.2>-+ |
 |     |                                   |         |
 |     |                                   |         |
-| +-[2001:db8:12:34::1]--------------[198.51.0.1]-+ |
+| +-[2001:db8:12:34::2]--------------[198.51.0.2]-+ |
 | |      AF_INET6                      AF_INET    | |
 | |                                               | |
 | |           Dual-stacked application            | |
