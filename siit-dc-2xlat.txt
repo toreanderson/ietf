@@ -19,7 +19,7 @@ Abstract
    general to operate correctly in an SIIT-DC environment.
 
    The reader is expected to be familiar with the general SIIT-DC
-   described in [I-D.anderson-siit-dc].
+   architecture described in [I-D.anderson-siit-dc].
 
 Status of This Memo
 

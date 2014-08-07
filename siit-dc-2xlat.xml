@@ -42,8 +42,8 @@
       Translation in general to operate correctly in an SIIT-DC environment.
       </t>
       <t>
-      The reader is expected to be familiar with the general SIIT-DC described
-      in <xref target="I-D.anderson-siit-dc"/>.
+      The reader is expected to be familiar with the general SIIT-DC
+      architecture described in <xref target="I-D.anderson-siit-dc"/>.
       </t>
     </abstract>
   </front>
