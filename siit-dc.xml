@@ -29,7 +29,7 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="std" docName="draft-anderson-sunset4-siit-dc-00" ipr="trust200902">
+<rfc category="std" docName="draft-anderson-v6ops-siit-dc-00" ipr="trust200902">
 
   <front>
     <title abbrev="SIIT-DC">SIIT-DC: Stateless IP/ICMP Translation in IPv6
@@ -48,7 +48,7 @@
     </author>
     <date year="2014" />
     <area>General</area>
-    <workgroup>Sunsetting IPv4</workgroup>
+    <workgroup>IPv6 Operations</workgroup>
     <abstract>
       <t>
       This document describes the use of Stateless IP/ICMP Translation (SIIT)
@@ -412,7 +412,7 @@ app.domain.tld.    IN A     198.51.0.1
         introducing a host agent that reverses the translation performed by
         the SIIT gateway before passing the packets to the application
         software, such applications will be able to work correctly in an SIIT
-        environment as well. See [I-D.anderson-sunset4-siit-2xlat] for a
+        environment as well. See [I-D.anderson-v6ops-siit-2xlat] for a
         description of this approach.
         </t>
       </section>
@@ -420,7 +420,7 @@ app.domain.tld.    IN A     198.51.0.1
         <t>
         SIIT requires that the application software supports IPv6 networking,
         and that it has no dependency on IPv4 networking. If this is not the
-        case, the approach described in [I-D.anderson-sunset4-siit-2xlat] may
+        case, the approach described in [I-D.anderson-v6ops-siit-2xlat] may
         be used, as it provides the application with seemingly native IPv4
         connectivity.
         </t>
@@ -447,7 +447,7 @@ app.domain.tld.    IN A     198.51.0.1
         </t>
         <t>
         An alternative approach to the above would be to make use of an SIIT
-        host agent as described in [I-D.anderson-sunset4-siit-2xlat]. This
+        host agent as described in [I-D.anderson-v6ops-siit-2xlat]. This
         provides the application with seemingly native IPv4 connectivity,
         which it may use for both inbound and outbond communication without
         requiring the application to select a specific source address for its
@@ -852,7 +852,7 @@ app.domain.tld.    IN A     198.51.0.1
         and SMTP will work through SIIT without requiring any special
         customisation. Furthermore, translation-unfriendly applications such
         as FTP will also work if an host agent in present, cf.
-        [I-D.anderson-sunset4-siit-2xlat].</t>
+        [I-D.anderson-v6ops-siit-2xlat].</t>
         <t>Native IPv6 as the foundation: Every server, application, and
         network component has access to native and untranslated IPv6
         connectivity to each other and to the Internet. Traffic through the
@@ -1001,7 +1001,7 @@ app.domain.tld.    IN A     198.51.0.1
         application protocols may work without host modifications through the
         use of Application Layer gateway support in the NAPT44 device (e.g.,
         <xref target="RFC0959">FTP</xref>), or in the SIIT-DC architecture
-        when a host agent is being used [I-D.draft-anderson-sunset4-2xlat].
+        when a host agent is being used [I-D.draft-anderson-v6ops-2xlat].
         Other application protocols might not work with NAPT44 at all, but
         will work in the SIIT-DC if a host agent is being used (e.g., <xref
         target="RFC4217">FTP/TLS</xref>).

@@ -2,14 +2,14 @@
 
 
 
-Sunsetting IPv4                                              T. Anderson
+IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                         August 07, 2014
-Expires: February 08, 2015
+Intended status: Standards Track                         August 31, 2014
+Expires: March 04, 2015
 
 
                      SIIT-DC: Dual Translation Mode
-                draft-anderson-sunset4-siit-dc-2xlat-00
+                 draft-anderson-v6ops-siit-dc-2xlat-00
 
 Abstract
 
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 08, 2015.
+   This Internet-Draft will expire on March 04, 2015.
 
 Copyright Notice
 
@@ -72,14 +72,14 @@ Table of Contents
    Author's Address
 
 
-Sunsetting IPv4                                              T. Anderson
+IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                         August 07, 2014
-Expires: February 08, 2015
+Intended status: Standards Track                         August 31, 2014
+Expires: March 04, 2015
 
 
                      SIIT-DC: Dual Translation Mode
-                draft-anderson-sunset4-siit-dc-2xlat-00
+                 draft-anderson-v6ops-siit-dc-2xlat-00
 
 Abstract
 
@@ -106,7 +106,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 08, 2015.
+   This Internet-Draft will expire on March 04, 2015.
 
 Copyright Notice
 

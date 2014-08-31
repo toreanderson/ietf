@@ -2,14 +2,14 @@
 
 
 
-Sunsetting IPv4                                              T. Anderson
+IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                         August 07, 2014
-Expires: February 08, 2015
+Intended status: Standards Track                         August 31, 2014
+Expires: March 04, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation in IPv6 Data Centre Environments
-                   draft-anderson-sunset4-siit-dc-00
+                    draft-anderson-v6ops-siit-dc-00
 
 Abstract
 
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 08, 2015.
+   This Internet-Draft will expire on March 04, 2015.
 
 Copyright Notice
 
@@ -99,14 +99,14 @@ Table of Contents
    Author's Address
 
 
-Sunsetting IPv4                                              T. Anderson
+IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                         August 07, 2014
-Expires: February 08, 2015
+Intended status: Standards Track                         August 31, 2014
+Expires: March 04, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation in IPv6 Data Centre Environments
-                   draft-anderson-sunset4-siit-dc-00
+                    draft-anderson-v6ops-siit-dc-00
 
 Abstract
 
@@ -131,7 +131,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 08, 2015.
+   This Internet-Draft will expire on March 04, 2015.
 
 Copyright Notice
 
@@ -463,14 +463,14 @@ Copyright Notice
    [RFC0959].  However, by introducing a host agent that reverses the
    translation performed by the SIIT gateway before passing the packets
    to the application software, such applications will be able to work
-   correctly in an SIIT environment as well.  See [I-D.anderson-sunset4
-   -siit-2xlat] for a description of this approach.
+   correctly in an SIIT environment as well.  See [I-D.anderson-v6ops-
+   siit-2xlat] for a description of this approach.
 
 3.2.  Application Support for IPv6
 
    SIIT requires that the application software supports IPv6 networking,
    and that it has no dependency on IPv4 networking.  If this is not the
-   case, the approach described in [I-D.anderson-sunset4-siit-2xlat] may
+   case, the approach described in [I-D.anderson-v6ops-siit-2xlat] may
    be used, as it provides the application with seemingly native IPv4
    connectivity.
 
@@ -493,7 +493,7 @@ Copyright Notice
    packet.
 
    An alternative approach to the above would be to make use of an SIIT
-   host agent as described in [I-D.anderson-sunset4-siit-2xlat].  This
+   host agent as described in [I-D.anderson-v6ops-siit-2xlat].  This
    provides the application with seemingly native IPv4 connectivity,
    which it may use for both inbound and outbond communication without
    requiring the application to select a specific source address for its
@@ -909,7 +909,7 @@ Appendix A.  Complete SIIT topology example
       and SMTP will work through SIIT without requiring any special
       customisation.  Furthermore, translation-unfriendly applications
       such as FTP will also work if an host agent in present, cf.  [I-D
-      .anderson-sunset4-siit-2xlat].
+      .anderson-v6ops-siit-2xlat].
 
    o  Native IPv6 as the foundation: Every server, application, and
       network component has access to native and untranslated IPv6
@@ -1054,7 +1054,7 @@ B.2.  IPv4-only + NAPT44
    application protocols may work without host modifications through the
    use of Application Layer gateway support in the NAPT44 device (e.g.,
    FTP [RFC0959]), or in the SIIT-DC architecture when a host agent is
-   being used [I-D.draft-anderson-sunset4-2xlat].  Other application
+   being used [I-D.draft-anderson-v6ops-2xlat].  Other application
    protocols might not work with NAPT44 at all, but will work in the
    SIIT-DC if a host agent is being used (e.g., FTP/TLS [RFC4217]).
 

@@ -15,7 +15,7 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="std" docName="draft-anderson-sunset4-siit-dc-2xlat-00" ipr="trust200902">
+<rfc category="std" docName="draft-anderson-v6ops-siit-dc-2xlat-00" ipr="trust200902">
 
   <front>
     <title abbrev="SIIT-DC-2XLAT">SIIT-DC: Dual Translation Mode</title>
@@ -33,7 +33,7 @@
     </author>
     <date year="2014" />
     <area>General</area>
-    <workgroup>Sunsetting IPv4</workgroup>
+    <workgroup>IPv6 Operations</workgroup>
     <abstract>
       <t>
       This document describes an extension of the <xref
