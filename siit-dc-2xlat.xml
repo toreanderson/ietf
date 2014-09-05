@@ -161,8 +161,9 @@
       <t>
       Note that the figure below could be considered a more detailed view of
       Customer A's FTP server from the example topology figure in <xref
-      target="I-D.anderson-v6ops-siit-dc">appendix A</xref>. Both figures
-      intentionally use the exact same example IP addresses and prefixes.
+      target="I-D.anderson-v6ops-siit-dc">Appendix A of
+      I-D.anderson-v6ops-siit-dc</xref>. Both figures intentionally use the
+      exact same example IP addresses and prefixes.
       </t>
       <t>
       <figure anchor="fig_architecture" align="center">
