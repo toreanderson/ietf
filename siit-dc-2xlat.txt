@@ -77,7 +77,7 @@ Table of Contents
      9.1.  Address Spoofing  . . . . . . . . . . . . . . . . . . . .   7
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      10.1.  Normative References . . . . . . . . . . . . . . . . . .   7
-     10.2.  Informative References . . . . . . . . . . . . . . . . .   7
+     10.2.  Informative References . . . . . . . . . . . . . . . . .   8
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
@@ -315,8 +315,8 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
    happened without them.
 
    The author would like also to thank the following individuals for
-   their contributions, suggestions, corrections, and criticisms: [YOUR
-   NAME GOES HERE].
+   their contributions, suggestions, corrections, and criticisms: Tobias
+   Brox, [YOUR NAME GOES HERE].
 
 7.  Requirements Language
 
@@ -340,11 +340,10 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 9.  Security Considerations
 
-   This section discussues security considerations specific to the use
-   of a SIIT Host Agent.  See the Security Considerations in I-D
-   .anderson-v6ops-siit-dc [I-D.anderson-v6ops-siit-dc] for additional
-   security considerations applicable to the SIIT-DC architecture in
-   general.
+   This section discusses security considerations specific to the use of
+   a SIIT Host Agent.  See the Security Considerations in I-D.anderson-
+   v6ops-siit-dc [I-D.anderson-v6ops-siit-dc] for additional security
+   considerations applicable to the SIIT-DC architecture in general.
 
 9.1.  Address Spoofing
 
@@ -382,7 +381,8 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
-10.2.  Informative References
+
+
 
 
 
@@ -393,6 +393,8 @@ Anderson                 Expires March 09, 2015                 [Page 7]
 
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
+
+10.2.  Informative References
 
    [RFC2827]  Ferguson, P. and D. Senie, "Network Ingress Filtering:
               Defeating Denial of Service Attacks which employ IP Source
@@ -419,8 +421,6 @@ Author's Address
 
    Phone: +47 959 31 212
    Email: tore@redpill-linpro.com
-
-
 
 
 

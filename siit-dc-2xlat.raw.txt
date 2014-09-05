@@ -327,8 +327,8 @@ Copyright Notice
    happened without them.
 
    The author would like also to thank the following individuals for
-   their contributions, suggestions, corrections, and criticisms: [YOUR
-   NAME GOES HERE].
+   their contributions, suggestions, corrections, and criticisms: Tobias
+   Brox, [YOUR NAME GOES HERE].
 
 7.  Requirements Language
 
@@ -343,11 +343,10 @@ Copyright Notice
 
 9.  Security Considerations
 
-   This section discussues security considerations specific to the use
-   of a SIIT Host Agent.  See the Security Considerations in I-D
-   .anderson-v6ops-siit-dc [I-D.anderson-v6ops-siit-dc] for additional
-   security considerations applicable to the SIIT-DC architecture in
-   general.
+   This section discusses security considerations specific to the use of
+   a SIIT Host Agent.  See the Security Considerations in I-D.anderson-
+   v6ops-siit-dc [I-D.anderson-v6ops-siit-dc] for additional security
+   considerations applicable to the SIIT-DC architecture in general.
 
 9.1.  Address Spoofing
 

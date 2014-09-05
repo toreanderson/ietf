@@ -260,8 +260,8 @@
       </t>
       <t>
       The author would like also to thank the following individuals for their
-      contributions, suggestions, corrections, and criticisms: [YOUR NAME GOES
-      HERE].
+      contributions, suggestions, corrections, and criticisms: Tobias Brox,
+      [YOUR NAME GOES HERE].
       </t>
     </section>
     <section title="Requirements Language">
@@ -279,7 +279,7 @@
     </section>
     <section anchor="Security" title="Security Considerations">
       <t>
-      This section discussues security considerations specific to the use of a
+      This section discusses security considerations specific to the use of a
       SIIT Host Agent. See the <xref
       target="I-D.anderson-v6ops-siit-dc">Security Considerations in
       I-D.anderson-v6ops-siit-dc</xref> for additional security considerations
