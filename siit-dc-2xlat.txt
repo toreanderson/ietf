@@ -73,7 +73,7 @@ Table of Contents
    6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
    7.  Requirements Language . . . . . . . . . . . . . . . . . . . .   6
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
      9.1.  Address Spoofing  . . . . . . . . . . . . . . . . . . . .   7
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      10.1.  Normative References . . . . . . . . . . . . . . . . . .   7
@@ -206,8 +206,9 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
 
    Note that the figure below could be considered a more detailed view
    of Customer A's FTP server from the example topology figure in
-   appendix A [I-D.anderson-v6ops-siit-dc].  Both figures intentionally
-   use the exact same example IP addresses and prefixes.
+   Appendix A of I-D.anderson-v6ops-siit-dc
+   [I-D.anderson-v6ops-siit-dc].  Both figures intentionally use the
+   exact same example IP addresses and prefixes.
 
                        SIIT Host Agent Architecture
 
@@ -217,7 +218,6 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
              |                   |         |                |
              +-<2001:db8::ab:cd>-+         +-<203.0.113.50>-+
                  |                                  |
-                 |                                  |
 
 
 
@@ -226,6 +226,7 @@ Anderson                 Expires March 09, 2015                 [Page 4]
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 
+                 |                                  |
               (the IPv6 internet)         (the IPv4 Internet)
                  |                                  |
                  |                                  |
@@ -273,7 +274,6 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
            | +-----------------------------------------------+ |
            +---------------------------------------------------+
 
-                                 Figure 1
 
 
 
@@ -281,6 +281,8 @@ Anderson                 Expires March 09, 2015                 [Page 5]
 
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
+
+                                 Figure 1
 
 5.  Deployment Considerations
 
@@ -327,8 +329,6 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
    This draft makes no request of the IANA.  The RFC Editor may remove
    this section prior to publication.
 
-9.  Security Considerations
-
 
 
 
@@ -337,6 +337,8 @@ Anderson                 Expires March 09, 2015                 [Page 6]
 
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
+
+9.  Security Considerations
 
    This section discussues security considerations specific to the use
    of a SIIT Host Agent.  See the Security Considerations in I-D
@@ -382,9 +384,7 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 10.2.  Informative References
 
-   [RFC2827]  Ferguson, P. and D. Senie, "Network Ingress Filtering:
-              Defeating Denial of Service Attacks which employ IP Source
-              Address Spoofing", BCP 38, RFC 2827, May 2000.
+
 
 
 
@@ -393,6 +393,10 @@ Anderson                 Expires March 09, 2015                 [Page 7]
 
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
+
+   [RFC2827]  Ferguson, P. and D. Senie, "Network Ingress Filtering:
+              Defeating Denial of Service Attacks which employ IP Source
+              Address Spoofing", BCP 38, RFC 2827, May 2000.
 
    [RFC6052]  Bao, C., Huitema, C., Bagnulo, M., Boucadair, M., and X.
               Li, "IPv6 Addressing of IPv4/IPv6 Translators", RFC 6052,
@@ -415,10 +419,6 @@ Author's Address
 
    Phone: +47 959 31 212
    Email: tore@redpill-linpro.com
-
-
-
-
 
 
 
