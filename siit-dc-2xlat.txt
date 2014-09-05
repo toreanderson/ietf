@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                         August 31, 2014
-Expires: March 04, 2015
+Intended status: Standards Track                      September 05, 2014
+Expires: March 09, 2015
 
 
                      SIIT-DC: Dual Translation Mode
@@ -14,12 +14,12 @@ Expires: March 04, 2015
 Abstract
 
    This document describes an extension of the SIIT-DC
-   [I-D.anderson-siit-dc] architecture, which allows applications that
-   are incompatible with SIIT and/or Network Address Translation in
+   [I-D.anderson-v6ops-siit-dc] architecture, which allows applications
+   that are incompatible with SIIT and/or Network Address Translation in
    general to operate correctly in an SIIT-DC environment.
 
-   The reader is expected to be familiar with the general SIIT-DC
-   architecture described in [I-D.anderson-siit-dc].
+   The reader is expected to be familiar with the SIIT-DC architecture
+   described in [I-D.anderson-v6ops-siit-dc].
 
 Status of This Memo
 
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 04, 2015.
+   This Internet-Draft will expire on March 09, 2015.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Anderson                 Expires March 04, 2015                 [Page 1]
+Anderson                 Expires March 09, 2015                 [Page 1]
 
-Internet-Draft                SIIT-DC-2XLAT                  August 2014
+Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -64,117 +64,168 @@ Internet-Draft                SIIT-DC-2XLAT                  August 2014
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  SIIT Host Agent Specification . . . . . . . . . . . . . . . .   3
-   3.  Architectural Overview  . . . . . . . . . . . . . . . . . . .   3
-   4.  Deployment Considerations . . . . . . . . . . . . . . . . . .   5
-     4.1.  IPv6 Path MTU . . . . . . . . . . . . . . . . . . . . . .   5
-     4.2.  IPv4 MTU  . . . . . . . . . . . . . . . . . . . . . . . .   5
-   5.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
-   6.  Requirements Language . . . . . . . . . . . . . . . . . . . .   5
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
-     8.1.  Address Spoofing  . . . . . . . . . . . . . . . . . . . .   6
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .   6
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   7
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  SIIT Host Agent Specification . . . . . . . . . . . . . . . .   3
+   4.  Architectural Overview  . . . . . . . . . . . . . . . . . . .   4
+   5.  Deployment Considerations . . . . . . . . . . . . . . . . . .   6
+     5.1.  IPv6 Path MTU . . . . . . . . . . . . . . . . . . . . . .   6
+     5.2.  IPv4 MTU  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
+   7.  Requirements Language . . . . . . . . . . . . . . . . . . . .   6
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
+     9.1.  Address Spoofing  . . . . . . . . . . . . . . . . . . . .   7
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   7
+     10.2.  Informative References . . . . . . . . . . . . . . . . .   7
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
-   SIIT-DC [I-D.anderson-siit-dc] describes an architecture where
+   SIIT-DC [I-D.anderson-v6ops-siit-dc] describes an architecture where
    IPv4-only users can access IPv6-only services through a stateless
    translation gateway.  However, this only works for applications that
    are compatible with Network Address Translation (NAT), due to the
-   fact that the SIIT gateway will rewrite the addresses in the IP
+   fact that the SIIT Gateway will rewrite the addresses in the IP
    header as part of the translation process.  SIIT-DC will also fail to
    work correctly for applications that make use of legacy IPv4-only
    socket calls.
 
-   This document aims to remedy this problem by defining an extension to
-   SIIT-DC.  Translation performed by the SIIT gateway will also be done
-   in reverse by a host agent running on the server.  The resulting IPv4
-   packet is then passed to the application.  This way, the application
-   will be able to use legacy IPv4-only socket calls and/or include
-   references to its own IPv4 address in the application payload, while
-   maintaining correct operation.
+   This document remedies this problem by defining an extension to SIIT-
+   DC.  Translations performed by the SIIT Gateway will also be done in
+   reverse by an SIIT Host Agent running on the server.  The resulting
+   IPv4 packets are then passed to the application.  This way, the
+   application will be able to use legacy IPv4-only socket calls and/or
+   include references to its own IPv4 address in the application
+   payload, while maintaining correct operation.
 
    The approach is heavily inspired by and very similar to 464XLAT
-   [RFC6877].  The described SIIT host agent in this document is almost
-   identical to the CLAT agent described by 464XLAT, except for the fact
-   that it will be located on a server, rather than on the customer-side
-   node.  The SIIT gateway described in [I-D.anderson-siit-dc] is used
-   instead of the PLAT described by 464XLAT.
+   [RFC6877].  The SIIT Host Agent described in this document is almost
+   identical to the CLAT component in 464XLAT, except for the fact that
+   it will be located on a server, rather than on the customer-side
+   node.  Furthermore, an SIIT Host Agent uses statically configured
+   public IP addresses, whereas a 464XLAT CLAT uses a dynamic IPv6
+   address and a private IPv4 address.  The SIIT Gateway described in
 
 
 
-
-
-Anderson                 Expires March 04, 2015                 [Page 2]
+Anderson                 Expires March 09, 2015                 [Page 2]
 
-Internet-Draft                SIIT-DC-2XLAT                  August 2014
+Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 
-2.  SIIT Host Agent Specification
+   [I-D.anderson-v6ops-siit-dc] is used instead of the PLAT described by
+   464XLAT.
 
-   The SIIT host agent runs on the servers hosting application which do
+2.  Terminology
+
+   This document makes use of the following terms:
+
+   IPv4 Service Address  A public IPv4 address with which IPv4-only
+      clients will communicate.  This communication will be translated
+      to IPv6 by the SIIT Gateway.
+
+   IPv6 Service Address  A public IPv6 address assigned to a server or
+      application in the IPv6 network.  IPv6-only and dual stacked
+      clients communicates with this address directly without invoking
+      SIIT.  IPv4-only clients also communicates with this address
+      through the SIIT Gateway and via an IPv4 Service Address.
+
+   SIIT Host Agent  A logical function very similar to an SIIT Gateway
+      that resides on a server and provides virtual IPv4 connectivity to
+      applications, by performing [RFC6145] translation on packets
+      passing through it.  See Section 3.
+
+   SIIT Gateway  A device or a logical function that translates between
+      IPv4 and IPv6 in accordance with [RFC6145] and
+      [I-D.anderson-v6ops-siit-dc].
+
+   Static Address Mapping  A bi-directional mapping between an IPv4
+      Service Address and an IPv6 Service Address configured in the SIIT
+      Gateway.  When translating between IPv4 and IPv6, the SIIT Gateway
+      changes the adddress fields in the translated packet's IP header
+      according to any matching Static Address Mapping.
+
+   Translation Prefix  An IPv6 prefix into which the entire IPv4 address
+      space is mapped.  This prefix is routed to the SIIT Gateway's IPv6
+      interface.  It is either an Network-Specific Prefix or a Well-
+      Known Prefix as specified in [RFC6052].  When translating between
+      IPv4 and IPv6, the SIIT Gateway prepends or strips the Translation
+      Prefix from the address fields in the translated packet's IP
+      header, unless a Static Address Mapping exists for the IP address
+      in question.
+
+3.  SIIT Host Agent Specification
+
+   The SIIT Host Agent runs on the servers hosting application which do
    not work correctly with the SIIT-DC architecture as specified by
-   [I-D.anderson-siit-dc].  Its task is the performing the exact same
-   packet translation as the SIIT gateway, but in reverse.  It therefore
-   shares the same implementation requirements as the SIIT gateway
-   defined in I-D.anderson-siit-dc section 4 [I-D.anderson-siit-dc],
-   with one exception: The SIIT host agent is not required to support
+   [I-D.anderson-v6ops-siit-dc].  Its task is the performing the exact
+   same packet translation as the SIIT Gateway, only in reverse.  It
+   therefore shares the same implementation requirements as the SIIT
+
+
+
+Anderson                 Expires March 09, 2015                 [Page 3]
+
+Internet-Draft                SIIT-DC-2XLAT               September 2014
+
+
+   Gateway defined in Section 4 of [I-D.anderson-v6ops-siit-dc], with
+   one exception: The SIIT Host Agent is not required to support
    configuring an arbitrary number of static mappings, but it must
    support at least one.
 
-   The SIIT host agent must be configured with a static IPv4:IPv6
-   mapping that corresponds exactly with the same mapping found on the
-   SIIT gateway.  The IPv4 address must be configured on a virtual
-   network interface which applications running on the server can bind
-   to, and the server is expected to install a default IPv4 route
-   poining to this virtual IPv4 interface.  The IPv6 address must be a
-   secondary address that is routed to the server and dedicated to the
-   SIIT host agent function.
+   The SIIT Host Agent must be configured with a Static Address Mapping
+   that corresponds exactly with the same mapping found on the SIIT
+   Gateway.  The IPv4 address of the Static Address Mapping (i.e., the
+   IPv4 Service Address) must be configured on a virtual network
+   interface which applications running on the server can bind to, and
+   the server is expected to install a default IPv4 route poining to
+   this virtual IPv4 interface.  The IPv6 address of the Static Address
+   Mapping must be a secondary address that is routed to the server by
+   the IPv6 network.  The server must forward all packets it receives
+   destined for this IPv6 address to the SIIT Host Agent.
 
-3.  Architectural Overview
+4.  Architectural Overview
 
    The following figure shows how an application (that is presumably
-   incompatible with SIIT-DC) is being made available to the IPv4
-   Internet on the IPv4 address 198.51.0.2.  The application will be
-   able to know that this is its local address and thus be able to
+   incompatible with standard SIIT-DC) is being made available to the
+   IPv4 Internet on the IPv4 address 198.51.0.2.  The application will
+   be able to know that this is its local address and thus be able to
    provide correct references to it in application payload.
 
    The figure also shows how the same application is available over IPv6
-   on the address 2001:db8:12:34::2.  This is included to illustrate how
-   native IPv6 connectivity is not impacted by the SIIT host agent, and
-   also to illustrate how the address assigned to the SIIT host agent
-   (2001:db8:12:34::3) is separate from the primary IPv6 address of the
-   server.  It is however important to note that the application in
-   question does not have to be dual-stack capable at all.  IPv4-only
-   applications would also be able to operate behind a SIIT host agent
-   in the exact same manner.
+   on its IPv6 Service Address 2001:db8:12:34::2.  This is included in
+   order to illustrate how native IPv6 connectivity is not impacted by
+   the SIIT Host Agent, and also to illustrate how the address assigned
+   to the SIIT Host Agent (2001:db8:12:34::3) is separate from the
+   primary IPv6 address of the server.  It is however important to note
+   that the application in question does not have to be dual-stack
+   capable at all.  IPv4-only applications would also be able to operate
+   behind a SIIT Host Agent in the exact same manner.
 
    Note that the figure below could be considered a more detailed view
    of Customer A's FTP server from the example topology figure in
-   appendix A [I-D.anderson-siit-dc].  Both figures intentionally use
-   the exact same example IP addresses.
+   appendix A [I-D.anderson-v6ops-siit-dc].  Both figures intentionally
+   use the exact same example IP addresses and prefixes.
 
                        SIIT Host Agent Architecture
 
              +-------------------+         +----------------+
              | IPv6-capable user |         | IPv4-only user |
-
-
-
-Anderson                 Expires March 04, 2015                 [Page 3]
-
-Internet-Draft                SIIT-DC-2XLAT                  August 2014
-
-
              | ================= |         | ============== |
              |                   |         |                |
              +-<2001:db8::ab:cd>-+         +-<203.0.113.50>-+
                  |                                  |
                  |                                  |
+
+
+
+Anderson                 Expires March 09, 2015                 [Page 4]
+
+Internet-Draft                SIIT-DC-2XLAT               September 2014
+
+
               (the IPv6 internet)         (the IPv4 Internet)
                  |                                  |
                  |                                  |
@@ -183,10 +234,10 @@ Internet-Draft                SIIT-DC-2XLAT                  August 2014
                  |        |           SIIT Gateway           |
                  |        |           ============           |
                  |        |                                  |
-                 |        |       Translation prefix:        |
+                 |        |       Translation Prefix:        |
                  |        |         2001:db8:46::/96         |
                  |        |                                  |
-                 |        |     Static address mapping:      |
+                 |        |     Static Address Mapping:      |
                  |        | 198.51.0.2 <=> 2001:db8:12:34::3 |
                  |        |                                  |
                  |        +--------------<2001:db8:46::/96>--+
@@ -205,10 +256,10 @@ Internet-Draft                SIIT-DC-2XLAT                  August 2014
            |     |        |         SIIT Host Agent          | |
            |     |        |         ===============          | |
            |     |        |                                  | |
-           |     |        |       Translation prefix:        | |
+           |     |        |       Translation Prefix:        | |
            |     |        |         2001:db8:46::/96         | |
            |     |        |                                  | |
-           |     |        |     Static address mapping:      | |
+           |     |        |     Static Address Mapping:      | |
            |     |        | 198.51.0.2 <=> 2001:db8:12:34::3 | |
            |     |        |                                  | |
            |     |        +---------------------<198.51.0.2>-+ |
@@ -218,33 +269,32 @@ Internet-Draft                SIIT-DC-2XLAT                  August 2014
            | |      AF_INET6                      AF_INET    | |
            | |                                               | |
            | |           Dual-stacked application            | |
-
-
-
-Anderson                 Expires March 04, 2015                 [Page 4]
-
-Internet-Draft                SIIT-DC-2XLAT                  August 2014
-
-
            | |                                               | |
            | +-----------------------------------------------+ |
            +---------------------------------------------------+
 
                                  Figure 1
 
-4.  Deployment Considerations
 
-4.1.  IPv6 Path MTU
 
-   The IPv6 Path MTU between the SIIT host agent and the SIIT gateway
-   will typically be larger than the default value defined in section 4
-   of RFC6145 [RFC6145] (1280), as it will typically contained within a
-   single administrative domain.  Therefore, it is recommended that the
-   IPv6 Path MTU configured in the SIIT-HA is raised accordingly.  It is
-   RECOMMENDED that the SIIT host agent and the SIIT gateway use
+Anderson                 Expires March 09, 2015                 [Page 5]
+
+Internet-Draft                SIIT-DC-2XLAT               September 2014
+
+
+5.  Deployment Considerations
+
+5.1.  IPv6 Path MTU
+
+   The IPv6 Path MTU between the SIIT Host Agent and the SIIT Gateway
+   will typically be larger than the default value defined in Section 4
+   of [RFC6145] (1280), as it will typically contained within a single
+   administrative domain.  Therefore, it is recommended that the IPv6
+   Path MTU configured in the SIIT Host Agent is raised accordingly.  It
+   is RECOMMENDED that the SIIT Host Agent and the SIIT Gateway use
    identical configured IPv6 Path MTU values.
 
-4.2.  IPv4 MTU
+5.2.  IPv4 MTU
 
    In order to avoid fragmentation, it is RECOMMENDED that the virtual
    IPv4 interface is configured with an MTU value identical to the
@@ -254,7 +304,7 @@ Internet-Draft                SIIT-DC-2XLAT                  August 2014
    and advertising the maximum size its peer may use for inbound packets
    (e.g., through the use of the TCP MSS option).
 
-5.  Acknowledgements
+6.  Acknowledgements
 
    The author would like to especially thank the authors of 464XLAT
    [RFC6877]: Masataka Mawatari, Masanobu Kawashima, and Cameron Byrne.
@@ -263,84 +313,86 @@ Internet-Draft                SIIT-DC-2XLAT                  August 2014
    happened without them.
 
    The author would like also to thank the following individuals for
-   their contributions, suggestions, corrections, and criticism: [YOUR
+   their contributions, suggestions, corrections, and criticisms: [YOUR
    NAME GOES HERE].
 
-6.  Requirements Language
+7.  Requirements Language
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
 
-7.  IANA Considerations
+8.  IANA Considerations
+
+   This draft makes no request of the IANA.  The RFC Editor may remove
+   this section prior to publication.
+
+9.  Security Considerations
 
 
 
 
-Anderson                 Expires March 04, 2015                 [Page 5]
+
+Anderson                 Expires March 09, 2015                 [Page 6]
 
-Internet-Draft                SIIT-DC-2XLAT                  August 2014
+Internet-Draft                SIIT-DC-2XLAT               September 2014
 
-
-   This draft makes no request of the IANA.
-
-8.  Security Considerations
 
    This section discussues security considerations specific to the use
-   of a SIIT host agent.  See the Security Considerations in I-D
-   .anderson-siit-dc [I-D.anderson-siit-dc] for additional security
-   considerations applicable to the SIIT architecture in general.
+   of a SIIT Host Agent.  See the Security Considerations in I-D
+   .anderson-v6ops-siit-dc [I-D.anderson-v6ops-siit-dc] for additional
+   security considerations applicable to the SIIT-DC architecture in
+   general.
 
-8.1.  Address Spoofing
+9.1.  Address Spoofing
 
-   If the SIIT host agent receives an IPv4 packet from the application
-   from a different source address than the one it has a static mapping
-   for, the both the source and destination addresses will be rewritten
-   according to [RFC6052].  After undergoing the reverse translation in
-   the SIIT gateway, the resulting IPv4 packet routed to the IPv4
-   network will have a spoofed IPv4 source address.  The SIIT host agent
-   should therefore ensure that ingress filtering (cf. BCP38 [RFC2827]
-   is used on the SIIT host agent's IPv4 interface, so that such packets
-   are immediately discarded.
+   If the SIIT Host Agent receives an IPv4 packet from the application
+   from a different source address than the one it has a Static Address
+   Mapping for, the both the source and destination addresses will be
+   rewritten according to [RFC6052].  After undergoing the reverse
+   translation in the SIIT Gateway, the resulting IPv4 packet routed to
+   the IPv4 network will have a spoofed IPv4 source address.  The SIIT
+   Host Agent should therefore ensure that ingress filtering (cf. BCP38
+   [RFC2827] is used on the SIIT Host Agent's IPv4 interface, so that
+   such packets are immediately discarded.
 
-   If the SIIT host agent receives an IPv6 packet with both the source
+   If the SIIT Host Agent receives an IPv6 packet with both the source
    and destination address equal to the one it has a static mapping
    from, the resulting packet would appear to the application as locally
    generated, as both the source address and the destination address
    will be the same address as the one configured on the virtual IPv4
    interface.  This could trick the application into thinking this
    packet came from a trusted source, and give elevated privileges
-   accordingly.  To prevent this, the SIIT host agent should discard any
+   accordingly.  To prevent this, the SIIT Host Agent should discard any
    received IPv6 packets that have a source address that is equal either
    to either the IPv4 (after undergoing [RFC6052] translation) or the
    IPv6 address in the static mapping.
 
-9.  References
+10.  References
 
-9.1.  Normative References
+10.1.  Normative References
 
-   [I-D.anderson-siit-dc]
-              Anderson, T., "Stateless IP/ICMP Translation in IPv6 Data
-              Centre Environments", draft-anderson-siit-dc-00 (work in
-              progress), November 2012.
+   [I-D.anderson-v6ops-siit-dc]
+              Anderson, T., "SIIT-DC: Stateless IP/ICMP Translation in
+              IPv6 Data Centre Environments", draft-anderson-v6ops-siit-
+              dc-00 (work in progress), September 2014.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
-9.2.  Informative References
-
-
-
-
-
-Anderson                 Expires March 04, 2015                 [Page 6]
-
-Internet-Draft                SIIT-DC-2XLAT                  August 2014
-
+10.2.  Informative References
 
    [RFC2827]  Ferguson, P. and D. Senie, "Network Ingress Filtering:
               Defeating Denial of Service Attacks which employ IP Source
               Address Spoofing", BCP 38, RFC 2827, May 2000.
+
+
+
+
+Anderson                 Expires March 09, 2015                 [Page 7]
+
+Internet-Draft                SIIT-DC-2XLAT               September 2014
+
 
    [RFC6052]  Bao, C., Huitema, C., Bagnulo, M., Boucadair, M., and X.
               Li, "IPv6 Addressing of IPv4/IPv6 Translators", RFC 6052,
@@ -358,7 +410,7 @@ Author's Address
    Tore Anderson
    Redpill Linpro
    Vitaminveien 1A
-   NO-0485 Oslo
+   0485 Oslo
    NORWAY
 
    Phone: +47 959 31 212
@@ -389,4 +441,8 @@ Author's Address
 
 
 
-Anderson                 Expires March 04, 2015                 [Page 7]
+
+
+
+
+Anderson                 Expires March 09, 2015                 [Page 8]

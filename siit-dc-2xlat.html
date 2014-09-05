@@ -353,19 +353,20 @@
 
   <link href="#rfc.toc" rel="Contents"/>
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
-<link href="#rfc.section.2" rel="Chapter" title="2 SIIT Host Agent Specification"/>
-<link href="#rfc.section.3" rel="Chapter" title="3 Architectural Overview"/>
-<link href="#rfc.section.4" rel="Chapter" title="4 Deployment Considerations"/>
-<link href="#rfc.section.4.1" rel="Chapter" title="4.1 IPv6 Path MTU"/>
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 IPv4 MTU"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 Acknowledgements"/>
-<link href="#rfc.section.6" rel="Chapter" title="6 Requirements Language"/>
-<link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations"/>
-<link href="#rfc.section.8" rel="Chapter" title="8 Security Considerations"/>
-<link href="#rfc.section.8.1" rel="Chapter" title="8.1 Address Spoofing"/>
-<link href="#rfc.references" rel="Chapter" title="9 References"/>
-<link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References"/>
-<link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Terminology"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 SIIT Host Agent Specification"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Architectural Overview"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Deployment Considerations"/>
+<link href="#rfc.section.5.1" rel="Chapter" title="5.1 IPv6 Path MTU"/>
+<link href="#rfc.section.5.2" rel="Chapter" title="5.2 IPv4 MTU"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 Acknowledgements"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 Requirements Language"/>
+<link href="#rfc.section.8" rel="Chapter" title="8 IANA Considerations"/>
+<link href="#rfc.section.9" rel="Chapter" title="9 Security Considerations"/>
+<link href="#rfc.section.9.1" rel="Chapter" title="9.1 Address Spoofing"/>
+<link href="#rfc.references" rel="Chapter" title="10 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="10.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="10.2 Informative References"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
 
@@ -374,7 +375,7 @@
 
   <meta name="dct.creator" content="Anderson, T." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-anderson-v6ops-siit-dc-2xlat-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-8-31" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-9-05" />
   <meta name="dct.abstract" content="This document describes an extension of the " />
   <meta name="description" content="This document describes an extension of the " />
 
@@ -395,10 +396,10 @@
 </tr>
 <tr>
   <td class="left">Intended status: Standards Track</td>
-  <td class="right">August 31, 2014</td>
+  <td class="right">September 05, 2014</td>
 </tr>
 <tr>
-  <td class="left">Expires: March 04, 2015</td>
+  <td class="left">Expires: March 09, 2015</td>
   <td class="right"></td>
 </tr>
 
@@ -412,15 +413,15 @@
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>This document describes an extension of the <a href="#I-D.anderson-siit-dc">SIIT-DC</a> <cite title="NONE">[I-D.anderson-siit-dc]</cite> architecture, which allows applications that are incompatible with SIIT and/or Network Address Translation in general to operate correctly in an SIIT-DC environment.  </p>
-<p>The reader is expected to be familiar with the general SIIT-DC architecture described in <a href="#I-D.anderson-siit-dc">[I-D.anderson-siit-dc]</a>.  </p>
+<p>This document describes an extension of the <a href="#I-D.anderson-v6ops-siit-dc">SIIT-DC</a> <cite title="NONE">[I-D.anderson-v6ops-siit-dc]</cite> architecture, which allows applications that are incompatible with SIIT and/or Network Address Translation in general to operate correctly in an SIIT-DC environment.  </p>
+<p>The reader is expected to be familiar with the SIIT-DC architecture described in <a href="#I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</a>.  </p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on March 04, 2015.</p>
+<p>This Internet-Draft will expire on March 09, 2015.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -433,35 +434,56 @@
   <ul class="toc">
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
-<li>2.   <a href="#rfc.section.2">SIIT Host Agent Specification</a></li>
-<li>3.   <a href="#rfc.section.3">Architectural Overview</a></li>
-<li>4.   <a href="#rfc.section.4">Deployment Considerations</a></li>
-<li>4.1.   <a href="#rfc.section.4.1">IPv6 Path MTU</a></li>
-<li>4.2.   <a href="#rfc.section.4.2">IPv4 MTU</a></li>
-<li>5.   <a href="#rfc.section.5">Acknowledgements</a></li>
-<li>6.   <a href="#rfc.section.6">Requirements Language</a></li>
-<li>7.   <a href="#rfc.section.7">IANA Considerations</a></li>
-<li>8.   <a href="#rfc.section.8">Security Considerations</a></li>
-<li>8.1.   <a href="#rfc.section.8.1">Address Spoofing</a></li>
-<li>9.   <a href="#rfc.references">References</a></li>
-<li>9.1.   <a href="#rfc.references.1">Normative References</a></li>
-<li>9.2.   <a href="#rfc.references.2">Informative References</a></li>
+<li>2.   <a href="#rfc.section.2">Terminology</a></li>
+<li>3.   <a href="#rfc.section.3">SIIT Host Agent Specification</a></li>
+<li>4.   <a href="#rfc.section.4">Architectural Overview</a></li>
+<li>5.   <a href="#rfc.section.5">Deployment Considerations</a></li>
+<li>5.1.   <a href="#rfc.section.5.1">IPv6 Path MTU</a></li>
+<li>5.2.   <a href="#rfc.section.5.2">IPv4 MTU</a></li>
+<li>6.   <a href="#rfc.section.6">Acknowledgements</a></li>
+<li>7.   <a href="#rfc.section.7">Requirements Language</a></li>
+<li>8.   <a href="#rfc.section.8">IANA Considerations</a></li>
+<li>9.   <a href="#rfc.section.9">Security Considerations</a></li>
+<li>9.1.   <a href="#rfc.section.9.1">Address Spoofing</a></li>
+<li>10.   <a href="#rfc.references">References</a></li>
+<li>10.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>10.2.   <a href="#rfc.references.2">Informative References</a></li>
 <li><a href="#rfc.authors">Author's Address</a></li>
 
 
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> Introduction</h1>
-<p><a href="#I-D.anderson-siit-dc">SIIT-DC</a> <cite title="NONE">[I-D.anderson-siit-dc]</cite> describes an architecture where IPv4-only users can access IPv6-only services through a stateless translation gateway. However, this only works for applications that are compatible with Network Address Translation (NAT), due to the fact that the SIIT gateway will rewrite the addresses in the IP header as part of the translation process. SIIT-DC will also fail to work correctly for applications that make use of legacy IPv4-only socket calls.  </p>
-<p id="rfc.section.1.p.2">This document aims to remedy this problem by defining an extension to SIIT-DC. Translation performed by the SIIT gateway will also be done in reverse by a host agent running on the server. The resulting IPv4 packet is then passed to the application. This way, the application will be able to use legacy IPv4-only socket calls and/or include references to its own IPv4 address in the application payload, while maintaining correct operation.  </p>
-<p id="rfc.section.1.p.3">The approach is heavily inspired by and very similar to <a href="#RFC6877">464XLAT</a> <cite title="NONE">[RFC6877]</cite>. The described SIIT host agent in this document is almost identical to the CLAT agent described by 464XLAT, except for the fact that it will be located on a server, rather than on the customer-side node. The SIIT gateway described in <a href="#I-D.anderson-siit-dc">[I-D.anderson-siit-dc]</a> is used instead of the PLAT described by 464XLAT.  </p>
-<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> SIIT Host Agent Specification</h1>
-<p id="rfc.section.2.p.1">The SIIT host agent runs on the servers hosting application which do not work correctly with the SIIT-DC architecture as specified by <a href="#I-D.anderson-siit-dc">[I-D.anderson-siit-dc]</a>. Its task is the performing the exact same packet translation as the SIIT gateway, but in reverse. It therefore shares the same implementation requirements as the SIIT gateway defined in <a href="#I-D.anderson-siit-dc">I-D.anderson-siit-dc section 4</a> <cite title="NONE">[I-D.anderson-siit-dc]</cite>, with one exception: The SIIT host agent is not required to support configuring an arbitrary number of static mappings, but it must support at least one.  </p>
-<p id="rfc.section.2.p.2">The SIIT host agent must be configured with a static IPv4:IPv6 mapping that corresponds exactly with the same mapping found on the SIIT gateway. The IPv4 address must be configured on a virtual network interface which applications running on the server can bind to, and the server is expected to install a default IPv4 route poining to this virtual IPv4 interface. The IPv6 address must be a secondary address that is routed to the server and dedicated to the SIIT host agent function.  </p>
-<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> Architectural Overview</h1>
-<p id="rfc.section.3.p.1">The following figure shows how an application (that is presumably incompatible with SIIT-DC) is being made available to the IPv4 Internet on the IPv4 address 198.51.0.2. The application will be able to know that this is its local address and thus be able to provide correct references to it in application payload.  </p>
-<p id="rfc.section.3.p.2">The figure also shows how the same application is available over IPv6 on the address 2001:db8:12:34::2. This is included to illustrate how native IPv6 connectivity is not impacted by the SIIT host agent, and also to illustrate how the address assigned to the SIIT host agent (2001:db8:12:34::3) is separate from the primary IPv6 address of the server. It is however important to note that the application in question does not have to be dual-stack capable at all. IPv4-only applications would also be able to operate behind a SIIT host agent in the exact same manner.  </p>
-<p id="rfc.section.3.p.3">Note that the figure below could be considered a more detailed view of Customer A's FTP server from the example topology figure in <a href="#I-D.anderson-siit-dc">appendix A</a> <cite title="NONE">[I-D.anderson-siit-dc]</cite>. Both figures intentionally use the exact same example IP addresses.  </p>
+<p><a href="#I-D.anderson-v6ops-siit-dc">SIIT-DC</a> <cite title="NONE">[I-D.anderson-v6ops-siit-dc]</cite> describes an architecture where IPv4-only users can access IPv6-only services through a stateless translation gateway. However, this only works for applications that are compatible with Network Address Translation (NAT), due to the fact that the SIIT Gateway will rewrite the addresses in the IP header as part of the translation process. SIIT-DC will also fail to work correctly for applications that make use of legacy IPv4-only socket calls.  </p>
+<p id="rfc.section.1.p.2">This document remedies this problem by defining an extension to SIIT-DC.  Translations performed by the SIIT Gateway will also be done in reverse by an SIIT Host Agent running on the server. The resulting IPv4 packets are then passed to the application. This way, the application will be able to use legacy IPv4-only socket calls and/or include references to its own IPv4 address in the application payload, while maintaining correct operation.  </p>
+<p id="rfc.section.1.p.3">The approach is heavily inspired by and very similar to <a href="#RFC6877">464XLAT</a> <cite title="NONE">[RFC6877]</cite>. The SIIT Host Agent described in this document is almost identical to the CLAT component in 464XLAT, except for the fact that it will be located on a server, rather than on the customer-side node. Furthermore, an SIIT Host Agent uses statically configured public IP addresses, whereas a 464XLAT CLAT uses a dynamic IPv6 address and a private IPv4 address. The SIIT Gateway described in <a href="#I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</a> is used instead of the PLAT described by 464XLAT.  </p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
+<p id="rfc.section.2.p.1">This document makes use of the following terms: </p>
+<p/>
+
+<dl>
+  <dt>IPv4 Service Address</dt>
+  <dd style="margin-left: 8">A public IPv4 address with which IPv4-only clients will communicate. This communication will be translated to IPv6 by the SIIT Gateway.</dd>
+  <dt>IPv6 Service Address</dt>
+  <dd style="margin-left: 8">A public IPv6 address assigned to a server or application in the IPv6 network. IPv6-only and dual stacked clients communicates with this address directly without invoking SIIT.  IPv4-only clients also communicates with this address through the SIIT Gateway and via an IPv4 Service Address.</dd>
+  <dt>SIIT Host Agent</dt>
+  <dd style="margin-left: 8">A logical function very similar to an SIIT Gateway that resides on a server and provides virtual IPv4 connectivity to applications, by performing <a href="#RFC6145">[RFC6145]</a> translation on packets passing through it. See <a href="#siit_ha_spec">Section 3</a>.</dd>
+  <dt>SIIT Gateway</dt>
+  <dd style="margin-left: 8">A device or a logical function that translates between IPv4 and IPv6 in accordance with <a href="#RFC6145">[RFC6145]</a> and <a href="#I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</a>.</dd>
+  <dt>Static Address Mapping</dt>
+  <dd style="margin-left: 8">A bi-directional mapping between an IPv4 Service Address and an IPv6 Service Address configured in the SIIT Gateway. When translating between IPv4 and IPv6, the SIIT Gateway changes the adddress fields in the translated packet's IP header according to any matching Static Address Mapping.</dd>
+  <dt>Translation Prefix</dt>
+  <dd style="margin-left: 8">An IPv6 prefix into which the entire IPv4 address space is mapped. This prefix is routed to the SIIT Gateway's IPv6 interface. It is either an Network-Specific Prefix or a Well-Known Prefix as specified in <a href="#RFC6052">[RFC6052]</a>. When translating between IPv4 and IPv6, the SIIT Gateway prepends or strips the Translation Prefix from the address fields in the translated packet's IP header, unless a Static Address Mapping exists for the IP address in question.</dd>
+</dl>
+
+<p> </p>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#siit_ha_spec" id="siit_ha_spec">SIIT Host Agent Specification</a></h1>
+<p id="rfc.section.3.p.1">The SIIT Host Agent runs on the servers hosting application which do not work correctly with the SIIT-DC architecture as specified by <a href="#I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</a>. Its task is the performing the exact same packet translation as the SIIT Gateway, only in reverse. It therefore shares the same implementation requirements as the SIIT Gateway defined in Section 4 of <a href="#I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</a>, with one exception: The SIIT Host Agent is not required to support configuring an arbitrary number of static mappings, but it must support at least one.  </p>
+<p id="rfc.section.3.p.2">The SIIT Host Agent must be configured with a Static Address Mapping that corresponds exactly with the same mapping found on the SIIT Gateway. The IPv4 address of the Static Address Mapping (i.e., the IPv4 Service Address) must be configured on a virtual network interface which applications running on the server can bind to, and the server is expected to install a default IPv4 route poining to this virtual IPv4 interface. The IPv6 address of the Static Address Mapping must be a secondary address that is routed to the server by the IPv6 network. The server must forward all packets it receives destined for this IPv6 address to the SIIT Host Agent.  </p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> Architectural Overview</h1>
+<p id="rfc.section.4.p.1">The following figure shows how an application (that is presumably incompatible with standard SIIT-DC) is being made available to the IPv4 Internet on the IPv4 address 198.51.0.2. The application will be able to know that this is its local address and thus be able to provide correct references to it in application payload.  </p>
+<p id="rfc.section.4.p.2">The figure also shows how the same application is available over IPv6 on its IPv6 Service Address 2001:db8:12:34::2. This is included in order to illustrate how native IPv6 connectivity is not impacted by the SIIT Host Agent, and also to illustrate how the address assigned to the SIIT Host Agent (2001:db8:12:34::3) is separate from the primary IPv6 address of the server. It is however important to note that the application in question does not have to be dual-stack capable at all. IPv4-only applications would also be able to operate behind a SIIT Host Agent in the exact same manner.  </p>
+<p id="rfc.section.4.p.3">Note that the figure below could be considered a more detailed view of Customer A's FTP server from the example topology figure in <a href="#I-D.anderson-v6ops-siit-dc">appendix A</a> <cite title="NONE">[I-D.anderson-v6ops-siit-dc]</cite>. Both figures intentionally use the exact same example IP addresses and prefixes.  </p>
 <div id="rfc.figure.1"/>
 <div id="fig_architecture"/>
 <p/>
@@ -483,10 +505,10 @@
       |        |           SIIT Gateway           |
       |        |           ============           |
       |        |                                  |
-      |        |       Translation prefix:        |
+      |        |       Translation Prefix:        |
       |        |         2001:db8:46::/96         |
       |        |                                  |
-      |        |     Static address mapping:      |
+      |        |     Static Address Mapping:      |
       |        | 198.51.0.2 &lt;=&gt; 2001:db8:12:34::3 |
       |        |                                  |
       |        +--------------&lt;2001:db8:46::/96&gt;--+
@@ -505,10 +527,10 @@
 |     |        |         SIIT Host Agent          | |
 |     |        |         ===============          | |
 |     |        |                                  | |
-|     |        |       Translation prefix:        | |
+|     |        |       Translation Prefix:        | |
 |     |        |         2001:db8:46::/96         | |
 |     |        |                                  | |
-|     |        |     Static address mapping:      | |
+|     |        |     Static Address Mapping:      | |
 |     |        | 198.51.0.2 &lt;=&gt; 2001:db8:12:34::3 | |
 |     |        |                                  | |
 |     |        +---------------------&lt;198.51.0.2&gt;-+ |
@@ -523,32 +545,32 @@
 +---------------------------------------------------+
         </pre>
 <p class="figure">Figure 1</p>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#deployment_considerations" id="deployment_considerations">Deployment Considerations</a></h1>
-<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#ipv6_pmtu" id="ipv6_pmtu">IPv6 Path MTU</a></h1>
-<p id="rfc.section.4.1.p.1">The IPv6 Path MTU between the SIIT host agent and the SIIT gateway will typically be larger than the default value defined in <a href="#RFC6145">section 4 of RFC6145</a> <cite title="NONE">[RFC6145]</cite> (1280), as it will typically contained within a single administrative domain. Therefore, it is recommended that the IPv6 Path MTU configured in the SIIT-HA is raised accordingly. It is RECOMMENDED that the SIIT host agent and the SIIT gateway use identical configured IPv6 Path MTU values.  </p>
-<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#ipv4_mtu" id="ipv4_mtu">IPv4 MTU</a></h1>
-<p id="rfc.section.4.2.p.1">In order to avoid fragmentation, it is RECOMMENDED that the virtual IPv4 interface is configured with an MTU value identical to the configured IPv6 Path MTU - 20. This ensures that the application may do its part in avoiding IP-level fragmentation from occurring, e.g., by segmenting/fragmenting outbound packets at the application layer, and advertising the maximum size its peer may use for inbound packets (e.g., through the use of the TCP MSS option).  </p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#Acknowledgements" id="Acknowledgements">Acknowledgements</a></h1>
-<p id="rfc.section.5.p.1">The author would like to especially thank the authors of <a href="#RFC6877">464XLAT</a> <cite title="NONE">[RFC6877]</cite>: Masataka Mawatari, Masanobu Kawashima, and Cameron Byrne. The architecture described by this document is merely an adaptation of their work to a data centre environment, and could not have happened without them.  </p>
-<p id="rfc.section.5.p.2">The author would like also to thank the following individuals for their contributions, suggestions, corrections, and criticism: [YOUR NAME GOES HERE].  </p>
-<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> Requirements Language</h1>
-<p id="rfc.section.6.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.  </p>
-<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
-<p id="rfc.section.7.p.1">This draft makes no request of the IANA.  </p>
-<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#Security" id="Security">Security Considerations</a></h1>
-<p id="rfc.section.8.p.1">This section discussues security considerations specific to the use of a SIIT host agent. See the <a href="#I-D.anderson-siit-dc">Security Considerations in I-D.anderson-siit-dc</a> <cite title="NONE">[I-D.anderson-siit-dc]</cite> for additional security considerations applicable to the SIIT architecture in general.  </p>
-<h1 id="rfc.section.8.1"><a href="#rfc.section.8.1">8.1.</a> <a href="#sec_loops" id="sec_loops">Address Spoofing</a></h1>
-<p id="rfc.section.8.1.p.1">If the SIIT host agent receives an IPv4 packet from the application from a different source address than the one it has a static mapping for, the both the source and destination addresses will be rewritten according to <a href="#RFC6052">[RFC6052]</a>. After undergoing the reverse translation in the SIIT gateway, the resulting IPv4 packet routed to the IPv4 network will have a spoofed IPv4 source address. The SIIT host agent should therefore ensure that ingress filtering (cf. <a href="#RFC2827">BCP38</a> <cite title="NONE">[RFC2827]</cite> is used on the SIIT host agent's IPv4 interface, so that such packets are immediately discarded.  </p>
-<p id="rfc.section.8.1.p.2">If the SIIT host agent receives an IPv6 packet with both the source and destination address equal to the one it has a static mapping from, the resulting packet would appear to the application as locally generated, as both the source address and the destination address will be the same address as the one configured on the virtual IPv4 interface. This could trick the application into thinking this packet came from a trusted source, and give elevated privileges accordingly.  To prevent this, the SIIT host agent should discard any received IPv6 packets that have a source address that is equal either to either the IPv4 (after undergoing <a href="#RFC6052">[RFC6052]</a> translation) or the IPv6 address in the static mapping.  </p>
-<h1 id="rfc.references"><a href="#rfc.references">9.</a> References</h1>
-<h1 id="rfc.references.1"><a href="#rfc.references.1">9.1.</a> Normative References</h1>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> Deployment Considerations</h1>
+<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#ipv6_pmtu" id="ipv6_pmtu">IPv6 Path MTU</a></h1>
+<p id="rfc.section.5.1.p.1">The IPv6 Path MTU between the SIIT Host Agent and the SIIT Gateway will typically be larger than the default value defined in Section 4 of <a href="#RFC6145">[RFC6145]</a> (1280), as it will typically contained within a single administrative domain. Therefore, it is recommended that the IPv6 Path MTU configured in the SIIT Host Agent is raised accordingly. It is RECOMMENDED that the SIIT Host Agent and the SIIT Gateway use identical configured IPv6 Path MTU values.  </p>
+<h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> <a href="#ipv4_mtu" id="ipv4_mtu">IPv4 MTU</a></h1>
+<p id="rfc.section.5.2.p.1">In order to avoid fragmentation, it is RECOMMENDED that the virtual IPv4 interface is configured with an MTU value identical to the configured IPv6 Path MTU - 20. This ensures that the application may do its part in avoiding IP-level fragmentation from occurring, e.g., by segmenting/fragmenting outbound packets at the application layer, and advertising the maximum size its peer may use for inbound packets (e.g., through the use of the TCP MSS option).  </p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#Acknowledgements" id="Acknowledgements">Acknowledgements</a></h1>
+<p id="rfc.section.6.p.1">The author would like to especially thank the authors of <a href="#RFC6877">464XLAT</a> <cite title="NONE">[RFC6877]</cite>: Masataka Mawatari, Masanobu Kawashima, and Cameron Byrne. The architecture described by this document is merely an adaptation of their work to a data centre environment, and could not have happened without them.  </p>
+<p id="rfc.section.6.p.2">The author would like also to thank the following individuals for their contributions, suggestions, corrections, and criticisms: [YOUR NAME GOES HERE].  </p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> Requirements Language</h1>
+<p id="rfc.section.7.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.  </p>
+<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
+<p id="rfc.section.8.p.1">This draft makes no request of the IANA. The RFC Editor may remove this section prior to publication.  </p>
+<h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#Security" id="Security">Security Considerations</a></h1>
+<p id="rfc.section.9.p.1">This section discussues security considerations specific to the use of a SIIT Host Agent. See the <a href="#I-D.anderson-v6ops-siit-dc">Security Considerations in I-D.anderson-v6ops-siit-dc</a> <cite title="NONE">[I-D.anderson-v6ops-siit-dc]</cite> for additional security considerations applicable to the SIIT-DC architecture in general.  </p>
+<h1 id="rfc.section.9.1"><a href="#rfc.section.9.1">9.1.</a> <a href="#sec_loops" id="sec_loops">Address Spoofing</a></h1>
+<p id="rfc.section.9.1.p.1">If the SIIT Host Agent receives an IPv4 packet from the application from a different source address than the one it has a Static Address Mapping for, the both the source and destination addresses will be rewritten according to <a href="#RFC6052">[RFC6052]</a>. After undergoing the reverse translation in the SIIT Gateway, the resulting IPv4 packet routed to the IPv4 network will have a spoofed IPv4 source address.  The SIIT Host Agent should therefore ensure that ingress filtering (cf. <a href="#RFC2827">BCP38</a> <cite title="NONE">[RFC2827]</cite> is used on the SIIT Host Agent's IPv4 interface, so that such packets are immediately discarded.  </p>
+<p id="rfc.section.9.1.p.2">If the SIIT Host Agent receives an IPv6 packet with both the source and destination address equal to the one it has a static mapping from, the resulting packet would appear to the application as locally generated, as both the source address and the destination address will be the same address as the one configured on the virtual IPv4 interface. This could trick the application into thinking this packet came from a trusted source, and give elevated privileges accordingly.  To prevent this, the SIIT Host Agent should discard any received IPv6 packets that have a source address that is equal either to either the IPv4 (after undergoing <a href="#RFC6052">[RFC6052]</a> translation) or the IPv6 address in the static mapping.  </p>
+<h1 id="rfc.references"><a href="#rfc.references">10.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">10.1.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
       <td class="reference">
-        <b id="I-D.anderson-siit-dc">[I-D.anderson-siit-dc]</b>
+        <b id="I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</b>
       </td>
-      <td class="top"><a>Anderson, T.</a>, "<a href="http://tools.ietf.org/html/draft-anderson-siit-dc-00">Stateless IP/ICMP Translation in IPv6 Data Centre Environments</a>", Internet-Draft draft-anderson-siit-dc-00, November 2012.</td>
+      <td class="top"><a>Anderson, T.</a>, "<a href="http://tools.ietf.org/html/draft-anderson-v6ops-siit-dc-00">SIIT-DC: Stateless IP/ICMP Translation in IPv6 Data Centre Environments</a>", Internet-Draft draft-anderson-v6ops-siit-dc-00, September 2014.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -558,7 +580,7 @@
     </tr>
   </tbody>
 </table>
-<h1 id="rfc.references.2"><a href="#rfc.references.2">9.2.</a> Informative References</h1>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">10.2.</a> Informative References</h1>
 <table>
   <tbody>
     <tr>
@@ -603,7 +625,7 @@
 	  <span>Vitaminveien 1A</span>
 
 	  <span class="vcardline">
-		<span class="locality">NO-0485 Oslo</span>,  
+		<span class="locality">0485 Oslo</span>,  
 		<span class="region"></span>
 		<span class="code"></span>
 	  </span>
