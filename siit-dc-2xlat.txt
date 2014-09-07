@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 05, 2014
-Expires: March 09, 2015
+Intended status: Standards Track                      September 07, 2014
+Expires: March 11, 2015
 
 
                      SIIT-DC: Dual Translation Mode
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 09, 2015.
+   This Internet-Draft will expire on March 11, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 1]
+Anderson                 Expires March 11, 2015                 [Page 1]
 
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 2]
+Anderson                 Expires March 11, 2015                 [Page 2]
 
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
@@ -165,7 +165,7 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 3]
+Anderson                 Expires March 11, 2015                 [Page 3]
 
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
@@ -221,7 +221,7 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 4]
+Anderson                 Expires March 11, 2015                 [Page 4]
 
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
@@ -277,7 +277,7 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 5]
+Anderson                 Expires March 11, 2015                 [Page 5]
 
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
@@ -333,7 +333,7 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 6]
+Anderson                 Expires March 11, 2015                 [Page 6]
 
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
@@ -389,7 +389,7 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 7]
+Anderson                 Expires March 11, 2015                 [Page 7]
 
 Internet-Draft                SIIT-DC-2XLAT               September 2014
 
@@ -445,4 +445,4 @@ Author's Address
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 8]
+Anderson                 Expires March 11, 2015                 [Page 8]

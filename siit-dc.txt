@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 05, 2014
-Expires: March 09, 2015
+Intended status: Standards Track                      September 07, 2014
+Expires: March 11, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation in IPv6 Data Centre Environments
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 09, 2015.
+   This Internet-Draft will expire on March 11, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 1]
+Anderson                 Expires March 11, 2015                 [Page 1]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 2]
+Anderson                 Expires March 11, 2015                 [Page 2]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -165,7 +165,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 3]
+Anderson                 Expires March 11, 2015                 [Page 3]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -221,7 +221,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 4]
+Anderson                 Expires March 11, 2015                 [Page 4]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -277,7 +277,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 5]
+Anderson                 Expires March 11, 2015                 [Page 5]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -285,7 +285,7 @@ Internet-Draft                   SIIT-DC                  September 2014
    Static Address Mapping  A bi-directional mapping between an IPv4
       Service Address and an IPv6 Service Address configured in the SIIT
       Gateway.  When translating between IPv4 and IPv6, the SIIT Gateway
-      changes the adddress fields in the translated packet's IP header
+      changes the address fields in the translated packet's IP header
       according to any matching Static Address Mapping.
 
    Translation Prefix  An IPv6 prefix into which the entire IPv4 address
@@ -333,7 +333,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 6]
+Anderson                 Expires March 11, 2015                 [Page 6]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -384,18 +384,18 @@ Internet-Draft                   SIIT-DC                  September 2014
 
    In this example, 198.51.0.0/24 is allocated as an IPv4 Service
    Address Pool.  Individual IPv4 Service Addresses are assigned from
-   this poool.  The provider must route this prefix to the SIIT
-   Gateway's IPv4 interface.  Note that there are no restrictions on how
+   this pool.  The provider must route this prefix to the SIIT Gateway's
+   IPv4 interface.  Note that there are no restrictions on how many IPv4
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 7]
+Anderson                 Expires March 11, 2015                 [Page 7]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
 
-   many IPv4 Service Address Pools are used or their prefix length, as
-   long as they are all routed to the SIIT Gateway's IPv4 interface.
+   Service Address Pools are used or their prefix length, as long as
+   they are all routed to the SIIT Gateway's IPv4 interface.
 
    The Static Address Mapping list is used when translating an IPv4
    Service Address (here 198.51.0.1) to its corresponding IPv6 Service
@@ -445,7 +445,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 8]
+Anderson                 Expires March 11, 2015                 [Page 8]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -501,7 +501,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                 [Page 9]
+Anderson                 Expires March 11, 2015                 [Page 9]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -557,7 +557,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 10]
+Anderson                 Expires March 11, 2015                [Page 10]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -577,10 +577,10 @@ Internet-Draft                   SIIT-DC                  September 2014
    likely work correctly through SIIT as well.
 
    Higher-level protocols that embed IP addresses as part of their
-   payload are especially problematic, ss noted in [RFC2663], [RFC2993],
-   and [RFC3022].  Such protocols most likely not work through any form
-   of address translation, including SIIT.  One well-known example of
-   ssuch a protocol is FTP [RFC0959].
+   payload are especially problematic, as noted in [RFC2663], [RFC2993],
+   and [RFC3022].  Such protocols will most likely not work through any
+   form of address translation, including SIIT.  One well-known example
+   of such a protocol is FTP [RFC0959].
 
    The SIIT-DC architecture may be extended with a Host Agent that
    reverses the translation performed by the SIIT Gateway before passing
@@ -613,7 +613,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 11]
+Anderson                 Expires March 11, 2015                [Page 11]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -626,7 +626,7 @@ Internet-Draft                   SIIT-DC                  September 2014
    An alternative approach to the above would be to make use of an SIIT
    Host Agent as described in [I-D.anderson-v6ops-siit-dc-2xlat].  This
    provides the application with seemingly native IPv4 connectivity,
-   which it may use for both inbound and outbond communication without
+   which it may use for both inbound and outbound communication without
    requiring the application to select a specific source address for its
    outbound communications.
 
@@ -669,7 +669,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 12]
+Anderson                 Expires March 11, 2015                [Page 12]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -690,7 +690,7 @@ Internet-Draft                   SIIT-DC                  September 2014
    translator is located a long way from the optimal path, all packets
    in both directions must make a detour.  This would increase the RTT
    between the server and the end user by by two times the extra latency
-   incurred by the detour, as well as cause unneccesary load on the
+   incurred by the detour, as well as cause unnecessary load on the
    network links on the detour path.
 
    The ideal location of the SIIT Gateways would be a logical function
@@ -725,7 +725,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 13]
+Anderson                 Expires March 11, 2015                [Page 13]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -781,7 +781,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 14]
+Anderson                 Expires March 11, 2015                [Page 14]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -798,9 +798,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
    o  It may reduce its Path MTU value to exactly 1280, and also include
       a Fragmentation header in each subsequent packet sent to that
-      destination.  This Fragmention header works signals the SIIT
-      Gateway to clear the DF flag in the resulting IPv4 packet, and
-      also provides the Identification value.
+      destination.  The Fragmentation header signals to the the SIIT
+      Gateway that the DF flag should be cleared in the resulting IPv4
+      packet, and it also provides the Identification value.
 
    If the use of the IPv6 Fragmentation header is problematic, and the
    operator has IPv6 servers that implement the second option above, the
@@ -837,7 +837,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 15]
+Anderson                 Expires March 11, 2015                [Page 15]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -893,7 +893,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 16]
+Anderson                 Expires March 11, 2015                [Page 16]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -938,8 +938,8 @@ Internet-Draft                   SIIT-DC                  September 2014
 
    The author would like to thank the following individuals for their
    contributions, suggestions, corrections, and criticisms: Cameron
-   Byrne, Ross Chandler, Dagfinn Ilmari Mannsaaker, Lars Olafsen, [YOUR
-   NAME GOES HERE].
+   Byrne, Ross Chandler, Dagfinn Ilmari Mannsaaker, Lars Olafsen, Stig
+   Sandbeck Mathisen, [YOUR NAME GOES HERE].
 
 
 
@@ -949,7 +949,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 17]
+Anderson                 Expires March 11, 2015                [Page 17]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1005,7 +1005,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 18]
+Anderson                 Expires March 11, 2015                [Page 18]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1061,7 +1061,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 19]
+Anderson                 Expires March 11, 2015                [Page 19]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1117,7 +1117,7 @@ Appendix A.  Complete SIIT topology example
 
 
 
-Anderson                 Expires March 09, 2015                [Page 20]
+Anderson                 Expires March 11, 2015                [Page 20]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1173,7 +1173,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 21]
+Anderson                 Expires March 11, 2015                [Page 21]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1229,7 +1229,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 22]
+Anderson                 Expires March 11, 2015                [Page 22]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1285,7 +1285,7 @@ B.2.  IPv4-only + NAPT44
 
 
 
-Anderson                 Expires March 09, 2015                [Page 23]
+Anderson                 Expires March 11, 2015                [Page 23]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1299,8 +1299,8 @@ Internet-Draft                   SIIT-DC                  September 2014
    o  Does not provide any form of IPv6 availability.
 
    o  Requires network devices that track all flow state, which may
-      create a perfomance bottleneck and be an easy target for Denial of
-      Service attacks.
+      create a performance bottleneck and be an easy target for Denial
+      of Service attacks.
 
    o  Limits routing flexibility (prevents closest exit routing), as
       outbound traffic must pass across the same NAPT44 device that
@@ -1341,7 +1341,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 24]
+Anderson                 Expires March 11, 2015                [Page 24]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1397,7 +1397,7 @@ Author's Address
 
 
 
-Anderson                 Expires March 09, 2015                [Page 25]
+Anderson                 Expires March 11, 2015                [Page 25]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1453,4 +1453,4 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 09, 2015                [Page 26]
+Anderson                 Expires March 11, 2015                [Page 26]

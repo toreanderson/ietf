@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 05, 2014
-Expires: March 09, 2015
+Intended status: Standards Track                      September 07, 2014
+Expires: March 11, 2015
 
 
                      SIIT-DC: Dual Translation Mode
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 09, 2015.
+   This Internet-Draft will expire on March 11, 2015.
 
 Copyright Notice
 
@@ -75,8 +75,8 @@ Table of Contents
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 05, 2014
-Expires: March 09, 2015
+Intended status: Standards Track                      September 07, 2014
+Expires: March 11, 2015
 
 
                      SIIT-DC: Dual Translation Mode
@@ -107,7 +107,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 09, 2015.
+   This Internet-Draft will expire on March 11, 2015.
 
 Copyright Notice
 
