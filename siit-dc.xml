@@ -447,9 +447,9 @@ app.domain.tld.    IN A     198.51.0.1
         Higher-level protocols that embed IP addresses as part of their
         payload are especially problematic, as noted in <xref
         target="RFC2663"/>, <xref target="RFC2993"/>, and <xref
-        target="RFC3022"/>. Such protocols will most likely not work through any
-        form of address translation, including SIIT. One well-known example of
-        such a protocol is <xref target="RFC0959">FTP</xref>.
+        target="RFC3022"/>. Such protocols will most likely not work through
+        any form of address translation, including SIIT. One well-known
+        example of such a protocol is <xref target="RFC0959">FTP</xref>.
         </t>
         <t>
         The SIIT-DC architecture may be extended with a Host Agent that
