@@ -662,9 +662,9 @@ app.domain.tld.    IN A     198.51.0.1
             Packet Too Big. This causes no problems for the SIIT function.</t>
             <t>It may reduce its Path MTU value to exactly 1280, and also
             include a Fragmentation header in each subsequent packet sent to
-            that destination. This Fragmentation header works signals the SIIT
-            Gateway to clear the DF flag in the resulting IPv4 packet, and
-            also provides the Identification value.</t>
+            that destination. The Fragmentation header signals to the the SIIT
+            Gateway that the DF flag should be cleared in the resulting IPv4
+            packet, and it also provides the Identification value.</t>
           </list>
           </t>
           <t>
