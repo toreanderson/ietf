@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 07, 2014
-Expires: March 11, 2015
+Intended status: Standards Track                      September 09, 2014
+Expires: March 13, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation in IPv6 Data Centre Environments
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 11, 2015.
+   This Internet-Draft will expire on March 13, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Anderson                 Expires March 11, 2015                 [Page 1]
+Anderson                 Expires March 13, 2015                 [Page 1]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Anderson                 Expires March 11, 2015                 [Page 2]
+Anderson                 Expires March 13, 2015                 [Page 2]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -165,7 +165,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                 [Page 3]
+Anderson                 Expires March 13, 2015                 [Page 3]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -221,7 +221,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                 [Page 4]
+Anderson                 Expires March 13, 2015                 [Page 4]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -277,7 +277,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                 [Page 5]
+Anderson                 Expires March 13, 2015                 [Page 5]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -333,7 +333,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                 [Page 6]
+Anderson                 Expires March 13, 2015                 [Page 6]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -348,18 +348,18 @@ Internet-Draft                   SIIT-DC                  September 2014
               (the IPv6 internet)         (the IPv4 Internet)
                  |                                  |
                  |                                  |
-                 |        +-----------------<198.51.0.0/24>--+
-                 |        |                                  |
-                 |        |           SIIT Gateway           |
-                 |        |           ============           |
-                 |        |                                  |
-                 |        |       Translation Prefix:        |
-                 |        |         2001:db8:46::/96         |
-                 |        |                                  |
-                 |        |     Static Address Mapping:      |
-                 |        | 198.51.0.1 <=> 2001:db8:12:34::1 |
-                 |        |                                  |
-                 |        +--------------<2001:db8:46::/96>--+
+                 |        +------------------<192.0.2.0/24>-+
+                 |        |                                 |
+                 |        |           SIIT Gateway          |
+                 |        |           ============          |
+                 |        |                                 |
+                 |        |       Translation Prefix:       |
+                 |        |         2001:db8:46::/96        |
+                 |        |                                 |
+                 |        |     Static Address Mapping:     |
+                 |        | 192.0.2.1 <=> 2001:db8:12:34::1 |
+                 |        |                                 |
+                 |        +--------------<2001:db8:46::/96>-+
                  |                               |
                  |                               |
                 (the IPv6-only data centre network)
@@ -382,14 +382,14 @@ Internet-Draft                   SIIT-DC                  September 2014
 
                                  Figure 1
 
-   In this example, 198.51.0.0/24 is allocated as an IPv4 Service
-   Address Pool.  Individual IPv4 Service Addresses are assigned from
-   this pool.  The provider must route this prefix to the SIIT Gateway's
-   IPv4 interface.  Note that there are no restrictions on how many IPv4
+   In this example, 192.0.2.0/24 is allocated as an IPv4 Service Address
+   Pool.  Individual IPv4 Service Addresses are assigned from this pool.
+   The provider must route this prefix to the SIIT Gateway's IPv4
+   interface.  Note that there are no restrictions on how many IPv4
 
 
 
-Anderson                 Expires March 11, 2015                 [Page 7]
+Anderson                 Expires March 13, 2015                 [Page 7]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -398,7 +398,7 @@ Internet-Draft                   SIIT-DC                  September 2014
    they are all routed to the SIIT Gateway's IPv4 interface.
 
    The Static Address Mapping list is used when translating an IPv4
-   Service Address (here 198.51.0.1) to its corresponding IPv6 Service
+   Service Address (here 192.0.2.1) to its corresponding IPv6 Service
    Address (here 2001:db8:12:34::1) and vice versa.  When the SIIT
    Gateway translates an IPv4 packet to IPv6, any IPv4 Service Address
    found in the original IPv4 header will be replaced with the
@@ -428,7 +428,7 @@ Internet-Draft                   SIIT-DC                  September 2014
                 DNS Configuration for SIIT-enabled service
 
                app.domain.tld.    IN AAAA  2001:db8:12:34::1
-               app.domain.tld.    IN A     198.51.0.1
+               app.domain.tld.    IN A     192.0.2.1
 
                                  Figure 2
 
@@ -445,19 +445,19 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                 [Page 8]
+Anderson                 Expires March 13, 2015                 [Page 8]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
 
-            +-------------------------------------------------+
-            | IP Version:           4                         |
-            | Source Address:       203.0.113.50              |
-            | Destination Address:  198.51.0.1                |
-            | Protocol:             TCP                       |
-            |-------------------------------------------------|
-            | TCP SYN [...]                                   |
-            +-------------------------------------------------+
+            +------------------------------------------------+
+            | IP Version:           4                        |
+            | Source Address:       203.0.113.50             |
+            | Destination Address:  192.0.2.1                |
+            | Protocol:             TCP                      |
+            |------------------------------------------------|
+            | TCP SYN [...]                                  |
+            +------------------------------------------------+
 
                                  Figure 3
 
@@ -501,7 +501,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                 [Page 9]
+Anderson                 Expires March 13, 2015                 [Page 9]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -522,14 +522,14 @@ Internet-Draft                   SIIT-DC                  September 2014
 
                  Stage 4: Server -> Client response, IPv4
 
-            +-------------------------------------------------+
-            | IP Version:           4                         |
-            | Source Address:       198.51.0.2                |
-            | Destination Address:  203.0.113.50              |
-            | Protocol:             TCP                       |
-            |-------------------------------------------------|
-            | TCP SYN+ACK [...]                               |
-            +-------------------------------------------------+
+            +------------------------------------------------+
+            | IP Version:           4                        |
+            | Source Address:       192.0.2.2                |
+            | Destination Address:  203.0.113.50             |
+            | Protocol:             TCP                      |
+            |------------------------------------------------|
+            | TCP SYN+ACK [...]                              |
+            +------------------------------------------------+
 
                                  Figure 6
 
@@ -557,7 +557,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 10]
+Anderson                 Expires March 13, 2015                [Page 10]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -613,7 +613,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 11]
+Anderson                 Expires March 13, 2015                [Page 11]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -654,7 +654,7 @@ Internet-Draft                   SIIT-DC                  September 2014
    single operation by simply stripping off the first 96 bits; second,
    it allows for IPv4 addresses to be embedded directly into the text
    representation of an IPv6 address using the familiar dotted quad
-   notation, e.g., "2001:db8::192.0.2.10" (cf. Section 2.4 of RFC6052
+   notation, e.g., "2001:db8::198.51.100.10" (cf. Section 2.4 of RFC6052
    [RFC6052])), instead of being converted to hexadecimal notation.
    This makes it easier to write IPV6 ACLs and similar that match
    translated endpoints in the IPv4 Internet.  Use of a /96 prefix
@@ -669,7 +669,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 12]
+Anderson                 Expires March 13, 2015                [Page 12]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -725,7 +725,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 13]
+Anderson                 Expires March 13, 2015                [Page 13]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -781,7 +781,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 14]
+Anderson                 Expires March 13, 2015                [Page 14]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -837,7 +837,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 15]
+Anderson                 Expires March 13, 2015                [Page 15]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -857,20 +857,20 @@ Internet-Draft                   SIIT-DC                  September 2014
 
    An example of such a bidirectional Static Address Mapping would be:
 
-   o  198.51.0.1 <=> 2001:db8:12:34::1
+   o  192.0.2.1 <=> 2001:db8:12:34::1
 
    To accomplish the same using unidirectional mappings, the following
    two mappings must instead be configured:
 
-   o  198.51.0.1 => 2001:db8:12:34::1
+   o  192.0.2.1 => 2001:db8:12:34::1
 
-   o  2001:db8:12:34::1 => 198.51.0.1
+   o  2001:db8:12:34::1 => 192.0.2.1
 
    In both cases, if the SIIT Gateway receives an IPv6 packet that has
    2001:db8:12:34::c in either of the source and destination fields of
-   the IP header, it MUST rewrite this field to 198.51.0.1 when
+   the IP header, it MUST rewrite this field to 192.0.2.1 when
    translating to IPv4.  Similarly, if the SIIT Gateway receives an IPv4
-   packet that has 198.51.0.1 as the either the source or destination
+   packet that has 192.0.2.1 as the either the source or destination
    fields of the IP header, it MUST rewrite this field to
    2001:db8:12:34::c. For all IPv4 or IPv6 source or destination field
    values for which there is no Static Address Mapping, [RFC6052]
@@ -893,7 +893,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 16]
+Anderson                 Expires March 13, 2015                [Page 16]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -937,9 +937,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 6.  Acknowledgements
 
    The author would like to thank the following individuals for their
-   contributions, suggestions, corrections, and criticisms: Cameron
-   Byrne, Ross Chandler, Dagfinn Ilmari Mannsaaker, Lars Olafsen, Stig
-   Sandbeck Mathisen, [YOUR NAME GOES HERE].
+   contributions, suggestions, corrections, and criticisms: Fred Baker,
+   Cameron Byrne, Ross Chandler, Dagfinn Ilmari Mannsaaker, Lars
+   Olafsen, Stig Sandbeck Mathisen, [YOUR NAME GOES HERE].
 
 
 
@@ -949,7 +949,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 17]
+Anderson                 Expires March 13, 2015                [Page 17]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1005,7 +1005,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 18]
+Anderson                 Expires March 13, 2015                [Page 18]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1061,7 +1061,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 19]
+Anderson                 Expires March 13, 2015                [Page 19]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1117,7 +1117,7 @@ Appendix A.  Complete SIIT topology example
 
 
 
-Anderson                 Expires March 11, 2015                [Page 20]
+Anderson                 Expires March 13, 2015                [Page 20]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1173,39 +1173,39 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 21]
+Anderson                 Expires March 13, 2015                [Page 21]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
 
-                   /---------------------------------\ /---------------\
-                   |          IPv4 Internet          | | IPv6 Internet |
-                   \-+-----------------------------+-/ \--------+------/
-                     |                             |            |
-                     | <----------[BGP]----------> |            |
-                     |                             |            |
-   +---------<198.51.0.0/24>----------+ +--<198.51.0.0/24>---+  |
-   |                                  | |                    |  |
-   |          SIIT Gateway 1          | |   SIIT Gateway 2   |  |
-   |          ==============          | |   ==============   |  |
-   |                                  | |                    |  |
-   |       Translation Prefix:        | |                    |  |
-   |         2001:db8:46::/96         | |                    |  |
-   |                                  | |                    |  |
-   |     Static Address Mappings:     | |  Exactly the same  |  |
-   | 198.51.0.1 <=> 2001:db8:12:34::1 | |  configuration as  |  |
-   | 198.51.0.2 <=> 2001:db8:12:34::3 | |   SIIT Gateway 1   |  |
-   | 198.51.0.3 <=> 2001:db8:fe:dc::1 | |                    |  |
-   | 198.51.0.4 <=> 2001:db8:12:34::4 | |                    |  |
-   | [...]                            | |                    |  |
-   |                                  | |                    |  |
-   +--------<2001:db8:46::/96>--------+ +-<2001:db8:46::/96>-+  |
-                     |                             |            |
-                     | <---------[ECMP]----------> |            |
-                     |                             |            |
-   /-----------------+-----------------------------+-\          |
-   |            IPv6 data centre network             +----------+
-   \-+-----------------------------------+-----------/
+                   /--------------------------------\ /---------------\
+                   |          IPv4 Internet         | | IPv6 Internet |
+                   \-+----------------------------+-/ \--------+------/
+                     |                            |            |
+                     | <----------[BGP]---------> |            |
+                     |                            |            |
+   +---------<192.0.2.0/24>----------+ +---<192.0.2.0/24>---+  |
+   |                                 | |                    |  |
+   |          SIIT Gateway 1         | |   SIIT Gateway 2   |  |
+   |          ==============         | |   ==============   |  |
+   |                                 | |                    |  |
+   |       Translation Prefix:       | |                    |  |
+   |         2001:db8:46::/96        | |                    |  |
+   |                                 | |                    |  |
+   |     Static Address Mappings:    | |  Exactly the same  |  |
+   | 192.0.2.1 <=> 2001:db8:12:34::1 | |  configuration as  |  |
+   | 192.0.2.2 <=> 2001:db8:12:34::3 | |   SIIT Gateway 1   |  |
+   | 192.0.2.3 <=> 2001:db8:fe:dc::1 | |                    |  |
+   | 192.0.2.4 <=> 2001:db8:12:34::4 | |                    |  |
+   | [...]                           | |                    |  |
+   |                                 | |                    |  |
+   +--------<2001:db8:46::/96>-------+ +-<2001:db8:46::/96>-+  |
+                     |                            |            |
+                     | <---------[ECMP]---------> |            |
+                     |                            |            |
+   /-----------------+----------------------------+-\          |
+   |            IPv6 data centre network            +----------+
+   \-+-----------------------------------+----------/
      |                                   |
      | Customer A's server LAN           | Customer B's server LAN
      | 2001:db8:12:34::/64               | 2001:db8:fe:dc::/64
@@ -1229,7 +1229,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 22]
+Anderson                 Expires March 13, 2015                [Page 22]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1285,7 +1285,7 @@ B.2.  IPv4-only + NAPT44
 
 
 
-Anderson                 Expires March 11, 2015                [Page 23]
+Anderson                 Expires March 13, 2015                [Page 23]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1341,7 +1341,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 24]
+Anderson                 Expires March 13, 2015                [Page 24]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1397,7 +1397,7 @@ Author's Address
 
 
 
-Anderson                 Expires March 11, 2015                [Page 25]
+Anderson                 Expires March 13, 2015                [Page 25]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1453,4 +1453,4 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 11, 2015                [Page 26]
+Anderson                 Expires March 13, 2015                [Page 26]

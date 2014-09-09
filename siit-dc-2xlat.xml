@@ -143,7 +143,7 @@
       <t>
       The following figure shows how an application (that is presumably
       incompatible with standard SIIT-DC) is being made available to the IPv4
-      Internet on the IPv4 address 198.51.0.2. The application will be able to
+      Internet on the IPv4 address 192.0.2.2. The application will be able to
       know that this is its local address and thus be able to provide correct
       references to it in application payload.
       </t>
@@ -179,49 +179,49 @@
    (the IPv6 internet)         (the IPv4 Internet)
       |                                  |
       |                                  |
-      |        +-----------------<198.51.0.0/24>--+
-      |        |                                  |
-      |        |           SIIT Gateway           |
-      |        |           ============           |
-      |        |                                  |
-      |        |       Translation Prefix:        |
-      |        |         2001:db8:46::/96         |
-      |        |                                  |
-      |        |     Static Address Mapping:      |
-      |        | 198.51.0.2 <=> 2001:db8:12:34::3 |
-      |        |                                  |
-      |        +--------------<2001:db8:46::/96>--+
+      |        +------------------<192.0.2.0/24>-+
+      |        |                                 |
+      |        |           SIIT Gateway          |
+      |        |           ============          |
+      |        |                                 |
+      |        |       Translation Prefix:       |
+      |        |         2001:db8:46::/96        |
+      |        |                                 |
+      |        |     Static Address Mapping:     |
+      |        | 192.0.2.2 <=> 2001:db8:12:34::3 |
+      |        |                                 |
+      |        +--------------<2001:db8:46::/96>-+
       |                               |
       |                               |
      (the IPv6-only data centre network)
       |                               |
       |                               |
-+--<2001:db8:12:34::2>-------<2001:db8:12:34::3>----+
-|     |                               |             |
-|     |          IPv6-only server     |             |
-|     |          ================     |             |
-|     |                               |             |
-|     |        +-------------<2001:db8:12:34::3>--+ |
-|     |        |                                  | |
-|     |        |         SIIT Host Agent          | |
-|     |        |         ===============          | |
-|     |        |                                  | |
-|     |        |       Translation Prefix:        | |
-|     |        |         2001:db8:46::/96         | |
-|     |        |                                  | |
-|     |        |     Static Address Mapping:      | |
-|     |        | 198.51.0.2 <=> 2001:db8:12:34::3 | |
-|     |        |                                  | |
-|     |        +---------------------<198.51.0.2>-+ |
-|     |                                   |         |
-|     |                                   |         |
-| +-[2001:db8:12:34::2]--------------[198.51.0.2]-+ |
-| |      AF_INET6                      AF_INET    | |
-| |                                               | |
-| |           Dual-stacked application            | |
-| |                                               | |
-| +-----------------------------------------------+ |
-+---------------------------------------------------+
++--<2001:db8:12:34::2>-------<2001:db8:12:34::3>---+
+|     |                               |            |
+|     |          IPv6-only server     |            |
+|     |          ================     |            |
+|     |                               |            |
+|     |        +-------------<2001:db8:12:34::3>-+ |
+|     |        |                                 | |
+|     |        |         SIIT Host Agent         | |
+|     |        |         ===============         | |
+|     |        |                                 | |
+|     |        |       Translation Prefix:       | |
+|     |        |         2001:db8:46::/96        | |
+|     |        |                                 | |
+|     |        |     Static Address Mapping:     | |
+|     |        | 192.0.2.2 <=> 2001:db8:12:34::3 | |
+|     |        |                                 | |
+|     |        +---------------------<192.0.2.2>-+ |
+|     |                                   |        |
+|     |                                   |        |
+| +-[2001:db8:12:34::2]--------------[192.0.2.2]-+ |
+| |      AF_INET6                      AF_INET   | |
+| |                                              | |
+| |           Dual-stacked application           | |
+| |                                              | |
+| +----------------------------------------------+ |
++--------------------------------------------------+
         ]]></artwork>
       </figure>
       </t>
@@ -260,8 +260,8 @@
       </t>
       <t>
       The author would like also to thank the following individuals for their
-      contributions, suggestions, corrections, and criticisms: Tobias Brox,
-      [YOUR NAME GOES HERE].
+      contributions, suggestions, corrections, and criticisms: Fred Baker,
+      Tobias Brox, [YOUR NAME GOES HERE].
       </t>
     </section>
     <section title="Requirements Language">

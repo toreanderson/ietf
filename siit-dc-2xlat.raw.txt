@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 07, 2014
-Expires: March 11, 2015
+Intended status: Standards Track                      September 09, 2014
+Expires: March 13, 2015
 
 
                      SIIT-DC: Dual Translation Mode
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 11, 2015.
+   This Internet-Draft will expire on March 13, 2015.
 
 Copyright Notice
 
@@ -75,8 +75,8 @@ Table of Contents
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 07, 2014
-Expires: March 11, 2015
+Intended status: Standards Track                      September 09, 2014
+Expires: March 13, 2015
 
 
                      SIIT-DC: Dual Translation Mode
@@ -107,7 +107,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 11, 2015.
+   This Internet-Draft will expire on March 13, 2015.
 
 Copyright Notice
 
@@ -218,8 +218,8 @@ Copyright Notice
 
    The following figure shows how an application (that is presumably
    incompatible with standard SIIT-DC) is being made available to the
-   IPv4 Internet on the IPv4 address 198.51.0.2.  The application will
-   be able to know that this is its local address and thus be able to
+   IPv4 Internet on the IPv4 address 192.0.2.2.  The application will be
+   able to know that this is its local address and thus be able to
    provide correct references to it in application payload.
 
    The figure also shows how the same application is available over IPv6
@@ -250,49 +250,49 @@ Copyright Notice
               (the IPv6 internet)         (the IPv4 Internet)
                  |                                  |
                  |                                  |
-                 |        +-----------------<198.51.0.0/24>--+
-                 |        |                                  |
-                 |        |           SIIT Gateway           |
-                 |        |           ============           |
-                 |        |                                  |
-                 |        |       Translation Prefix:        |
-                 |        |         2001:db8:46::/96         |
-                 |        |                                  |
-                 |        |     Static Address Mapping:      |
-                 |        | 198.51.0.2 <=> 2001:db8:12:34::3 |
-                 |        |                                  |
-                 |        +--------------<2001:db8:46::/96>--+
+                 |        +------------------<192.0.2.0/24>-+
+                 |        |                                 |
+                 |        |           SIIT Gateway          |
+                 |        |           ============          |
+                 |        |                                 |
+                 |        |       Translation Prefix:       |
+                 |        |         2001:db8:46::/96        |
+                 |        |                                 |
+                 |        |     Static Address Mapping:     |
+                 |        | 192.0.2.2 <=> 2001:db8:12:34::3 |
+                 |        |                                 |
+                 |        +--------------<2001:db8:46::/96>-+
                  |                               |
                  |                               |
                 (the IPv6-only data centre network)
                  |                               |
                  |                               |
-           +--<2001:db8:12:34::2>-------<2001:db8:12:34::3>----+
-           |     |                               |             |
-           |     |          IPv6-only server     |             |
-           |     |          ================     |             |
-           |     |                               |             |
-           |     |        +-------------<2001:db8:12:34::3>--+ |
-           |     |        |                                  | |
-           |     |        |         SIIT Host Agent          | |
-           |     |        |         ===============          | |
-           |     |        |                                  | |
-           |     |        |       Translation Prefix:        | |
-           |     |        |         2001:db8:46::/96         | |
-           |     |        |                                  | |
-           |     |        |     Static Address Mapping:      | |
-           |     |        | 198.51.0.2 <=> 2001:db8:12:34::3 | |
-           |     |        |                                  | |
-           |     |        +---------------------<198.51.0.2>-+ |
-           |     |                                   |         |
-           |     |                                   |         |
-           | +-[2001:db8:12:34::2]--------------[198.51.0.2]-+ |
-           | |      AF_INET6                      AF_INET    | |
-           | |                                               | |
-           | |           Dual-stacked application            | |
-           | |                                               | |
-           | +-----------------------------------------------+ |
-           +---------------------------------------------------+
+           +--<2001:db8:12:34::2>-------<2001:db8:12:34::3>---+
+           |     |                               |            |
+           |     |          IPv6-only server     |            |
+           |     |          ================     |            |
+           |     |                               |            |
+           |     |        +-------------<2001:db8:12:34::3>-+ |
+           |     |        |                                 | |
+           |     |        |         SIIT Host Agent         | |
+           |     |        |         ===============         | |
+           |     |        |                                 | |
+           |     |        |       Translation Prefix:       | |
+           |     |        |         2001:db8:46::/96        | |
+           |     |        |                                 | |
+           |     |        |     Static Address Mapping:     | |
+           |     |        | 192.0.2.2 <=> 2001:db8:12:34::3 | |
+           |     |        |                                 | |
+           |     |        +---------------------<192.0.2.2>-+ |
+           |     |                                   |        |
+           |     |                                   |        |
+           | +-[2001:db8:12:34::2]--------------[192.0.2.2]-+ |
+           | |      AF_INET6                      AF_INET   | |
+           | |                                              | |
+           | |           Dual-stacked application           | |
+           | |                                              | |
+           | +----------------------------------------------+ |
+           +--------------------------------------------------+
 
                                  Figure 1
 
@@ -327,8 +327,8 @@ Copyright Notice
    happened without them.
 
    The author would like also to thank the following individuals for
-   their contributions, suggestions, corrections, and criticisms: Tobias
-   Brox, [YOUR NAME GOES HERE].
+   their contributions, suggestions, corrections, and criticisms: Fred
+   Baker, Tobias Brox, [YOUR NAME GOES HERE].
 
 7.  Requirements Language
 

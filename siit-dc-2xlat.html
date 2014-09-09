@@ -375,7 +375,7 @@
 
   <meta name="dct.creator" content="Anderson, T." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-anderson-v6ops-siit-dc-2xlat-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-9-07" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-9-09" />
   <meta name="dct.abstract" content="This document describes an extension of the " />
   <meta name="description" content="This document describes an extension of the " />
 
@@ -396,10 +396,10 @@
 </tr>
 <tr>
   <td class="left">Intended status: Standards Track</td>
-  <td class="right">September 07, 2014</td>
+  <td class="right">September 09, 2014</td>
 </tr>
 <tr>
-  <td class="left">Expires: March 11, 2015</td>
+  <td class="left">Expires: March 13, 2015</td>
   <td class="right"></td>
 </tr>
 
@@ -421,7 +421,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on March 11, 2015.</p>
+<p>This Internet-Draft will expire on March 13, 2015.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -481,7 +481,7 @@
 <p id="rfc.section.3.p.1">The SIIT Host Agent runs on the servers hosting application which do not work correctly with the SIIT-DC architecture as specified by <a href="#I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</a>. Its task is the performing the exact same packet translation as the SIIT Gateway, only in reverse. It therefore shares the same implementation requirements as the SIIT Gateway defined in Section 4 of <a href="#I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</a>, with one exception: The SIIT Host Agent is not required to support configuring an arbitrary number of static mappings, but it must support at least one.  </p>
 <p id="rfc.section.3.p.2">The SIIT Host Agent must be configured with a Static Address Mapping that corresponds exactly with the same mapping found on the SIIT Gateway. The IPv4 address of the Static Address Mapping (i.e., the IPv4 Service Address) must be configured on a virtual network interface which applications running on the server can bind to, and the server is expected to install a default IPv4 route poining to this virtual IPv4 interface. The IPv6 address of the Static Address Mapping must be a secondary address that is routed to the server by the IPv6 network. The server must forward all packets it receives destined for this IPv6 address to the SIIT Host Agent.  </p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> Architectural Overview</h1>
-<p id="rfc.section.4.p.1">The following figure shows how an application (that is presumably incompatible with standard SIIT-DC) is being made available to the IPv4 Internet on the IPv4 address 198.51.0.2. The application will be able to know that this is its local address and thus be able to provide correct references to it in application payload.  </p>
+<p id="rfc.section.4.p.1">The following figure shows how an application (that is presumably incompatible with standard SIIT-DC) is being made available to the IPv4 Internet on the IPv4 address 192.0.2.2. The application will be able to know that this is its local address and thus be able to provide correct references to it in application payload.  </p>
 <p id="rfc.section.4.p.2">The figure also shows how the same application is available over IPv6 on its IPv6 Service Address 2001:db8:12:34::2. This is included in order to illustrate how native IPv6 connectivity is not impacted by the SIIT Host Agent, and also to illustrate how the address assigned to the SIIT Host Agent (2001:db8:12:34::3) is separate from the primary IPv6 address of the server. It is however important to note that the application in question does not have to be dual-stack capable at all. IPv4-only applications would also be able to operate behind a SIIT Host Agent in the exact same manner.  </p>
 <p id="rfc.section.4.p.3">Note that the figure below could be considered a more detailed view of Customer A's FTP server from the example topology figure in <a href="#I-D.anderson-v6ops-siit-dc">Appendix A of I-D.anderson-v6ops-siit-dc</a> <cite title="NONE">[I-D.anderson-v6ops-siit-dc]</cite>. Both figures intentionally use the exact same example IP addresses and prefixes.  </p>
 <div id="rfc.figure.1"/>
@@ -500,49 +500,49 @@
    (the IPv6 internet)         (the IPv4 Internet)
       |                                  |
       |                                  |
-      |        +-----------------&lt;198.51.0.0/24&gt;--+
-      |        |                                  |
-      |        |           SIIT Gateway           |
-      |        |           ============           |
-      |        |                                  |
-      |        |       Translation Prefix:        |
-      |        |         2001:db8:46::/96         |
-      |        |                                  |
-      |        |     Static Address Mapping:      |
-      |        | 198.51.0.2 &lt;=&gt; 2001:db8:12:34::3 |
-      |        |                                  |
-      |        +--------------&lt;2001:db8:46::/96&gt;--+
+      |        +------------------&lt;192.0.2.0/24&gt;-+
+      |        |                                 |
+      |        |           SIIT Gateway          |
+      |        |           ============          |
+      |        |                                 |
+      |        |       Translation Prefix:       |
+      |        |         2001:db8:46::/96        |
+      |        |                                 |
+      |        |     Static Address Mapping:     |
+      |        | 192.0.2.2 &lt;=&gt; 2001:db8:12:34::3 |
+      |        |                                 |
+      |        +--------------&lt;2001:db8:46::/96&gt;-+
       |                               |
       |                               |
      (the IPv6-only data centre network)
       |                               |
       |                               |
-+--&lt;2001:db8:12:34::2&gt;-------&lt;2001:db8:12:34::3&gt;----+
-|     |                               |             |
-|     |          IPv6-only server     |             |
-|     |          ================     |             |
-|     |                               |             |
-|     |        +-------------&lt;2001:db8:12:34::3&gt;--+ |
-|     |        |                                  | |
-|     |        |         SIIT Host Agent          | |
-|     |        |         ===============          | |
-|     |        |                                  | |
-|     |        |       Translation Prefix:        | |
-|     |        |         2001:db8:46::/96         | |
-|     |        |                                  | |
-|     |        |     Static Address Mapping:      | |
-|     |        | 198.51.0.2 &lt;=&gt; 2001:db8:12:34::3 | |
-|     |        |                                  | |
-|     |        +---------------------&lt;198.51.0.2&gt;-+ |
-|     |                                   |         |
-|     |                                   |         |
-| +-[2001:db8:12:34::2]--------------[198.51.0.2]-+ |
-| |      AF_INET6                      AF_INET    | |
-| |                                               | |
-| |           Dual-stacked application            | |
-| |                                               | |
-| +-----------------------------------------------+ |
-+---------------------------------------------------+
++--&lt;2001:db8:12:34::2&gt;-------&lt;2001:db8:12:34::3&gt;---+
+|     |                               |            |
+|     |          IPv6-only server     |            |
+|     |          ================     |            |
+|     |                               |            |
+|     |        +-------------&lt;2001:db8:12:34::3&gt;-+ |
+|     |        |                                 | |
+|     |        |         SIIT Host Agent         | |
+|     |        |         ===============         | |
+|     |        |                                 | |
+|     |        |       Translation Prefix:       | |
+|     |        |         2001:db8:46::/96        | |
+|     |        |                                 | |
+|     |        |     Static Address Mapping:     | |
+|     |        | 192.0.2.2 &lt;=&gt; 2001:db8:12:34::3 | |
+|     |        |                                 | |
+|     |        +---------------------&lt;192.0.2.2&gt;-+ |
+|     |                                   |        |
+|     |                                   |        |
+| +-[2001:db8:12:34::2]--------------[192.0.2.2]-+ |
+| |      AF_INET6                      AF_INET   | |
+| |                                              | |
+| |           Dual-stacked application           | |
+| |                                              | |
+| +----------------------------------------------+ |
++--------------------------------------------------+
         </pre>
 <p class="figure">Figure 1</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> Deployment Considerations</h1>
@@ -552,7 +552,7 @@
 <p id="rfc.section.5.2.p.1">In order to avoid fragmentation, it is RECOMMENDED that the virtual IPv4 interface is configured with an MTU value identical to the configured IPv6 Path MTU - 20. This ensures that the application may do its part in avoiding IP-level fragmentation from occurring, e.g., by segmenting/fragmenting outbound packets at the application layer, and advertising the maximum size its peer may use for inbound packets (e.g., through the use of the TCP MSS option).  </p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#Acknowledgements" id="Acknowledgements">Acknowledgements</a></h1>
 <p id="rfc.section.6.p.1">The author would like to especially thank the authors of <a href="#RFC6877">464XLAT</a> <cite title="NONE">[RFC6877]</cite>: Masataka Mawatari, Masanobu Kawashima, and Cameron Byrne. The architecture described by this document is merely an adaptation of their work to a data centre environment, and could not have happened without them.  </p>
-<p id="rfc.section.6.p.2">The author would like also to thank the following individuals for their contributions, suggestions, corrections, and criticisms: Tobias Brox, [YOUR NAME GOES HERE].  </p>
+<p id="rfc.section.6.p.2">The author would like also to thank the following individuals for their contributions, suggestions, corrections, and criticisms: Fred Baker, Tobias Brox, [YOUR NAME GOES HERE].  </p>
 <h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> Requirements Language</h1>
 <p id="rfc.section.7.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.  </p>
 <h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
