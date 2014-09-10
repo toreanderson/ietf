@@ -4,20 +4,22 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 09, 2014
-Expires: March 13, 2015
+Intended status: Standards Track                      September 10, 2014
+Expires: March 14, 2015
 
 
-SIIT-DC: Stateless IP/ICMP Translation in IPv6 Data Centre Environments
+SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
                     draft-anderson-v6ops-siit-dc-00
 
 Abstract
 
-   This document describes the use of Stateless IP/ICMP Translation
-   (SIIT) in data centre environments in order to simultaneously
-   facilitate IPv6 deployment and IPv4 address conservation.  It
-   describes the overall architecture, and provides guidelines for both
-   operators and implementers.
+   This document describes SIIT-DC, an extension to Stateless IP/ICMP
+   Translation (SIIT) [RFC6145] that makes it ideally suited for use in
+   IPv6 data centre environments.  SIIT-DC simultaneously facilitates
+   IPv6 deployment and IPv4 address conservation.  The overall SIIT-DC
+   architecture is described, as well as guidelines for operators.
+   Finally, the normative implementation requirements are described, as
+   a list of additions and changes to SIIT [RFC6145].
 
 Status of This Memo
 
@@ -34,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 13, 2015.
+   This Internet-Draft will expire on March 14, 2015.
 
 Copyright Notice
 
@@ -70,14 +72,14 @@ Table of Contents
      4.3.  Application Communication Pattern
      4.4.  Choice of Translation Prefix
      4.5.  Routing Considerations
-     4.6.  Location of the SIIT Gateways
+     4.6.  Location of the SIIT-DC Gateways
      4.7.  Migration from Dual Stack
      4.8.  Packet Size and Fragmentation Considerations
        4.8.1.  IP Header Size Difference
        4.8.2.  Minimum Path MTU Difference
        4.8.3.  "Atomic Fragments"
    5.  Implementation Requirements
-     5.1.  Basic Requirements
+     5.1.  Compliance with RFC6145 and RFC6052
      5.2.  Static Address Mapping Function
      5.3.  Support for Increasing the IPv6 Path MTU
      5.4.  Support for Disabling "Atomic Fragments"
@@ -88,11 +90,11 @@ Table of Contents
    8.  IANA Considerations
    9.  Security Considerations
      9.1.  Mistaking the Translation Prefix for a Trusted Network
-     9.2.  Packets Looping Through the SIIT Function
+     9.2.  Packets Looping Through the SIIT-DC Function
    10. References
      10.1.  Normative References
      10.2.  Informative References
-   Appendix A.  Complete SIIT topology example
+   Appendix A.  Complete SIIT-DC topology example
    Appendix B.  Comparison to Other Deployment Approaches
      B.1.  IPv4-only
      B.2.  IPv4-only + NAPT44
@@ -102,20 +104,22 @@ Table of Contents
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 09, 2014
-Expires: March 13, 2015
+Intended status: Standards Track                      September 10, 2014
+Expires: March 14, 2015
 
 
-SIIT-DC: Stateless IP/ICMP Translation in IPv6 Data Centre Environments
+SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
                     draft-anderson-v6ops-siit-dc-00
 
 Abstract
 
-   This document describes the use of Stateless IP/ICMP Translation
-   (SIIT) in data centre environments in order to simultaneously
-   facilitate IPv6 deployment and IPv4 address conservation.  It
-   describes the overall architecture, and provides guidelines for both
-   operators and implementers.
+   This document describes SIIT-DC, an extension to Stateless IP/ICMP
+   Translation (SIIT) [RFC6145] that makes it ideally suited for use in
+   IPv6 data centre environments.  SIIT-DC simultaneously facilitates
+   IPv6 deployment and IPv4 address conservation.  The overall SIIT-DC
+   architecture is described, as well as guidelines for operators.
+   Finally, the normative implementation requirements are described, as
+   a list of additions and changes to SIIT [RFC6145].
 
 Status of This Memo
 
@@ -132,7 +136,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 13, 2015.
+   This Internet-Draft will expire on March 14, 2015.
 
 Copyright Notice
 
@@ -151,7 +155,7 @@ Copyright Notice
 
 1.  Introduction
 
-   This document describes the use of SIIT [RFC6145] as a network-
+   SIIT-DC is an extension of SIIT [RFC6145], and provides a a network-
    centric stateless translation service that allows a data centre
    operator or Internet Content Provider (ICP) to run a data centre
    network, servers, and applications using exclusively IPv6, while at
@@ -189,14 +193,15 @@ Copyright Notice
 
    o  To be easy to scale and deploy in a fault-tolerant manner.
 
-   The following subsections elaborates on how SIIT meets these goals.
+   The following subsections elaborates on how SIIT-DC meets these
+   goals.
 
 1.1.1.  Single Stack IPv6 Operation
 
-   SIIT allows an operator to build their applications on an IPv6-only
-   foundation.  IPv4 end-user connectivity becomes a service provided by
-   the network, which systems administration and application development
-   staff do not need to concern themselves with.
+   SIIT-DC allows an operator to build their applications on an
+   IPv6-only foundation.  IPv4 end-user connectivity becomes a service
+   provided by the network, which systems administration and application
+   development staff do not need to concern themselves with.
 
    Obviously, this will promote universal IPv6 deployment for all of the
    provider's services and applications.
@@ -212,55 +217,57 @@ Copyright Notice
    Unlike other solutions that provide either dual stack availability to
    single-stack services (e.g., Stateful NAT64 [RFC6146] and Layer-4/7
    proxies), or that provide conservation of IPv4 addresses (e.g.,
-   NAPT44 [RFC3022]), a SIIT Gateway does not keep any state between
+   NAPT44 [RFC3022]), a SIIT-DC Gateway does not keep any state between
    each packet in a single connection or flow.  In this sense it
    operates exactly like a normal IP router, and has similar scaling
    properties - the limiting factors are packets per second and
    bandwidth.  The number of concurrent flows and flow initiation rates
    are irrelevant for performance.
 
-   This not only allows individual SIIT Gateways to easily attain "line
-   rate" performance, it also allows for per-packet load balancing
-   between multiple SIIT Gateways using Equal-Cost Multipath Routing
+   This not only allows individual SIIT-DC Gateways to easily attain
+   "line rate" performance, it also allows for per-packet load balancing
+   between multiple SIIT-DC Gateways using Equal-Cost Multipath Routing
    [RFC2991].  Asymmetric routing is also acceptable, which makes it
    easy to avoid sub-optimal traffic patterns; the prefixes involved may
-   be anycasted from all the SIIT Gateways in the provider's network,
+   be anycasted from all the SIIT-DC Gateways in the provider's network,
    thus ensuring that the most optimal path through the network is used,
    even the optimal path in one direction differs from the optimal path
    in the opposite direction.
 
    Finally, stateless operation means that high availability is easily
-   achieved.  If an SIIT Gateway should fail, its traffic can be re-
-   routed onto another SIIT Gateway using a standard IP routing
+   achieved.  If an SIIT-DC Gateway should fail, its traffic can be re-
+   routed onto another SIIT-DC Gateway using a standard IP routing
    protocol.  This does not impact existing flows any more than what any
    other IP re-routing event would.
 
 1.1.3.  No Loss of End User's Source Address
 
-   SIIT will map the entire end-user's source address into an predefined
-   IPv6 translation prefix.  This allows the application server to
-   identify the user by an IPv4 address, which is useful for performing
-   tasks like Geo-Location, logging, abuse handling, and so forth.
+   SIIT-DC will map the entire end-user's source address into an
+   predefined IPv6 translation prefix.  This allows the application
+   server to identify the user by an IPv4 address, which is useful for
+   performing tasks like Geo-Location, logging, abuse handling, and so
+   forth.
 
 1.1.4.  No Forklift Upgrades Required
 
-   Except for the introduction of the SIIT Gateways themselves, there is
-   no change required in the network, servers, applications, or anywhere
-   else to specifically support SIIT, compared to a dual stack
-   deployment.  From the clients', the servers', the IPv6 data centre
-   network's, and the IPv4 Internet's point of view, SIIT is practically
-   invisible.  It will work with any standards-compliant IPv4 or IPv6
-   stack.
+   Except for the introduction of the SIIT-DC Gateways themselves, there
+   is no change required in the network, servers, applications, or
+   anywhere else to specifically support SIIT-DC, compared to a dual
+   stack deployment.  From the clients', the servers', the IPv6 data
+   centre network's, and the IPv4 Internet's point of view, SIIT-DC is
+   practically invisible.  It will work with any standards-compliant
+   IPv4 or IPv6 stack.
 
 1.1.5.  No Architectural Dependency on IPv4
 
-   SIIT will allow an ICP or data centre operator to build
+   SIIT-DC will allow an ICP or data centre operator to build
    infrastructure and applications entirely on IPv6.  This means that
    when the day comes to discontinue support for IPv4, no change needs
    to be made to the overall architecture - it's only a matter of
-   shutting off the SIIT Gateways.  Therefore, by deploying native IPv6
-   along with SIIT, operators will avoid future migration or deployment
-   projects relating to IPv6 roll-out and/or IPv4 sun-setting.
+   shutting off the SIIT-DC Gateways.  Therefore, by deploying native
+   IPv6 along with SIIT-DC, operators will avoid future migration or
+   deployment projects relating to IPv6 roll-out and/or IPv4 sun-
+   setting.
 
 2.  Terminology
 
@@ -268,10 +275,10 @@ Copyright Notice
 
    IPv4 Service Address  A public IPv4 address with which IPv4-only
       clients will communicate.  This communication will be translated
-      to IPv6 by the SIIT Gateway.
+      to IPv6 by the SIIT-DC Gateway.
 
    IPv4 Service Address Pool  One or more IPv4 prefixes routed to the
-      SIIT Gateway's IPv4 interface.  IPv4 Service Addresses are
+      SIIT-DC Gateway's IPv4 interface.  IPv4 Service Addresses are
       allocated from this pool.  Note that this does not necessarily
       have to be a "pool" per se, as it could also be one or more host
       routes (whose prefix length is equal to /32).  The primary purpose
@@ -282,39 +289,40 @@ Copyright Notice
    IPv6 Service Address  A public IPv6 address assigned to a server or
       application in the IPv6 network.  IPv6-only and dual stacked
       clients communicates with this address directly without invoking
-      SIIT.  IPv4-only clients also communicates with this address
-      through the SIIT Gateway and via an IPv4 Service Address.
+      SIIT-DC.  IPv4-only clients also communicates with this address
+      through the SIIT-DC Gateway and via an IPv4 Service Address.
 
-   SIIT Host Agent  A logical function very similar to an SIIT Gateway
-      that resides on a server and provides virtual IPv4 connectivity to
-      applications, by performing [RFC6145] translation on packets
-      passing through it.  It is an optional component of the SIIT-DC
-      architecture, that may be used to increase application support.
+   SIIT-DC Host Agent  A logical function very similar to an SIIT-DC
+      Gateway that resides on a server and provides virtual IPv4
+      connectivity to applications, by reversing the translations done
+      by the SIIT-DC Gateway.  It is an optional component of the SIIT-
+      DC architecture, that may be used to increase application support.
       See [I-D.anderson-v6ops-siit-dc-2xlat].
 
-   SIIT Gateway  A device or a logical function that translates between
-      IPv4 and IPv6 in accordance with [RFC6145] and Section 5.
+   SIIT-DC Gateway  A device or a logical function that translates
+      between IPv4 and IPv6 in accordance with Section 5.
 
    Static Address Mapping  A bi-directional mapping between an IPv4
-      Service Address and an IPv6 Service Address configured in the SIIT
-      Gateway.  When translating between IPv4 and IPv6, the SIIT Gateway
-      changes the address fields in the translated packet's IP header
-      according to any matching Static Address Mapping.
+      Service Address and an IPv6 Service Address configured in the
+      SIIT-DC Gateway.  When translating between IPv4 and IPv6, the
+      SIIT-DC Gateway changes the address fields in the translated
+      packet's IP header according to any matching Static Address
+      Mapping.
 
    Translation Prefix  An IPv6 prefix into which the entire IPv4 address
-      space is mapped.  This prefix is routed to the SIIT Gateway's IPv6
-      interface.  It is either an Network-Specific Prefix or a Well-
-      Known Prefix as specified in [RFC6052].  When translating between
-      IPv4 and IPv6, the SIIT Gateway prepends or strips the Translation
-      Prefix from the address fields in the translated packet's IP
-      header, unless a Static Address Mapping exists for the IP address
-      in question.
+      space is mapped.  This prefix is routed to the SIIT-DC Gateway's
+      IPv6 interface.  It is either an Network-Specific Prefix or a
+      Well-Known Prefix as specified in [RFC6052].  When translating
+      between IPv4 and IPv6, the SIIT-DC Gateway prepends or strips the
+      Translation Prefix from the address fields in the translated
+      packet's IP header, unless a Static Address Mapping exists for the
+      IP address in question.
 
 3.  Architectural Overview
 
-   This section describes the basic SIIT architecture.
+   This section describes the basic SIIT-DC architecture.
 
-                             SIIT Architecture
+                           SIIT-DC Architecture
 
              +-------------------+         +----------------+
              | IPv6-capable user |         | IPv4-only user |
@@ -328,8 +336,8 @@ Copyright Notice
                  |                                  |
                  |        +------------------<192.0.2.0/24>-+
                  |        |                                 |
-                 |        |           SIIT Gateway          |
-                 |        |           ============          |
+                 |        |         SIIT-DC Gateway         |
+                 |        |         ===============         |
                  |        |                                 |
                  |        |       Translation Prefix:       |
                  |        |         2001:db8:46::/96        |
@@ -362,14 +370,14 @@ Copyright Notice
 
    In this example, 192.0.2.0/24 is allocated as an IPv4 Service Address
    Pool.  Individual IPv4 Service Addresses are assigned from this pool.
-   The provider must route this prefix to the SIIT Gateway's IPv4
+   The provider must route this prefix to the SIIT-DC Gateway's IPv4
    interface.  Note that there are no restrictions on how many IPv4
    Service Address Pools are used or their prefix length, as long as
-   they are all routed to the SIIT Gateway's IPv4 interface.
+   they are all routed to the SIIT-DC Gateway's IPv4 interface.
 
    The Static Address Mapping list is used when translating an IPv4
    Service Address (here 192.0.2.1) to its corresponding IPv6 Service
-   Address (here 2001:db8:12:34::1) and vice versa.  When the SIIT
+   Address (here 2001:db8:12:34::1) and vice versa.  When the SIIT-DC
    Gateway translates an IPv4 packet to IPv6, any IPv4 Service Address
    found in the original IPv4 header will be replaced with the
    corresponding IPv6 Service Address in the resulting IPv6 header, and
@@ -382,11 +390,11 @@ Copyright Notice
    mapping has a lower precedence than the configured Static Address
    Mappings.
 
-   The SIIT Gateway itself can be either a separate device or a logical
-   function in another multi-purpose device, for example an IP router.
-   Any number of SIIT Gateways may exist simultaneously in an operators
-   infrastructure, as long as they all have the same translation prefix
-   and list of Static Mappings configured.
+   The SIIT-DC Gateway itself can be either a separate device or a
+   logical function in another multi-purpose device, for example an IP
+   router.  Any number of SIIT-DC Gateways may exist simultaneously in
+   an operators infrastructure, as long as they all have the same
+   translation prefix and list of Static Mappings configured.
 
 3.1.  DNS Configuration
 
@@ -395,7 +403,7 @@ Copyright Notice
    registered using an A record.  This results in the following DNS
    records:
 
-                DNS Configuration for SIIT-enabled service
+              DNS Configuration for a SIIT-DC enabled service
 
                app.domain.tld.    IN AAAA  2001:db8:12:34::1
                app.domain.tld.    IN A     192.0.2.1
@@ -423,7 +431,7 @@ Copyright Notice
 
                                  Figure 3
 
-   This packet is then routed over the Internet to the (nearest) SIIT
+   This packet is then routed over the Internet to the (nearest) SIIT-DC
    Gateway, which translates it into the following IPv6 packet and
    forward it into the IPv6 network:
 
@@ -468,7 +476,7 @@ Copyright Notice
 
                                  Figure 5
 
-   The response packet is routed to the (nearest) SIIT Gateway's IPv6
+   The response packet is routed to the (nearest) SIIT-DC Gateway's IPv6
    interface, which will translate it back to IPv4 as follows:
 
                  Stage 4: Server -> Client response, IPv4
@@ -484,9 +492,9 @@ Copyright Notice
 
                                  Figure 6
 
-   This time, the source address matches the Static Address Mapping and
-   is translated accordingly, while the destination address did not, and
-   was therefore translated according to [RFC6052] by having the
+   This time, the source address matched the Static Address Mapping and
+   was translated accordingly, while the destination address did not,
+   and was therefore translated according to [RFC6052] by having the
    Translation Prefix stripped.  The rest of the packet was translated
    according to [RFC6145].
 
@@ -514,23 +522,23 @@ Copyright Notice
    Not all application protocols are able to operate in a network
    environment where rewriting of IP addresses occur.  An operator
    should therefore carefully evaluate the applications he would like to
-   make available for IPv4 users through SIIT, to ensure they do not
+   make available for IPv4 users through SIIT-DC, to ensure they do not
    fall in this category.  In general, if an application layer protocol
    works correctly through standard NAT44 (see [RFC3235]), it will most
-   likely work correctly through SIIT as well.
+   likely work correctly through SIIT-DC as well.
 
    Higher-level protocols that embed IP addresses as part of their
    payload are especially problematic, as noted in [RFC2663], [RFC2993],
    and [RFC3022].  Such protocols will most likely not work through any
-   form of address translation, including SIIT.  One well-known example
-   of such a protocol is FTP [RFC0959].
+   form of address translation, including SIIT-DC.  One well-known
+   example of such a protocol is FTP [RFC0959].
 
    The SIIT-DC architecture may be extended with a Host Agent that
-   reverses the translation performed by the SIIT Gateway before passing
-   the packets to the application software, such applications protocols
-   will be able to work correctly in an SIIT environment as well.  See
-   [I-D.anderson-v6ops-siit-dc-2xlat] for a description of this
-   extension.
+   reverses the translation performed by the SIIT-DC Gateway before
+   passing the packets to the application software, such applications
+   protocols will be able to work correctly in an SIIT-DC environment as
+   well.  See [I-D.anderson-v6ops-siit-dc-2xlat] for a description of
+   this extension.
 
 4.2.  Application Support for IPv6
 
@@ -550,20 +558,20 @@ Copyright Notice
    IPv4 user looks exactly like an ordinary IPv6 user from the host and
    application's point of view, and requires no special treatment.
 
-   It is possible to combine SIIT with DNS64 [RFC6147] in order to allow
-   an IPv6-only application to initiate communication with IPv4-only
-   nodes through an SIIT Gateway.  However, in this case, care must be
-   taken so that all outgoing communication is sourced from the IPv6
-   Service Address that has a Static Mapping configured on the SIIT
-   Gateway.  If another unmapped address is used, the SIIT Gateway will
-   discard the packet.
+   It is possible to combine SIIT-DC with DNS64 [RFC6147] in order to
+   allow an IPv6-only application to initiate communication with
+   IPv4-only nodes through an SIIT-DC Gateway.  However, in this case,
+   care must be taken so that all outgoing communication is sourced from
+   the IPv6 Service Address that has a Static Mapping configured on the
+   SIIT-DC Gateway.  If another unmapped address is used, the SIIT-DC
+   Gateway will discard the packet.
 
-   An alternative approach to the above would be to make use of an SIIT
-   Host Agent as described in [I-D.anderson-v6ops-siit-dc-2xlat].  This
-   provides the application with seemingly native IPv4 connectivity,
-   which it may use for both inbound and outbound communication without
-   requiring the application to select a specific source address for its
-   outbound communications.
+   An alternative approach to the above would be to make use of an SIIT-
+   DC Host Agent as described in [I-D.anderson-v6ops-siit-dc-2xlat].
+   This provides the application with seemingly native IPv4
+   connectivity, which it may use for both inbound and outbound
+   communication without requiring the application to select a specific
+   source address for its outbound communications.
 
 4.4.  Choice of Translation Prefix
 
@@ -571,12 +579,12 @@ Copyright Notice
    address space or the IANA-allocated Well-Known Prefix 64:ff9b::/96
    (WKP) may be used.  From a technical point of view, both should work
    equally well, however as only a single WKP exists, if a provider
-   would like to deploy more than one instance of SIIT in his network,
-   or Stateful NAT64 [RFC6146], an NSP must be used anyway for all but
-   one of those deployments.
+   would like to deploy more than one instance of SIIT-DC in his
+   network, or Stateful NAT64 [RFC6146], an NSP must be used anyway for
+   all but one of those deployments.
 
    Furthermore, the WKP cannot be used in inter-domain routing.  By
-   using an NSP, a provider will have the possibility to provide SIIT
+   using an NSP, a provider will have the possibility to provide SIIT-DC
    service to other operators across Autonomous System borders.
 
    For these reasons, this document recommends that an NSP is used.
@@ -598,38 +606,38 @@ Copyright Notice
 4.5.  Routing Considerations
 
    The prefixes that constitute the IPv4 Service Address Pool and the
-   IPv6 Translation Prefix may be routed to the SIIT Gateway(s) as any
-   other IPv4 or IPv6 route in the provider's network.
+   IPv6 Translation Prefix may be routed to the SIIT-DC Gateway(s) as
+   any other IPv4 or IPv6 route in the provider's network.
 
-   If more than one SIIT Gateway is being deployed, it is recommended
+   If more than one SIIT-DC Gateway is being deployed, it is recommended
    that a dynamic routing protocol (such as BGP, IS-IS, or OSPF) is
    being used to advertise the routes within the provider's network.
    This will ensure that the traffic that is to be translated will reach
-   the closest SIIT Gateway, reducing or eliminating sub-optimal traffic
-   patterns, as well as provide high availability - if one SIIT Gateway
-   fails, the dynamic routing protocol will automatically redirect the
-   traffic to the next-best translator.
+   the closest SIIT-DC Gateway, reducing or eliminating sub-optimal
+   traffic patterns, as well as provide high availability - if one SIIT-
+   DC Gateway fails, the dynamic routing protocol will automatically
+   redirect the traffic to the next-best translator.
 
-4.6.  Location of the SIIT Gateways
+4.6.  Location of the SIIT-DC Gateways
 
-   It is optimal to place the SIIT Gateways as close as possible to the
-   direct path between the servers and the end users.  If the closest
-   translator is located a long way from the optimal path, all packets
-   in both directions must make a detour.  This would increase the RTT
-   between the server and the end user by by two times the extra latency
-   incurred by the detour, as well as cause unnecessary load on the
-   network links on the detour path.
+   It is optimal to place the SIIT-DC Gateways as close as possible to
+   the direct path between the servers and the end users.  If the
+   closest translator is located a long way from the optimal path, all
+   packets in both directions must make a detour.  This would increase
+   the RTT between the server and the end user by by two times the extra
+   latency incurred by the detour, as well as cause unnecessary load on
+   the network links on the detour path.
 
-   The ideal location of the SIIT Gateways would be a logical function
-   within the IP routers would have handled the traffic anyway (if the
-   topology was dual stacked) This way, the translation service would
-   not need separate networks ports to be assigned (which might become
-   saturated and impact the service quality), nor would it need extra
-   rack space or energy.  Some good choices of the location could be
-   within a data centre's access routers, or inside the provider's
+   The ideal location of the SIIT-DC Gateways would be a logical
+   function within the IP routers would have handled the traffic anyway
+   (if the topology was dual stacked) This way, the translation service
+   would not need separate networks ports to be assigned (which might
+   become saturated and impact the service quality), nor would it need
+   extra rack space or energy.  Some good choices of the location could
+   be within a data centre's access routers, or inside the provider's
    border routers.  If every single application in the data centre or
    the provider's network eventually get single-stacked, there would no
-   need to run IPv4 on the inside of the SIIT Gateway - thus allowing
+   need to run IPv4 on the inside of the SIIT-DC Gateway - thus allowing
    the operator to reclaim IPv4 addresses from the network
    infrastructure that may instead be used for translated services.
 
@@ -679,9 +687,9 @@ Copyright Notice
    for fragmentation.
 
    For other transport protocols, full-size IPv4 packets with the DF
-   flag cleared will need to be fragmented by the SIIT Gateway.  The
-   only way to avoid this is to increase the Path MTU between the SIIT
-   Gateway and the servers to 1520 bytes.  Note that the servers' MTU
+   flag cleared will need to be fragmented by the SIIT-DC Gateway.  The
+   only way to avoid this is to increase the Path MTU between the SIIT-
+   DC Gateway and the servers to 1520 bytes.  Note that the servers' MTU
    SHOULD NOT be increased accordingly, as that would cause them to
    undergo Path MTU Discovery for most native IPv6 destinations.
    However, the servers would need to be able to accept and process
@@ -698,7 +706,7 @@ Copyright Notice
    router in the IPv4 network, if the path to the IPv4 client involves a
    link with a MTU lower than 1260 bytes.
 
-   By default, an SIIT Gateway will set the DF flag when translating
+   By default, an SIIT-DC Gateway will set the DF flag when translating
    from IPv6 to IPv4, resulting in a situation where the IPv6 server may
    receive an ICMPv6 Packet Too Big error where the indicated MTU value
    is less than the IPv6 minimum of 1280.  In this situation, the IPv6
@@ -706,26 +714,26 @@ Copyright Notice
    paragraph of Section 5 of RFC2460 [RFC2460]:
 
    o  It may reduce its Path MTU value to the value indicated in the
-      Packet Too Big. This causes no problems for the SIIT function.
+      Packet Too Big. This causes no problems for the SIIT-DC function.
 
    o  It may reduce its Path MTU value to exactly 1280, and also include
       a Fragmentation header in each subsequent packet sent to that
-      destination.  The Fragmentation header signals to the the SIIT
+      destination.  The Fragmentation header signals to the the SIIT-DC
       Gateway that the DF flag should be cleared in the resulting IPv4
       packet, and it also provides the Identification value.
 
    If the use of the IPv6 Fragmentation header is problematic, and the
    operator has IPv6 servers that implement the second option above, the
-   operator should enable a feature on the SIIT Gateways which ensures
-   that the resulting MTU field is always set to 1280 or higher when
-   translating ICMPv4 Need to Fragment into ICMPv6 Packet Too Big, and
-   that when translating IPv6 packets smaller or equal to 1280 bytes the
-   resulting IPv4 packets will have the DF flag cleared and an
+   operator should enable a feature on the SIIT-DC Gateways which
+   ensures that the resulting MTU field is always set to 1280 or higher
+   when translating ICMPv4 Need to Fragment into ICMPv6 Packet Too Big,
+   and that when translating IPv6 packets smaller or equal to 1280 bytes
+   the resulting IPv4 packets will have the DF flag cleared and an
    Identification value generated, cf. Section 5.5.
 
 4.8.3.  "Atomic Fragments"
 
-   By default, an SIIT Gateway will include a Fragmentation header in
+   By default, an SIIT-DC Gateway will include a Fragmentation header in
    the resulting IPv6 packet when translating from an IPv4 packet with
    the DF flag cleared, cf. Section 4 of RFC6145 [RFC6145].
 
@@ -733,21 +741,23 @@ Copyright Notice
    fragmented into several pieces, resulting in an "Atomic Fragment"
    [RFC6946].  This is generally not useful in a data centre
    environment, and it is therefore recommended that this behaviour is
-   disabled in the SIIT Gateway(s).  See Section 5.4.
+   disabled in the SIIT-DC Gateway(s).  See Section 5.4.
 
 5.  Implementation Requirements
 
-   [RFC6145] and [RFC6052] specifies the basic SIIT Gateway.  However,
-   they specify some optional features that are very desirable when
-   deploying SIIT in a data centre environment.  This section list which
-   additional features are required for an SIIT Gateway optimised for a
-   data centre environment.
+   This normative section specifies the SIIT-DC protocol that is
+   implemented by an SIIT Gateway.  Because SIIT-DC builds on and
+   closely resembles SIIT [RFC6145], this section should be read as a
+   set of additions and changes that are applied to an implementation
+   already compliant to SIIT [RFC6145].  Each of the following
+   subsections discuss how the requirement relates to with any
+   corresponding requirements in SIIT [RFC6145].
 
-5.1.  Basic Requirements
+5.1.  Compliance with RFC6145 and RFC6052
 
-   The implementation MUST implement [RFC6145] with the algorithmic
-   address mapping defined in [RFC6052].  It MUST NOT create any per-
-   session state under any circumstance.
+   Unless otherwise stated in the following sections, an SIIT-DC
+   implementation MUST comply fully with [RFC6145].  It must also
+   implement the algorithmic address mapping defined in [RFC6052].
 
 5.2.  Static Address Mapping Function
 
@@ -769,34 +779,53 @@ Copyright Notice
 
    o  2001:db8:12:34::1 => 192.0.2.1
 
-   In both cases, if the SIIT Gateway receives an IPv6 packet that has
-   2001:db8:12:34::c in either of the source and destination fields of
-   the IP header, it MUST rewrite this field to 192.0.2.1 when
-   translating to IPv4.  Similarly, if the SIIT Gateway receives an IPv4
-   packet that has 192.0.2.1 as the either the source or destination
-   fields of the IP header, it MUST rewrite this field to
-   2001:db8:12:34::c. For all IPv4 or IPv6 source or destination field
-   values for which there is no Static Address Mapping, [RFC6052]
-   mapping MUST be used.
+   In both cases, if the SIIT-DC Gateway receives an IPv6 packet that
+   has the value 2001:db8:12:34::1 in either the source or destination
+   field of the IPv6 header, it MUST rewrite this field to 192 0.2.1
+   when translating to IPv4.  Similarly, if the SIIT-DC Gateway receives
+   an IPv4 packet that has the value 192.0.2.1 as the either the source
+   or destination field of the IPv4 header, it MUST rewrite this field
+   to 2001:db8:12:34::1 when translating to IPV6.  For all IPv4 or IPv6
+   source or destination field values for which there is no Static
+   Address Mapping, [RFC6052] compliant mapping MUST be used instead.
+
+   Relation to [RFC6145]: The Static Address Mapping is a novel feature
+   feature that is not discussed in [RFC6145].  It conflicts with
+   [RFC6145]'s requirement that all addresses must be translated
+   according to the [RFC6052] algorithm.
 
 5.3.  Support for Increasing the IPv6 Path MTU
 
-   In order to prevent unnecessary use of the IPv6 Fragmentation header,
-   the implementation MUST support increasing the IPv6 Path MTU from its
-   default value of 1280, as described in Section 4 of RFC6145
-   [RFC6145].
+   The SIIT-DC Gateway MUST provide a configuration function for the
+   network administrator to adjust the threshold of the minimum IPv6 MTU
+   to a value that reflects the real value of the minimum IPv6 MTU in
+   the network (greater than 1280 bytes).  This will help reduce the
+   chance of including the Fragment Header in the packets.
+
+   Relation to [RFC6145]: This strengthens the corresponding "MAY"
+   requirement located in Section 4 of RFC6145 [RFC6145] to a "MUST".
 
 5.4.  Support for Disabling "Atomic Fragments"
 
-   The translator MUST provide a configuration function that allows the
-   translator not to include the Fragment Header for non-fragmented IPv6
-   packets, cf. Section 4 of RFC6145 [RFC6145].
+   When the IPv4 sender does not set the DF bit, the SIIT-DC Gateway
+   SHOULD NOT include an IPv6 Fragment Header in resulting non-
+   fragmented IPv6 packets.  If does, the SIIT-DC Gateway MUST provide a
+   configuration function that allows the SIIT-DC Gateway not to include
+   the Fragment Header for the non-fragmented IPv6 packets.
+
+   Relation to [RFC6145]: This is an update of the corresponding
+   requirement in Section 4 of RFC6145 [RFC6145].  It inverts the
+   recommended default behaviour to not generate IPv6 Atomic Fragments,
+   and strengthens the "MAY" requirement for making it possible to
+   disable this behaviour to a "MUST".
+
+   For the definition of an "Atomic Fragment", see [RFC6946].
 
 5.5.  Feature for Handling IPv4 Path MTUs Lower than 1260
 
    In order to prevent unnecessary fragments, the implementation MUST
    support a feature which, if enabled by the operator, changes the
-   translator's default behaviour accordingly:
+   SIIT-DC Gateway's default behaviour accordingly:
 
    o  When translating an ICMPv4 Need To Fragment packet indicating a
       Path MTU smaller than or equal to 1260, the MTU field in the
@@ -804,29 +833,48 @@ Copyright Notice
 
    o  When translating an IPv6 packet that is smaller or equal to 1280
       bytes, the DF flag in the resulting IPv4 packet is cleared, and an
-      Identification value is set to a random number.  The translator
-      MUST NOT generate any state as a result of this.
+      IPv4 Identification value is generated.  The SIIT-DC Gateway MUST
+      NOT create or maintain any state as a result of this.
 
-   This is a modified version of the second approach described in
-   Section 6 of RFC6145 [RFC6145].  Also see
-   [I-D.gont-6man-deprecate-atomfrag-generation], which seeks to update
-   [RFC6145] with the approach described above.
+   Relation to [RFC6145]: This is a modified version of the second
+   approach described in Section 6 of RFC6145 [RFC6145].  The
+   modifications are:
 
-   For the definition of an "Atomic Fragment", see [RFC6946].
+   1.  In the IPv4-to-IPv6 direction, the algorithm only used for ICMPv4
+       Need To Fragment packets that indicate an MTU value smaller or
+       equal to 1260.  The corresponding value used by [RFC6145] is
+       smaller than 1280.
+
+   2.  In the IPv6-to-IPv4 direction, an SIIT Gateway MUST NOT generate
+       and maintain any state due to generating IPv4 Identification
+       values.  [RFC6145] RECOMMENDS that this is done.
+
+   Also see [I-D.gont-6man-deprecate-atomfrag-generation], which seeks
+   to formally update [RFC6145] with the approach described in this
+   section.
 
 5.6.  Loop Prevention Mechanism
 
    As noted in Section 9.2, there is a potential for packets looping
-   through the SIIT function if it receives an IPv4 packet for which
+   through the SIIT-DC function if it receives an IPv4 packet for which
    there is no Static Address Mapping.  It is therefore RECOMMENDED that
    the implementation has a mechanism that automatically prevents this
    behaviour.  One way this could be accomplished would be to discard
    any IPv4 packets that would be translated into an IPv6 packet that
-   would be routed straight back into the SIIT function.
+   would be routed straight back into the SIIT-DC function.
 
    If such a mechanism isn't provided, the implementation MUST provide a
    way to manually filter or null-route the destination addresses that
    would otherwise cause loops.
+
+   Relation to [RFC6145]: This security consideration applies only when
+   an SIIT-DC Gateway translates a packet in "pure" SIIT [RFC6145] mode
+   (i.e., both address fields are translated according to [RFC6052]).
+   This consideration is in other words not specific to SIIT-DC, it is
+   inherited from [RFC6145].  In spite of this, [RFC6145] does not
+   describe this consideration or any methods of prevention.  The
+   requirements in this section is therefore novel to SIIT-DC, even
+   though they apply equally to [RFC6145].
 
 6.  Acknowledgements
 
@@ -860,15 +908,15 @@ Copyright Notice
    translation prefix is treated the same as the Internet at large,
    rather than as a trusted network.
 
-9.2.  Packets Looping Through the SIIT Function
+9.2.  Packets Looping Through the SIIT-DC Function
 
-   The SIIT Gateway receives an IPv4 packet destined to an address for
-   which there is no Static Address Mapping, its destination address
+   If the SIIT-DC Gateway receives an IPv4 packet destined to an address
+   for which there is no Static Address Mapping, its destination address
    will be rewritten according to [RFC6052], making the resulting IPv6
    packet have a destination address within the translation prefix,
-   which is likely routed to back to the SIIT function.  This will cause
-   the packet to loop until its Time To Live / Hop Limit reaches zero,
-   potentially creating a Denial Of Service vulnerability.
+   which is likely routed to back to the SIIT-DC function.  This will
+   cause the packet to loop until its Time To Live / Hop Limit reaches
+   zero, potentially creating a Denial Of Service vulnerability.
 
    To avoid this, it should be ensured that packets sent to IPv4
    destinations addresses for which there are no Static Address
@@ -964,25 +1012,25 @@ Copyright Notice
    [RFC6946]  Gont, F., "Processing of IPv6 "Atomic" Fragments", RFC
               6946, May 2013.
 
-Appendix A.  Complete SIIT topology example
+Appendix A.  Complete SIIT-DC topology example
 
    This figure shows a more complete SIIT-DC topology, in order to
    better demonstrate the beneficial properties it has.  In particular,
    it tries to highlight the following:
 
-   o  Stateless operation: Any number of SIIT Gateways may be deployed
-      side-by side, or indeed anywhere in the IPv6 network, as any
-      standard routing mechanism may be used to direct traffic to them
-      (shown here with BGP on the IPv4 side and ECMP on the IPv6 side).
-      This in turn leads to high availability, should one of the SIIT
-      Gateways fail or become unavailable, those standard routing
-      mechanisms will ensure that traffic is automatically redirect one
-      of the remaining SIIT Gateways.
+   o  Stateless operation: Any number of SIIT-DC Gateways may be
+      deployed side-by side, or indeed anywhere in the IPv6 network, as
+      any standard routing mechanism may be used to direct traffic to
+      them (shown here with BGP on the IPv4 side and ECMP on the IPv6
+      side).  This in turn leads to high availability, should one of the
+      SIIT-DC Gateways fail or become unavailable, those standard
+      routing mechanisms will ensure that traffic is automatically
+      redirect one of the remaining SIIT-DC Gateways.
 
    o  IPv4 address conservation: Even though the to customers in the
       example have several hundred servers, most of them are not used
       for externally available services, and thus do not require an IPv4
-      address.  The network between the servers and the SIIT Gateways
+      address.  The network between the servers and the SIIT-DC Gateways
       require no IPv4 addresses, either.  Furthermore, the IPv4
       addresses that are used do not have to be assigned to customers in
       the form of aggregated blocks or prefixes; which makes it easy to
@@ -990,7 +1038,7 @@ Appendix A.  Complete SIIT topology example
       pools.
 
    o  Application support: The translation-friendly applications HTTP
-      and SMTP will work through SIIT without requiring any special
+      and SMTP will work through SIIT-DC without requiring any special
       customisation.  Furthermore, translation-unfriendly applications
       such as FTP will also work if an host agent in present, cf.
       [I-D.anderson-v6ops-siit-dc-2xlat].
@@ -998,12 +1046,12 @@ Appendix A.  Complete SIIT topology example
    o  Native IPv6 as the foundation: Every server, application, and
       network component has access to native and untranslated IPv6
       connectivity to each other and to the Internet.  Traffic through
-      the SIIT Gateways will diminish over time as IPv6 is deployed
+      the SIIT-DC Gateways will diminish over time as IPv6 is deployed
       throughout the Internet.  Eventually they may be shut down
       entirely, which causes no disruption to the application stacks'
       ability to deliver their services over native IPv6.
 
-                  Example data centre topology using SIIT
+                Example data centre topology using SIIT-DC
 
                    /--------------------------------\ /---------------\
                    |          IPv4 Internet         | | IPv6 Internet |
@@ -1013,15 +1061,15 @@ Appendix A.  Complete SIIT topology example
                      |                            |            |
    +---------<192.0.2.0/24>----------+ +---<192.0.2.0/24>---+  |
    |                                 | |                    |  |
-   |          SIIT Gateway 1         | |   SIIT Gateway 2   |  |
-   |          ==============         | |   ==============   |  |
+   |        SIIT-DC Gateway 1        | | SIIT-DC Gateway 2  |  |
+   |        =================        | | =================  |  |
    |                                 | |                    |  |
    |       Translation Prefix:       | |                    |  |
    |         2001:db8:46::/96        | |                    |  |
    |                                 | |                    |  |
-   |     Static Address Mappings:    | |  Exactly the same  |  |
-   | 192.0.2.1 <=> 2001:db8:12:34::1 | |  configuration as  |  |
-   | 192.0.2.2 <=> 2001:db8:12:34::3 | |   SIIT Gateway 1   |  |
+   |     Static Address Mappings:    | | Exactly the same   |  |
+   | 192.0.2.1 <=> 2001:db8:12:34::1 | | configuration as   |  |
+   | 192.0.2.2 <=> 2001:db8:12:34::2 | | SIIT-DC Gateway 1  |  |
    | 192.0.2.3 <=> 2001:db8:fe:dc::1 | |                    |  |
    | 192.0.2.4 <=> 2001:db8:12:34::4 | |                    |  |
    | [...]                           | |                    |  |
@@ -1038,12 +1086,13 @@ Appendix A.  Complete SIIT topology example
      | 2001:db8:12:34::/64               | 2001:db8:fe:dc::/64
      |                                   |
      |                                   |
-     +-- www      ::1 (IPv6+SIIT)        +-- www ::1 (IPv6+SIIT)
+     +-- www      ::1 (IPv6+SIIT-DC)     +-- www ::1 (IPv6+SIIT-DC)
      |                                   |
-     +-- ftp      ::2 (IPv6)             +-- file01 ::f:01 (IPv6)
-     |            ::3 (SIIT/Host Agent)  |   [...]
+     |                                   +-- file01 ::f:01 (IPv6)
+     +-- mta      ::2 (IPv6+SIIT-DC)     |   [...]
      |                                   +-- file99 ::f:99 (IPv6)
-     +-- mta      ::4 (IPv6+SIIT)
+     +-- ftp      ::3 (IPv6)
+     |            ::4 (SIIT-DC/Host Agent)
      |
      +-- app01 ::a:01 (IPv6)
      |   [...]
