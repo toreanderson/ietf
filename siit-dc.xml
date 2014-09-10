@@ -801,9 +801,12 @@ app.domain.tld.    IN A     192.0.2.1
       </section>
       <section anchor="feat_smallv4pmtu"
        title="Feature for Handling IPv4 Path MTUs Lower than 1260">
-        <t>In order to prevent unnecessary fragments, the implementation MUST
+        <t>
+        In order to prevent unnecessary fragments, the implementation MUST
         support a feature which, if enabled by the operator, changes the
         SIIT-DC Gateway's default behaviour accordingly:
+        </t>
+        <t>
         <list style="symbols">
           <t>When translating an ICMPv4 Need To Fragment packet indicating a
           Path MTU smaller than or equal to 1260, the MTU field in the
@@ -813,9 +816,12 @@ app.domain.tld.    IN A     192.0.2.1
           IPv4 Identification value is generated. The SIIT-DC Gateway MUST NOT
           create or maintain any state as a result of this.</t>
         </list>
+        </t>
+        <t>
         Relation to <xref target="RFC6145"/>: This is a modified version of
         the second approach described in <xref target="RFC6145">Section 6 of
         RFC6145</xref>. The modifications are:
+        </t>
         <list style="numbers">
           <t>In the IPv4-to-IPv6 direction, the algorithm only used for ICMPv4
           Need To Fragment packets that indicate an MTU value smaller or equal
@@ -825,6 +831,8 @@ app.domain.tld.    IN A     192.0.2.1
           and maintain any state due to generating IPv4 Identification values.
           <xref target="RFC6145"/> RECOMMENDS that this is done.</t>
         </list>
+        </t>
+        <t>
         Also see <xref target="I-D.gont-6man-deprecate-atomfrag-generation"/>,
         which seeks to formally update <xref target="RFC6145"/> with the
         approach described in this section.
