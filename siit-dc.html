@@ -780,21 +780,25 @@ app.domain.tld.    IN A     192.0.2.1
 <p id="rfc.section.5.4.p.2">Relation to <a href="#RFC6145">[RFC6145]</a>: This is an update of the corresponding requirement in <a href="#RFC6145">Section 4 of RFC6145</a> <cite title="NONE">[RFC6145]</cite>. It inverts the recommended default behaviour to not generate IPv6 Atomic Fragments, and strengthens the "MAY" requirement for making it possible to disable this behaviour to a "MUST".  </p>
 <p id="rfc.section.5.4.p.3">For the definition of an "Atomic Fragment", see <a href="#RFC6946">[RFC6946]</a>.  </p>
 <h1 id="rfc.section.5.5"><a href="#rfc.section.5.5">5.5.</a> <a href="#feat_smallv4pmtu" id="feat_smallv4pmtu">Feature for Handling IPv4 Path MTUs Lower than 1260</a></h1>
-<p id="rfc.section.5.5.p.1">In order to prevent unnecessary fragments, the implementation MUST support a feature which, if enabled by the operator, changes the SIIT-DC Gateway's default behaviour accordingly: <a href="#RFC6145">[RFC6145]</a>: This is a modified version of the second approach described in <a href="#RFC6145">Section 6 of RFC6145</a> <cite title="NONE">[RFC6145]</cite>. The modifications are: <a href="#I-D.gont-6man-deprecate-atomfrag-generation">[I-D.gont-6man-deprecate-atomfrag-generation]</a>, which seeks to formally update <a href="#RFC6145">[RFC6145]</a> with the approach described in this section.  </p>
+<p id="rfc.section.5.5.p.1">In order to prevent unnecessary fragments, the implementation MUST support a feature which, if enabled by the operator, changes the SIIT-DC Gateway's default behaviour accordingly: </p>
+<p/>
 
 <ul>
   <li>When translating an ICMPv4 Need To Fragment packet indicating a Path MTU smaller than or equal to 1260, the MTU field in the resulting ICMPv6 Packet Too Big is set to 1280.</li>
   <li>When translating an IPv6 packet that is smaller or equal to 1280 bytes, the DF flag in the resulting IPv4 packet is cleared, and an IPv4 Identification value is generated. The SIIT-DC Gateway MUST NOT create or maintain any state as a result of this.</li>
 </ul>
 
-<p> Relation to </p>
+<p> </p>
+<p id="rfc.section.5.5.p.3">Relation to <a href="#RFC6145">[RFC6145]</a>: This is a modified version of the second approach described in <a href="#RFC6145">Section 6 of RFC6145</a> <cite title="NONE">[RFC6145]</cite>. The modifications are: </p>
+<p/>
 
 <ol>
   <li>In the IPv4-to-IPv6 direction, the algorithm only used for ICMPv4 Need To Fragment packets that indicate an MTU value smaller or equal to 1260. The corresponding value used by <a href="#RFC6145">[RFC6145]</a> is smaller than 1280.</li>
   <li>In the IPv6-to-IPv4 direction, an SIIT Gateway MUST NOT generate and maintain any state due to generating IPv4 Identification values.  <a href="#RFC6145">[RFC6145]</a> RECOMMENDS that this is done.</li>
 </ol>
 
-<p> Also see </p>
+<p> </p>
+<p id="rfc.section.5.5.p.5">Also see <a href="#I-D.gont-6man-deprecate-atomfrag-generation">[I-D.gont-6man-deprecate-atomfrag-generation]</a>, which seeks to formally update <a href="#RFC6145">[RFC6145]</a> with the approach described in this section.  </p>
 <h1 id="rfc.section.5.6"><a href="#rfc.section.5.6">5.6.</a> Loop Prevention Mechanism</h1>
 <p id="rfc.section.5.6.p.1">As noted in <a href="#sec_loops">Section 9.2</a>, there is a potential for packets looping through the SIIT-DC function if it receives an IPv4 packet for which there is no Static Address Mapping. It is therefore RECOMMENDED that the implementation has a mechanism that automatically prevents this behaviour. One way this could be accomplished would be to discard any IPv4 packets that would be translated into an IPv6 packet that would be routed straight back into the SIIT-DC function.  </p>
 <p id="rfc.section.5.6.p.2">If such a mechanism isn't provided, the implementation MUST provide a way to manually filter or null-route the destination addresses that would otherwise cause loops.  </p>

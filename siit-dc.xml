@@ -822,6 +822,7 @@ app.domain.tld.    IN A     192.0.2.1
         the second approach described in <xref target="RFC6145">Section 6 of
         RFC6145</xref>. The modifications are:
         </t>
+        <t>
         <list style="numbers">
           <t>In the IPv4-to-IPv6 direction, the algorithm only used for ICMPv4
           Need To Fragment packets that indicate an MTU value smaller or equal
