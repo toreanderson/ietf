@@ -68,6 +68,8 @@
         </t>
         <t>
         Therefore, a better approach is needed. The design goals are:
+        </t>
+        <t>
         <list style="symbols">
           <t>Promote the deployment of native IPv6 services (cf. <xref
           target="RFC6540"/>).</t>
@@ -80,6 +82,8 @@
           especially on the servers and applications.</t>
           <t>To be easy to scale and deploy in a fault-tolerant manner.</t>
         </list>
+        </t>
+        <t>
         The following subsections elaborates on how SIIT-DC meets these goals.
         </t>
         <section title="Single Stack IPv6 Operation">
@@ -735,15 +739,23 @@ app.domain.tld.    IN A     192.0.2.1
         </t>
         <t>
         An example of such a bidirectional Static Address Mapping would be:
+        </t>
+        <t>
         <list style="symbols">
           <t>192.0.2.1 &lt;=&gt; 2001:db8:12:34::1</t>
         </list>
+        </t>
+        <t>
         To accomplish the same using unidirectional mappings, the following
         two mappings must instead be configured:
+        </t>
+        <t>
         <list style="symbols">
           <t>192.0.2.1 =&gt; 2001:db8:12:34::1</t>
           <t>2001:db8:12:34::1 =&gt; 192.0.2.1</t>
         </list>
+        </t>
+        <t>
         In both cases, if the SIIT-DC Gateway receives an IPv6 packet that has
         the value 2001:db8:12:34::1 in either the source or destination field
         of the IPv6 header, it MUST rewrite this field to 192 0.2.1 when
@@ -976,6 +988,8 @@ app.domain.tld.    IN A     192.0.2.1
       This figure shows a more complete SIIT-DC topology, in order to better
       demonstrate the beneficial properties it has. In particular, it tries to
       highlight the following:
+      </t>
+      <t>
       <list style="symbols">
         <t>Stateless operation: Any number of SIIT-DC Gateways may be deployed
         side-by side, or indeed anywhere in the IPv6 network, as any standard
@@ -1006,6 +1020,8 @@ app.domain.tld.    IN A     192.0.2.1
         which causes no disruption to the application stacks' ability to
         deliver their services over native IPv6.</t>
       </list>
+      </t>
+      <t>
       <figure anchor="fig_topology" align="center">
         <preamble>Example data centre topology using SIIT-DC</preamble>
         <artwork align="center"><![CDATA[
@@ -1078,6 +1094,8 @@ app.domain.tld.    IN A     192.0.2.1
         </t>
         <t>
         Benefits of IPv4-only operation compared to SIIT-DC include:
+        </t>
+        <t>
         <list style="symbols">
           <t>No translation occurs, the end-to-end principle is intact.</t>
           <t>Compatible with all common application protocols.</t>
@@ -1088,6 +1106,8 @@ app.domain.tld.    IN A     192.0.2.1
         </t>
         <t>
         Disadvantages of IPv4-only operation compared to SIIT-DC include:
+        </t>
+        <t>
         <list style="symbols">
           <t>Does not provide any form of IPv6 connectivity.</t>
           <t>Does not alleviate IPv4 address scarcity.</t>
@@ -1106,6 +1126,8 @@ app.domain.tld.    IN A     192.0.2.1
         </t>
         <t>
         Benefits of IPv4-only + NAPT44 operation compared to SIIT-DC include:
+        </t>
+        <t>
         <list style="symbols">
           <t>Compatible with IPv4-only devices.</t>
           <t>Compatible with IPv4-only application software, without requiring
@@ -1115,6 +1137,8 @@ app.domain.tld.    IN A     192.0.2.1
         <t>
         Disadvantages of IPv4-only + NAPT44 operation compared to SIIT-DC
         include:
+        </t>
+        <t>
         <list style="symbols">
           <t>Does not provide any form of IPv6 availability.</t>
           <t>Requires network devices that track all flow state, which may
@@ -1128,6 +1152,8 @@ app.domain.tld.    IN A     192.0.2.1
           <t>
           Depending on whether or not the NAPT44 device rewrites source
           addresses in order to attract the return traffic to itself:
+          </t>
+          <t>
           <list style="symbols">
             <t>Obscures the true source address of the user from the
             server/application, preventing it from e.g. performing
@@ -1174,7 +1200,10 @@ app.domain.tld.    IN A     192.0.2.1
         Therefore, his section only lists the benefits and disadvantages which
         are unique to a Dual Stack environment.
         </t>
-        <t>Benefits of Dual Stack operation compared to SIIT-DC include:
+        <t>
+        Benefits of Dual Stack operation compared to SIIT-DC include:
+        </t>
+        <t>
         <list style="symbols">
           <t>No translation occurring, the end-to-end principle is intact
           (assuming NAPT44 isn't used).</t>
@@ -1184,7 +1213,11 @@ app.domain.tld.    IN A     192.0.2.1
           <t>Compatible with IPv4-only application software, without requiring
           a host agent.</t>
         </list>
+        </t>
+        <t>
         Disadvantages of Dual Stack operation compared to SIIT-DC include:
+        </t>
+        <t>
         <list style="symbols">
           <t>Does not alleviate IPv4 address scarcity (assuming NAPT44 isn't
           used).</t>

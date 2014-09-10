@@ -1172,6 +1172,8 @@ B.2.  IPv4-only + NAPT44
    o  Depending on whether or not the NAPT44 device rewrites source
       addresses in order to attract the return traffic to itself:
 
+   o
+
       *  Obscures the true source address of the user from the server/
          application, preventing it from e.g. performing geo-location
          lookups, or:

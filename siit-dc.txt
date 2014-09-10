@@ -1368,6 +1368,8 @@ Internet-Draft                   SIIT-DC                  September 2014
    o  Depending on whether or not the NAPT44 device rewrites source
       addresses in order to attract the return traffic to itself:
 
+   o
+
       *  Obscures the true source address of the user from the server/
          application, preventing it from e.g. performing geo-location
          lookups, or:
@@ -1392,8 +1394,6 @@ Internet-Draft                   SIIT-DC                  September 2014
    than plain SIIT-DC, while SIIT-DC is more compatible than NAPT44 if a
    host agent is used.
 
-   For a more complete discussion of potential issues with running
-   NAPT44, see Architectural Implications of NAT [RFC2993].
 
 
 
@@ -1401,6 +1401,9 @@ Anderson                 Expires March 14, 2015                [Page 25]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
+
+   For a more complete discussion of potential issues with running
+   NAPT44, see Architectural Implications of NAT [RFC2993].
 
 B.3.  Dual Stack
 
@@ -1445,9 +1448,6 @@ B.3.  Dual Stack
       reduces reliability.
 
 Author's Address
-
-
-
 
 
 
