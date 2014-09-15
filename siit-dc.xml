@@ -127,9 +127,9 @@
           routing is also acceptable, which makes it easy to avoid sub-optimal
           traffic patterns; the prefixes involved may be anycasted from all
           the SIIT-DC Gateways in the provider's network, thus ensuring that
-          the most optimal path through the network is used, even the optimal
-          path in one direction differs from the optimal path in the opposite
-          direction.
+          the most optimal path through the network is used, even where the
+          optimal path in one direction differs from the optimal path in the
+          opposite direction.
           </t>
           <t>
           Finally, stateless operation means that high availability is easily
@@ -464,10 +464,11 @@ app.domain.tld.    IN A     192.0.2.1
         <t>
         The SIIT-DC architecture may be extended with a Host Agent that
         reverses the translation performed by the SIIT-DC Gateway before
-        passing the packets to the application software, such applications
-        protocols will be able to work correctly in an SIIT-DC environment as
-        well. See <xref target="I-D.anderson-v6ops-siit-dc-2xlat"/> for a
-        description of this extension.
+        passing the packets to the application software. This allows the
+        problematic application protocols described above to work correctly in
+        an SIIT-DC environment as well. See <xref
+        target="I-D.anderson-v6ops-siit-dc-2xlat"/> for a description of this
+        extension.
         </t>
       </section>
       <section title="Application Support for IPv6">
@@ -476,7 +477,9 @@ app.domain.tld.    IN A     192.0.2.1
         networking, and that it has no dependency on IPv4 networking. If this
         is not the case, the approach described in <xref
         target="I-D.anderson-v6ops-siit-dc-2xlat"/> may be used, as it
-        provides the application with seemingly native IPv4 connectivity.
+        provides the application with seemingly native IPv4 connectivity. This
+        allows IPv4-only applications to work correctly in an otherwise
+        IPv6-only environment.
         </t>
       </section>
       <section title="Application Communication Pattern">
@@ -538,7 +541,7 @@ app.domain.tld.    IN A     192.0.2.1
         into the text representation of an IPv6 address using the familiar
         dotted quad notation, e.g., "2001:db8::198.51.100.10" (cf. <xref
         target="RFC6052">Section 2.4 of RFC6052</xref>)), instead of being
-        converted to hexadecimal notation. This makes it easier to write IPV6
+        converted to hexadecimal notation. This makes it easier to write IPv6
         ACLs and similar that match translated endpoints in the IPv4 Internet.
         Use of a /96 prefix length is therefore recommended.
         </t>
@@ -643,11 +646,11 @@ app.domain.tld.    IN A     192.0.2.1
           SIIT-DC Gateway and the servers to 1520 bytes. Note that the
           servers' MTU SHOULD NOT be increased accordingly, as that would
           cause them to undergo Path MTU Discovery for most native IPv6
-          destinations.  However, the servers would need to be able to accept
-          and process incoming packets larger than their own MTU. However, if
-          the server's IPv6 implementation allows the MTU to be set
-          differently for specific destinations, it could be increased to 1520
-          for destinations within the Translation Prefix specifically.
+          destinations. However, the servers would need to be able to accept
+          and process incoming packets larger than their own MTU. If the
+          server's IPv6 implementation allows the MTU to be set differently
+          for specific destinations, it could be increased to 1520 for
+          destinations within the Translation Prefix specifically.
           </t>
         </section>
         <section title="Minimum Path MTU Difference">
@@ -762,8 +765,8 @@ app.domain.tld.    IN A     192.0.2.1
         translating to IPv4. Similarly, if the SIIT-DC Gateway receives an
         IPv4 packet that has the value 192.0.2.1 as the either the source or
         destination field of the IPv4 header, it MUST rewrite this field to
-        2001:db8:12:34::1 when translating to IPV6. For all IPv4 or IPv6
-        source or destination field values for which there is no Static
+        2001:db8:12:34::1 when translating to IPv6. For all IPv4 or IPv6
+        source or destination field values for which there are no Static
         Address Mapping, <xref target="RFC6052"/> compliant mapping MUST be
         used instead.
         </t>
@@ -971,7 +974,7 @@ app.domain.tld.    IN A     192.0.2.1
           <author initials='T' surname='Anderson' fullname='Tore Anderson'>
             <organization />
           </author>
-          <date month='September' day='5' year='2014' />
+          <date month='September' day='15' year='2014' />
           <abstract><t>This document describes an extension of the SIIT-DC
           architecture, which allows applications that are incompatible with
           SIIT-DC and/or Network Address Translation in general to operate

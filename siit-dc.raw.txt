@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 10, 2014
-Expires: March 14, 2015
+Intended status: Standards Track                      September 15, 2014
+Expires: March 19, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 14, 2015.
+   This Internet-Draft will expire on March 19, 2015.
 
 Copyright Notice
 
@@ -104,8 +104,8 @@ Table of Contents
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 10, 2014
-Expires: March 14, 2015
+Intended status: Standards Track                      September 15, 2014
+Expires: March 19, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
@@ -136,7 +136,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 14, 2015.
+   This Internet-Draft will expire on March 19, 2015.
 
 Copyright Notice
 
@@ -231,8 +231,8 @@ Copyright Notice
    easy to avoid sub-optimal traffic patterns; the prefixes involved may
    be anycasted from all the SIIT-DC Gateways in the provider's network,
    thus ensuring that the most optimal path through the network is used,
-   even the optimal path in one direction differs from the optimal path
-   in the opposite direction.
+   even where the optimal path in one direction differs from the optimal
+   path in the opposite direction.
 
    Finally, stateless operation means that high availability is easily
    achieved.  If an SIIT-DC Gateway should fail, its traffic can be re-
@@ -535,10 +535,11 @@ Copyright Notice
 
    The SIIT-DC architecture may be extended with a Host Agent that
    reverses the translation performed by the SIIT-DC Gateway before
-   passing the packets to the application software, such applications
-   protocols will be able to work correctly in an SIIT-DC environment as
-   well.  See [I-D.anderson-v6ops-siit-dc-2xlat] for a description of
-   this extension.
+   passing the packets to the application software.  This allows the
+   problematic application protocols described above to work correctly
+   in an SIIT-DC environment as well.  See
+   [I-D.anderson-v6ops-siit-dc-2xlat] for a description of this
+   extension.
 
 4.2.  Application Support for IPv6
 
@@ -546,7 +547,9 @@ Copyright Notice
    networking, and that it has no dependency on IPv4 networking.  If
    this is not the case, the approach described in
    [I-D.anderson-v6ops-siit-dc-2xlat] may be used, as it provides the
-   application with seemingly native IPv4 connectivity.
+   application with seemingly native IPv4 connectivity.  This allows
+   IPv4-only applications to work correctly in an otherwise IPv6-only
+   environment.
 
 4.3.  Application Communication Pattern
 
@@ -599,7 +602,7 @@ Copyright Notice
    representation of an IPv6 address using the familiar dotted quad
    notation, e.g., "2001:db8::198.51.100.10" (cf. Section 2.4 of RFC6052
    [RFC6052])), instead of being converted to hexadecimal notation.
-   This makes it easier to write IPV6 ACLs and similar that match
+   This makes it easier to write IPv6 ACLs and similar that match
    translated endpoints in the IPv4 Internet.  Use of a /96 prefix
    length is therefore recommended.
 
@@ -693,8 +696,8 @@ Copyright Notice
    SHOULD NOT be increased accordingly, as that would cause them to
    undergo Path MTU Discovery for most native IPv6 destinations.
    However, the servers would need to be able to accept and process
-   incoming packets larger than their own MTU.  However, if the server's
-   IPv6 implementation allows the MTU to be set differently for specific
+   incoming packets larger than their own MTU.  If the server's IPv6
+   implementation allows the MTU to be set differently for specific
    destinations, it could be increased to 1520 for destinations within
    the Translation Prefix specifically.
 
@@ -785,8 +788,8 @@ Copyright Notice
    when translating to IPv4.  Similarly, if the SIIT-DC Gateway receives
    an IPv4 packet that has the value 192.0.2.1 as the either the source
    or destination field of the IPv4 header, it MUST rewrite this field
-   to 2001:db8:12:34::1 when translating to IPV6.  For all IPv4 or IPv6
-   source or destination field values for which there is no Static
+   to 2001:db8:12:34::1 when translating to IPv6.  For all IPv4 or IPv6
+   source or destination field values for which there are no Static
    Address Mapping, [RFC6052] compliant mapping MUST be used instead.
 
    Relation to [RFC6145]: The Static Address Mapping is a novel feature

@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 10, 2014
-Expires: March 14, 2015
+Intended status: Standards Track                      September 15, 2014
+Expires: March 19, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 14, 2015.
+   This Internet-Draft will expire on March 19, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Anderson                 Expires March 14, 2015                 [Page 1]
+Anderson                 Expires March 19, 2015                 [Page 1]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -86,22 +86,22 @@ Table of Contents
        4.8.1.  IP Header Size Difference . . . . . . . . . . . . . .  14
        4.8.2.  Minimum Path MTU Difference . . . . . . . . . . . . .  14
        4.8.3.  "Atomic Fragments"  . . . . . . . . . . . . . . . . .  15
-   5.  Implementation Requirements . . . . . . . . . . . . . . . . .  15
+   5.  Implementation Requirements . . . . . . . . . . . . . . . . .  16
      5.1.  Compliance with RFC6145 and RFC6052 . . . . . . . . . . .  16
      5.2.  Static Address Mapping Function . . . . . . . . . . . . .  16
-     5.3.  Support for Increasing the IPv6 Path MTU  . . . . . . . .  16
+     5.3.  Support for Increasing the IPv6 Path MTU  . . . . . . . .  17
      5.4.  Support for Disabling "Atomic Fragments"  . . . . . . . .  17
      5.5.  Feature for Handling IPv4 Path MTUs Lower than 1260 . . .  17
      5.6.  Loop Prevention Mechanism . . . . . . . . . . . . . . . .  18
    6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  18
-   7.  Requirements Language . . . . . . . . . . . . . . . . . . . .  18
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  18
+   7.  Requirements Language . . . . . . . . . . . . . . . . . . . .  19
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
      9.1.  Mistaking the Translation Prefix for a Trusted Network  .  19
      9.2.  Packets Looping Through the SIIT-DC Function  . . . . . .  19
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  19
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  19
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  20
    Appendix A.  Complete SIIT-DC topology example  . . . . . . . . .  21
    Appendix B.  Comparison to Other Deployment Approaches  . . . . .  24
      B.1.  IPv4-only . . . . . . . . . . . . . . . . . . . . . . . .  24
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Anderson                 Expires March 14, 2015                 [Page 2]
+Anderson                 Expires March 19, 2015                 [Page 2]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -165,7 +165,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 14, 2015                 [Page 3]
+Anderson                 Expires March 19, 2015                 [Page 3]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -203,8 +203,8 @@ Internet-Draft                   SIIT-DC                  September 2014
    easy to avoid sub-optimal traffic patterns; the prefixes involved may
    be anycasted from all the SIIT-DC Gateways in the provider's network,
    thus ensuring that the most optimal path through the network is used,
-   even the optimal path in one direction differs from the optimal path
-   in the opposite direction.
+   even where the optimal path in one direction differs from the optimal
+   path in the opposite direction.
 
    Finally, stateless operation means that high availability is easily
    achieved.  If an SIIT-DC Gateway should fail, its traffic can be re-
@@ -221,7 +221,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 14, 2015                 [Page 4]
+Anderson                 Expires March 19, 2015                 [Page 4]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -277,7 +277,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 14, 2015                 [Page 5]
+Anderson                 Expires March 19, 2015                 [Page 5]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -333,7 +333,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 14, 2015                 [Page 6]
+Anderson                 Expires March 19, 2015                 [Page 6]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -389,7 +389,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 14, 2015                 [Page 7]
+Anderson                 Expires March 19, 2015                 [Page 7]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -445,7 +445,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 14, 2015                 [Page 8]
+Anderson                 Expires March 19, 2015                 [Page 8]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -501,7 +501,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 14, 2015                 [Page 9]
+Anderson                 Expires March 19, 2015                 [Page 9]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -557,7 +557,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 14, 2015                [Page 10]
+Anderson                 Expires March 19, 2015                [Page 10]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -584,10 +584,11 @@ Internet-Draft                   SIIT-DC                  September 2014
 
    The SIIT-DC architecture may be extended with a Host Agent that
    reverses the translation performed by the SIIT-DC Gateway before
-   passing the packets to the application software, such applications
-   protocols will be able to work correctly in an SIIT-DC environment as
-   well.  See [I-D.anderson-v6ops-siit-dc-2xlat] for a description of
-   this extension.
+   passing the packets to the application software.  This allows the
+   problematic application protocols described above to work correctly
+   in an SIIT-DC environment as well.  See
+   [I-D.anderson-v6ops-siit-dc-2xlat] for a description of this
+   extension.
 
 4.2.  Application Support for IPv6
 
@@ -595,7 +596,9 @@ Internet-Draft                   SIIT-DC                  September 2014
    networking, and that it has no dependency on IPv4 networking.  If
    this is not the case, the approach described in
    [I-D.anderson-v6ops-siit-dc-2xlat] may be used, as it provides the
-   application with seemingly native IPv4 connectivity.
+   application with seemingly native IPv4 connectivity.  This allows
+   IPv4-only applications to work correctly in an otherwise IPv6-only
+   environment.
 
 4.3.  Application Communication Pattern
 
@@ -607,17 +610,17 @@ Internet-Draft                   SIIT-DC                  September 2014
    IPv4 user looks exactly like an ordinary IPv6 user from the host and
    application's point of view, and requires no special treatment.
 
-   It is possible to combine SIIT-DC with DNS64 [RFC6147] in order to
-   allow an IPv6-only application to initiate communication with
-   IPv4-only nodes through an SIIT-DC Gateway.  However, in this case,
 
 
 
-Anderson                 Expires March 14, 2015                [Page 11]
+Anderson                 Expires March 19, 2015                [Page 11]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
 
+   It is possible to combine SIIT-DC with DNS64 [RFC6147] in order to
+   allow an IPv6-only application to initiate communication with
+   IPv4-only nodes through an SIIT-DC Gateway.  However, in this case,
    care must be taken so that all outgoing communication is sourced from
    the IPv6 Service Address that has a Static Mapping configured on the
    SIIT-DC Gateway.  If another unmapped address is used, the SIIT-DC
@@ -656,23 +659,24 @@ Internet-Draft                   SIIT-DC                  September 2014
    representation of an IPv6 address using the familiar dotted quad
    notation, e.g., "2001:db8::198.51.100.10" (cf. Section 2.4 of RFC6052
    [RFC6052])), instead of being converted to hexadecimal notation.
-   This makes it easier to write IPV6 ACLs and similar that match
+   This makes it easier to write IPv6 ACLs and similar that match
    translated endpoints in the IPv4 Internet.  Use of a /96 prefix
    length is therefore recommended.
 
 4.5.  Routing Considerations
 
-   The prefixes that constitute the IPv4 Service Address Pool and the
-   IPv6 Translation Prefix may be routed to the SIIT-DC Gateway(s) as
-   any other IPv4 or IPv6 route in the provider's network.
 
 
 
 
-Anderson                 Expires March 14, 2015                [Page 12]
+Anderson                 Expires March 19, 2015                [Page 12]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
+
+   The prefixes that constitute the IPv4 Service Address Pool and the
+   IPv6 Translation Prefix may be routed to the SIIT-DC Gateway(s) as
+   any other IPv4 or IPv6 route in the provider's network.
 
    If more than one SIIT-DC Gateway is being deployed, it is recommended
    that a dynamic routing protocol (such as BGP, IS-IS, or OSPF) is
@@ -718,17 +722,18 @@ Internet-Draft                   SIIT-DC                  September 2014
    makes roll-back to dual stack easy, as it is only a matter of
    changing the DNS record back to what it was before.
 
+
+
+
+Anderson                 Expires March 19, 2015                [Page 13]
+
+Internet-Draft                   SIIT-DC                  September 2014
+
+
    For high-volume services migrating to SIIT-DC from dual stack, DNS
    Round Robin may be used to gradually migrate the service's IPv4
    traffic from its native IPv4 address(es) to the translated IPv4
    Service Address(s).
-
-
-
-Anderson                 Expires March 14, 2015                [Page 13]
-
-Internet-Draft                   SIIT-DC                  September 2014
-
 
 4.8.  Packet Size and Fragmentation Considerations
 
@@ -765,26 +770,27 @@ Internet-Draft                   SIIT-DC                  September 2014
    SHOULD NOT be increased accordingly, as that would cause them to
    undergo Path MTU Discovery for most native IPv6 destinations.
    However, the servers would need to be able to accept and process
-   incoming packets larger than their own MTU.  However, if the server's
-   IPv6 implementation allows the MTU to be set differently for specific
+   incoming packets larger than their own MTU.  If the server's IPv6
+   implementation allows the MTU to be set differently for specific
    destinations, it could be increased to 1520 for destinations within
    the Translation Prefix specifically.
 
 4.8.2.  Minimum Path MTU Difference
+
+
+
+
+
+Anderson                 Expires March 19, 2015                [Page 14]
+
+Internet-Draft                   SIIT-DC                  September 2014
+
 
    The minimum allowed link MTU in IPv6 is 1280 bytes.  In IPv4, the
    corresponding value is 68 bytes.  This means that an 1280 byte large
    IPv6 packet sent to an IPv4 client may need to be fragmented by a
    router in the IPv4 network, if the path to the IPv4 client involves a
    link with a MTU lower than 1260 bytes.
-
-
-
-
-Anderson                 Expires March 14, 2015                [Page 14]
-
-Internet-Draft                   SIIT-DC                  September 2014
-
 
    By default, an SIIT-DC Gateway will set the DF flag when translating
    from IPv6 to IPv4, resulting in a situation where the IPv6 server may
@@ -823,6 +829,19 @@ Internet-Draft                   SIIT-DC                  September 2014
    environment, and it is therefore recommended that this behaviour is
    disabled in the SIIT-DC Gateway(s).  See Section 5.4.
 
+
+
+
+
+
+
+
+
+Anderson                 Expires March 19, 2015                [Page 15]
+
+Internet-Draft                   SIIT-DC                  September 2014
+
+
 5.  Implementation Requirements
 
    This normative section specifies the SIIT-DC protocol that is
@@ -832,15 +851,6 @@ Internet-Draft                   SIIT-DC                  September 2014
    already compliant to SIIT [RFC6145].  Each of the following
    subsections discuss how the requirement relates to with any
    corresponding requirements in SIIT [RFC6145].
-
-
-
-
-
-Anderson                 Expires March 14, 2015                [Page 15]
-
-Internet-Draft                   SIIT-DC                  September 2014
-
 
 5.1.  Compliance with RFC6145 and RFC6052
 
@@ -874,12 +884,20 @@ Internet-Draft                   SIIT-DC                  September 2014
    when translating to IPv4.  Similarly, if the SIIT-DC Gateway receives
    an IPv4 packet that has the value 192.0.2.1 as the either the source
    or destination field of the IPv4 header, it MUST rewrite this field
-   to 2001:db8:12:34::1 when translating to IPV6.  For all IPv4 or IPv6
-   source or destination field values for which there is no Static
+   to 2001:db8:12:34::1 when translating to IPv6.  For all IPv4 or IPv6
+   source or destination field values for which there are no Static
    Address Mapping, [RFC6052] compliant mapping MUST be used instead.
 
    Relation to [RFC6145]: The Static Address Mapping is a novel feature
    feature that is not discussed in [RFC6145].  It conflicts with
+
+
+
+Anderson                 Expires March 19, 2015                [Page 16]
+
+Internet-Draft                   SIIT-DC                  September 2014
+
+
    [RFC6145]'s requirement that all addresses must be translated
    according to the [RFC6052] algorithm.
 
@@ -890,13 +908,6 @@ Internet-Draft                   SIIT-DC                  September 2014
    to a value that reflects the real value of the minimum IPv6 MTU in
    the network (greater than 1280 bytes).  This will help reduce the
    chance of including the Fragment Header in the packets.
-
-
-
-Anderson                 Expires March 14, 2015                [Page 16]
-
-Internet-Draft                   SIIT-DC                  September 2014
-
 
    Relation to [RFC6145]: This strengthens the corresponding "MAY"
    requirement located in Section 4 of RFC6145 [RFC6145] to a "MUST".
@@ -936,6 +947,13 @@ Internet-Draft                   SIIT-DC                  September 2014
    approach described in Section 6 of RFC6145 [RFC6145].  The
    modifications are:
 
+
+
+Anderson                 Expires March 19, 2015                [Page 17]
+
+Internet-Draft                   SIIT-DC                  September 2014
+
+
    1.  In the IPv4-to-IPv6 direction, the algorithm only used for ICMPv4
        Need To Fragment packets that indicate an MTU value smaller or
        equal to 1260.  The corresponding value used by [RFC6145] is
@@ -944,15 +962,6 @@ Internet-Draft                   SIIT-DC                  September 2014
    2.  In the IPv6-to-IPv4 direction, an SIIT Gateway MUST NOT generate
        and maintain any state due to generating IPv4 Identification
        values.  [RFC6145] RECOMMENDS that this is done.
-
-
-
-
-
-Anderson                 Expires March 14, 2015                [Page 17]
-
-Internet-Draft                   SIIT-DC                  September 2014
-
 
    Also see [I-D.gont-6man-deprecate-atomfrag-generation], which seeks
    to formally update [RFC6145] with the approach described in this
@@ -988,6 +997,19 @@ Internet-Draft                   SIIT-DC                  September 2014
    Cameron Byrne, Ross Chandler, Dagfinn Ilmari Mannsaaker, Lars
    Olafsen, Stig Sandbeck Mathisen, [YOUR NAME GOES HERE].
 
+
+
+
+
+
+
+
+
+Anderson                 Expires March 19, 2015                [Page 18]
+
+Internet-Draft                   SIIT-DC                  September 2014
+
+
 7.  Requirements Language
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -1000,15 +1022,6 @@ Internet-Draft                   SIIT-DC                  September 2014
    this section prior to publication.
 
 9.  Security Considerations
-
-
-
-
-
-Anderson                 Expires March 14, 2015                [Page 18]
-
-Internet-Draft                   SIIT-DC                  September 2014
-
 
 9.1.  Mistaking the Translation Prefix for a Trusted Network
 
@@ -1044,6 +1057,15 @@ Internet-Draft                   SIIT-DC                  September 2014
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
+
+
+
+
+Anderson                 Expires March 19, 2015                [Page 19]
+
+Internet-Draft                   SIIT-DC                  September 2014
+
+
    [RFC6052]  Bao, C., Huitema, C., Bagnulo, M., Boucadair, M., and X.
               Li, "IPv6 Addressing of IPv4/IPv6 Translators", RFC 6052,
               October 2010.
@@ -1057,14 +1079,6 @@ Internet-Draft                   SIIT-DC                  September 2014
               Anderson, T., "SIIT-DC: Dual Translation Mode", draft-
               anderson-v6ops-siit-dc-2xlat-00 (work in progress),
               September 2014.
-
-
-
-
-Anderson                 Expires March 14, 2015                [Page 19]
-
-Internet-Draft                   SIIT-DC                  September 2014
-
 
    [I-D.gont-6man-deprecate-atomfrag-generation]
               Gont, F., Will, W., and T. Anderson, "Deprecating the
@@ -1099,6 +1113,15 @@ Internet-Draft                   SIIT-DC                  September 2014
               Translator (NAT) Terminology and Considerations", RFC
               2663, August 1999.
 
+
+
+
+
+Anderson                 Expires March 19, 2015                [Page 20]
+
+Internet-Draft                   SIIT-DC                  September 2014
+
+
    [RFC2991]  Thaler, D. and C. Hopps, "Multipath Issues in Unicast and
               Multicast Next-Hop Selection", RFC 2991, November 2000.
 
@@ -1114,13 +1137,6 @@ Internet-Draft                   SIIT-DC                  September 2014
 
    [RFC4213]  Nordmark, E. and R. Gilligan, "Basic Transition Mechanisms
               for IPv6 Hosts and Routers", RFC 4213, October 2005.
-
-
-
-Anderson                 Expires March 14, 2015                [Page 20]
-
-Internet-Draft                   SIIT-DC                  September 2014
-
 
    [RFC4217]  Ford-Hutchinson, P., "Securing FTP with TLS", RFC 4217,
               October 2005.
@@ -1147,6 +1163,21 @@ Appendix A.  Complete SIIT-DC topology example
    better demonstrate the beneficial properties it has.  In particular,
    it tries to highlight the following:
 
+
+
+
+
+
+
+
+
+
+
+Anderson                 Expires March 19, 2015                [Page 21]
+
+Internet-Draft                   SIIT-DC                  September 2014
+
+
    o  Stateless operation: Any number of SIIT-DC Gateways may be
       deployed side-by side, or indeed anywhere in the IPv6 network, as
       any standard routing mechanism may be used to direct traffic to
@@ -1165,18 +1196,6 @@ Appendix A.  Complete SIIT-DC topology example
       the form of aggregated blocks or prefixes; which makes it easy to
       achieve 100% effective utilisation of the IPv4 service address
       pools.
-
-
-
-
-
-
-
-
-Anderson                 Expires March 14, 2015                [Page 21]
-
-Internet-Draft                   SIIT-DC                  September 2014
-
 
    o  Application support: The translation-friendly applications HTTP
       and SMTP will work through SIIT-DC without requiring any special
@@ -1210,26 +1229,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Anderson                 Expires March 14, 2015                [Page 22]
+Anderson                 Expires March 19, 2015                [Page 22]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1285,7 +1285,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 14, 2015                [Page 23]
+Anderson                 Expires March 19, 2015                [Page 23]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1341,7 +1341,7 @@ B.2.  IPv4-only + NAPT44
 
 
 
-Anderson                 Expires March 14, 2015                [Page 24]
+Anderson                 Expires March 19, 2015                [Page 24]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1397,7 +1397,7 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 14, 2015                [Page 25]
+Anderson                 Expires March 19, 2015                [Page 25]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1453,7 +1453,7 @@ Author's Address
 
 
 
-Anderson                 Expires March 14, 2015                [Page 26]
+Anderson                 Expires March 19, 2015                [Page 26]
 
 Internet-Draft                   SIIT-DC                  September 2014
 
@@ -1509,4 +1509,4 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 14, 2015                [Page 27]
+Anderson                 Expires March 19, 2015                [Page 27]

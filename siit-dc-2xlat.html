@@ -375,7 +375,7 @@
 
   <meta name="dct.creator" content="Anderson, T." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-anderson-v6ops-siit-dc-2xlat-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-9-10" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-9-15" />
   <meta name="dct.abstract" content="This document describes an extension of the " />
   <meta name="description" content="This document describes an extension of the " />
 
@@ -396,10 +396,10 @@
 </tr>
 <tr>
   <td class="left">Intended status: Standards Track</td>
-  <td class="right">September 10, 2014</td>
+  <td class="right">September 15, 2014</td>
 </tr>
 <tr>
-  <td class="left">Expires: March 14, 2015</td>
+  <td class="left">Expires: March 19, 2015</td>
   <td class="right"></td>
 </tr>
 
@@ -421,7 +421,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on March 14, 2015.</p>
+<p>This Internet-Draft will expire on March 19, 2015.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -478,7 +478,7 @@
 
 <p> </p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#siit_ha_spec" id="siit_ha_spec">SIIT-DC Host Agent Specification</a></h1>
-<p id="rfc.section.3.p.1">The SIIT-DC Host Agent runs on the servers hosting application which do not work correctly with the SIIT-DC architecture as specified by <a href="#I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</a>. Its task is the performing the exact same packet translation as the SIIT-DC Gateway, only in reverse.  It therefore shares the same implementation requirements as the SIIT-DC Gateway defined in Section 4 of <a href="#I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</a>, with one exception: The SIIT-DC Host Agent is not required to support configuring an arbitrary number of static mappings, but it must support at least one.  </p>
+<p id="rfc.section.3.p.1">The SIIT-DC Host Agent runs on the servers hosting application which do not work correctly with the SIIT-DC architecture as specified by <a href="#I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</a>. Its task is the performing the exact same packet translation as the SIIT-DC Gateway, only in reverse.  It therefore shares the same implementation requirements as the SIIT-DC Gateway defined in Section 4 of <a href="#I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</a>, with one exception: The SIIT-DC Host Agent is not required to support configuring an arbitrary number of Static Address Mappings, but it must support at least one.  </p>
 <p id="rfc.section.3.p.2">The SIIT-DC Host Agent must be configured with a Static Address Mapping that corresponds exactly with the same mapping found on the SIIT-DC Gateway. The IPv4 address of the Static Address Mapping (i.e., the IPv4 Service Address) must be configured on a virtual network interface which applications running on the server can bind to, and the server is expected to install a default IPv4 route poining to this virtual IPv4 interface. The IPv6 address of the Static Address Mapping must be a secondary address that is routed to the server by the IPv6 network. The server must forward all packets it receives destined for this IPv6 address to the SIIT-DC Host Agent.  </p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> Architectural Overview</h1>
 <p id="rfc.section.4.p.1">The following figure shows how an application (that is presumably incompatible with standard SIIT-DC) is being made available to the IPv4 Internet on the IPv4 address 192.0.2.4. The application will be able to know that this is its local address and thus be able to provide correct references to it in application payload.  </p>
@@ -560,8 +560,8 @@
 <h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#Security" id="Security">Security Considerations</a></h1>
 <p id="rfc.section.9.p.1">This section discusses security considerations specific to the use of a SIIT-DC Host Agent. See the <a href="#I-D.anderson-v6ops-siit-dc">Security Considerations in I-D.anderson-v6ops-siit-dc</a> <cite title="NONE">[I-D.anderson-v6ops-siit-dc]</cite> for additional security considerations applicable to the SIIT-DC architecture in general.  </p>
 <h1 id="rfc.section.9.1"><a href="#rfc.section.9.1">9.1.</a> <a href="#sec_loops" id="sec_loops">Address Spoofing</a></h1>
-<p id="rfc.section.9.1.p.1">If the SIIT-DC Host Agent receives an IPv4 packet from the application from a different source address than the one it has a Static Address Mapping for, the both the source and destination addresses will be rewritten according to <a href="#RFC6052">[RFC6052]</a>. After undergoing the reverse translation in the SIIT-DC Gateway, the resulting IPv4 packet routed to the IPv4 network will have a spoofed IPv4 source address.  The SIIT-DC Host Agent should therefore ensure that ingress filtering (cf. <a href="#RFC2827">BCP38</a> <cite title="NONE">[RFC2827]</cite> is used on the SIIT-DC Host Agent's IPv4 interface, so that such packets are immediately discarded.  </p>
-<p id="rfc.section.9.1.p.2">If the SIIT-DC Host Agent receives an IPv6 packet with both the source and destination address equal to the one it has a static mapping from, the resulting packet would appear to the application as locally generated, as both the source address and the destination address will be the same address as the one configured on the virtual IPv4 interface. This could trick the application into thinking this packet came from a trusted source, and give elevated privileges accordingly.  To prevent this, the SIIT-DC Host Agent should discard any received IPv6 packets that have a source address that is equal either to either the IPv4 (after undergoing <a href="#RFC6052">[RFC6052]</a> translation) or the IPv6 address in the static mapping.  </p>
+<p id="rfc.section.9.1.p.1">If the SIIT-DC Host Agent receives an IPv4 packet from the application from a different source address than the one it has a Static Address Mapping for, the both the source and destination addresses will be rewritten according to <a href="#RFC6052">[RFC6052]</a>. After undergoing the reverse translation in the SIIT-DC Gateway, the resulting IPv4 packet routed to the IPv4 network will have a spoofed IPv4 source address.  The SIIT-DC Host Agent should therefore ensure that ingress filtering (cf. <a href="#RFC2827">BCP38</a> <cite title="NONE">[RFC2827]</cite>) is used on the SIIT-DC Host Agent's IPv4 interface, so that such packets are immediately discarded.  </p>
+<p id="rfc.section.9.1.p.2">If the SIIT-DC Host Agent receives an IPv6 packet with both the source and destination address equal to the one it has a Static Address Mapping for, the resulting packet would appear to the application as locally generated, as both the source address and the destination address will be the same address as the one configured on the virtual IPv4 interface. This could trick the application into thinking this packet came from a trusted source, and give elevated privileges accordingly. To prevent this, the SIIT-DC Host Agent should discard any received IPv6 packets that have a source address that is equal either to either the IPv4 (after undergoing <a href="#RFC6052">[RFC6052]</a> translation) or the IPv6 address in the Static Address Mapping.  </p>
 <h1 id="rfc.references"><a href="#rfc.references">10.</a> References</h1>
 <h1 id="rfc.references.1"><a href="#rfc.references.1">10.1.</a> Normative References</h1>
 <table>
