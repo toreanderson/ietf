@@ -388,7 +388,7 @@ Copyright Notice
 10.1.  Normative References
 
    [I-D.anderson-v6ops-siit-dc]
-              Anderson, T., "SIIT-DC: Stateless IP/ICMP Translation in
+              Anderson, T., "SIIT-DC: Stateless IP/ICMP Translation for
               IPv6 Data Centre Environments", draft-anderson-v6ops-siit-
               dc-00 (work in progress), September 2014.
 

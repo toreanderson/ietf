@@ -322,29 +322,7 @@
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
-      <!-- replace the below with
-	   <?rfc include="reference.I-D.anderson-v6ops-siit-dc"?> once the
-           drafts have been uploaded to the IETF web site -->
-      <reference anchor='I-D.anderson-v6ops-siit-dc'>
-          <front>
-	  <title>SIIT-DC: Stateless IP/ICMP Translation in IPv6 Data Centre
-          Environments</title>
-          <author initials='T' surname='Anderson' fullname='Tore Anderson'>
-            <organization />
-          </author>
-          <date month='September' day='15' year='2014' />
-	  <abstract><t>This document describes the use of Stateless IP/ICMP
-	  Translation (SIIT) in data centre environments in order to
-	  simultaneously facilitate IPv6 deployment and IPv4 address
-	  conservation. It describes the overall architecture, and provides
-	  guidelines for both operators and implementers.</t></abstract>
-        </front>
-	<seriesInfo name='Internet-Draft'
-	            value='draft-anderson-v6ops-siit-dc-00' />
-	<format type='TXT'
-	        target='http://www.ietf.org/internet-drafts/draft-anderson-v6ops-siit-dc-00.txt'
-	/>
-      </reference>
+      <?rfc include="reference.I-D.anderson-v6ops-siit-dc"?>
     </references>
     <references title="Informative References">
       <?rfc include="reference.RFC.2827"?>

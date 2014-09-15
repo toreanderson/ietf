@@ -962,29 +962,9 @@ app.domain.tld.    IN A     192.0.2.1
       <?rfc include="reference.RFC.6147"?>
       <?rfc include="reference.RFC.6540"?>
       <?rfc include="reference.RFC.6946"?>
-      <?rfc include="reference.I-D.taylor-v6ops-fragdrop"?>
+      <?rfc include="reference.I-D.anderson-v6ops-siit-dc-2xlat"?>
       <?rfc include="reference.I-D.gont-6man-deprecate-atomfrag-generation"?>
-
-      <!-- replace the below with
-	   <?rfc include="reference.I-D.anderson-v6ops-siit-dc-2xlat"?> once
-	   the drafts have been uploaded to the IETF web site -->
-      <reference anchor='I-D.anderson-v6ops-siit-dc-2xlat'>
-        <front>
-          <title>SIIT-DC: Dual Translation Mode</title>
-          <author initials='T' surname='Anderson' fullname='Tore Anderson'>
-            <organization />
-          </author>
-          <date month='September' day='15' year='2014' />
-          <abstract><t>This document describes an extension of the SIIT-DC
-          architecture, which allows applications that are incompatible with
-          SIIT-DC and/or Network Address Translation in general to operate
-          correctly in an SIIT-DC environment.</t></abstract>
-          </front>
-	  <seriesInfo name='Internet-Draft'
-	              value='draft-anderson-v6ops-siit-dc-2xlat-00' />
-        <format type='TXT'
-	        target='http://www.ietf.org/internet-drafts/draft-anderson-v6ops-siit-dc-2xlat-00.txt' />
-      </reference>
+      <?rfc include="reference.I-D.taylor-v6ops-fragdrop"?>
     </references>
     <section title="Complete SIIT-DC topology example">
       <t>
