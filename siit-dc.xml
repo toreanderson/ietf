@@ -1219,8 +1219,5 @@ app.domain.tld.    IN A     192.0.2.1
   </back>
 
 </rfc>
-<!-- Change Log
-v00 2012-10-12	tore	Initial version
--->
 <!-- vim: syntax=xml tw=78 ai fo=2 et:
 -->
