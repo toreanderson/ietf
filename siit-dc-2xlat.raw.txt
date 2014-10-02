@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 15, 2014
-Expires: March 19, 2015
+Intended status: Standards Track                        October 02, 2014
+Expires: April 05, 2015
 
 
                      SIIT-DC: Dual Translation Mode
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 19, 2015.
+   This Internet-Draft will expire on April 05, 2015.
 
 Copyright Notice
 
@@ -79,8 +79,8 @@ Table of Contents
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 15, 2014
-Expires: March 19, 2015
+Intended status: Standards Track                        October 02, 2014
+Expires: April 05, 2015
 
 
                      SIIT-DC: Dual Translation Mode
@@ -115,7 +115,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 19, 2015.
+   This Internet-Draft will expire on April 05, 2015.
 
 Copyright Notice
 
@@ -256,9 +256,7 @@ Copyright Notice
              |                   |         |                |
              +-<2001:db8::ab:cd>-+         +-<203.0.113.50>-+
                  |                                  |
-                 |                                  |
               (the IPv6 internet)         (the IPv4 Internet)
-                 |                                  |
                  |                                  |
                  |        +------------------<192.0.2.0/24>-+
                  |        |                                 |
@@ -273,9 +271,7 @@ Copyright Notice
                  |        |                                 |
                  |        +--------------<2001:db8:46::/96>-+
                  |                               |
-                 |                               |
                 (the IPv6-only data centre network)
-                 |                               |
                  |                               |
            +--<2001:db8:12:34::3>-------<2001:db8:12:34::4>---+
            |     |                               |            |
@@ -294,7 +290,6 @@ Copyright Notice
            |     |        | 192.0.2.4 <=> 2001:db8:12:34::4 | |
            |     |        |                                 | |
            |     |        +---------------------<192.0.2.4>-+ |
-           |     |                                   |        |
            |     |                                   |        |
            | +-[2001:db8:12:34::3]--------------[192.0.2.4]-+ |
            | |      AF_INET6                      AF_INET   | |
@@ -388,9 +383,9 @@ Copyright Notice
 10.1.  Normative References
 
    [I-D.anderson-v6ops-siit-dc]
-              Anderson, T., "SIIT-DC: Stateless IP/ICMP Translation for
-              IPv6 Data Centre Environments", draft-anderson-v6ops-siit-
-              dc-00 (work in progress), September 2014.
+              tore, t., "SIIT-DC: Stateless IP/ICMP Translation for IPv6
+              Data Centre Environments", draft-anderson-v6ops-siit-dc-00
+              (work in progress), September 2014.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.

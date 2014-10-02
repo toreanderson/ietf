@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 15, 2014
-Expires: March 19, 2015
+Intended status: Standards Track                        October 02, 2014
+Expires: April 05, 2015
 
 
                      SIIT-DC: Dual Translation Mode
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 19, 2015.
+   This Internet-Draft will expire on April 05, 2015.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 1]
+Anderson                 Expires April 05, 2015                 [Page 1]
 
-Internet-Draft                SIIT-DC-2XLAT               September 2014
+Internet-Draft                SIIT-DC-2XLAT                 October 2014
 
 
    publication of this document.  Please review these documents
@@ -76,12 +76,12 @@ Table of Contents
      5.2.  IPv4 MTU  . . . . . . . . . . . . . . . . . . . . . . . .   6
    6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
    7.  Requirements Language . . . . . . . . . . . . . . . . . . . .   6
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
      9.1.  Address Spoofing  . . . . . . . . . . . . . . . . . . . .   7
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      10.1.  Normative References . . . . . . . . . . . . . . . . . .   7
-     10.2.  Informative References . . . . . . . . . . . . . . . . .   8
+     10.2.  Informative References . . . . . . . . . . . . . . . . .   7
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 2]
+Anderson                 Expires April 05, 2015                 [Page 2]
 
-Internet-Draft                SIIT-DC-2XLAT               September 2014
+Internet-Draft                SIIT-DC-2XLAT                 October 2014
 
 
    fact that it will be located on a server, rather than on the
@@ -165,9 +165,9 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 3]
+Anderson                 Expires April 05, 2015                 [Page 3]
 
-Internet-Draft                SIIT-DC-2XLAT               September 2014
+Internet-Draft                SIIT-DC-2XLAT                 October 2014
 
 
 3.  SIIT-DC Host Agent Specification
@@ -221,9 +221,9 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 4]
+Anderson                 Expires April 05, 2015                 [Page 4]
 
-Internet-Draft                SIIT-DC-2XLAT               September 2014
+Internet-Draft                SIIT-DC-2XLAT                 October 2014
 
 
              +-------------------+         +----------------+
@@ -232,9 +232,7 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
              |                   |         |                |
              +-<2001:db8::ab:cd>-+         +-<203.0.113.50>-+
                  |                                  |
-                 |                                  |
               (the IPv6 internet)         (the IPv4 Internet)
-                 |                                  |
                  |                                  |
                  |        +------------------<192.0.2.0/24>-+
                  |        |                                 |
@@ -249,9 +247,7 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
                  |        |                                 |
                  |        +--------------<2001:db8:46::/96>-+
                  |                               |
-                 |                               |
                 (the IPv6-only data centre network)
-                 |                               |
                  |                               |
            +--<2001:db8:12:34::3>-------<2001:db8:12:34::4>---+
            |     |                               |            |
@@ -271,22 +267,20 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
            |     |        |                                 | |
            |     |        +---------------------<192.0.2.4>-+ |
            |     |                                   |        |
-           |     |                                   |        |
            | +-[2001:db8:12:34::3]--------------[192.0.2.4]-+ |
            | |      AF_INET6                      AF_INET   | |
-
-
-
-Anderson                 Expires March 19, 2015                 [Page 5]
-
-Internet-Draft                SIIT-DC-2XLAT               September 2014
-
-
            | |                                              | |
            | |           Dual-stacked application           | |
            | |                                              | |
            | +----------------------------------------------+ |
            +--------------------------------------------------+
+
+
+
+Anderson                 Expires April 05, 2015                 [Page 5]
+
+Internet-Draft                SIIT-DC-2XLAT                 October 2014
+
 
                                  Figure 1
 
@@ -330,18 +324,19 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
 
-
-
-
-Anderson                 Expires March 19, 2015                 [Page 6]
-
-Internet-Draft                SIIT-DC-2XLAT               September 2014
-
-
 8.  IANA Considerations
 
    This draft makes no request of the IANA.  The RFC Editor may remove
    this section prior to publication.
+
+
+
+
+
+Anderson                 Expires April 05, 2015                 [Page 6]
+
+Internet-Draft                SIIT-DC-2XLAT                 October 2014
+
 
 9.  Security Considerations
 
@@ -380,21 +375,24 @@ Internet-Draft                SIIT-DC-2XLAT               September 2014
 10.1.  Normative References
 
    [I-D.anderson-v6ops-siit-dc]
-              Anderson, T., "SIIT-DC: Stateless IP/ICMP Translation for
-              IPv6 Data Centre Environments", draft-anderson-v6ops-siit-
-              dc-00 (work in progress), September 2014.
+              tore, t., "SIIT-DC: Stateless IP/ICMP Translation for IPv6
+              Data Centre Environments", draft-anderson-v6ops-siit-dc-00
+              (work in progress), September 2014.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
-
-
-Anderson                 Expires March 19, 2015                 [Page 7]
-
-Internet-Draft                SIIT-DC-2XLAT               September 2014
-
-
 10.2.  Informative References
+
+
+
+
+
+
+Anderson                 Expires April 05, 2015                 [Page 7]
+
+Internet-Draft                SIIT-DC-2XLAT                 October 2014
+
 
    [RFC2827]  Ferguson, P. and D. Senie, "Network Ingress Filtering:
               Defeating Denial of Service Attacks which employ IP Source
@@ -445,4 +443,6 @@ Author's Address
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 8]
+
+
+Anderson                 Expires April 05, 2015                 [Page 8]

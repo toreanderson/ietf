@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 15, 2014
-Expires: March 19, 2015
+Intended status: Standards Track                        October 02, 2014
+Expires: April 05, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 19, 2015.
+   This Internet-Draft will expire on April 05, 2015.
 
 Copyright Notice
 
@@ -104,8 +104,8 @@ Table of Contents
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 15, 2014
-Expires: March 19, 2015
+Intended status: Standards Track                        October 02, 2014
+Expires: April 05, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
@@ -136,7 +136,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 19, 2015.
+   This Internet-Draft will expire on April 05, 2015.
 
 Copyright Notice
 
@@ -330,9 +330,7 @@ Copyright Notice
              |                   |         |                |
              +-<2001:db8::ab:cd>-+         +-<203.0.113.50>-+
                  |                                  |
-                 |                                  |
               (the IPv6 internet)         (the IPv4 Internet)
-                 |                                  |
                  |                                  |
                  |        +------------------<192.0.2.0/24>-+
                  |        |                                 |
@@ -346,7 +344,6 @@ Copyright Notice
                  |        | 192.0.2.1 <=> 2001:db8:12:34::1 |
                  |        |                                 |
                  |        +--------------<2001:db8:46::/96>-+
-                 |                               |
                  |                               |
                 (the IPv6-only data centre network)
                  |                               |
@@ -943,12 +940,12 @@ Copyright Notice
 10.2.  Informative References
 
    [I-D.anderson-v6ops-siit-dc-2xlat]
-              Anderson, T., "SIIT-DC: Dual Translation Mode", draft-
+              tore, t., "SIIT-DC: Dual Translation Mode", draft-
               anderson-v6ops-siit-dc-2xlat-00 (work in progress),
               September 2014.
 
    [I-D.gont-6man-deprecate-atomfrag-generation]
-              Gont, F., Will, W., and T. Anderson, "Deprecating the
+              Gont, F., Will, W., and t. tore, "Deprecating the
               Generation of IPv6 Atomic Fragments", draft-gont-6man-
               deprecate-atomfrag-generation-01 (work in progress),
               August 2014.

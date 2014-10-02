@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                      September 15, 2014
-Expires: March 19, 2015
+Intended status: Standards Track                        October 02, 2014
+Expires: April 05, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 19, 2015.
+   This Internet-Draft will expire on April 05, 2015.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 1]
+Anderson                 Expires April 05, 2015                 [Page 1]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 2]
+Anderson                 Expires April 05, 2015                 [Page 2]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
      B.3.  Dual Stack  . . . . . . . . . . . . . . . . . . . . . . .  26
@@ -165,9 +165,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 3]
+Anderson                 Expires April 05, 2015                 [Page 3]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    SIIT-DC allows an operator to build their applications on an
@@ -221,9 +221,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 4]
+Anderson                 Expires April 05, 2015                 [Page 4]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    SIIT-DC will map the entire end-user's source address into an
@@ -277,9 +277,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 5]
+Anderson                 Expires April 05, 2015                 [Page 5]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    IPv6 Service Address  A public IPv6 address assigned to a server or
@@ -333,9 +333,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 6]
+Anderson                 Expires April 05, 2015                 [Page 6]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
              +-------------------+         +----------------+
@@ -344,9 +344,7 @@ Internet-Draft                   SIIT-DC                  September 2014
              |                   |         |                |
              +-<2001:db8::ab:cd>-+         +-<203.0.113.50>-+
                  |                                  |
-                 |                                  |
               (the IPv6 internet)         (the IPv4 Internet)
-                 |                                  |
                  |                                  |
                  |        +------------------<192.0.2.0/24>-+
                  |        |                                 |
@@ -360,7 +358,6 @@ Internet-Draft                   SIIT-DC                  September 2014
                  |        | 192.0.2.1 <=> 2001:db8:12:34::1 |
                  |        |                                 |
                  |        +--------------<2001:db8:46::/96>-+
-                 |                               |
                  |                               |
                 (the IPv6-only data centre network)
                  |                               |
@@ -386,16 +383,16 @@ Internet-Draft                   SIIT-DC                  September 2014
    Pool.  Individual IPv4 Service Addresses are assigned from this pool.
    The provider must route this prefix to the SIIT-DC Gateway's IPv4
    interface.  Note that there are no restrictions on how many IPv4
-
-
-
-Anderson                 Expires March 19, 2015                 [Page 7]
-
-Internet-Draft                   SIIT-DC                  September 2014
-
-
    Service Address Pools are used or their prefix length, as long as
    they are all routed to the SIIT-DC Gateway's IPv4 interface.
+
+
+
+
+Anderson                 Expires April 05, 2015                 [Page 7]
+
+Internet-Draft                   SIIT-DC                    October 2014
+
 
    The Static Address Mapping list is used when translating an IPv4
    Service Address (here 192.0.2.1) to its corresponding IPv6 Service
@@ -445,9 +442,12 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 8]
+
+
+
+Anderson                 Expires April 05, 2015                 [Page 8]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
             +------------------------------------------------+
@@ -501,9 +501,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                 [Page 9]
+Anderson                 Expires April 05, 2015                 [Page 9]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
             +-------------------------------------------------+
@@ -557,9 +557,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 10]
+Anderson                 Expires April 05, 2015                [Page 10]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    In this section, we list recommendations and guidelines for operators
@@ -613,9 +613,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 11]
+Anderson                 Expires April 05, 2015                [Page 11]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    It is possible to combine SIIT-DC with DNS64 [RFC6147] in order to
@@ -669,9 +669,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 12]
+Anderson                 Expires April 05, 2015                [Page 12]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    The prefixes that constitute the IPv4 Service Address Pool and the
@@ -725,9 +725,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 13]
+Anderson                 Expires April 05, 2015                [Page 13]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    For high-volume services migrating to SIIT-DC from dual stack, DNS
@@ -781,9 +781,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 14]
+Anderson                 Expires April 05, 2015                [Page 14]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    The minimum allowed link MTU in IPv6 is 1280 bytes.  In IPv4, the
@@ -837,9 +837,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 15]
+Anderson                 Expires April 05, 2015                [Page 15]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
 5.  Implementation Requirements
@@ -893,9 +893,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 16]
+Anderson                 Expires April 05, 2015                [Page 16]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    [RFC6145]'s requirement that all addresses must be translated
@@ -949,9 +949,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 17]
+Anderson                 Expires April 05, 2015                [Page 17]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    1.  In the IPv4-to-IPv6 direction, the algorithm only used for ICMPv4
@@ -1005,9 +1005,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 18]
+Anderson                 Expires April 05, 2015                [Page 18]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
 7.  Requirements Language
@@ -1061,9 +1061,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 19]
+Anderson                 Expires April 05, 2015                [Page 19]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    [RFC6052]  Bao, C., Huitema, C., Bagnulo, M., Boucadair, M., and X.
@@ -1076,12 +1076,12 @@ Internet-Draft                   SIIT-DC                  September 2014
 10.2.  Informative References
 
    [I-D.anderson-v6ops-siit-dc-2xlat]
-              Anderson, T., "SIIT-DC: Dual Translation Mode", draft-
+              tore, t., "SIIT-DC: Dual Translation Mode", draft-
               anderson-v6ops-siit-dc-2xlat-00 (work in progress),
               September 2014.
 
    [I-D.gont-6man-deprecate-atomfrag-generation]
-              Gont, F., Will, W., and T. Anderson, "Deprecating the
+              Gont, F., Will, W., and t. tore, "Deprecating the
               Generation of IPv6 Atomic Fragments", draft-gont-6man-
               deprecate-atomfrag-generation-01 (work in progress),
               August 2014.
@@ -1117,9 +1117,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 20]
+Anderson                 Expires April 05, 2015                [Page 20]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    [RFC2991]  Thaler, D. and C. Hopps, "Multipath Issues in Unicast and
@@ -1173,9 +1173,9 @@ Appendix A.  Complete SIIT-DC topology example
 
 
 
-Anderson                 Expires March 19, 2015                [Page 21]
+Anderson                 Expires April 05, 2015                [Page 21]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    o  Stateless operation: Any number of SIIT-DC Gateways may be
@@ -1229,9 +1229,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 22]
+Anderson                 Expires April 05, 2015                [Page 22]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
                    /--------------------------------\ /---------------\
@@ -1285,9 +1285,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 23]
+Anderson                 Expires April 05, 2015                [Page 23]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
                                  Figure 7
@@ -1341,9 +1341,9 @@ B.2.  IPv4-only + NAPT44
 
 
 
-Anderson                 Expires March 19, 2015                [Page 24]
+Anderson                 Expires April 05, 2015                [Page 24]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    o  Compatible with IPv4-only application software, without requiring
@@ -1397,9 +1397,9 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 25]
+Anderson                 Expires April 05, 2015                [Page 25]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    For a more complete discussion of potential issues with running
@@ -1453,9 +1453,9 @@ Author's Address
 
 
 
-Anderson                 Expires March 19, 2015                [Page 26]
+Anderson                 Expires April 05, 2015                [Page 26]
 
-Internet-Draft                   SIIT-DC                  September 2014
+Internet-Draft                   SIIT-DC                    October 2014
 
 
    Tore Anderson
@@ -1509,4 +1509,4 @@ Internet-Draft                   SIIT-DC                  September 2014
 
 
 
-Anderson                 Expires March 19, 2015                [Page 27]
+Anderson                 Expires April 05, 2015                [Page 27]
