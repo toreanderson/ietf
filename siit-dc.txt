@@ -65,7 +65,7 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Motivation and Goals  . . . . . . . . . . . . . . . . . .   3
-       1.1.1.  Single Stack IPv6 Operation . . . . . . . . . . . . .   3
+       1.1.1.  Single Stack IPv6 Operation . . . . . . . . . . . . .   4
        1.1.2.  Stateless Operation . . . . . . . . . . . . . . . . .   4
        1.1.3.  No Loss of End User's Source Address  . . . . . . . .   4
        1.1.4.  No Forklift Upgrades Required . . . . . . . . . . . .   5
@@ -81,31 +81,31 @@ Table of Contents
      4.4.  Choice of Translation Prefix  . . . . . . . . . . . . . .  12
      4.5.  Routing Considerations  . . . . . . . . . . . . . . . . .  12
      4.6.  Location of the SIIT-DC Gateways  . . . . . . . . . . . .  13
-     4.7.  Migration from Dual Stack . . . . . . . . . . . . . . . .  13
+     4.7.  Migration from Dual Stack . . . . . . . . . . . . . . . .  14
      4.8.  Packet Size and Fragmentation Considerations  . . . . . .  14
        4.8.1.  IP Header Size Difference . . . . . . . . . . . . . .  14
-       4.8.2.  Minimum Path MTU Difference . . . . . . . . . . . . .  14
-       4.8.3.  "Atomic Fragments"  . . . . . . . . . . . . . . . . .  15
+       4.8.2.  Minimum Path MTU Difference . . . . . . . . . . . . .  15
+       4.8.3.  "Atomic Fragments"  . . . . . . . . . . . . . . . . .  16
    5.  Implementation Requirements . . . . . . . . . . . . . . . . .  16
      5.1.  Compliance with RFC6145 and RFC6052 . . . . . . . . . . .  16
      5.2.  Static Address Mapping Function . . . . . . . . . . . . .  16
      5.3.  Support for Increasing the IPv6 Path MTU  . . . . . . . .  17
      5.4.  Support for Disabling "Atomic Fragments"  . . . . . . . .  17
      5.5.  Feature for Handling IPv4 Path MTUs Lower than 1260 . . .  17
-     5.6.  Loop Prevention Mechanism . . . . . . . . . . . . . . . .  18
-   6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  18
+     5.6.  Feature for Setting the IPv6 Flow Label . . . . . . . . .  18
+     5.7.  Loop Prevention Mechanism . . . . . . . . . . . . . . . .  19
+   6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  19
    7.  Requirements Language . . . . . . . . . . . . . . . . . . . .  19
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
      9.1.  Mistaking the Translation Prefix for a Trusted Network  .  19
-     9.2.  Packets Looping Through the SIIT-DC Function  . . . . . .  19
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  19
+     9.2.  Packets Looping Through the SIIT-DC Function  . . . . . .  20
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  20
      10.2.  Informative References . . . . . . . . . . . . . . . . .  20
-   Appendix A.  Complete SIIT-DC topology example  . . . . . . . . .  21
-   Appendix B.  Comparison to Other Deployment Approaches  . . . . .  24
-     B.1.  IPv4-only . . . . . . . . . . . . . . . . . . . . . . . .  24
-     B.2.  IPv4-only + NAPT44  . . . . . . . . . . . . . . . . . . .  24
+   Appendix A.  Complete SIIT-DC topology example  . . . . . . . . .  22
+   Appendix B.  Comparison to Other Deployment Approaches  . . . . .  25
+     B.1.  IPv4-only . . . . . . . . . . . . . . . . . . . . . . . .  25
 
 
 
@@ -114,8 +114,9 @@ Anderson                 Expires April 05, 2015                 [Page 2]
 Internet-Draft                   SIIT-DC                    October 2014
 
 
-     B.3.  Dual Stack  . . . . . . . . . . . . . . . . . . . . . . .  26
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  26
+     B.2.  IPv4-only + NAPT44  . . . . . . . . . . . . . . . . . . .  25
+     B.3.  Dual Stack  . . . . . . . . . . . . . . . . . . . . . . .  27
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  27
 
 1.  Introduction
 
@@ -160,7 +161,6 @@ Internet-Draft                   SIIT-DC                    October 2014
    The following subsections elaborates on how SIIT-DC meets these
    goals.
 
-1.1.1.  Single Stack IPv6 Operation
 
 
 
@@ -169,6 +169,8 @@ Anderson                 Expires April 05, 2015                 [Page 3]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
+
+1.1.1.  Single Stack IPv6 Operation
 
    SIIT-DC allows an operator to build their applications on an
    IPv6-only foundation.  IPv4 end-user connectivity becomes a service
@@ -214,10 +216,8 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 1.1.3.  No Loss of End User's Source Address
 
-
-
-
-
+   SIIT-DC will map the entire end-user's source address into an
+   predefined IPv6 translation prefix.  This allows the application
 
 
 
@@ -226,8 +226,6 @@ Anderson                 Expires April 05, 2015                 [Page 4]
 Internet-Draft                   SIIT-DC                    October 2014
 
 
-   SIIT-DC will map the entire end-user's source address into an
-   predefined IPv6 translation prefix.  This allows the application
    server to identify the user by an IPv4 address, which is useful for
    performing tasks like Geo-Location, logging, abuse handling, and so
    forth.
@@ -270,9 +268,11 @@ Internet-Draft                   SIIT-DC                    October 2014
       route aggregation and ease provisioning of new IPv4 Service
       Addresses.
 
-
-
-
+   IPv6 Service Address  A public IPv6 address assigned to a server or
+      application in the IPv6 network.  IPv6-only and dual stacked
+      clients communicates with this address directly without invoking
+      SIIT-DC.  IPv4-only clients also communicates with this address
+      through the SIIT-DC Gateway and via an IPv4 Service Address.
 
 
 
@@ -281,12 +281,6 @@ Anderson                 Expires April 05, 2015                 [Page 5]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
-
-   IPv6 Service Address  A public IPv6 address assigned to a server or
-      application in the IPv6 network.  IPv6-only and dual stacked
-      clients communicates with this address directly without invoking
-      SIIT-DC.  IPv4-only clients also communicates with this address
-      through the SIIT-DC Gateway and via an IPv4 Service Address.
 
    SIIT-DC Host Agent  A logical function very similar to an SIIT-DC
       Gateway that resides on a server and provides virtual IPv4
@@ -319,6 +313,12 @@ Internet-Draft                   SIIT-DC                    October 2014
    This section describes the basic SIIT-DC architecture.
 
                            SIIT-DC Architecture
+
+
+
+
+
+
 
 
 
@@ -689,6 +689,16 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 4.6.  Location of the SIIT-DC Gateways
 
+   The goal of SIIT-DC is to facilitate a true IPv6-only application and
+   network architecture, with the sole exception being the IPv4
+   interfaces of the SIIT-DC Gateways and the network infrastructure
+   required to connect them to the IPv4 Internet.  Therefore, the SIIT-
+   DC Gateways should be located somewhere beween the IPv4 Internet and
+   the application delivery stack.  This should be understood to include
+   all servers, load balancers, firewalls, intrusion detection systems,
+   and similar devices that are processing traffic to a greater extent
+   than merely forwarding it.
+
    It is optimal to place the SIIT-DC Gateways as close as possible to
    the direct path between the servers and the end users.  If the
    closest translator is located a long way from the optimal path, all
@@ -697,18 +707,37 @@ Internet-Draft                   SIIT-DC                    October 2014
    latency incurred by the detour, as well as cause unnecessary load on
    the network links on the detour path.
 
-   The ideal location of the SIIT-DC Gateways would be a logical
-   function within the IP routers would have handled the traffic anyway
-   (if the topology was dual stacked) This way, the translation service
-   would not need separate networks ports to be assigned (which might
-   become saturated and impact the service quality), nor would it need
-   extra rack space or energy.  Some good choices of the location could
-   be within a data centre's access routers, or inside the provider's
-   border routers.  If every single application in the data centre or
-   the provider's network eventually get single-stacked, there would no
-   need to run IPv4 on the inside of the SIIT-DC Gateway - thus allowing
+   Where possible, it is beneficial to implement the SIIT-DC Gateways as
+   a logical function within the routers would have handled the traffic
+   anyway, had the topology been dual stacked.  This way, the
+   translation service would not need to be assigned separate networks
+   ports (which might become saturated and impact the service quality),
+   nor would it require extra rack space and energy.  Some particularly
+   good choices of the location could be within a data centre's access
+   routers, or inside the provider's border routers.  When every single
+   application in the data centre or the provider's network eventually
+   runs on single-stack IPv6, there would no need to run IPv4 on the
+   inside of the SIIT-DC Gateway.  This reduces complexity, and allows
    the operator to reclaim IPv4 addresses from the network
    infrastructure that may instead be used for translated services.
+
+
+
+
+
+Anderson                 Expires April 05, 2015                [Page 13]
+
+Internet-Draft                   SIIT-DC                    October 2014
+
+
+   Finally, another possibility is that the data centre operator
+   outsources the SIIT-DC service to another entity, for example his
+   upstream ISP.  Doing so allows the data centre operator to build a
+   true IPv6-only infrastructure.  However, in this case, care must be
+   taken to ensure that the path between the data centre and the SIIT-DC
+   operator has a stable and known MTU, and that the SIIT-DC Gateways
+   are not too far away from the data centre (otherwise, translated
+   traffic could incur a latency penalty).
 
 4.7.  Migration from Dual Stack
 
@@ -721,14 +750,6 @@ Internet-Draft                   SIIT-DC                    October 2014
    IPv4 service address may continue to be assigned to the server.  This
    makes roll-back to dual stack easy, as it is only a matter of
    changing the DNS record back to what it was before.
-
-
-
-
-Anderson                 Expires April 05, 2015                [Page 13]
-
-Internet-Draft                   SIIT-DC                    October 2014
-
 
    For high-volume services migrating to SIIT-DC from dual stack, DNS
    Round Robin may be used to gradually migrate the service's IPv4
@@ -757,6 +778,14 @@ Internet-Draft                   SIIT-DC                    October 2014
    translated to IPv6 without being fragmented, otherwise it would
    likely have resulted in a 1520 bytes large IPv6 packet.
 
+
+
+
+Anderson                 Expires April 05, 2015                [Page 14]
+
+Internet-Draft                   SIIT-DC                    October 2014
+
+
    If the transport protocol used is TCP, this is generally not a
    problem, as the IPv6 server will advertise a TCP MSS of 1440 bytes.
    This causes the client to never send larger packets than what can be
@@ -776,15 +805,6 @@ Internet-Draft                   SIIT-DC                    October 2014
    the Translation Prefix specifically.
 
 4.8.2.  Minimum Path MTU Difference
-
-
-
-
-
-Anderson                 Expires April 05, 2015                [Page 14]
-
-Internet-Draft                   SIIT-DC                    October 2014
-
 
    The minimum allowed link MTU in IPv6 is 1280 bytes.  In IPv4, the
    corresponding value is 68 bytes.  This means that an 1280 byte large
@@ -814,6 +834,14 @@ Internet-Draft                   SIIT-DC                    October 2014
    ensures that the resulting MTU field is always set to 1280 or higher
    when translating ICMPv4 Need to Fragment into ICMPv6 Packet Too Big,
    and that when translating IPv6 packets smaller or equal to 1280 bytes
+
+
+
+Anderson                 Expires April 05, 2015                [Page 15]
+
+Internet-Draft                   SIIT-DC                    October 2014
+
+
    the resulting IPv4 packets will have the DF flag cleared and an
    Identification value generated, cf. Section 5.5.
 
@@ -829,23 +857,10 @@ Internet-Draft                   SIIT-DC                    October 2014
    environment, and it is therefore recommended that this behaviour is
    disabled in the SIIT-DC Gateway(s).  See Section 5.4.
 
-
-
-
-
-
-
-
-
-Anderson                 Expires April 05, 2015                [Page 15]
-
-Internet-Draft                   SIIT-DC                    October 2014
-
-
 5.  Implementation Requirements
 
    This normative section specifies the SIIT-DC protocol that is
-   implemented by an SIIT Gateway.  Because SIIT-DC builds on and
+   implemented by an SIIT-DC Gateway.  Because SIIT-DC builds on and
    closely resembles SIIT [RFC6145], this section should be read as a
    set of additions and changes that are applied to an implementation
    already compliant to SIIT [RFC6145].  Each of the following
@@ -876,6 +891,13 @@ Internet-Draft                   SIIT-DC                    October 2014
 
    o  192.0.2.1 => 2001:db8:12:34::1
 
+
+
+Anderson                 Expires April 05, 2015                [Page 16]
+
+Internet-Draft                   SIIT-DC                    October 2014
+
+
    o  2001:db8:12:34::1 => 192.0.2.1
 
    In both cases, if the SIIT-DC Gateway receives an IPv6 packet that
@@ -890,14 +912,6 @@ Internet-Draft                   SIIT-DC                    October 2014
 
    Relation to [RFC6145]: The Static Address Mapping is a novel feature
    feature that is not discussed in [RFC6145].  It conflicts with
-
-
-
-Anderson                 Expires April 05, 2015                [Page 16]
-
-Internet-Draft                   SIIT-DC                    October 2014
-
-
    [RFC6145]'s requirement that all addresses must be translated
    according to the [RFC6052] algorithm.
 
@@ -930,6 +944,16 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 5.5.  Feature for Handling IPv4 Path MTUs Lower than 1260
 
+
+
+
+
+
+Anderson                 Expires April 05, 2015                [Page 17]
+
+Internet-Draft                   SIIT-DC                    October 2014
+
+
    In order to prevent unnecessary fragments, the implementation SHOULD
    support a feature which, if enabled by the operator, changes the
    SIIT-DC Gateway's default behaviour accordingly:
@@ -947,27 +971,46 @@ Internet-Draft                   SIIT-DC                    October 2014
    approach described in Section 6 of RFC6145 [RFC6145].  The
    modifications are:
 
-
-
-Anderson                 Expires April 05, 2015                [Page 17]
-
-Internet-Draft                   SIIT-DC                    October 2014
-
-
    1.  In the IPv4-to-IPv6 direction, the algorithm only used for ICMPv4
        Need To Fragment packets that indicate an MTU value smaller or
        equal to 1260.  The corresponding value used by [RFC6145] is
        smaller than 1280.
 
-   2.  In the IPv6-to-IPv4 direction, an SIIT Gateway MUST NOT generate
-       and maintain any state due to generating IPv4 Identification
-       values.  [RFC6145] RECOMMENDS that this is done.
+   2.  In the IPv6-to-IPv4 direction, an SIIT-DC Gateway MUST NOT
+       generate and maintain any state due to generating IPv4
+       Identification values.  [RFC6145] RECOMMENDS that this is done.
 
    Also see [I-D.gont-6man-deprecate-atomfrag-generation], which seeks
    to formally update [RFC6145] with the approach described in this
    section.
 
-5.6.  Loop Prevention Mechanism
+5.6.  Feature for Setting the IPv6 Flow Label
+
+   When an SIIT-DC Gateway is translating an IPv4 packet into IPv6, it
+   might be considered to be an "IPv6 source node" as described by
+   [RFC6437], due to the fact that the is no IPv4 header field that
+   corresponsds to the IPv6 Flow Label.  To facilitate stateless IPv6
+   load balancers [RFC7098], an SIIT-DC Gateway SHOULD support a feature
+   that makes the SIIT-DC Gateway set the Flow Label field of the IPv6
+   header in accordance with Section 3 of RFC6437 [RFC6437] when
+   translating from IPv4.
+
+   Relation to [RFC6145]: As [RFC6145] predates [RFC6437], this use of
+   the Flow Label is not discussed in [RFC6145].  Instead, Section 4.1
+   of RFC 6145 [RFC6145] requires that the Flow Label is set to 0.
+   Therefore, this feature (if enabled) would arguably conflict with
+   [RFC6145].
+
+
+
+
+
+Anderson                 Expires April 05, 2015                [Page 18]
+
+Internet-Draft                   SIIT-DC                    October 2014
+
+
+5.7.  Loop Prevention Mechanism
 
    As noted in Section 9.2, there is a potential for packets looping
    through the SIIT-DC function if it receives an IPv4 packet for which
@@ -994,21 +1037,9 @@ Internet-Draft                   SIIT-DC                    October 2014
 
    The author would like to thank the following individuals for their
    contributions, suggestions, corrections, and criticisms: Fred Baker,
-   Cameron Byrne, Ross Chandler, Dagfinn Ilmari Mannsaaker, Lars
-   Olafsen, Stig Sandbeck Mathisen, [YOUR NAME GOES HERE].
-
-
-
-
-
-
-
-
-
-Anderson                 Expires April 05, 2015                [Page 18]
-
-Internet-Draft                   SIIT-DC                    October 2014
-
+   Cameron Byrne, Brian E Carpenter, Ross Chandler, Dagfinn Ilmari
+   Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, [YOUR NAME GOES
+   HERE].
 
 7.  Requirements Language
 
@@ -1027,6 +1058,14 @@ Internet-Draft                   SIIT-DC                    October 2014
 
    If a Network-Specific Prefix from the provider's own address space is
    chosen for the translation prefix, as is recommended, care must be
+
+
+
+Anderson                 Expires April 05, 2015                [Page 19]
+
+Internet-Draft                   SIIT-DC                    October 2014
+
+
    taken if the translation service is used in front of services that
    have application-level ACLs that distinguish between the operator's
    own networks and the Internet at large, as the translated IPv4 end
@@ -1057,21 +1096,15 @@ Internet-Draft                   SIIT-DC                    October 2014
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
-
-
-
-
-Anderson                 Expires April 05, 2015                [Page 19]
-
-Internet-Draft                   SIIT-DC                    October 2014
-
-
    [RFC6052]  Bao, C., Huitema, C., Bagnulo, M., Boucadair, M., and X.
               Li, "IPv6 Addressing of IPv4/IPv6 Translators", RFC 6052,
               October 2010.
 
    [RFC6145]  Li, X., Bao, C., and F. Baker, "IP/ICMP Translation
               Algorithm", RFC 6145, April 2011.
+
+   [RFC6437]  Amante, S., Carpenter, B., Jiang, S., and J. Rajahalme,
+              "IPv6 Flow Label Specification", RFC 6437, November 2011.
 
 10.2.  Informative References
 
@@ -1081,6 +1114,14 @@ Internet-Draft                   SIIT-DC                    October 2014
               September 2014.
 
    [I-D.gont-6man-deprecate-atomfrag-generation]
+
+
+
+Anderson                 Expires April 05, 2015                [Page 20]
+
+Internet-Draft                   SIIT-DC                    October 2014
+
+
               Gont, F., Will, W., and t. tore, "Deprecating the
               Generation of IPv6 Atomic Fragments", draft-gont-6man-
               deprecate-atomfrag-generation-01 (work in progress),
@@ -1113,15 +1154,6 @@ Internet-Draft                   SIIT-DC                    October 2014
               Translator (NAT) Terminology and Considerations", RFC
               2663, August 1999.
 
-
-
-
-
-Anderson                 Expires April 05, 2015                [Page 20]
-
-Internet-Draft                   SIIT-DC                    October 2014
-
-
    [RFC2991]  Thaler, D. and C. Hopps, "Multipath Issues in Unicast and
               Multicast Next-Hop Selection", RFC 2991, November 2000.
 
@@ -1137,6 +1169,14 @@ Internet-Draft                   SIIT-DC                    October 2014
 
    [RFC4213]  Nordmark, E. and R. Gilligan, "Basic Transition Mechanisms
               for IPv6 Hosts and Routers", RFC 4213, October 2005.
+
+
+
+
+Anderson                 Expires April 05, 2015                [Page 21]
+
+Internet-Draft                   SIIT-DC                    October 2014
+
 
    [RFC4217]  Ford-Hutchinson, P., "Securing FTP with TLS", RFC 4217,
               October 2005.
@@ -1157,26 +1197,15 @@ Internet-Draft                   SIIT-DC                    October 2014
    [RFC6946]  Gont, F., "Processing of IPv6 "Atomic" Fragments", RFC
               6946, May 2013.
 
+   [RFC7098]  Carpenter, B., Jiang, S., and W. Tarreau, "Using the IPv6
+              Flow Label for Load Balancing in Server Farms", RFC 7098,
+              January 2014.
+
 Appendix A.  Complete SIIT-DC topology example
 
    This figure shows a more complete SIIT-DC topology, in order to
    better demonstrate the beneficial properties it has.  In particular,
    it tries to highlight the following:
-
-
-
-
-
-
-
-
-
-
-
-Anderson                 Expires April 05, 2015                [Page 21]
-
-Internet-Draft                   SIIT-DC                    October 2014
-
 
    o  Stateless operation: Any number of SIIT-DC Gateways may be
       deployed side-by side, or indeed anywhere in the IPv6 network, as
@@ -1196,6 +1225,14 @@ Internet-Draft                   SIIT-DC                    October 2014
       the form of aggregated blocks or prefixes; which makes it easy to
       achieve 100% effective utilisation of the IPv4 service address
       pools.
+
+
+
+
+Anderson                 Expires April 05, 2015                [Page 22]
+
+Internet-Draft                   SIIT-DC                    October 2014
+
 
    o  Application support: The translation-friendly applications HTTP
       and SMTP will work through SIIT-DC without requiring any special
@@ -1229,7 +1266,26 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 05, 2015                [Page 22]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Anderson                 Expires April 05, 2015                [Page 23]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1285,7 +1341,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 05, 2015                [Page 23]
+Anderson                 Expires April 05, 2015                [Page 24]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1341,7 +1397,7 @@ B.2.  IPv4-only + NAPT44
 
 
 
-Anderson                 Expires April 05, 2015                [Page 24]
+Anderson                 Expires April 05, 2015                [Page 25]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1397,7 +1453,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 05, 2015                [Page 25]
+Anderson                 Expires April 05, 2015                [Page 26]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1453,7 +1509,7 @@ Author's Address
 
 
 
-Anderson                 Expires April 05, 2015                [Page 26]
+Anderson                 Expires April 05, 2015                [Page 27]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1509,4 +1565,4 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 05, 2015                [Page 27]
+Anderson                 Expires April 05, 2015                [Page 28]

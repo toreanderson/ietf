@@ -84,7 +84,8 @@ Table of Contents
      5.3.  Support for Increasing the IPv6 Path MTU
      5.4.  Support for Disabling "Atomic Fragments"
      5.5.  Feature for Handling IPv4 Path MTUs Lower than 1260
-     5.6.  Loop Prevention Mechanism
+     5.6.  Feature for Setting the IPv6 Flow Label
+     5.7.  Loop Prevention Mechanism
    6.  Acknowledgements
    7.  Requirements Language
    8.  IANA Considerations
@@ -620,6 +621,16 @@ Copyright Notice
 
 4.6.  Location of the SIIT-DC Gateways
 
+   The goal of SIIT-DC is to facilitate a true IPv6-only application and
+   network architecture, with the sole exception being the IPv4
+   interfaces of the SIIT-DC Gateways and the network infrastructure
+   required to connect them to the IPv4 Internet.  Therefore, the SIIT-
+   DC Gateways should be located somewhere beween the IPv4 Internet and
+   the application delivery stack.  This should be understood to include
+   all servers, load balancers, firewalls, intrusion detection systems,
+   and similar devices that are processing traffic to a greater extent
+   than merely forwarding it.
+
    It is optimal to place the SIIT-DC Gateways as close as possible to
    the direct path between the servers and the end users.  If the
    closest translator is located a long way from the optimal path, all
@@ -628,18 +639,28 @@ Copyright Notice
    latency incurred by the detour, as well as cause unnecessary load on
    the network links on the detour path.
 
-   The ideal location of the SIIT-DC Gateways would be a logical
-   function within the IP routers would have handled the traffic anyway
-   (if the topology was dual stacked) This way, the translation service
-   would not need separate networks ports to be assigned (which might
-   become saturated and impact the service quality), nor would it need
-   extra rack space or energy.  Some good choices of the location could
-   be within a data centre's access routers, or inside the provider's
-   border routers.  If every single application in the data centre or
-   the provider's network eventually get single-stacked, there would no
-   need to run IPv4 on the inside of the SIIT-DC Gateway - thus allowing
+   Where possible, it is beneficial to implement the SIIT-DC Gateways as
+   a logical function within the routers would have handled the traffic
+   anyway, had the topology been dual stacked.  This way, the
+   translation service would not need to be assigned separate networks
+   ports (which might become saturated and impact the service quality),
+   nor would it require extra rack space and energy.  Some particularly
+   good choices of the location could be within a data centre's access
+   routers, or inside the provider's border routers.  When every single
+   application in the data centre or the provider's network eventually
+   runs on single-stack IPv6, there would no need to run IPv4 on the
+   inside of the SIIT-DC Gateway.  This reduces complexity, and allows
    the operator to reclaim IPv4 addresses from the network
    infrastructure that may instead be used for translated services.
+
+   Finally, another possibility is that the data centre operator
+   outsources the SIIT-DC service to another entity, for example his
+   upstream ISP.  Doing so allows the data centre operator to build a
+   true IPv6-only infrastructure.  However, in this case, care must be
+   taken to ensure that the path between the data centre and the SIIT-DC
+   operator has a stable and known MTU, and that the SIIT-DC Gateways
+   are not too far away from the data centre (otherwise, translated
+   traffic could incur a latency penalty).
 
 4.7.  Migration from Dual Stack
 
@@ -746,7 +767,7 @@ Copyright Notice
 5.  Implementation Requirements
 
    This normative section specifies the SIIT-DC protocol that is
-   implemented by an SIIT Gateway.  Because SIIT-DC builds on and
+   implemented by an SIIT-DC Gateway.  Because SIIT-DC builds on and
    closely resembles SIIT [RFC6145], this section should be read as a
    set of additions and changes that are applied to an implementation
    already compliant to SIIT [RFC6145].  Each of the following
@@ -845,15 +866,32 @@ Copyright Notice
        equal to 1260.  The corresponding value used by [RFC6145] is
        smaller than 1280.
 
-   2.  In the IPv6-to-IPv4 direction, an SIIT Gateway MUST NOT generate
-       and maintain any state due to generating IPv4 Identification
-       values.  [RFC6145] RECOMMENDS that this is done.
+   2.  In the IPv6-to-IPv4 direction, an SIIT-DC Gateway MUST NOT
+       generate and maintain any state due to generating IPv4
+       Identification values.  [RFC6145] RECOMMENDS that this is done.
 
    Also see [I-D.gont-6man-deprecate-atomfrag-generation], which seeks
    to formally update [RFC6145] with the approach described in this
    section.
 
-5.6.  Loop Prevention Mechanism
+5.6.  Feature for Setting the IPv6 Flow Label
+
+   When an SIIT-DC Gateway is translating an IPv4 packet into IPv6, it
+   might be considered to be an "IPv6 source node" as described by
+   [RFC6437], due to the fact that the is no IPv4 header field that
+   corresponsds to the IPv6 Flow Label.  To facilitate stateless IPv6
+   load balancers [RFC7098], an SIIT-DC Gateway SHOULD support a feature
+   that makes the SIIT-DC Gateway set the Flow Label field of the IPv6
+   header in accordance with Section 3 of RFC6437 [RFC6437] when
+   translating from IPv4.
+
+   Relation to [RFC6145]: As [RFC6145] predates [RFC6437], this use of
+   the Flow Label is not discussed in [RFC6145].  Instead, Section 4.1
+   of RFC 6145 [RFC6145] requires that the Flow Label is set to 0.
+   Therefore, this feature (if enabled) would arguably conflict with
+   [RFC6145].
+
+5.7.  Loop Prevention Mechanism
 
    As noted in Section 9.2, there is a potential for packets looping
    through the SIIT-DC function if it receives an IPv4 packet for which
@@ -880,8 +918,9 @@ Copyright Notice
 
    The author would like to thank the following individuals for their
    contributions, suggestions, corrections, and criticisms: Fred Baker,
-   Cameron Byrne, Ross Chandler, Dagfinn Ilmari Mannsaaker, Lars
-   Olafsen, Stig Sandbeck Mathisen, [YOUR NAME GOES HERE].
+   Cameron Byrne, Brian E Carpenter, Ross Chandler, Dagfinn Ilmari
+   Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, [YOUR NAME GOES
+   HERE].
 
 7.  Requirements Language
 
@@ -936,6 +975,9 @@ Copyright Notice
 
    [RFC6145]  Li, X., Bao, C., and F. Baker, "IP/ICMP Translation
               Algorithm", RFC 6145, April 2011.
+
+   [RFC6437]  Amante, S., Carpenter, B., Jiang, S., and J. Rajahalme,
+              "IPv6 Flow Label Specification", RFC 6437, November 2011.
 
 10.2.  Informative References
 
@@ -1011,6 +1053,10 @@ Copyright Notice
 
    [RFC6946]  Gont, F., "Processing of IPv6 "Atomic" Fragments", RFC
               6946, May 2013.
+
+   [RFC7098]  Carpenter, B., Jiang, S., and W. Tarreau, "Using the IPv6
+              Flow Label for Load Balancing in Server Farms", RFC 7098,
+              January 2014.
 
 Appendix A.  Complete SIIT-DC topology example
 

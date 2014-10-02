@@ -562,6 +562,17 @@ app.domain.tld.    IN A     192.0.2.1
       </section>
       <section title="Location of the SIIT-DC Gateways">
         <t>
+        The goal of SIIT-DC is to facilitate a true IPv6-only application and
+        network architecture, with the sole exception being the IPv4
+        interfaces of the SIIT-DC Gateways and the network infrastructure
+        required to connect them to the IPv4 Internet. Therefore, the SIIT-DC
+        Gateways should be located somewhere beween the IPv4 Internet and the
+        application delivery stack. This should be understood to include all
+        servers, load balancers, firewalls, intrusion detection systems, and
+        similar devices that are processing traffic to a greater extent than
+        merely forwarding it.
+        </t>
+        <t>
         It is optimal to place the SIIT-DC Gateways as close as possible to
         the direct path between the servers and the end users. If the closest
         translator is located a long way from the optimal path, all packets in
@@ -571,18 +582,29 @@ app.domain.tld.    IN A     192.0.2.1
         network links on the detour path.
         </t>
         <t>
-        The ideal location of the SIIT-DC Gateways would be a logical function
-        within the IP routers would have handled the traffic anyway (if the
-        topology was dual stacked) This way, the translation service would not
-        need separate networks ports to be assigned (which might become
-        saturated and impact the service quality), nor would it need extra
-        rack space or energy. Some good choices of the location could be
-        within a data centre's access routers, or inside the provider's border
-        routers. If every single application in the data centre or the
-        provider's network eventually get single-stacked, there would no need
-        to run IPv4 on the inside of the SIIT-DC Gateway - thus allowing the
-        operator to reclaim IPv4 addresses from the network infrastructure
-        that may instead be used for translated services.
+        Where possible, it is beneficial to implement the SIIT-DC Gateways as
+        a logical function within the routers would have handled the traffic
+        anyway, had the topology been dual stacked. This way, the translation
+        service would not need to be assigned separate networks ports (which
+        might become saturated and impact the service quality), nor would it
+        require extra rack space and energy. Some particularly good choices of
+        the location could be within a data centre's access routers, or inside
+        the provider's border routers. When every single application in the
+        data centre or the provider's network eventually runs on single-stack
+        IPv6, there would no need to run IPv4 on the inside of the SIIT-DC
+        Gateway. This reduces complexity, and allows the operator to reclaim
+        IPv4 addresses from the network infrastructure that may instead be
+        used for translated services.
+        </t>
+        <t>
+        Finally, another possibility is that the data centre operator
+        outsources the SIIT-DC service to another entity, for example his
+        upstream ISP. Doing so allows the data centre operator to build a true
+        IPv6-only infrastructure. However, in this case, care must be taken to
+        ensure that the path between the data centre and the SIIT-DC operator
+        has a stable and known MTU, and that the SIIT-DC Gateways are not too
+        far away from the data centre (otherwise, translated traffic could
+        incur a latency penalty).
         </t>
       </section>
       <section title="Migration from Dual Stack">
@@ -712,7 +734,7 @@ app.domain.tld.    IN A     192.0.2.1
     <section anchor="implementation_reqs" title="Implementation Requirements">
       <t>
       This normative section specifies the SIIT-DC protocol that is
-      implemented by an SIIT Gateway. Because SIIT-DC builds on and closely
+      implemented by an SIIT-DC Gateway. Because SIIT-DC builds on and closely
       resembles <xref target="RFC6145">SIIT</xref>, this section should be
       read as a set of additions and changes that are applied to an
       implementation already compliant to <xref target="RFC6145">SIIT</xref>.
@@ -840,15 +862,37 @@ app.domain.tld.    IN A     192.0.2.1
           Need To Fragment packets that indicate an MTU value smaller or equal
           to 1260. The corresponding value used by <xref target="RFC6145"/> is
           smaller than 1280.</t>
-          <t>In the IPv6-to-IPv4 direction, an SIIT Gateway MUST NOT generate
-          and maintain any state due to generating IPv4 Identification values.
-          <xref target="RFC6145"/> RECOMMENDS that this is done.</t>
+          <t>In the IPv6-to-IPv4 direction, an SIIT-DC Gateway MUST NOT
+          generate and maintain any state due to generating IPv4
+          Identification values.  <xref target="RFC6145"/> RECOMMENDS that
+          this is done.</t>
         </list>
         </t>
         <t>
         Also see <xref target="I-D.gont-6man-deprecate-atomfrag-generation"/>,
         which seeks to formally update <xref target="RFC6145"/> with the
         approach described in this section.
+        </t>
+      </section>
+      <section title="Feature for Setting the IPv6 Flow Label">
+        <t>
+        When an SIIT-DC Gateway is translating an IPv4 packet into IPv6, it
+        might be considered to be an "IPv6 source node" as described by <xref
+        target="RFC6437"/>, due to the fact that the is no IPv4 header field
+        that corresponsds to the IPv6 Flow Label. To facilitate stateless IPv6
+        load balancers <xref target="RFC7098"/>, an SIIT-DC Gateway SHOULD
+        support a feature that makes the SIIT-DC Gateway set the Flow Label
+        field of the IPv6 header in accordance with <xref
+        target="RFC6437">Section 3 of RFC6437</xref> when translating from
+        IPv4.
+        </t>
+        <t>
+        Relation to <xref target="RFC6145"/>: As <xref target="RFC6145"/>
+        predates <xref target="RFC6437"/>, this use of the Flow Label is not
+        discussed in <xref target="RFC6145"/>. Instead, <xref
+        target="RFC6145">Section 4.1 of RFC 6145</xref> requires that the Flow
+        Label is set to 0. Therefore, this feature (if enabled) would arguably
+        conflict with <xref target="RFC6145"/>.
         </t>
       </section>
       <section title="Loop Prevention Mechanism">
@@ -883,8 +927,8 @@ app.domain.tld.    IN A     192.0.2.1
       <t>
       The author would like to thank the following individuals for their
       contributions, suggestions, corrections, and criticisms: Fred Baker,
-      Cameron Byrne, Ross Chandler, Dagfinn Ilmari Mannsaaker, Lars Olafsen,
-      Stig Sandbeck Mathisen, [YOUR NAME GOES HERE].
+      Cameron Byrne, Brian E Carpenter, Ross Chandler, Dagfinn Ilmari
+      Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, [YOUR NAME GOES HERE].
       </t>
     </section>
     <section title="Requirements Language">
@@ -941,6 +985,7 @@ app.domain.tld.    IN A     192.0.2.1
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.6052"?>
       <?rfc include="reference.RFC.6145"?>
+      <?rfc include="reference.RFC.6437"?>
     </references>
     <references title="Informative References">
       <?rfc include="reference.RFC.0959"?>
@@ -959,6 +1004,7 @@ app.domain.tld.    IN A     192.0.2.1
       <?rfc include="reference.RFC.6147"?>
       <?rfc include="reference.RFC.6540"?>
       <?rfc include="reference.RFC.6946"?>
+      <?rfc include="reference.RFC.7098"?>
       <?rfc include="reference.I-D.anderson-v6ops-siit-dc-2xlat"?>
       <?rfc include="reference.I-D.gont-6man-deprecate-atomfrag-generation"?>
       <?rfc include="reference.I-D.taylor-v6ops-fragdrop"?>
