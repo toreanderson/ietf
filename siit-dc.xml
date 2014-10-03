@@ -139,6 +139,43 @@
           other IP re-routing event would.
           </t>
         </section>
+        <section title="IPv4 Address Conservation">
+          <t>
+          In most parts of the world, it is difficult or even impossible to
+          obtain generously sized IPv4 allocations from the Regional Internet
+          Registries. The resulting scarcity in turn impacts individual end
+          users and operators, which might be forced to purchase IPv4
+          addresses from other operators in order to cover their needs. This
+          process can be risky to business continuity, in the case no suitable
+          block for sale can be located, and/or turn out to be prohibitively
+          expensive. Even so, a data centre operator will find that providing
+          IPv4 service is essential, as a large share of the Internet users
+          still does not have IPv6 connectivity.
+          </t>
+          <t>
+          A key goal of SIIT-DC is to help reduce a data centre operator's
+          IPv4 address requirement to the absolute minimum, by allowing the
+          operator to remove them entirely from components that do not need to
+          communicate with endpoints in the IPv4 Internet. One example would
+          be servers that are operating in a supporting/backend role and only
+          communicates with to other servers (database servers, file servers,
+          and so on). Another example would be the network infrastructure
+          itself (router-to-router links, loopback addresses, and so on).
+          Furthermore, as LAN prefix sizes must always be rounded up to the
+          nearest power of two (or larger, if one reserves space for future
+          growth), even more IPv4 addresses will often end up being wasted
+          without even being used.
+          </t>
+          <t>
+          With SIIT-DC, the operator can remove these valuable IPv4 addresses
+          from his backend servers and network infrastructure, and reassign
+          them to the SIIT-DC service as IPv4 Service Addresses. There is no
+          requirement that IPv4 Service Addresses are assigned in an
+          aggregated manner, so there is nothing lost due to infrastructure
+          overhead; every single IPv4 address assigned to SIIT-DC can be used
+          an IPv4 Service Address.
+          </t>
+        </section>
         <section title="No Loss of End User's Source Address">
           <t>
           SIIT-DC will map the entire end-user's source address into an
@@ -928,7 +965,7 @@ app.domain.tld.    IN A     192.0.2.1
       The author would like to thank the following individuals for their
       contributions, suggestions, corrections, and criticisms: Fred Baker,
       Cameron Byrne, Brian E Carpenter, Ross Chandler, Dagfinn Ilmari
-      Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, [YOUR NAME GOES HERE].
+      Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, Knut A. Syed.
       </t>
     </section>
     <section title="Requirements Language">
@@ -1005,6 +1042,7 @@ app.domain.tld.    IN A     192.0.2.1
       <?rfc include="reference.RFC.6540"?>
       <?rfc include="reference.RFC.6946"?>
       <?rfc include="reference.RFC.7098"?>
+      <?rfc include="reference.RFC.7269"?>
       <?rfc include="reference.I-D.anderson-v6ops-siit-dc-2xlat"?>
       <?rfc include="reference.I-D.gont-6man-deprecate-atomfrag-generation"?>
       <?rfc include="reference.I-D.taylor-v6ops-fragdrop"?>
@@ -1215,6 +1253,60 @@ app.domain.tld.    IN A     192.0.2.1
         For a more complete discussion of potential issues with running
         NAPT44, see <xref target="RFC2993">Architectural Implications of
         NAT</xref>.
+        </t>
+      </section>
+      <section title="IPv4-only + NAT64">
+        <t>
+        An operator who would otherwise chose a traditional IPv4-only
+        approach, but would in addition like to provide service availability
+        for IPv6 end users, could use <xref target="RFC6146">Stateful
+        NAT64</xref> to accomplish this. In a sense, this would be the mirror
+        image of an SIIT-DC architecture: The infrastructure and servers
+        remains single-stacked, while connectivity to the other IP stack is
+        provided through a translation system. Further information about
+        operating Stateful NAT64 is found in <xref target="RFC7269"/>.
+        </t>
+        <t>
+        Note that tateful NAT64 can be deployed with our without NAPT44. With
+        the exception that IPv6 service availability is being provided, the
+        discussion in the previous two sections fully applies to an IPv4-only
+        environment that includes NAT64.
+        </t>
+        <t>
+        Benefits of IPv4-only + NAT64 operation compared to SIIT-DC include:
+        </t>
+        <t>
+        <list style="symbols">
+          <t>Compatible with IPv4-only devices.</t>
+          <t>Compatible with IPv4-only application software, without requiring
+          a host agent.</t>
+        </list>
+        </t>
+        <t>
+        Disadvantages of IPv4-only + NAT64 operation compared to SIIT-DC
+        include:
+        </t>
+        <t>
+        <list style="symbols">
+          <t>Does not alleviate IPv4 address scarcity (assuming NAPT44 isn't
+          used).</t>
+          <t>Requires network devices that track all flow state, which may
+          create a performance bottleneck and be an easy target for Denial of
+          Service attacks.</t>
+          <t>Limits routing flexibility (prevents closest exit routing), as
+          outbound traffic must pass across the same NAT64 device that handled
+          the inbound traffic.</t>
+          <t>Limited potential for horizontal scaling, as packets cannot be
+          load-balanced across multiple NAT devices.</t>
+          <t>Obscures the true source address of the user from the
+          server/application, preventing it from e.g. performing geo-location
+          lookups.</t>
+          <t>Continued deployment of IPv6 to Internet users will cause the
+          load levels on the Stateful NAT64 routers to increase. For this
+          reason, <xref target="RFC7269">Section 3.2 of RFC7269</xref> notes
+          that the use of Stateful NAT64 in a data centre environment "is only
+          reasonable at an early stage".</t>
+        </list>
         </t>
       </section>
       <section title="Dual Stack">

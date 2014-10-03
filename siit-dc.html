@@ -356,9 +356,10 @@
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Motivation and Goals"/>
 <link href="#rfc.section.1.1.1" rel="Chapter" title="1.1.1 Single Stack IPv6 Operation"/>
 <link href="#rfc.section.1.1.2" rel="Chapter" title="1.1.2 Stateless Operation"/>
-<link href="#rfc.section.1.1.3" rel="Chapter" title="1.1.3 No Loss of End User's Source Address"/>
-<link href="#rfc.section.1.1.4" rel="Chapter" title="1.1.4 No Forklift Upgrades Required"/>
-<link href="#rfc.section.1.1.5" rel="Chapter" title="1.1.5 No Architectural Dependency on IPv4"/>
+<link href="#rfc.section.1.1.3" rel="Chapter" title="1.1.3 IPv4 Address Conservation"/>
+<link href="#rfc.section.1.1.4" rel="Chapter" title="1.1.4 No Loss of End User's Source Address"/>
+<link href="#rfc.section.1.1.5" rel="Chapter" title="1.1.5 No Forklift Upgrades Required"/>
+<link href="#rfc.section.1.1.6" rel="Chapter" title="1.1.6 No Architectural Dependency on IPv4"/>
 <link href="#rfc.section.2" rel="Chapter" title="2 Terminology"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Architectural Overview"/>
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 DNS Configuration"/>
@@ -396,7 +397,8 @@
 <link href="#rfc.appendix.B" rel="Chapter" title="B Comparison to Other Deployment Approaches"/>
 <link href="#rfc.appendix.B.1" rel="Chapter" title="B.1 IPv4-only"/>
 <link href="#rfc.appendix.B.2" rel="Chapter" title="B.2 IPv4-only + NAPT44"/>
-<link href="#rfc.appendix.B.3" rel="Chapter" title="B.3 Dual Stack"/>
+<link href="#rfc.appendix.B.3" rel="Chapter" title="B.3 IPv4-only + NAT64"/>
+<link href="#rfc.appendix.B.4" rel="Chapter" title="B.4 Dual Stack"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
 
@@ -405,7 +407,7 @@
 
   <meta name="dct.creator" content="Anderson, T." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-anderson-v6ops-siit-dc-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-10-02" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-10-03" />
   <meta name="dct.abstract" content="This document describes SIIT-DC, an extension to " />
   <meta name="description" content="This document describes SIIT-DC, an extension to " />
 
@@ -426,10 +428,10 @@
 </tr>
 <tr>
   <td class="left">Intended status: Standards Track</td>
-  <td class="right">October 02, 2014</td>
+  <td class="right">October 03, 2014</td>
 </tr>
 <tr>
-  <td class="left">Expires: April 05, 2015</td>
+  <td class="left">Expires: April 06, 2015</td>
   <td class="right"></td>
 </tr>
 
@@ -450,7 +452,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on April 05, 2015.</p>
+<p>This Internet-Draft will expire on April 06, 2015.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -466,9 +468,10 @@
 <li>1.1.   <a href="#rfc.section.1.1">Motivation and Goals</a></li>
 <li>1.1.1.   <a href="#rfc.section.1.1.1">Single Stack IPv6 Operation</a></li>
 <li>1.1.2.   <a href="#rfc.section.1.1.2">Stateless Operation</a></li>
-<li>1.1.3.   <a href="#rfc.section.1.1.3">No Loss of End User's Source Address</a></li>
-<li>1.1.4.   <a href="#rfc.section.1.1.4">No Forklift Upgrades Required</a></li>
-<li>1.1.5.   <a href="#rfc.section.1.1.5">No Architectural Dependency on IPv4</a></li>
+<li>1.1.3.   <a href="#rfc.section.1.1.3">IPv4 Address Conservation</a></li>
+<li>1.1.4.   <a href="#rfc.section.1.1.4">No Loss of End User's Source Address</a></li>
+<li>1.1.5.   <a href="#rfc.section.1.1.5">No Forklift Upgrades Required</a></li>
+<li>1.1.6.   <a href="#rfc.section.1.1.6">No Architectural Dependency on IPv4</a></li>
 <li>2.   <a href="#rfc.section.2">Terminology</a></li>
 <li>3.   <a href="#rfc.section.3">Architectural Overview</a></li>
 <li>3.1.   <a href="#rfc.section.3.1">DNS Configuration</a></li>
@@ -506,7 +509,8 @@
 <li>Appendix B.   <a href="#rfc.appendix.B">Comparison to Other Deployment Approaches</a></li>
 <li>B.1.   <a href="#rfc.appendix.B.1">IPv4-only</a></li>
 <li>B.2.   <a href="#rfc.appendix.B.2">IPv4-only + NAPT44</a></li>
-<li>B.3.   <a href="#rfc.appendix.B.3">Dual Stack</a></li>
+<li>B.3.   <a href="#rfc.appendix.B.3">IPv4-only + NAT64</a></li>
+<li>B.4.   <a href="#rfc.appendix.B.4">Dual Stack</a></li>
 <li><a href="#rfc.authors">Author's Address</a></li>
 
 
@@ -538,12 +542,16 @@
 <p id="rfc.section.1.1.2.p.1">Unlike other solutions that provide either dual stack availability to single-stack services (e.g., <a href="#RFC6146">Stateful NAT64</a> <cite title="NONE">[RFC6146]</cite> and Layer-4/7 proxies), or that provide conservation of IPv4 addresses (e.g., <a href="#RFC3022">NAPT44</a> <cite title="NONE">[RFC3022]</cite>), a SIIT-DC Gateway does not keep any state between each packet in a single connection or flow. In this sense it operates exactly like a normal IP router, and has similar scaling properties - the limiting factors are packets per second and bandwidth. The number of concurrent flows and flow initiation rates are irrelevant for performance.  </p>
 <p id="rfc.section.1.1.2.p.2">This not only allows individual SIIT-DC Gateways to easily attain "line rate" performance, it also allows for per-packet load balancing between multiple SIIT-DC Gateways using <a href="#RFC2991">Equal-Cost Multipath Routing</a> <cite title="NONE">[RFC2991]</cite>. Asymmetric routing is also acceptable, which makes it easy to avoid sub-optimal traffic patterns; the prefixes involved may be anycasted from all the SIIT-DC Gateways in the provider's network, thus ensuring that the most optimal path through the network is used, even where the optimal path in one direction differs from the optimal path in the opposite direction.  </p>
 <p id="rfc.section.1.1.2.p.3">Finally, stateless operation means that high availability is easily achieved. If an SIIT-DC Gateway should fail, its traffic can be re-routed onto another SIIT-DC Gateway using a standard IP routing protocol. This does not impact existing flows any more than what any other IP re-routing event would.  </p>
-<h1 id="rfc.section.1.1.3"><a href="#rfc.section.1.1.3">1.1.3.</a> No Loss of End User's Source Address</h1>
-<p id="rfc.section.1.1.3.p.1">SIIT-DC will map the entire end-user's source address into an predefined IPv6 translation prefix. This allows the application server to identify the user by an IPv4 address, which is useful for performing tasks like Geo-Location, logging, abuse handling, and so forth.  </p>
-<h1 id="rfc.section.1.1.4"><a href="#rfc.section.1.1.4">1.1.4.</a> No Forklift Upgrades Required</h1>
-<p id="rfc.section.1.1.4.p.1">Except for the introduction of the SIIT-DC Gateways themselves, there is no change required in the network, servers, applications, or anywhere else to specifically support SIIT-DC, compared to a dual stack deployment. From the clients', the servers', the IPv6 data centre network's, and the IPv4 Internet's point of view, SIIT-DC is practically invisible. It will work with any standards-compliant IPv4 or IPv6 stack.  </p>
-<h1 id="rfc.section.1.1.5"><a href="#rfc.section.1.1.5">1.1.5.</a> No Architectural Dependency on IPv4</h1>
-<p id="rfc.section.1.1.5.p.1">SIIT-DC will allow an ICP or data centre operator to build infrastructure and applications entirely on IPv6. This means that when the day comes to discontinue support for IPv4, no change needs to be made to the overall architecture - it's only a matter of shutting off the SIIT-DC Gateways. Therefore, by deploying native IPv6 along with SIIT-DC, operators will avoid future migration or deployment projects relating to IPv6 roll-out and/or IPv4 sun-setting.  </p>
+<h1 id="rfc.section.1.1.3"><a href="#rfc.section.1.1.3">1.1.3.</a> IPv4 Address Conservation</h1>
+<p id="rfc.section.1.1.3.p.1">In most parts of the world, it is difficult or even impossible to obtain generously sized IPv4 allocations from the Regional Internet Registries. The resulting scarcity in turn impacts individual end users and operators, which might be forced to purchase IPv4 addresses from other operators in order to cover their needs. This process can be risky to business continuity, in the case no suitable block for sale can be located, and/or turn out to be prohibitively expensive. Even so, a data centre operator will find that providing IPv4 service is essential, as a large share of the Internet users still does not have IPv6 connectivity.  </p>
+<p id="rfc.section.1.1.3.p.2">A key goal of SIIT-DC is to help reduce a data centre operator's IPv4 address requirement to the absolute minimum, by allowing the operator to remove them entirely from components that do not need to communicate with endpoints in the IPv4 Internet. One example would be servers that are operating in a supporting/backend role and only communicates with to other servers (database servers, file servers, and so on). Another example would be the network infrastructure itself (router-to-router links, loopback addresses, and so on).  Furthermore, as LAN prefix sizes must always be rounded up to the nearest power of two (or larger, if one reserves space for future growth), even more IPv4 addresses will often end up being wasted without even being used.  </p>
+<p id="rfc.section.1.1.3.p.3">With SIIT-DC, the operator can remove these valuable IPv4 addresses from his backend servers and network infrastructure, and reassign them to the SIIT-DC service as IPv4 Service Addresses. There is no requirement that IPv4 Service Addresses are assigned in an aggregated manner, so there is nothing lost due to infrastructure overhead; every single IPv4 address assigned to SIIT-DC can be used an IPv4 Service Address.  </p>
+<h1 id="rfc.section.1.1.4"><a href="#rfc.section.1.1.4">1.1.4.</a> No Loss of End User's Source Address</h1>
+<p id="rfc.section.1.1.4.p.1">SIIT-DC will map the entire end-user's source address into an predefined IPv6 translation prefix. This allows the application server to identify the user by an IPv4 address, which is useful for performing tasks like Geo-Location, logging, abuse handling, and so forth.  </p>
+<h1 id="rfc.section.1.1.5"><a href="#rfc.section.1.1.5">1.1.5.</a> No Forklift Upgrades Required</h1>
+<p id="rfc.section.1.1.5.p.1">Except for the introduction of the SIIT-DC Gateways themselves, there is no change required in the network, servers, applications, or anywhere else to specifically support SIIT-DC, compared to a dual stack deployment. From the clients', the servers', the IPv6 data centre network's, and the IPv4 Internet's point of view, SIIT-DC is practically invisible. It will work with any standards-compliant IPv4 or IPv6 stack.  </p>
+<h1 id="rfc.section.1.1.6"><a href="#rfc.section.1.1.6">1.1.6.</a> No Architectural Dependency on IPv4</h1>
+<p id="rfc.section.1.1.6.p.1">SIIT-DC will allow an ICP or data centre operator to build infrastructure and applications entirely on IPv6. This means that when the day comes to discontinue support for IPv4, no change needs to be made to the overall architecture - it's only a matter of shutting off the SIIT-DC Gateways. Therefore, by deploying native IPv6 along with SIIT-DC, operators will avoid future migration or deployment projects relating to IPv6 roll-out and/or IPv4 sun-setting.  </p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
 <p id="rfc.section.2.p.1">This document makes use of the following terms: </p>
 <p/>
@@ -814,7 +822,7 @@ app.domain.tld.    IN A     192.0.2.1
 <p id="rfc.section.5.7.p.2">If such a mechanism isn't provided, the implementation MUST provide a way to manually filter or null-route the destination addresses that would otherwise cause loops.  </p>
 <p id="rfc.section.5.7.p.3">Relation to <a href="#RFC6145">[RFC6145]</a>: This security consideration applies only when an SIIT-DC Gateway translates a packet in "pure" <a href="#RFC6145">SIIT</a> <cite title="NONE">[RFC6145]</cite> mode (i.e., both address fields are translated according to <a href="#RFC6052">[RFC6052]</a>). This consideration is in other words not specific to SIIT-DC, it is inherited from <a href="#RFC6145">[RFC6145]</a>. In spite of this, <a href="#RFC6145">[RFC6145]</a> does not describe this consideration or any methods of prevention. The requirements in this section is therefore novel to SIIT-DC, even though they apply equally to <a href="#RFC6145">[RFC6145]</a>.  </p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#Acknowledgements" id="Acknowledgements">Acknowledgements</a></h1>
-<p id="rfc.section.6.p.1">The author would like to thank the following individuals for their contributions, suggestions, corrections, and criticisms: Fred Baker, Cameron Byrne, Brian E Carpenter, Ross Chandler, Dagfinn Ilmari Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, [YOUR NAME GOES HERE].  </p>
+<p id="rfc.section.6.p.1">The author would like to thank the following individuals for their contributions, suggestions, corrections, and criticisms: Fred Baker, Cameron Byrne, Brian E Carpenter, Ross Chandler, Dagfinn Ilmari Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, Knut A. Syed.  </p>
 <h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> Requirements Language</h1>
 <p id="rfc.section.7.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.  </p>
 <h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
@@ -978,6 +986,12 @@ app.domain.tld.    IN A     192.0.2.1
       </td>
       <td class="top"><a>Carpenter, B.</a>, <a>Jiang, S.</a> and <a>W. Tarreau</a>, "<a href="http://tools.ietf.org/html/rfc7098">Using the IPv6 Flow Label for Load Balancing in Server Farms</a>", RFC 7098, January 2014.</td>
     </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC7269">[RFC7269]</b>
+      </td>
+      <td class="top"><a>Chen, G.</a>, <a>Cao, Z.</a>, <a>Xie, C.</a> and <a>D. Binet</a>, "<a href="http://tools.ietf.org/html/rfc7269">NAT64 Deployment Options and Experience</a>", RFC 7269, June 2014.</td>
+    </tr>
   </tbody>
 </table>
 <h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> Complete SIIT-DC topology example</h1>
@@ -1105,9 +1119,34 @@ app.domain.tld.    IN A     192.0.2.1
 <p id="rfc.section.B.2.p.6">In addition, application compatibility is a consideration with both NAPT44 and SIIT-DC, but the exact nature depends from application to application, so it is hard to objectively quantify if there is a clear advantage to either approach here. Some translation-unfriendly application protocols may work without host modifications through the use of Application Layer Gateway support in the NAPT44 device (e.g., <a href="#RFC0959">FTP</a> <cite title="NONE">[RFC0959]</cite>), or in the SIIT-DC architecture when a host agent is being used <a href="#I-D.anderson-v6ops-siit-dc-2xlat">[I-D.anderson-v6ops-siit-dc-2xlat]</a>.  Other application protocols might not work with NAPT44 at all, but will work in the SIIT-DC if a host agent is being used (e.g., <a href="#RFC4217">FTP/TLS</a> <cite title="NONE">[RFC4217]</cite>).  </p>
 <p id="rfc.section.B.2.p.7">In summary, the most accurate statement would be to say that a NAPT44 architecture is more compatible with translation-unfriendly protocols than plain SIIT-DC, while SIIT-DC is more compatible than NAPT44 if a host agent is used.  </p>
 <p id="rfc.section.B.2.p.8">For a more complete discussion of potential issues with running NAPT44, see <a href="#RFC2993">Architectural Implications of NAT</a> <cite title="NONE">[RFC2993]</cite>.  </p>
-<h1 id="rfc.appendix.B.3"><a href="#rfc.appendix.B.3">B.3.</a> Dual Stack</h1>
+<h1 id="rfc.appendix.B.3"><a href="#rfc.appendix.B.3">B.3.</a> IPv4-only + NAT64</h1>
+<p id="rfc.section.B.3.p.1">An operator who would otherwise chose a traditional IPv4-only approach, but would in addition like to provide service availability for IPv6 end users, could use <a href="#RFC6146">Stateful NAT64</a> <cite title="NONE">[RFC6146]</cite> to accomplish this. In a sense, this would be the mirror image of an SIIT-DC architecture: The infrastructure and servers remains single-stacked, while connectivity to the other IP stack is provided through a translation system. Further information about operating Stateful NAT64 is found in <a href="#RFC7269">[RFC7269]</a>.  </p>
+<p id="rfc.section.B.3.p.2">Note that tateful NAT64 can be deployed with our without NAPT44. With the exception that IPv6 service availability is being provided, the discussion in the previous two sections fully applies to an IPv4-only environment that includes NAT64.  </p>
+<p id="rfc.section.B.3.p.3">Benefits of IPv4-only + NAT64 operation compared to SIIT-DC include: </p>
+<p/>
+
+<ul>
+  <li>Compatible with IPv4-only devices.</li>
+  <li>Compatible with IPv4-only application software, without requiring a host agent.</li>
+</ul>
+
+<p> </p>
+<p id="rfc.section.B.3.p.5">Disadvantages of IPv4-only + NAT64 operation compared to SIIT-DC include: </p>
+<p/>
+
+<ul>
+  <li>Does not alleviate IPv4 address scarcity (assuming NAPT44 isn't used).</li>
+  <li>Requires network devices that track all flow state, which may create a performance bottleneck and be an easy target for Denial of Service attacks.</li>
+  <li>Limits routing flexibility (prevents closest exit routing), as outbound traffic must pass across the same NAT64 device that handled the inbound traffic.</li>
+  <li>Limited potential for horizontal scaling, as packets cannot be load-balanced across multiple NAT devices.</li>
+  <li>Obscures the true source address of the user from the server/application, preventing it from e.g. performing geo-location lookups.</li>
+  <li>Continued deployment of IPv6 to Internet users will cause the load levels on the Stateful NAT64 routers to increase. For this reason, <a href="#RFC7269">Section 3.2 of RFC7269</a> <cite title="NONE">[RFC7269]</cite> notes that the use of Stateful NAT64 in a data centre environment "is only reasonable at an early stage".</li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.appendix.B.4"><a href="#rfc.appendix.B.4">B.4.</a> Dual Stack</h1>
 <p><a href="#RFC4213">Dual Stack</a> <cite title="NONE">[RFC4213]</cite> could be used both with or without NAPT44 to handle IPv4. In general, the benefits and disadvantages are equal to the corresponding IPv4-only option, except for the fact that Dual Stack does provides IPv6 connectivity.  Therefore, his section only lists the benefits and disadvantages which are unique to a Dual Stack environment.  </p>
-<p id="rfc.section.B.3.p.2">Benefits of Dual Stack operation compared to SIIT-DC include: </p>
+<p id="rfc.section.B.4.p.2">Benefits of Dual Stack operation compared to SIIT-DC include: </p>
 <p/>
 
 <ul>
@@ -1118,7 +1157,7 @@ app.domain.tld.    IN A     192.0.2.1
 </ul>
 
 <p> </p>
-<p id="rfc.section.B.3.p.4">Disadvantages of Dual Stack operation compared to SIIT-DC include: </p>
+<p id="rfc.section.B.4.p.4">Disadvantages of Dual Stack operation compared to SIIT-DC include: </p>
 <p/>
 
 <ul>
