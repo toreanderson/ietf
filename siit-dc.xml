@@ -916,7 +916,7 @@ app.domain.tld.    IN A     192.0.2.1
         When an SIIT-DC Gateway is translating an IPv4 packet into IPv6, it
         might be considered to be an "IPv6 source node" as described by <xref
         target="RFC6437"/>, due to the fact that the is no IPv4 header field
-        that corresponsds to the IPv6 Flow Label. To facilitate stateless IPv6
+        that corresponds to the IPv6 Flow Label. To facilitate stateless IPv6
         load balancers <xref target="RFC7098"/>, an SIIT-DC Gateway SHOULD
         support a feature that makes the SIIT-DC Gateway set the Flow Label
         field of the IPv6 header in accordance with <xref
