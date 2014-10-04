@@ -8,7 +8,7 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="std" docName="draft-anderson-v6ops-siit-dc-00"
+<rfc category="std" docName="draft-anderson-v6ops-siit-dc-01"
      ipr="trust200902">
 
   <front>
@@ -45,8 +45,8 @@
   <middle>
     <section title="Introduction">
       <t>
-      SIIT-DC is an extension of <xref target="RFC6145">SIIT</xref>, and
-      provides a a network-centric stateless translation service that allows a
+      SIIT-DC is an extension of <xref target="RFC6145">SIIT</xref> that
+      provides a network-centric stateless translation service that allows a
       data centre operator or Internet Content Provider (ICP) to run a data
       centre network, servers, and applications using exclusively IPv6, while
       at the same time ensuring that end users that have only IPv4
@@ -57,10 +57,11 @@
         <t>
         Historically, <xref target="RFC4213">dual stack</xref> has been the
         recommended way to transition from an IPv4-only environment to one
-        capable of serving IPv6 users. For data centre and Internet content
-        providers, dual stack operation has a number of disadvantages compared
-        to single stack operation. In particular, the increased complexity and
-        operational overhead, and very low expected return of investment in
+        capable of serving IPv6 users. For data centre operators and Internet
+        content providers, dual stack operation has a number of disadvantages
+        compared to single stack operation. In particular, running two
+        protocols rather than one results in increased complexity and
+        operational overhead, with a very low expected return on investment in
         the short to medium term, as there are practically no end-users who
         have only connectivity to the IPv6 Internet. Furthermore, the dual
         stack approach does not in any way help with the depletion of the IPv4
@@ -139,24 +140,61 @@
           other IP re-routing event would.
           </t>
         </section>
-        <section title="No Loss of End User's Source Address">
+        <section title="IPv4 Address Conservation">
           <t>
-          SIIT-DC will map the entire end-user's source address into an
-          predefined IPv6 translation prefix. This allows the application
-          server to identify the user by an IPv4 address, which is useful for
-          performing tasks like Geo-Location, logging, abuse handling, and so
-          forth.
+          In most parts of the world, it is difficult or even impossible to
+          obtain generously sized IPv4 allocations from the Regional Internet
+          Registries. The resulting scarcity in turn impacts individual end
+          users and operators, which might be forced to purchase IPv4
+          addresses from other operators in order to cover their needs. This
+          process can be risky to business continuity, in the case no suitable
+          block for sale can be located, and/or turn out to be prohibitively
+          expensive. Even so, a data centre operator will find that providing
+          IPv4 service is essential, as a large share of the Internet users
+          still does not have IPv6 connectivity.
+          </t>
+          <t>
+          A key goal of SIIT-DC is to help reduce a data centre operator's
+          IPv4 address requirement to the absolute minimum, by allowing the
+          operator to remove them entirely from components that do not need to
+          communicate with endpoints in the IPv4 Internet. One example would
+          be servers that are operating in a supporting/backend role and only
+          communicates with to other servers (database servers, file servers,
+          and so on). Another example would be the network infrastructure
+          itself (router-to-router links, loopback addresses, and so on).
+          Furthermore, as LAN prefix sizes must always be rounded up to the
+          nearest power of two (or larger, if one reserves space for future
+          growth), even more IPv4 addresses will often end up being wasted
+          without even being used.
+          </t>
+          <t>
+          With SIIT-DC, the operator can remove these valuable IPv4 addresses
+          from his backend servers and network infrastructure, and reassign
+          them to the SIIT-DC service as IPv4 Service Addresses. There is no
+          requirement that IPv4 Service Addresses are assigned in an
+          aggregated manner, so there is nothing lost due to infrastructure
+          overhead; every single IPv4 address assigned to SIIT-DC can be used
+          an IPv4 Service Address.
           </t>
         </section>
-        <section title="No Forklift Upgrades Required">
+        <section title="No Loss of End User's IPv4 Source Address">
           <t>
-          Except for the introduction of the SIIT-DC Gateways themselves,
-          there is no change required in the network, servers, applications,
-          or anywhere else to specifically support SIIT-DC, compared to a dual
-          stack deployment. From the clients', the servers', the IPv6 data
-          centre network's, and the IPv4 Internet's point of view, SIIT-DC is
-          practically invisible. It will work with any standards-compliant
-          IPv4 or IPv6 stack.
+          SIIT-DC will map the entire end-user's IPv4 source address into an
+          predefined IPv6 translation prefix. This ensures that there is no
+          loss of information; the end-user's IPv4 source address remains
+          available to the server/application, allowing it to perform tasks
+          like Geo-Location, logging, abuse handling, and so forth.
+          </t>
+        </section>
+        <section title="Compatible with Standard IPv6 Implementations">
+          <t>
+          Except for the introduction of the SIIT-DC Gateways themselves, no
+          change to the network, servers, applications, or anything else is
+          required in order to support SIIT-DC. SIIT-DC is practically
+          invisibible from the point of view of the the IPv4 clients, the IPv6
+          servers, the IPv6 data centre network, and the IPv4 Internet.
+          SIIT-DC interoperates with all standards-compliant IPv4 or IPv6
+          stacks.
           </t>
         </section>
         <section title="No Architectural Dependency on IPv4">
@@ -231,9 +269,7 @@
   |                   |         |                |
   +-<2001:db8::ab:cd>-+         +-<203.0.113.50>-+
       |                                  |
-      |                                  |
    (the IPv6 internet)         (the IPv4 Internet)
-      |                                  |
       |                                  |
       |        +------------------<192.0.2.0/24>-+
       |        |                                 |
@@ -247,7 +283,6 @@
       |        | 192.0.2.1 <=> 2001:db8:12:34::1 |
       |        |                                 |
       |        +--------------<2001:db8:46::/96>-+
-      |                               |
       |                               |
      (the IPv6-only data centre network)
       |                               |
@@ -565,6 +600,17 @@ app.domain.tld.    IN A     192.0.2.1
       </section>
       <section title="Location of the SIIT-DC Gateways">
         <t>
+        The goal of SIIT-DC is to facilitate a true IPv6-only application and
+        network architecture, with the sole exception being the IPv4
+        interfaces of the SIIT-DC Gateways and the network infrastructure
+        required to connect them to the IPv4 Internet. Therefore, the SIIT-DC
+        Gateways should be located somewhere beween the IPv4 Internet and the
+        application delivery stack. This should be understood to include all
+        servers, load balancers, firewalls, intrusion detection systems, and
+        similar devices that are processing traffic to a greater extent than
+        merely forwarding it.
+        </t>
+        <t>
         It is optimal to place the SIIT-DC Gateways as close as possible to
         the direct path between the servers and the end users. If the closest
         translator is located a long way from the optimal path, all packets in
@@ -574,18 +620,29 @@ app.domain.tld.    IN A     192.0.2.1
         network links on the detour path.
         </t>
         <t>
-        The ideal location of the SIIT-DC Gateways would be a logical function
-        within the IP routers would have handled the traffic anyway (if the
-        topology was dual stacked) This way, the translation service would not
-        need separate networks ports to be assigned (which might become
-        saturated and impact the service quality), nor would it need extra
-        rack space or energy. Some good choices of the location could be
-        within a data centre's access routers, or inside the provider's border
-        routers. If every single application in the data centre or the
-        provider's network eventually get single-stacked, there would no need
-        to run IPv4 on the inside of the SIIT-DC Gateway - thus allowing the
-        operator to reclaim IPv4 addresses from the network infrastructure
-        that may instead be used for translated services.
+        Where possible, it is beneficial to implement the SIIT-DC Gateways as
+        a logical function within the routers would have handled the traffic
+        anyway, had the topology been dual stacked. This way, the translation
+        service would not need to be assigned separate networks ports (which
+        might become saturated and impact the service quality), nor would it
+        require extra rack space and energy. Some particularly good choices of
+        the location could be within a data centre's access routers, or within
+        the provider's border routers. When every single application in the
+        data centre or the provider's network eventually runs on single-stack
+        IPv6, there would no need to run IPv4 on the inside of the SIIT-DC
+        Gateway. This reduces complexity, and allows the operator to reclaim
+        IPv4 addresses from the network infrastructure that may instead be
+        used as IPv4 Service Address Pools.
+        </t>
+        <t>
+        Finally, another possibility is that the data centre operator
+        outsources the SIIT-DC service to another entity, for example his
+        upstream ISP. Doing so allows the data centre operator to build a true
+        IPv6-only infrastructure. However, in this case, care must be taken to
+        ensure that the path between the data centre and the SIIT-DC operator
+        has a stable and known MTU, and that the SIIT-DC Gateways are not too
+        far away from the data centre (otherwise, translated traffic could
+        incur a latency penalty).
         </t>
       </section>
       <section title="Migration from Dual Stack">
@@ -609,23 +666,25 @@ app.domain.tld.    IN A     192.0.2.1
       </section>
       <section title="Packet Size and Fragmentation Considerations">
         <t>
-        There are two key differences between IPv4 and IPv6 relating to packet
-        sizes that one should consider when deploying SIIT-DC. They result in
-        a few problematic corner cases, which can be dealt with in a few
-        different ways.
+        There are some key differences between IPv4 and IPv6 relating to
+        packet sizes and fragmentation that one should consider when deploying
+        SIIT-DC. They result in a few problematic corner cases, which can be
+        dealt with in a few different ways. The following subsections will
+        discuss these in detail, and provide operational guidance.
         </t>
         <t>
-        The operator may find that relying on fragmentation in the IPv6 domain
-        is undesired or even operationally impossible <xref
+        In particular, the operator may find that relying on fragmentation in
+        the IPv6 domain is undesired or even operationally impossible <xref
         target="I-D.taylor-v6ops-fragdrop"/>.  For this reason, the
         recommendations in this section seeks to minimise the use of IPv6
         fragmentation.
         </t>
         <t>
-        Unless otherwise stated, this section assumes that the MTU in both the
-        IPv4 and IPv6 domains is 1500 bytes.
+        Unless otherwise stated, the following subsections assume that the MTU
+        in both the IPv4 and IPv6 domains is 1500 bytes.
         </t>
-        <section title="IP Header Size Difference">
+        <section anchor="ip_hdr_size_diff"
+                 title="IPv4/IPv6 Header Size Difference">
           <t>
           The IPv6 header is up to 20 bytes larger than the IPv4 header. This
           means that a full-size 1500 bytes large IPv4 packet cannot be
@@ -653,61 +712,113 @@ app.domain.tld.    IN A     192.0.2.1
           destinations within the Translation Prefix specifically.
           </t>
         </section>
-        <section title="Minimum Path MTU Difference">
+        <section title="IPv6 Atomic Fragments">
           <t>
-          The minimum allowed link MTU in IPv6 is 1280 bytes. In IPv4, the
-          corresponding value is 68 bytes. This means that an 1280 byte large
-          IPv6 packet sent to an IPv4 client may need to be fragmented by a
-          router in the IPv4 network, if the path to the IPv4 client involves
-          a link with a MTU lower than 1260 bytes.
+          In keeping with <xref target="RFC6145">the fifth paragraph of
+          Section 4 of RFC6145</xref>, an SIIT-DC Gateway will by default add
+          an IPv6 Fragmentation header to the resulting IPv6 packet when
+          translating an IPv4 packet with the Don't Fragment flag set to 0.
           </t>
           <t>
-          By default, an SIIT-DC Gateway will set the DF flag when translating
-          from IPv6 to IPv4, resulting in a situation where the IPv6 server
-          may receive an ICMPv6 Packet Too Big error where the indicated MTU
-          value is less than the IPv6 minimum of 1280. In this situation, the
-          IPv6 server has two choices on how to proceed, according to the last
-          paragraph of <xref target="RFC2460">Section 5 of RFC2460</xref>:
+          This happens even though the resulting IPv6 packet isn't actually
+          fragmented into several pieces, resulting in an IPv6 Atomic Fragment
+          <xref target="RFC6946"/>. These Atomic Fragments are generally not
+          useful in a data centre environment, and it is therefore recommended
+          that this behaviour is disabled in the SIIT-DC Gateways. To this
+          end, <xref target="RFC6145">Section 4 of RFC6145</xref> notes that
+          the "translator MAY provide a configuration function that allows the
+          translator not to include the Fragment Header for the non-fragmented
+          IPv6 packets".
+          </t>
+          <t>
+          Note that <xref
+          target="I-D.gont-6man-deprecate-atomfrag-generation"/> seeks to
+          update <xref target="RFC6145"/>, making the functionality described
+          above as the standard and only mode of operation.
+          </t>
+        </section>
+        <section title="Minimum Path MTU Difference Between IPv4 and IPv6">
+          <t>
+          <xref target="RFC2460">Section 5 of RFC2460</xref> specifies that
+          the minimum IPv6 link MTU is 1280 bytes. Therefore, an IPv6 node can
+          reasonably assume that if it transmits an IPv6 packet that is 1280
+          bytes or smaller, it is guaranteed to reach its destination without
+          requiring fragmentation or invoking the Path MTU Discovery algorithm
+          <xref target="RFC1981"/>. However, this assumption fails if the
+          destination is an IPv4 node reached through a protocol translator
+          such as an SIIT-DC Gateway, as the minimum IPv4 link MTU is 68
+          bytes. See <xref target="RFC0791">Section 3.2 of RFC791</xref>.
+          </t>
+          <t>
+          <xref target="RFC6145">Section 5.1 of RFC6145</xref> specifies that
+          an SIIT-DC Gateway should set the IPv4 Don't Fragment flag to 1 when
+          it translates an unfragmented IPv6 packet to IPv4. This means that
+          when the path to the destination IPv4 node contains an IPv4 link
+          with an MTU smaller than 1260 bytes (which corresponds to an IPv6
+          MTU smaller than 1280 bytes, cf. <xref target="ip_hdr_size_diff"/>),
+          the Path MTU Discovery algorithm will be invoked, even if the
+          original IPv6 packet was only 1280 bytes large. This happens as a
+          result of the IPv4 router connecting to the IPv4 link with the small
+          MTU returning an ICMPv4 Need To Fragment error with an MTU value
+          smaller than 1260, which in turns is translated by the SIIT-DC
+          Gateway to an ICMPv6 Packet Too Big error with an MTU value smaller
+          than 1280 which is then transmitted to the origin IPv6 node.
+          </t>
+          <t>
+          When an IPv6 node receives an ICMPv6 Packet Too Big error indicating
+          an MTU value smaller than 1280, <xref target="RFC2460">the last
+          paragraph of Section 5 of RFC2460</xref> gives it two choices on how
+          to proceed:
           </t>
           <t>
           <list style="symbols">
             <t>It may reduce its Path MTU value to the value indicated in the
-            Packet Too Big. This causes no problems for the SIIT-DC
-            function.</t>
-            <t>It may reduce its Path MTU value to exactly 1280, and also
-            include a Fragmentation header in each subsequent packet sent to
-            that destination. The Fragmentation header signals to the the
-            SIIT-DC Gateway that the DF flag should be cleared in the
-            resulting IPv4 packet, and it also provides the Identification
-            value.</t>
+            Packet Too Big, i.e., limit the size of subsequent packets
+            transmitted to that destination to the indicated value. This
+            approach causes no problems for the SIIT-DC function, as it simply
+            allows Path MTU Discovery to work transparently across the SIIT-DC
+            Gateway.</t>
+            <t>It may reduce its Path MTU value to exactly 1280, and in
+            addition include a Fragmentation header in subsequent packets sent
+            to that destination. In other words, the IPv6 node will start
+            emitting Atomic Fragments. The Fragmentation header signals to the
+            the SIIT-DC Gateway that the Don't Fragment flag should be set to
+            0 in the resulting IPv4 packet, and it also provides the
+            Identification value.</t>
           </list>
           </t>
           <t>
           If the use of the IPv6 Fragmentation header is problematic, and the
-          operator has IPv6 servers that implement the second option above,
-          the operator should enable a feature on the SIIT-DC Gateways which
-          ensures that the resulting MTU field is always set to 1280 or higher
-          when translating ICMPv4 Need to Fragment into ICMPv6 Packet Too Big,
-          and that when translating IPv6 packets smaller or equal to 1280
-          bytes the resulting IPv4 packets will have the DF flag cleared and
-          an Identification value generated, cf. <xref
-          target="feat_smallv4pmtu"/>.
-          </t>
-        </section>
-        <section title="&quot;Atomic Fragments&quot;">
-          <t>
-          By default, an SIIT-DC Gateway will include a Fragmentation header
-          in the resulting IPv6 packet when translating from an IPv4 packet
-          with the DF flag cleared, cf. <xref target="RFC6145">Section 4 of
-          RFC6145</xref>.
+          operator has IPv6 nodes that implement the second option above, the
+          operator should consider enabling the functionality described as
+          <xref target="RFC6145"> the "second approach" in Section 6 of
+          RFC6145</xref>. This functionality changes the SIIT-DC Gateway's
+          behaviour as follows:
           </t>
           <t>
-          This happens even though the resulting IPv6 packet isn't actually
-          fragmented into several pieces, resulting in an "Atomic Fragment"
-          <xref target="RFC6946"/>. This is generally not useful in a data
-          centre environment, and it is therefore recommended that this
-          behaviour is disabled in the SIIT-DC Gateway(s). See <xref
-          target="feat_noatomicfrags"/>.
+          <list style="symbols">
+            <t>When translating ICMPv4 Need To Fragment to ICMPv6 Packet Too
+            Big, the resulting packet will never contain an MTU value lower
+            than 1280. This prevents the IPv6 nodes from generating Atomic
+            Fragments.</t>
+            <t>When translating IPv6 packets smaller than or equal to 1280
+            bytes, the Don't Fragment flag in the resulting IPv4 packet will
+            be set to 0. This ensures that in the eventuality that the path
+            contains an IPv4 link with an MTU smaller than 1260, the IPv4
+            router connected to that link will have the responsibility to
+            fragment the packet before forwarding it towards its
+            destination.</t>
+          </list>
+          </t>
+          <t>
+          In summary, this approach could be seen as prompting the IPv4
+          protocol itself to provide the "link-specific fragmentation and
+          reassembly at a layer below IPv6" required for links that "cannot
+          convey a 1280-octet packet in one piece", to paraphrase <xref
+          target="RFC2460">Section 5 of RFC2460</xref>.  Note that <xref
+          target="I-D.gont-6man-deprecate-atomfrag-generation"/> seeks to
+          update <xref target="RFC6145"/>, making the approach described above
+          as the standard and only mode of operation.
           </t>
         </section>
       </section>
@@ -715,7 +826,7 @@ app.domain.tld.    IN A     192.0.2.1
     <section anchor="implementation_reqs" title="Implementation Requirements">
       <t>
       This normative section specifies the SIIT-DC protocol that is
-      implemented by an SIIT Gateway. Because SIIT-DC builds on and closely
+      implemented by an SIIT-DC Gateway. Because SIIT-DC builds on and closely
       resembles <xref target="RFC6145">SIIT</xref>, this section should be
       read as a set of additions and changes that are applied to an
       implementation already compliant to <xref target="RFC6145">SIIT</xref>.
@@ -766,9 +877,9 @@ app.domain.tld.    IN A     192.0.2.1
         IPv4 packet that has the value 192.0.2.1 as the either the source or
         destination field of the IPv4 header, it MUST rewrite this field to
         2001:db8:12:34::1 when translating to IPv6. For all IPv4 or IPv6
-        source or destination field values for which there are no Static
-        Address Mapping, <xref target="RFC6052"/> compliant mapping MUST be
-        used instead.
+        source or destination field values for which there are no matching
+        Static Address Mapping, <xref target="RFC6052"/> compliant mapping
+        MUST be used instead.
         </t>
         <t>
         Relation to <xref target="RFC6145"/>: The Static Address Mapping is a
@@ -785,73 +896,12 @@ app.domain.tld.    IN A     192.0.2.1
         network administrator to adjust the threshold of the minimum IPv6 MTU
         to a value that reflects the real value of the minimum IPv6 MTU in the
         network (greater than 1280 bytes). This will help reduce the chance of
-        including the Fragment Header in the packets.
+        including the Fragment Header in the resulting IPv6 packets.
         </t>
         <t>
         Relation to <xref target="RFC6145"/>: This strengthens the
         corresponding "MAY" requirement located in <xref
         target="RFC6145">Section 4 of RFC6145</xref> to a "MUST".
-        </t>
-      </section>
-      <section anchor="feat_noatomicfrags"
-       title="Support for Disabling &quot;Atomic Fragments&quot;">
-        <t>
-        When the IPv4 sender does not set the DF bit, the SIIT-DC Gateway
-        SHOULD NOT include an IPv6 Fragment Header in resulting non-fragmented
-        IPv6 packets. If does, the SIIT-DC Gateway MUST provide a
-        configuration function that allows the SIIT-DC Gateway not to include
-        the Fragment Header for the non-fragmented IPv6 packets.
-        </t>
-        <t>
-        Relation to <xref target="RFC6145"/>: This is an update of the
-        corresponding requirement in <xref target="RFC6145">Section 4 of
-        RFC6145</xref>. It inverts the recommended default behaviour to not
-        generate IPv6 Atomic Fragments, and strengthens the "MAY" requirement
-        for making it possible to disable this behaviour to a "MUST".
-        </t>
-        <t>
-        For the definition of an "Atomic Fragment", see <xref
-        target="RFC6946"/>.
-        </t>
-      </section>
-      <section anchor="feat_smallv4pmtu"
-       title="Feature for Handling IPv4 Path MTUs Lower than 1260">
-        <t>
-        In order to prevent unnecessary fragments, the implementation SHOULD
-        support a feature which, if enabled by the operator, changes the
-        SIIT-DC Gateway's default behaviour accordingly:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>When translating an ICMPv4 Need To Fragment packet indicating a
-          Path MTU smaller than or equal to 1260, the MTU field in the
-          resulting ICMPv6 Packet Too Big is set to 1280.</t>
-          <t>When translating an IPv6 packet that is smaller or equal to 1280
-          bytes, the DF flag in the resulting IPv4 packet is cleared, and an
-          IPv4 Identification value is generated. The SIIT-DC Gateway MUST NOT
-          create or maintain any state as a result of this.</t>
-        </list>
-        </t>
-        <t>
-        Relation to <xref target="RFC6145"/>: This is a modified version of
-        the second approach described in <xref target="RFC6145">Section 6 of
-        RFC6145</xref>. The modifications are:
-        </t>
-        <t>
-        <list style="numbers">
-          <t>In the IPv4-to-IPv6 direction, the algorithm only used for ICMPv4
-          Need To Fragment packets that indicate an MTU value smaller or equal
-          to 1260. The corresponding value used by <xref target="RFC6145"/> is
-          smaller than 1280.</t>
-          <t>In the IPv6-to-IPv4 direction, an SIIT Gateway MUST NOT generate
-          and maintain any state due to generating IPv4 Identification values.
-          <xref target="RFC6145"/> RECOMMENDS that this is done.</t>
-        </list>
-        </t>
-        <t>
-        Also see <xref target="I-D.gont-6man-deprecate-atomfrag-generation"/>,
-        which seeks to formally update <xref target="RFC6145"/> with the
-        approach described in this section.
         </t>
       </section>
       <section title="Loop Prevention Mechanism">
@@ -872,13 +922,13 @@ app.domain.tld.    IN A     192.0.2.1
         <t>
         Relation to <xref target="RFC6145"/>: This security consideration
         applies only when an SIIT-DC Gateway translates a packet in "pure"
-        <xref target="RFC6145">SIIT</xref> mode (i.e., both address fields are
-        translated according to <xref target="RFC6052"/>). This consideration
-        is in other words not specific to SIIT-DC, it is inherited from <xref
-        target="RFC6145"/>. In spite of this, <xref target="RFC6145"/> does
-        not describe this consideration or any methods of prevention. The
-        requirements in this section is therefore novel to SIIT-DC, even
-        though they apply equally to <xref target="RFC6145"/>.
+        <xref target="RFC6145">SIIT</xref> mode (i.e., when both address
+        fields are translated according to <xref target="RFC6052"/>). This
+        consideration is in other words not specific to SIIT-DC, it is
+        inherited from <xref target="RFC6145"/>. In spite of this, <xref
+        target="RFC6145"/> does not describe this consideration or any methods
+        of prevention. The requirements in this section is therefore novel to
+        SIIT-DC, even though they apply equally to <xref target="RFC6145"/>.
         </t>
       </section>
     </section>
@@ -886,8 +936,8 @@ app.domain.tld.    IN A     192.0.2.1
       <t>
       The author would like to thank the following individuals for their
       contributions, suggestions, corrections, and criticisms: Fred Baker,
-      Cameron Byrne, Ross Chandler, Dagfinn Ilmari Mannsaaker, Lars Olafsen,
-      Stig Sandbeck Mathisen, [YOUR NAME GOES HERE].
+      Cameron Byrne, Brian E Carpenter, Ross Chandler, Dagfinn Ilmari
+      Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, Knut A. Syed.
       </t>
     </section>
     <section title="Requirements Language">
@@ -911,7 +961,7 @@ app.domain.tld.    IN A     192.0.2.1
         taken if the translation service is used in front of services that
         have application-level ACLs that distinguish between the operator's
         own networks and the Internet at large, as the translated IPv4 end
-        users on the Internet will appear to come from within the provider's
+        users on the Internet will appear to be located within the provider's
         own IPv6 address space. It is therefore important that the translation
         prefix is treated the same as the Internet at large, rather than as a
         trusted network.
@@ -946,8 +996,10 @@ app.domain.tld.    IN A     192.0.2.1
       <?rfc include="reference.RFC.6145"?>
     </references>
     <references title="Informative References">
+      <?rfc include="reference.RFC.0791"?>
       <?rfc include="reference.RFC.0959"?>
       <?rfc include="reference.RFC.1918"?>
+      <?rfc include="reference.RFC.1981"?>
       <?rfc include="reference.RFC.2373"?>
       <?rfc include="reference.RFC.2460"?>
       <?rfc include="reference.RFC.2616"?>
@@ -962,29 +1014,10 @@ app.domain.tld.    IN A     192.0.2.1
       <?rfc include="reference.RFC.6147"?>
       <?rfc include="reference.RFC.6540"?>
       <?rfc include="reference.RFC.6946"?>
-      <?rfc include="reference.I-D.taylor-v6ops-fragdrop"?>
+      <?rfc include="reference.RFC.7269"?>
+      <?rfc include="reference.I-D.anderson-v6ops-siit-dc-2xlat"?>
       <?rfc include="reference.I-D.gont-6man-deprecate-atomfrag-generation"?>
-
-      <!-- replace the below with
-	   <?rfc include="reference.I-D.anderson-v6ops-siit-dc-2xlat"?> once
-	   the drafts have been uploaded to the IETF web site -->
-      <reference anchor='I-D.anderson-v6ops-siit-dc-2xlat'>
-        <front>
-          <title>SIIT-DC: Dual Translation Mode</title>
-          <author initials='T' surname='Anderson' fullname='Tore Anderson'>
-            <organization />
-          </author>
-          <date month='September' day='15' year='2014' />
-          <abstract><t>This document describes an extension of the SIIT-DC
-          architecture, which allows applications that are incompatible with
-          SIIT-DC and/or Network Address Translation in general to operate
-          correctly in an SIIT-DC environment.</t></abstract>
-          </front>
-	  <seriesInfo name='Internet-Draft'
-	              value='draft-anderson-v6ops-siit-dc-2xlat-00' />
-        <format type='TXT'
-	        target='http://www.ietf.org/internet-drafts/draft-anderson-v6ops-siit-dc-2xlat-00.txt' />
-      </reference>
+      <?rfc include="reference.I-D.taylor-v6ops-fragdrop"?>
     </references>
     <section title="Complete SIIT-DC topology example">
       <t>
@@ -1183,7 +1216,7 @@ app.domain.tld.    IN A     192.0.2.1
         target="RFC4217">FTP/TLS</xref>).
         </t>
         <t>
-        In summary, the most accurate statement would be to say that a NAPT44
+        In summary, the most accurate statement would be to say that an NAPT44
         architecture is more compatible with translation-unfriendly protocols
         than plain SIIT-DC, while SIIT-DC is more compatible than NAPT44 if a
         host agent is used.
@@ -1192,6 +1225,63 @@ app.domain.tld.    IN A     192.0.2.1
         For a more complete discussion of potential issues with running
         NAPT44, see <xref target="RFC2993">Architectural Implications of
         NAT</xref>.
+        </t>
+      </section>
+      <section title="IPv4-only + NAT64">
+        <t>
+        An operator who would otherwise chose a traditional IPv4-only
+        approach, but would in addition like to provide service availability
+        for IPv6 end users, could use <xref target="RFC6146">Stateful
+        NAT64</xref> to accomplish this. In a sense, this would be the mirror
+        image of an SIIT-DC architecture: The infrastructure and servers
+        remains single-stacked, while connectivity to the other IP stack is
+        provided through a translation system. Further information about
+        operating Stateful NAT64 is found in <xref target="RFC7269"/>.
+        </t>
+        <t>
+        Note that Stateful NAT64 can be deployed with or without NAPT44. With
+        the exception that IPv6 service availability is being provided, the
+        discussion in the previous two sections fully applies to an IPv4-only
+        environment that includes NAT64.
+        </t>
+        <t>
+        Benefits of IPv4-only + NAT64 operation compared to SIIT-DC include:
+        </t>
+        <t>
+        <list style="symbols">
+          <t>Compatible with IPv4-only devices.</t>
+          <t>Compatible with IPv4-only application software, without requiring
+          a host agent.</t>
+        </list>
+        </t>
+        <t>
+        Disadvantages of IPv4-only + NAT64 operation compared to SIIT-DC
+        include:
+        </t>
+        <t>
+        <list style="symbols">
+          <t>Does not alleviate IPv4 address scarcity (assuming NAPT44 isn't
+          used).</t>
+          <t>Requires network devices that track all flow state, which may
+          create a performance bottleneck and be an easy target for Denial of
+          Service attacks.</t>
+          <t>Limits routing flexibility (prevents closest exit routing), as
+          outbound traffic must pass across the same NAT64 device that handled
+          the inbound traffic.</t>
+          <t>Limited potential for horizontal scaling, as packets cannot be
+          load-balanced across multiple NAT devices.</t>
+          <t>Obscures the true source address of the user from the
+          server/application, preventing it from e.g. performing geo-location
+          lookups.</t>
+          <t>The traffic levels on the Stateful NAT64 routers will increase
+          over time, in lockstep with the increased deployment of IPv6 in the
+          Internet. For this reason, <xref target="RFC7269">Section 3.2 of
+          RFC7269</xref> notes that the use of Stateful NAT64 in a data centre
+          environment "is only reasonable at an early stage". With SIIT-DC,
+          the inverse is true; the traffic levels on the SIIT-DC Gateways will
+          decrease over time, as end users will prefer to use native IPv6 once
+          it is available to them.</t>
+        </list>
         </t>
       </section>
       <section title="Dual Stack">
@@ -1226,8 +1316,9 @@ app.domain.tld.    IN A     192.0.2.1
           used).</t>
           <t>Increases the complexity of the infrastructure, as many things
           must done twice (once for IPv4 and once for IPv6). Examples of
-          things that must be duplicated in this manner under Dual Stack:
-          Firewall rules/ACLs, IGP topology, monitoring, troubleshooting.</t>
+          things that must be duplicated in this manner under Dual Stack
+          include: Firewall rules/ACLs, IGP topology, monitoring,
+          troubleshooting.</t>
           <t>Encourages software developers, systems administrators, etc. to
           build architectures that cannot operate correctly without IPv4. This
           in turn makes it difficult to make use of Dual Stack as a short term
@@ -1242,8 +1333,5 @@ app.domain.tld.    IN A     192.0.2.1
   </back>
 
 </rfc>
-<!-- Change Log
-v00 2012-10-12	tore	Initial version
--->
 <!-- vim: syntax=xml tw=78 ai fo=2 et:
 -->
