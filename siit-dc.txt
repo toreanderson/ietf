@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                        October 03, 2014
-Expires: April 06, 2015
+Intended status: Standards Track                        October 04, 2014
+Expires: April 07, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 06, 2015.
+   This Internet-Draft will expire on April 07, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Anderson                 Expires April 06, 2015                 [Page 1]
+Anderson                 Expires April 07, 2015                 [Page 1]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Anderson                 Expires April 06, 2015                 [Page 2]
+Anderson                 Expires April 07, 2015                 [Page 2]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -165,7 +165,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                 [Page 3]
+Anderson                 Expires April 07, 2015                 [Page 3]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -221,7 +221,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                 [Page 4]
+Anderson                 Expires April 07, 2015                 [Page 4]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -277,7 +277,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                 [Page 5]
+Anderson                 Expires April 07, 2015                 [Page 5]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -333,7 +333,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                 [Page 6]
+Anderson                 Expires April 07, 2015                 [Page 6]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -389,7 +389,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                 [Page 7]
+Anderson                 Expires April 07, 2015                 [Page 7]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -445,7 +445,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                 [Page 8]
+Anderson                 Expires April 07, 2015                 [Page 8]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -501,7 +501,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                 [Page 9]
+Anderson                 Expires April 07, 2015                 [Page 9]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -557,7 +557,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 10]
+Anderson                 Expires April 07, 2015                [Page 10]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -613,7 +613,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 11]
+Anderson                 Expires April 07, 2015                [Page 11]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -669,7 +669,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 12]
+Anderson                 Expires April 07, 2015                [Page 12]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -725,7 +725,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 13]
+Anderson                 Expires April 07, 2015                [Page 13]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -781,7 +781,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 14]
+Anderson                 Expires April 07, 2015                [Page 14]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -837,7 +837,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 15]
+Anderson                 Expires April 07, 2015                [Page 15]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -893,7 +893,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 16]
+Anderson                 Expires April 07, 2015                [Page 16]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -949,7 +949,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 17]
+Anderson                 Expires April 07, 2015                [Page 17]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1005,7 +1005,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 18]
+Anderson                 Expires April 07, 2015                [Page 18]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1061,7 +1061,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 19]
+Anderson                 Expires April 07, 2015                [Page 19]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1117,7 +1117,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 20]
+Anderson                 Expires April 07, 2015                [Page 20]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1173,7 +1173,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 21]
+Anderson                 Expires April 07, 2015                [Page 21]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1229,7 +1229,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 22]
+Anderson                 Expires April 07, 2015                [Page 22]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1285,7 +1285,7 @@ Appendix A.  Complete SIIT-DC topology example
 
 
 
-Anderson                 Expires April 06, 2015                [Page 23]
+Anderson                 Expires April 07, 2015                [Page 23]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1341,7 +1341,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 24]
+Anderson                 Expires April 07, 2015                [Page 24]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1397,7 +1397,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 25]
+Anderson                 Expires April 07, 2015                [Page 25]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1453,7 +1453,7 @@ B.2.  IPv4-only + NAPT44
 
 
 
-Anderson                 Expires April 06, 2015                [Page 26]
+Anderson                 Expires April 07, 2015                [Page 26]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1509,7 +1509,7 @@ Internet-Draft                   SIIT-DC                    October 2014
 
 
 
-Anderson                 Expires April 06, 2015                [Page 27]
+Anderson                 Expires April 07, 2015                [Page 27]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1528,7 +1528,7 @@ B.3.  IPv4-only + NAT64
    translation system.  Further information about operating Stateful
    NAT64 is found in [RFC7269].
 
-   Note that tateful NAT64 can be deployed with our without NAPT44.
+   Note that Stateful NAT64 can be deployed with our without NAPT44.
    With the exception that IPv6 service availability is being provided,
    the discussion in the previous two sections fully applies to an
    IPv4-only environment that includes NAT64.
@@ -1565,7 +1565,7 @@ B.3.  IPv4-only + NAT64
 
 
 
-Anderson                 Expires April 06, 2015                [Page 28]
+Anderson                 Expires April 07, 2015                [Page 28]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1621,7 +1621,7 @@ B.4.  Dual Stack
 
 
 
-Anderson                 Expires April 06, 2015                [Page 29]
+Anderson                 Expires April 07, 2015                [Page 29]
 
 Internet-Draft                   SIIT-DC                    October 2014
 
@@ -1677,4 +1677,4 @@ Author's Address
 
 
 
-Anderson                 Expires April 06, 2015                [Page 30]
+Anderson                 Expires April 07, 2015                [Page 30]

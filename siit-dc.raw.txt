@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                        October 03, 2014
-Expires: April 06, 2015
+Intended status: Standards Track                        October 04, 2014
+Expires: April 07, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 06, 2015.
+   This Internet-Draft will expire on April 07, 2015.
 
 Copyright Notice
 
@@ -107,8 +107,8 @@ Table of Contents
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                        October 03, 2014
-Expires: April 06, 2015
+Intended status: Standards Track                        October 04, 2014
+Expires: April 07, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
@@ -139,7 +139,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 06, 2015.
+   This Internet-Draft will expire on April 07, 2015.
 
 Copyright Notice
 
@@ -1296,7 +1296,7 @@ B.3.  IPv4-only + NAT64
    translation system.  Further information about operating Stateful
    NAT64 is found in [RFC7269].
 
-   Note that tateful NAT64 can be deployed with our without NAPT44.
+   Note that Stateful NAT64 can be deployed with our without NAPT44.
    With the exception that IPv6 service availability is being provided,
    the discussion in the previous two sections fully applies to an
    IPv4-only environment that includes NAT64.

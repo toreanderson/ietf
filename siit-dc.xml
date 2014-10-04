@@ -1267,7 +1267,7 @@ app.domain.tld.    IN A     192.0.2.1
         operating Stateful NAT64 is found in <xref target="RFC7269"/>.
         </t>
         <t>
-        Note that tateful NAT64 can be deployed with our without NAPT44. With
+        Note that Stateful NAT64 can be deployed with our without NAPT44. With
         the exception that IPv6 service availability is being provided, the
         discussion in the previous two sections fully applies to an IPv4-only
         environment that includes NAT64.
