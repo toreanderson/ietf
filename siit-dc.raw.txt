@@ -4,8 +4,8 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                        October 05, 2014
-Expires: April 08, 2015
+Intended status: Standards Track                        October 06, 2014
+Expires: April 09, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 08, 2015.
+   This Internet-Draft will expire on April 09, 2015.
 
 Copyright Notice
 
@@ -104,8 +104,8 @@ Table of Contents
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                        October 05, 2014
-Expires: April 08, 2015
+Intended status: Standards Track                        October 06, 2014
+Expires: April 09, 2015
 
 
 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments
@@ -136,7 +136,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 08, 2015.
+   This Internet-Draft will expire on April 09, 2015.
 
 Copyright Notice
 
@@ -165,19 +165,21 @@ Copyright Notice
 
 1.1.  Motivation and Goals
 
-   Historically, dual stack [RFC4213] has been the recommended way to
-   transition from an IPv4-only environment to one capable of serving
-   IPv6 users.  For data centre operators and Internet content
-   providers, dual stack operation has a number of disadvantages
+   Historically, dual stack [RFC4213] [RFC6883] has been the recommended
+   way to transition from an IPv4-only environment to one capable of
+   serving IPv6 users.  However, for data centre operators and Internet
+   content providers, dual stack operation has a number of disadvantages
    compared to single stack operation.  In particular, running two
    protocols rather than one results in increased complexity and
    operational overhead, with a very low expected return on investment
-   in the short to medium term, as there are practically no end-users
-   who have only connectivity to the IPv6 Internet.  Furthermore, the
-   dual stack approach does not in any way help with the depletion of
-   the IPv4 address space.
+   in the short to medium term while few end-users only have
+   connectivity to the IPv6 Internet.  Furthermore, the dual stack
+   approach does not in any way help with the depletion of the IPv4
+   address space.
 
-   Therefore, a better approach is needed.  The design goals are:
+   Therefore, some operators may prefer an approach in which they only
+   need to operate one protocol in the data centre as they prepare for
+   the future.  The design goals are:
 
    o  Promote the deployment of native IPv6 services (cf. [RFC6540]).
 
@@ -998,12 +1000,12 @@ Copyright Notice
 10.2.  Informative References
 
    [I-D.anderson-v6ops-siit-dc-2xlat]
-              tore, t., "SIIT-DC: Dual Translation Mode", draft-
+              Anderson, T., "SIIT-DC: Dual Translation Mode", draft-
               anderson-v6ops-siit-dc-2xlat-00 (work in progress),
               September 2014.
 
    [I-D.gont-6man-deprecate-atomfrag-generation]
-              Gont, F., Will, W., and t. tore, "Deprecating the
+              Gont, F., Will, W., and T. Anderson, "Deprecating the
               Generation of IPv6 Atomic Fragments", draft-gont-6man-
               deprecate-atomfrag-generation-01 (work in progress),
               August 2014.
@@ -1072,6 +1074,10 @@ Copyright Notice
    [RFC6540]  George, W., Donley, C., Liljenstolpe, C., and L. Howard,
               "IPv6 Support Required for All IP-Capable Nodes", BCP 177,
               RFC 6540, April 2012.
+
+   [RFC6883]  Carpenter, B. and S. Jiang, "IPv6 Guidance for Internet
+              Content Providers and Application Service Providers", RFC
+              6883, March 2013.
 
    [RFC6946]  Gont, F., "Processing of IPv6 "Atomic" Fragments", RFC
               6946, May 2013.
@@ -1323,12 +1329,12 @@ B.3.  IPv4-only + NAT64
 
 B.4.  Dual Stack
 
-   Dual Stack [RFC4213] could be used both with or without NAPT44 to
-   handle IPv4.  In general, the benefits and disadvantages are equal to
-   the corresponding IPv4-only option, except for the fact that Dual
-   Stack does provides IPv6 connectivity.  Therefore, his section only
-   lists the benefits and disadvantages which are unique to a Dual Stack
-   environment.
+   Dual Stack [RFC4213] [RFC6883] could be used both with or without
+   NAPT44 to handle IPv4.  In general, the benefits and disadvantages
+   are equal to the corresponding IPv4-only option, except for the fact
+   that Dual Stack does provides IPv6 connectivity.  Therefore, his
+   section only lists the benefits and disadvantages which are unique to
+   a Dual Stack environment.
 
    Benefits of Dual Stack operation compared to SIIT-DC include:
 

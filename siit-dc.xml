@@ -55,20 +55,22 @@
       </t>
       <section title="Motivation and Goals">
         <t>
-        Historically, <xref target="RFC4213">dual stack</xref> has been the
-        recommended way to transition from an IPv4-only environment to one
-        capable of serving IPv6 users. For data centre operators and Internet
-        content providers, dual stack operation has a number of disadvantages
-        compared to single stack operation. In particular, running two
-        protocols rather than one results in increased complexity and
-        operational overhead, with a very low expected return on investment in
-        the short to medium term, as there are practically no end-users who
-        have only connectivity to the IPv6 Internet. Furthermore, the dual
-        stack approach does not in any way help with the depletion of the IPv4
-        address space.
+        Historically, dual stack <xref target="RFC4213"/> <xref
+        target="RFC6883"/> has been the recommended way to transition from an
+        IPv4-only environment to one capable of serving IPv6 users. However,
+        for data centre operators and Internet content providers, dual stack
+        operation has a number of disadvantages compared to single stack
+        operation. In particular, running two protocols rather than one
+        results in increased complexity and operational overhead, with a very
+        low expected return on investment in the short to medium term while
+        few end-users only have connectivity to the IPv6 Internet.
+        Furthermore, the dual stack approach does not in any way help with the
+        depletion of the IPv4 address space.
         </t>
         <t>
-        Therefore, a better approach is needed. The design goals are:
+        Therefore, some operators may prefer an approach in which they only
+        need to operate one protocol in the data centre as they prepare for
+        the future. The design goals are:
         </t>
         <t>
         <list style="symbols">
@@ -1013,6 +1015,7 @@ app.domain.tld.    IN A     192.0.2.1
       <?rfc include="reference.RFC.6146"?>
       <?rfc include="reference.RFC.6147"?>
       <?rfc include="reference.RFC.6540"?>
+      <?rfc include="reference.RFC.6883"?>
       <?rfc include="reference.RFC.6946"?>
       <?rfc include="reference.RFC.7269"?>
       <?rfc include="reference.I-D.anderson-v6ops-siit-dc-2xlat"?>
@@ -1286,12 +1289,12 @@ app.domain.tld.    IN A     192.0.2.1
       </section>
       <section title="Dual Stack">
         <t>
-        <xref target="RFC4213">Dual Stack</xref> could be used both with or
-        without NAPT44 to handle IPv4. In general, the benefits and
-        disadvantages are equal to the corresponding IPv4-only option, except
-        for the fact that Dual Stack does provides IPv6 connectivity.
-        Therefore, his section only lists the benefits and disadvantages which
-        are unique to a Dual Stack environment.
+        Dual Stack <xref target="RFC4213"/> <xref target="RFC6883"/> could be
+        used both with or without NAPT44 to handle IPv4. In general, the
+        benefits and disadvantages are equal to the corresponding IPv4-only
+        option, except for the fact that Dual Stack does provides IPv6
+        connectivity.  Therefore, his section only lists the benefits and
+        disadvantages which are unique to a Dual Stack environment.
         </t>
         <t>
         Benefits of Dual Stack operation compared to SIIT-DC include:
