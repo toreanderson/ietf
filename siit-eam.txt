@@ -160,8 +160,8 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
    Routing complexity  The IPv4-translatable IPv6 addresses must be
       routed throughout the IPv6 network separately from the primary
-      (non-IPv4-translatable) IPv6 addresses used by the nodes.  These
-      routes might not be aggregatable, as two adjacent
+      (non-IPv4-translatable) IPv6 addresses used by the nodes.  It
+      might be impossible to aggregate these routes, as two adjacent
 
 
 
@@ -172,7 +172,7 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
       IPv4-translatable IPv6 addresses might not be assigned to two
       adjacent IPv6 nodes.  As a result, in order to support SIIT, the
-      IPv6 network might need to carry a large number of unaggregatable
+      IPv6 network might need to carry a large number of extraneous
       routes.  These routes must be separately injected into the IPv6
       routing topology somehow.  Any intermediate devices in the IPv6
       network such as a firewall might require special configuration in

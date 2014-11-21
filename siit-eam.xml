@@ -125,17 +125,17 @@
       <list style="hanging">
        <t hangText="Routing complexity">The IPv4-translatable IPv6 addresses
        must be routed throughout the IPv6 network separately from the primary
-       (non-IPv4-translatable) IPv6 addresses used by the nodes. These routes
-       might not be aggregatable, as two adjacent IPv4-translatable IPv6
-       addresses might not be assigned to two adjacent IPv6 nodes. As a
+       (non-IPv4-translatable) IPv6 addresses used by the nodes. It might be
+       impossible to aggregate these routes, as two adjacent IPv4-translatable
+       IPv6 addresses might not be assigned to two adjacent IPv6 nodes. As a
        result, in order to support SIIT, the IPv6 network might need to carry
-       a large number of unaggregatable routes. These routes must be
-       separately injected into the IPv6 routing topology somehow. Any
-       intermediate devices in the IPv6 network such as a firewall might
-       require special configuration in order to treat the IPv4-translatable
-       IPv6 address the same as the primary IPv6 address, for example by
-       requiring that any ACL entries involving the primary IPv6 address of a
-       node must be duplicated.</t>
+       a large number of extraneous routes. These routes must be separately
+       injected into the IPv6 routing topology somehow. Any intermediate
+       devices in the IPv6 network such as a firewall might require special
+       configuration in order to treat the IPv4-translatable IPv6 address the
+       same as the primary IPv6 address, for example by requiring that any ACL
+       entries involving the primary IPv6 address of a node must be
+       duplicated.</t>
        <t hangText="Operational complexity">The IPv4-translatable IPv6
        addresses must not only be assigned to the IPv6 nodes participating in
        SIIT, all applications and services on those nodes must also be
