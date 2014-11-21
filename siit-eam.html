@@ -1,0 +1,684 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>Explicit Address Mappings for Stateless IP/ICMP Translation</title>
+
+  <style type="text/css" title="Xml2Rfc (sans serif)">
+  /*<![CDATA[*/
+	  a {
+	  text-decoration: none;
+	  }
+	  a.smpl {
+	  color: black;
+	  }
+	  a:hover {
+	  text-decoration: underline;
+	  }
+	  a:active {
+	  text-decoration: underline;
+	  }
+	  address {
+	  margin-top: 1em;
+	  margin-left: 2em;
+	  font-style: normal;
+	  }
+	  body {
+	  color: black;
+	  font-family: verdana, helvetica, arial, sans-serif;
+	  font-size: 10pt;
+	  max-width: 55em;
+	  
+	  }
+	  cite {
+	  font-style: normal;
+	  }
+	  dd {
+	  margin-right: 2em;
+	  }
+	  dl {
+	  margin-left: 2em;
+	  }
+	
+	  ul.empty {
+	  list-style-type: none;
+	  }
+	  ul.empty li {
+	  margin-top: .5em;
+	  }
+	  dl p {
+	  margin-left: 0em;
+	  }
+	  dt {
+	  margin-top: .5em;
+	  }
+	  h1 {
+	  font-size: 14pt;
+	  line-height: 21pt;
+	  page-break-after: avoid;
+	  }
+	  h1.np {
+	  page-break-before: always;
+	  }
+	  h1 a {
+	  color: #333333;
+	  }
+	  h2 {
+	  font-size: 12pt;
+	  line-height: 15pt;
+	  page-break-after: avoid;
+	  }
+	  h3, h4, h5, h6 {
+	  font-size: 10pt;
+	  page-break-after: avoid;
+	  }
+	  h2 a, h3 a, h4 a, h5 a, h6 a {
+	  color: black;
+	  }
+	  img {
+	  margin-left: 3em;
+	  }
+	  li {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol p {
+	  margin-left: 0em;
+	  }
+	  p {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  pre {
+	  margin-left: 3em;
+	  background-color: lightyellow;
+	  padding: .25em;
+	  }
+	  pre.text2 {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f0f0f0;
+	  width: 69em;
+	  }
+	  pre.inline {
+	  background-color: white;
+	  padding: 0em;
+	  }
+	  pre.text {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  width: 69em;
+	  }
+	  pre.drawing {
+	  border-style: solid;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  padding: 2em;
+	  }
+	  table {
+	  margin-left: 2em;
+	  }
+	  table.tt {
+	  vertical-align: top;
+	  }
+	  table.full {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.headers {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.tt td {
+	  vertical-align: top;
+	  }
+	  table.full td {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.tt th {
+	  vertical-align: top;
+	  }
+	  table.full th {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.headers th {
+	  border-style: none none inset none;
+	  border-width: 1px;
+	  }
+	  table.left {
+	  margin-right: auto;
+	  }
+	  table.right {
+	  margin-left: auto;
+	  }
+	  table.center {
+	  margin-left: auto;
+	  margin-right: auto;
+	  }
+	  caption {
+	  caption-side: bottom;
+	  font-weight: bold;
+	  font-size: 9pt;
+	  margin-top: .5em;
+	  }
+	
+	  table.header {
+	  border-spacing: 1px;
+	  width: 95%;
+	  font-size: 10pt;
+	  color: white;
+	  }
+	  td.top {
+	  vertical-align: top;
+	  }
+	  td.topnowrap {
+	  vertical-align: top;
+	  white-space: nowrap; 
+	  }
+	  table.header td {
+	  background-color: gray;
+	  width: 50%;
+	  }
+	  table.header a {
+	  color: white;
+	  }
+	  td.reference {
+	  vertical-align: top;
+	  white-space: nowrap;
+	  padding-right: 1em;
+	  }
+	  thead {
+	  display:table-header-group;
+	  }
+	  ul.toc, ul.toc ul {
+	  list-style: none;
+	  margin-left: 1.5em;
+	  margin-right: 0em;
+	  padding-left: 0em;
+	  }
+	  ul.toc li {
+	  line-height: 150%;
+	  font-weight: bold;
+	  font-size: 10pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  ul.toc li li {
+	  line-height: normal;
+	  font-weight: normal;
+	  font-size: 9pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  li.excluded {
+	  font-size: 0pt;
+	  }
+	  ul p {
+	  margin-left: 0em;
+	  }
+	
+	  .comment {
+	  background-color: yellow;
+	  }
+	  .center {
+	  text-align: center;
+	  }
+	  .error {
+	  color: red;
+	  font-style: italic;
+	  font-weight: bold;
+	  }
+	  .figure {
+	  font-weight: bold;
+	  text-align: center;
+	  font-size: 9pt;
+	  }
+	  .filename {
+	  color: #333333;
+	  font-weight: bold;
+	  font-size: 12pt;
+	  line-height: 21pt;
+	  text-align: center;
+	  }
+	  .fn {
+	  font-weight: bold;
+	  }
+	  .hidden {
+	  display: none;
+	  }
+	  .left {
+	  text-align: left;
+	  }
+	  .right {
+	  text-align: right;
+	  }
+	  .title {
+	  color: #990000;
+	  font-size: 18pt;
+	  line-height: 18pt;
+	  font-weight: bold;
+	  text-align: center;
+	  margin-top: 36pt;
+	  }
+	  .vcardline {
+	  display: block;
+	  }
+	  .warning {
+	  font-size: 14pt;
+	  background-color: yellow;
+	  }
+	
+	
+	  @media print {
+	  .noprint {
+		display: none;
+	  }
+	
+	  a {
+		color: black;
+		text-decoration: none;
+	  }
+	
+	  table.header {
+		width: 90%;
+	  }
+	
+	  td.header {
+		width: 50%;
+		color: black;
+		background-color: white;
+		vertical-align: top;
+		font-size: 12pt;
+	  }
+	
+	  ul.toc a::after {
+		content: leader('.') target-counter(attr(href), page);
+	  }
+	
+	  ul.ind li li a {
+		content: target-counter(attr(href), page);
+	  }
+	
+	  .print2col {
+		column-count: 2;
+		-moz-column-count: 2;
+		column-fill: auto;
+	  }
+	  }
+	
+	  @page {
+	  @top-left {
+		   content: "Internet-Draft"; 
+	  } 
+	  @top-right {
+		   content: "December 2010"; 
+	  } 
+	  @top-center {
+		   content: "Abbreviated Title";3
+	  } 
+	  @bottom-left {
+		   content: "Doe"; 
+	  } 
+	  @bottom-center {
+		   content: "Expires June 2011"; 
+	  } 
+	  @bottom-right {
+		   content: "[Page " counter(page) "]"; 
+	  } 
+	  }
+	
+	  @page:first { 
+		@top-left {
+		  content: normal;
+		}
+		@top-right {
+		  content: normal;
+		}
+		@top-center {
+		  content: normal;
+		}
+	  }
+  /*]]>*/
+  </style>
+
+  <link href="#rfc.toc" rel="Contents"/>
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
+<link href="#rfc.section.1.1" rel="Chapter" title="1.1 Terminology"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Problem Statement"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 Explicit Address Mapping Algorithm"/>
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Explicit Address Mapping Table"/>
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Explicit Address Mapping Specification"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Lack of Checksum Neutrality"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 Acknowledgements"/>
+<link href="#rfc.references" rel="Chapter" title="8 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References"/>
+<link href="#rfc.appendix.A" rel="Chapter" title="A Use Cases"/>
+<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 464XLAT"/>
+<link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 SIIT-DC"/>
+<link href="#rfc.authors" rel="Chapter"/>
+
+
+  <meta name="generator" content="xml2rfc version 2.4.2 - http://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Anderson, T." />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-anderson-v6ops-siit-eam-00" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-11-21" />
+  <meta name="dct.abstract" content="This document extends the Stateless IP/ICMP Translation Algorithm (SIIT) with an Explicit Address Mapping algorithm. This algorithm facilitates stateless IP/ICMP translation between arbitrary (non-IPv4-translatable) IPv6 endpoints and IPv4.  " />
+  <meta name="description" content="This document extends the Stateless IP/ICMP Translation Algorithm (SIIT) with an Explicit Address Mapping algorithm. This algorithm facilitates stateless IP/ICMP translation between arbitrary (non-IPv4-translatable) IPv6 endpoints and IPv4.  " />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+  <td class="left">IPv6 Operations</td>
+  <td class="right">T. Anderson</td>
+</tr>
+<tr>
+  <td class="left">Internet-Draft</td>
+  <td class="right">Redpill Linpro</td>
+</tr>
+<tr>
+  <td class="left">Intended status: Standards Track</td>
+  <td class="right">November 21, 2014</td>
+</tr>
+<tr>
+  <td class="left">Expires: May 25, 2015</td>
+  <td class="right"></td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">Explicit Address Mappings for Stateless IP/ICMP Translation<br />
+  <span class="filename">draft-anderson-v6ops-siit-eam-00</span></p>
+  
+  <h1 id="rfc.abstract">
+  <a href="#rfc.abstract">Abstract</a>
+</h1>
+<p>This document extends the Stateless IP/ICMP Translation Algorithm (SIIT) with an Explicit Address Mapping algorithm. This algorithm facilitates stateless IP/ICMP translation between arbitrary (non-IPv4-translatable) IPv6 endpoints and IPv4.  </p>
+<h1 id="rfc.status">
+  <a href="#rfc.status">Status of This Memo</a>
+</h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on May 25, 2015.</p>
+<h1 id="rfc.copyrightnotice">
+  <a href="#rfc.copyrightnotice">Copyright Notice</a>
+</h1>
+<p>Copyright (c) 2014 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
+<li>1.1.   <a href="#rfc.section.1.1">Terminology</a></li>
+<li>2.   <a href="#rfc.section.2">Problem Statement</a></li>
+<li>3.   <a href="#rfc.section.3">Explicit Address Mapping Algorithm</a></li>
+<li>3.1.   <a href="#rfc.section.3.1">Explicit Address Mapping Table</a></li>
+<li>3.2.   <a href="#rfc.section.3.2">Explicit Address Mapping Specification</a></li>
+<li>4.   <a href="#rfc.section.4">Lack of Checksum Neutrality</a></li>
+<li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
+<li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
+<li>7.   <a href="#rfc.section.7">Acknowledgements</a></li>
+<li>8.   <a href="#rfc.references">References</a></li>
+<li>8.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>8.2.   <a href="#rfc.references.2">Informative References</a></li>
+<li>Appendix A.   <a href="#rfc.appendix.A">Use Cases</a></li>
+<li>A.1.   <a href="#rfc.appendix.A.1">464XLAT</a></li>
+<li>A.2.   <a href="#rfc.appendix.A.2">SIIT-DC</a></li>
+<li><a href="#rfc.authors">Author's Address</a></li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> Introduction</h1>
+<p id="rfc.section.1.p.1">The <a href="#RFC6145">Stateless IP/ICMP Translation Algorithm (SIIT)</a> <cite title="NONE">[RFC6145]</cite> specifies that when translating IPv4 addresses to IPv6 and vice versa, all addresses must be translated using the algorithm specified in <a href="#RFC6052">[RFC6052]</a>. This document specifies an alternative to the <a href="#RFC6052">[RFC6052]</a> algorithm, where IP addresses are translated according to a table of Explicit Address Mappings configured on the stateless translator. This removes the previous constraint that IPv6 nodes that communicate with IPv4 nodes through SIIT must be configured with IPv4-translatable IPv6 addresses.  </p>
+<p id="rfc.section.1.p.2">The Explicit Address Mapping Table does not replace <a href="#RFC6052">[RFC6052]</a>. For most use cases, is expected that both algorithms are used in concert. The Explicit Address Mapping algorithm is used only when a mapping matching the address to be translated exists. If no matching mapping exists, the <a href="#RFC6052">[RFC6052]</a> algorithm will be used instead. In a typical deployment, when translating a single IPv4 packet to IPv6, the destination address will be translated according to an Explicit Address Mapping while the source address will be translated according to <a href="#RFC6052">[RFC6052]</a>, and vice versa when translating from IPv6 to IPv4.  </p>
+<h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
+<p id="rfc.section.1.1.p.1">This document makes use of the following terms: </p>
+<p/>
+
+<dl>
+  <dt>EAM</dt>
+  <dd style="margin-left: 8">An Explicit Address Mapping, as specified in <a href="#eam_def">Section 3</a>.</dd>
+  <dt>EAMT</dt>
+  <dd style="margin-left: 8">The Explicit Address Mapping Table, as specified in <a href="#eam_def">Section 3</a>.</dd>
+  <dt>SIIT</dt>
+  <dd style="margin-left: 8">The Stateless IP/ICMP Translation algorithm, as specified in <a href="#RFC6145">[RFC6145]</a>.</dd>
+  <dt>IPv4-converted IPv6 addresses</dt>
+  <dd style="margin-left: 8">As defined in Section 1.3 of <a href="#RFC6052">[RFC6052]</a>.</dd>
+  <dt>IPv4-translatable IPv6 addresses</dt>
+  <dd style="margin-left: 8">As defined in Section 1.3 of <a href="#RFC6052">[RFC6052]</a>.</dd>
+</dl>
+
+<p> </p>
+<p id="rfc.section.1.1.p.3">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.  </p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#problemstatement" id="problemstatement">Problem Statement</a></h1>
+<p id="rfc.section.2.p.1">Section 3.2.1 of <a href="#RFC6144">[RFC6144]</a> notes that "stateless translation mechanisms typically put constraints on what IPv6 addresses can be assigned to IPv6 nodes that want to communicate with IPv4 destinations using an algorithmic mapping". In practice, this means that the IPv6 nodes must be configured with IPv4-translatable IPv6 addresses.  For the reasons discussed below, some environments may find that the use of IPv4-translatable IPv6 addresses is not desired or even possible.  </p>
+<p/>
+
+<dl>
+  <dt>Limited availability</dt>
+  <dd style="margin-left: 8">The number of IPv4-translatable IPv6 addresses available to an operator is equal to the number of IPv4 addresses he assigns to the SIIT function. IPv4 addresses are scarce, and as a result a operator might not have enough IPv4-translatable IPv6 addresses to number his entire IPv6 infrastructure.</dd>
+  <dt>Restricted format</dt>
+  <dd style="margin-left: 8">IPv4-translatable IPv6 addresses must conform to the format specified in Section 2.2 of <a href="#RFC6052">[RFC6052]</a>. This format is not compatible with other common IPv6 address formats, such as the EUI-64 based IPv6 address format used by <a href="#RFC4862">IPv6 Stateless Address Autoconfiguration</a> <cite title="NONE">[RFC4862]</cite>.</dd>
+</dl>
+
+<p> </p>
+<p id="rfc.section.2.p.3">An operator could overcome the above two problems by building an IPv6 network using regular (non-IPv4-translatable) IPv6 addresses, and assign IPv4-translatable IPv6 addresses as secondary addresses on the nodes that want to communicate with IPv4 nodes through SIIT only. However, doing so may result in a new set of undesired properties: </p>
+<p/>
+
+<dl>
+  <dt>Routing complexity</dt>
+  <dd style="margin-left: 8">The IPv4-translatable IPv6 addresses must be routed throughout the IPv6 network separately from the primary (non-IPv4-translatable) IPv6 addresses used by the nodes. These routes might not be aggregatable, as two adjacent IPv4-translatable IPv6 addresses might not be assigned to two adjacent IPv6 nodes. As a result, in order to support SIIT, the IPv6 network might need to carry a large number of unaggregatable routes. These routes must be separately injected into the IPv6 routing topology somehow. Any intermediate devices in the IPv6 network such as a firewall might require special configuration in order to treat the IPv4-translatable IPv6 address the same as the primary IPv6 address, for example by requiring that any ACL entries involving the primary IPv6 address of a node must be duplicated.</dd>
+  <dt>Operational complexity</dt>
+  <dd style="margin-left: 8">The IPv4-translatable IPv6 addresses must not only be assigned to the IPv6 nodes participating in SIIT, all applications and services on those nodes must also be configured to use them. For example, if the IPv6 node is a load balancer, it might require a separate Virtual Server definition using the IPv4-translatable IPv6 address in addition to one using the service's primary IPv6 address. A web server might require specific configuration to listen for connections on both the IPv4-translatable and the primary IPv6 address. A High-Availability cluster service must be set up to fail over both addresses between cluster nodes, and depending on how the IPv6 network learns the location of the IPv4-translatable IPv6 address, the fail-over mechanism used for the two addresses might be completely different. Service monitoring must be done for both the IPv4-translatable and the primary IPv6 address, and any trouble-shooting procedures must be extended to involved both addresses.</dd>
+</dl>
+
+<p> </p>
+<p id="rfc.section.2.p.5">In short, the use of IPv4-translatable IPv6 addresses in parallel with regular IPv6 addresses is in many ways analogous to the use of <a href="#RFC4213">Dual Stack</a> <cite title="NONE">[RFC4213]</cite>. While no actual IPv4 packets are used, the IPv4-translatable IPv6 addresses creates a secondary "stack" in the infrastructure that must be treated and operated separately from the primary one. This increases the complexity of the overall infrastructure, in turn increasing operational overhead, and reducing reliability. An operator who for such reasons finds the use Dual Stack unappealing, might feel the same way about using SIIT with IPv4-translatable IPv6 addresses.  </p>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#eam_def" id="eam_def">Explicit Address Mapping Algorithm</a></h1>
+<p id="rfc.section.3.p.1">This normative section defines the EAM algorithm. SIIT implementations are REQUIRED to support the specifications herein.  </p>
+<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#eam_tbl" id="eam_tbl">Explicit Address Mapping Table</a></h1>
+<p id="rfc.section.3.1.p.1">An SIIT implementation MUST include an Explicit Address Mapping Table (EAMT). By default, the EAMT SHOULD be empty. The operator MUST be able to populate the EAMT using the implementation's normal configuration interfaces. The implementation MAY additionally support other ways of populating the EAMT.  </p>
+<p id="rfc.section.3.1.p.2">The EAMT consists of the following columns: </p>
+<p/>
+
+<ul class="empty">
+  <li>IPv4 Prefix</li>
+  <li>IPv6 Prefix</li>
+</ul>
+
+<p> </p>
+<p id="rfc.section.3.1.p.4">SIIT implementations MAY include other columns in order to support proprietary extensions to the EAM algorithm.  </p>
+<p id="rfc.section.3.1.p.5">Throughout this document, figures representing the EAMT contain an Index column using the pound sign as the header. This column is not a required part of this specification; it is included only as a convenience to the reader.  </p>
+<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#eam_types" id="eam_types">Explicit Address Mapping Specification</a></h1>
+<p id="rfc.section.3.2.p.1">An EAM consists of an IPv4 Prefix and an IPv6 Prefix. The prefix length MAY be omitted, in which case the implementation MUST assume it to be 32 for IPv4 and 128 for IPv6.  </p>
+<div id="rfc.figure.1"/>
+<div id="fig_eam_table"/>
+<p/>
+
+<p>Example Explicit Address Mapping Table</p>
+<pre>
++---+--------------+-----------------+
+| # | IPv4 Prefix  |   IPv6 Prefix   |
++---+--------------+-----------------+
+| 1 | 192.0.2.1    | 2001:db8::      |
+| 2 | 192.0.2.2/32 | 2001:db8::2/128 |
+| 3 | 192.0.2.3    | 2001:db8::3     |
+| 4 | 192.0.2.4/30 | 2001:db8::8/126 |
++---+--------------+-----------------+
+        </pre>
+<p class="figure">Figure 1</p>
+<p id="rfc.section.3.2.p.3">A stateless IP/ICMP translator MUST behave as follows: </p>
+<p/>
+
+<ul>
+  <li>When translating an IPv4/ICMPv4 packet to IPv6, the SIIT implementation MUST first look up the IPv4 addresses to be translated in the IPv4 Prefix column in the EAMT. If a matching EAM entry is found, the address MUST be translated to the entry's IPv6 Prefix value.</li>
+  <li>When translating an IPv6/ICMPv6 packet to IPv4, the SIIT implementation MUST first look up the IPv6 addresses to be translated in the IPv6 Prefix column in the EAMT. If a matching EAM entry is found, the address MUST be translated to the entry's IPv4 Prefix value.</li>
+  <li>If no matching EAM is found, the SIIT implementation MUST proceed to translate the packet in accordance with <a href="#RFC6145">[RFC6145]</a> (and its updates).</li>
+</ul>
+
+<p> </p>
+<p id="rfc.section.3.2.p.5">An EAM's IPv4 Prefix and IPv6 Prefix MUST have identical suffix lengths. Any suffix bits MUST be kept intact during translation.  </p>
+<p id="rfc.section.3.2.p.6">Overlapping EAMs SHOULD be considered an error, and attempts to insert them into the EAM table SHOULD be blocked. The behaviour of an SIIT implementation when overlapping EAMs are present in the EAM table is left undefined.  </p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> Lack of Checksum Neutrality</h1>
+<p id="rfc.section.4.p.1">When one or both of the address fields in an IP/ICMP packet are translated according to EAM, the translation can not be relied upon to be checksum neutral, even if the well-known prefix 64:ff9b::/96 is used.  This consideration is discussed in more detail in Section 4.1 of <a href="#RFC6052">[RFC6052]</a>.  </p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security" id="security">Security Considerations</a></h1>
+<p id="rfc.section.5.p.1">The EAM algorithm does not introduce any new security issues beyond those that are already discussed in Section 7 of <a href="#RFC6145">[RFC6145]</a>.  </p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
+<p id="rfc.section.6.p.1">This draft makes no request of the IANA. The RFC Editor may remove this section prior to publication.  </p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#acks" id="acks">Acknowledgements</a></h1>
+<p id="rfc.section.7.p.1">This document was conceived due to comments made by Dave Thaler in the v6ops session at IETF 91 as well as e-mail discussions between Fred Baker and the author.  </p>
+<h1 id="rfc.references"><a href="#rfc.references">8.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">8.1.</a> Normative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="RFC2119">[RFC2119]</b>
+      </td>
+      <td class="top"><a href="mailto:sob@harvard.edu" title="Harvard University">Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, March 1997.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6052">[RFC6052]</b>
+      </td>
+      <td class="top"><a>Bao, C.</a>, <a>Huitema, C.</a>, <a>Bagnulo, M.</a>, <a>Boucadair, M.</a> and <a>X. Li</a>, "<a href="http://tools.ietf.org/html/rfc6052">IPv6 Addressing of IPv4/IPv6 Translators</a>", RFC 6052, October 2010.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6145">[RFC6145]</b>
+      </td>
+      <td class="top"><a>Li, X.</a>, <a>Bao, C.</a> and <a>F. Baker</a>, "<a href="http://tools.ietf.org/html/rfc6145">IP/ICMP Translation Algorithm</a>", RFC 6145, April 2011.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">8.2.</a> Informative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="I-D.anderson-v6ops-siit-dc">[I-D.anderson-v6ops-siit-dc]</b>
+      </td>
+      <td class="top"><a>tore, t.</a>, "<a href="http://tools.ietf.org/html/draft-anderson-v6ops-siit-dc-01">SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Centre Environments</a>", Internet-Draft draft-anderson-v6ops-siit-dc-01, October 2014.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC4213">[RFC4213]</b>
+      </td>
+      <td class="top"><a>Nordmark, E.</a> and <a>R. Gilligan</a>, "<a href="http://tools.ietf.org/html/rfc4213">Basic Transition Mechanisms for IPv6 Hosts and Routers</a>", RFC 4213, October 2005.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC4862">[RFC4862]</b>
+      </td>
+      <td class="top"><a>Thomson, S.</a>, <a>Narten, T.</a> and <a>T. Jinmei</a>, "<a href="http://tools.ietf.org/html/rfc4862">IPv6 Stateless Address Autoconfiguration</a>", RFC 4862, September 2007.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6144">[RFC6144]</b>
+      </td>
+      <td class="top"><a>Baker, F.</a>, <a>Li, X.</a>, <a>Bao, C.</a> and <a>K. Yin</a>, "<a href="http://tools.ietf.org/html/rfc6144">Framework for IPv4/IPv6 Translation</a>", RFC 6144, April 2011.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6877">[RFC6877]</b>
+      </td>
+      <td class="top"><a>Mawatari, M.</a>, <a>Kawashima, M.</a> and <a>C. Byrne</a>, "<a href="http://tools.ietf.org/html/rfc6877">464XLAT: Combination of Stateful and Stateless Translation</a>", RFC 6877, April 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC7335">[RFC7335]</b>
+      </td>
+      <td class="top"><a>Byrne, C.</a>, "<a href="http://tools.ietf.org/html/rfc7335">IPv4 Service Continuity Prefix</a>", RFC 7335, August 2014.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#usecases" id="usecases">Use Cases</a></h1>
+<p id="rfc.section.A.p.1">The following subsections lists some use cases that leverage SIIT with the EAM algorithm at the time of writing.  </p>
+<h1 id="rfc.appendix.A.1"><a href="#rfc.appendix.A.1">A.1.</a> <a href="#usecase_464xlat" id="usecase_464xlat">464XLAT</a></h1>
+<p id="rfc.section.A.1.p.1">When the CLAT component in the <a href="#RFC6877">464XLAT</a> <cite title="NONE">[RFC6877]</cite> architecture does not have a dedicated IPv6 prefix assigned, it may instead use "one interface IPv6 address that is claimed by the CLAT".  This IPv6 address might not be IPv4-translatable. If this is the case, the CLAT essentially implements the EAM algorithm using an EAMT as follows (assuming the CLAT's IPv4 address is picked from the <a href="#RFC7335">IPv4 Service Continuity Prefix</a> <cite title="NONE">[RFC7335]</cite>): </p>
+<div id="rfc.figure.2"/>
+<div id="fig_eamt_464xlat"/>
+<p/>
+
+<p>Example EAMT for an 464XLAT CLAT</p>
+<pre>
++---+--------------+-------------------------------+
+| # | IPv4 Prefix  |          IPv6 Prefix          |
++---+--------------+-------------------------------+
+| 1 | 192.0.0.1/32 | CLAT_claimed_IPv6_address/128 |
++---+--------------+-------------------------------+
+        </pre>
+<p class="figure">Figure 2</p>
+<h1 id="rfc.appendix.A.2"><a href="#rfc.appendix.A.2">A.2.</a> <a href="#usecase_siit_dc" id="usecase_siit_dc">SIIT-DC</a></h1>
+<p><a href="#I-D.anderson-v6ops-siit-dc">SIIT-DC</a> <cite title="NONE">[I-D.anderson-v6ops-siit-dc]</cite> describes the use of SIIT to facilitate connectivity from the IPv4 Internet to services hosted in an IPv6-only data centre. In order to avoid the constraints relating to the use of IPv4-translatable IPv6 addresses discussed in <a href="#problemstatement">Section 2</a> the stateless IPv4/IPv6 translators are provisioned with an EAMT containing one entry per IPv6-only service that are to be made available from the IPv4 Internet, for example (assuming 2001:db8:aaaa::1 and 2001:db8:bbbb::1 are assigned to load balancers or servers that provides the IPv6-only services in question): </p>
+<div id="rfc.figure.3"/>
+<div id="fig_eamt_siit_dc"/>
+<p/>
+
+<p>Example EAMT for SIIT-DC</p>
+<pre>
++---+--------------+----------------------+
+| # | IPv4 Prefix  |     IPv6 Prefix      |
++---+--------------+----------------------+
+| 1 | 192.0.2.1/32 | 2001:db8:aaaa::1/128 |
+| 2 | 192.0.2.2/32 | 2001:db8:bbbb::1/128 |
++---+--------------+----------------------+
+        </pre>
+<p class="figure">Figure 3</p>
+<h1 id="rfc.authors">
+  <a href="#rfc.authors">Author's Address</a>
+</h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Tore Anderson</span> 
+	  <span class="n hidden">
+		<span class="family-name">Anderson</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Redpill Linpro</span>
+	<span class="adr">
+	  <span>Vitaminveien 1A</span>
+
+	  <span class="vcardline">
+		<span class="locality">0485 Oslo</span>,  
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline">NORWAY</span>
+	</span>
+	<span class="vcardline">Phone: +47 959 31 212</span>
+
+<span class="vcardline">EMail: <a href="mailto:tore@redpill-linpro.com">tore@redpill-linpro.com</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>
