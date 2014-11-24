@@ -4,8 +4,9 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                       November 21, 2014
-Expires: May 25, 2015
+Updates: 6145 (if approved)                            November 24, 2014
+Intended status: Standards Track
+Expires: May 28, 2015
 
 
       Explicit Address Mappings for Stateless IP/ICMP Translation
@@ -33,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 25, 2015.
+   This Internet-Draft will expire on May 28, 2015.
 
 Copyright Notice
 
@@ -73,8 +74,9 @@ Table of Contents
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Intended status: Standards Track                       November 21, 2014
-Expires: May 25, 2015
+Updates: 6145 (if approved)                            November 24, 2014
+Intended status: Standards Track
+Expires: May 28, 2015
 
 
       Explicit Address Mappings for Stateless IP/ICMP Translation
@@ -102,7 +104,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 25, 2015.
+   This Internet-Draft will expire on May 28, 2015.
 
 Copyright Notice
 
@@ -135,11 +137,10 @@ Copyright Notice
    most use cases, is expected that both algorithms are used in concert.
    The Explicit Address Mapping algorithm is used only when a mapping
    matching the address to be translated exists.  If no matching mapping
-   exists, the [RFC6052] algorithm will be used instead.  In a typical
-   deployment, when translating a single IPv4 packet to IPv6, the
-   destination address will be translated according to an Explicit
-   Address Mapping while the source address will be translated according
-   to [RFC6052], and vice versa when translating from IPv6 to IPv4.
+   exists, the [RFC6052] algorithm will be used instead.  Thus, when
+   translating an individual IP packet, an SIIT implementation might
+   translate one of the two IP address fields according to an EAM, while
+   the other IP address field is translated according to [RFC6052].
 
 1.1.  Terminology
 
@@ -176,7 +177,7 @@ Copyright Notice
    Limited availability  The number of IPv4-translatable IPv6 addresses
       available to an operator is equal to the number of IPv4 addresses
       he assigns to the SIIT function.  IPv4 addresses are scarce, and
-      as a result a operator might not have enough IPv4-translatable
+      as a result an operator might not have enough IPv4-translatable
       IPv6 addresses to number his entire IPv6 infrastructure.
 
    Restricted format  IPv4-translatable IPv6 addresses must conform to
@@ -207,7 +208,7 @@ Copyright Notice
       duplicated.
 
    Operational complexity  The IPv4-translatable IPv6 addresses must not
-      only be assigned to the IPv6 nodes participating in SIIT, all
+      only be assigned to the IPv6 nodes participating in SIIT; all
       applications and services on those nodes must also be configured
       to use them.  For example, if the IPv6 node is a load balancer, it
       might require a separate Virtual Server definition using the
@@ -221,7 +222,7 @@ Copyright Notice
       the fail-over mechanism used for the two addresses might be
       completely different.  Service monitoring must be done for both
       the IPv4-translatable and the primary IPv6 address, and any
-      trouble-shooting procedures must be extended to involved both
+      trouble-shooting procedures must be extended to involve both
       addresses.
 
    In short, the use of IPv4-translatable IPv6 addresses in parallel
@@ -284,28 +285,30 @@ Copyright Notice
    A stateless IP/ICMP translator MUST behave as follows:
 
    o  When translating an IPv4/ICMPv4 packet to IPv6, the SIIT
-      implementation MUST first look up the IPv4 addresses to be
-      translated in the IPv4 Prefix column in the EAMT.  If a matching
-      EAM entry is found, the address MUST be translated to the entry's
-      IPv6 Prefix value.
+      implementation MUST first look up a matching prefix for the IPv4
+      addresses to be translated in the IPv4 Prefix column of the EAMT.
+      If a matching EAM entry is found, the address MUST be translated
+      to IPv6 by substituting the EAM's IPv4 Prefix value for its
+      corresponding IPv6 Prefix.
 
    o  When translating an IPv6/ICMPv6 packet to IPv4, the SIIT
-      implementation MUST first look up the IPv6 addresses to be
-      translated in the IPv6 Prefix column in the EAMT.  If a matching
-      EAM entry is found, the address MUST be translated to the entry's
-      IPv4 Prefix value.
+      implementation MUST first look up a matching prefix for the IPv6
+      addresses to be translated in the IPv6 Prefix column of the EAMT.
+      If a matching EAM entry is found, the address MUST be translated
+      to IPv4 by substituting the EAM's IPv6 Prefix value for its
+      corresponding IPv4 Prefix.
 
    o  If no matching EAM is found, the SIIT implementation MUST proceed
-      to translate the packet in accordance with [RFC6145] (and its
+      to translate the address in accordance with [RFC6145] (and its
       updates).
 
    An EAM's IPv4 Prefix and IPv6 Prefix MUST have identical suffix
    lengths.  Any suffix bits MUST be kept intact during translation.
 
    Overlapping EAMs SHOULD be considered an error, and attempts to
-   insert them into the EAM table SHOULD be blocked.  The behaviour of
-   an SIIT implementation when overlapping EAMs are present in the EAM
-   table is left undefined.
+   insert them into the EAMT SHOULD be blocked.  The behaviour of an
+   SIIT implementation when overlapping EAMs are present in the EAMT is
+   left undefined.
 
 4.  Lack of Checksum Neutrality
 
@@ -330,6 +333,9 @@ Copyright Notice
    This document was conceived due to comments made by Dave Thaler in
    the v6ops session at IETF 91 as well as e-mail discussions between
    Fred Baker and the author.
+
+   Valuable reviews, suggestions, and other feedback was given by Brian
+   E Carpenter, Alberto Leiva, and Andrew Yourtchenko.
 
 8.  References
 

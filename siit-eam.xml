@@ -58,11 +58,10 @@
       are used in concert. The Explicit Address Mapping algorithm is used only
       when a mapping matching the address to be translated exists. If no
       matching mapping exists, the <xref target="RFC6052"/> algorithm will be
-      used instead. In a typical deployment, when translating a single IPv4
-      packet to IPv6, the destination address will be translated according to
-      an Explicit Address Mapping while the source address will be translated
-      according to <xref target="RFC6052"/>, and vice versa when translating
-      from IPv6 to IPv4.
+      used instead. Thus, when translating an individual IP packet, an SIIT
+      implementation might translate one of the two IP address fields
+      according to an EAM, while the other IP address field is translated
+      according to <xref target="RFC6052"/>.
       </t>
       <section anchor="terminology" title="Terminology">
         <t>
@@ -105,8 +104,8 @@
        <t hangText="Limited availability">The number of IPv4-translatable IPv6
        addresses available to an operator is equal to the number of IPv4
        addresses he assigns to the SIIT function. IPv4 addresses are scarce,
-       and as a result a operator might not have enough IPv4-translatable IPv6
-       addresses to number his entire IPv6 infrastructure.</t>
+       and as a result an operator might not have enough IPv4-translatable
+       IPv6 addresses to number his entire IPv6 infrastructure.</t>
        <t hangText="Restricted format">IPv4-translatable IPv6 addresses must
        conform to the format specified in Section 2.2 of <xref
        target="RFC6052"/>. This format is not compatible with other common
@@ -139,7 +138,7 @@
        duplicated.</t>
        <t hangText="Operational complexity">The IPv4-translatable IPv6
        addresses must not only be assigned to the IPv6 nodes participating in
-       SIIT, all applications and services on those nodes must also be
+       SIIT; all applications and services on those nodes must also be
        configured to use them. For example, if the IPv6 node is a load
        balancer, it might require a separate Virtual Server definition using
        the IPv4-translatable IPv6 address in addition to one using the
@@ -151,7 +150,7 @@
        IPv4-translatable IPv6 address, the fail-over mechanism used for the
        two addresses might be completely different. Service monitoring must be
        done for both the IPv4-translatable and the primary IPv6 address, and
-       any trouble-shooting procedures must be extended to involved both
+       any trouble-shooting procedures must be extended to involve both
        addresses.</t>
       </list>
       </t>
@@ -228,17 +227,19 @@
         <t>
         <list style="symbols">
           <t>When translating an IPv4/ICMPv4 packet to IPv6, the SIIT
-          implementation MUST first look up the IPv4 addresses to be
-          translated in the IPv4 Prefix column in the EAMT. If a matching EAM
-          entry is found, the address MUST be translated to the entry's IPv6
-          Prefix value.</t>
+          implementation MUST first look up a matching prefix for the IPv4
+          addresses to be translated in the IPv4 Prefix column of the EAMT. If
+          a matching EAM entry is found, the address MUST be translated to
+          IPv6 by substituting the EAM's IPv4 Prefix value for its
+          corresponding IPv6 Prefix.</t>
           <t>When translating an IPv6/ICMPv6 packet to IPv4, the SIIT
-          implementation MUST first look up the IPv6 addresses to be
-          translated in the IPv6 Prefix column in the EAMT. If a matching EAM
-          entry is found, the address MUST be translated to the entry's IPv4
-          Prefix value.</t>
+          implementation MUST first look up a matching prefix for the IPv6
+          addresses to be translated in the IPv6 Prefix column of the EAMT. If
+          a matching EAM entry is found, the address MUST be translated to
+          IPv4 by substituting the EAM's IPv6 Prefix value for its
+          corresponding IPv4 Prefix.</t>
           <t>If no matching EAM is found, the SIIT implementation MUST proceed
-          to translate the packet in accordance with <xref target="RFC6145"/>
+          to translate the address in accordance with <xref target="RFC6145"/>
           (and its updates).</t>
         </list>
         </t>
@@ -248,9 +249,9 @@
         </t>
         <t>
         Overlapping EAMs SHOULD be considered an error, and attempts to insert
-        them into the EAM table SHOULD be blocked. The behaviour of an SIIT
-        implementation when overlapping EAMs are present in the EAM table is
-        left undefined.
+        them into the EAMT SHOULD be blocked. The behaviour of an SIIT
+        implementation when overlapping EAMs are present in the EAMT is left
+        undefined.
         </t>
       </section>
     </section>
