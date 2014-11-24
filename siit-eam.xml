@@ -8,7 +8,8 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="std" docName="draft-anderson-v6ops-siit-eam-00" ipr="trust200902">
+<rfc category="std" docName="draft-anderson-v6ops-siit-eam-00"
+     ipr="trust200902" updates="6145">
 
   <front>
     <title abbrev="SIIT-EAM">Explicit Address Mappings for Stateless IP/ICMP
@@ -280,6 +281,10 @@
       This document was conceived due to comments made by Dave Thaler in the
       v6ops session at IETF 91 as well as e-mail discussions between Fred
       Baker and the author.
+      </t>
+      <t>
+      Valuable reviews, suggestions, and other feedback was given by Brian E
+      Carpenter, Alberto Leiva, and Andrew Yourtchenko.
       </t>
     </section>
   </middle>
