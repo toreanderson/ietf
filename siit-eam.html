@@ -376,7 +376,7 @@
 
   <meta name="dct.creator" content="Anderson, T." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-anderson-v6ops-siit-eam-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-11-24" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-11-27" />
   <meta name="dct.abstract" content="This document extends the Stateless IP/ICMP Translation Algorithm (SIIT) with an Explicit Address Mapping algorithm. This algorithm facilitates stateless IP/ICMP translation between arbitrary (non-IPv4-translatable) IPv6 endpoints and IPv4.  " />
   <meta name="description" content="This document extends the Stateless IP/ICMP Translation Algorithm (SIIT) with an Explicit Address Mapping algorithm. This algorithm facilitates stateless IP/ICMP translation between arbitrary (non-IPv4-translatable) IPv6 endpoints and IPv4.  " />
 
@@ -397,14 +397,14 @@
 </tr>
 <tr>
   <td class="left">Updates: 6145 (if approved)</td>
-  <td class="right">November 24, 2014</td>
+  <td class="right">November 27, 2014</td>
 </tr>
 <tr>
   <td class="left">Intended status: Standards Track</td>
   <td class="right"></td>
 </tr>
 <tr>
-  <td class="left">Expires: May 28, 2015</td>
+  <td class="left">Expires: May 31, 2015</td>
   <td class="right"></td>
 </tr>
 
@@ -425,7 +425,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on May 28, 2015.</p>
+<p>This Internet-Draft will expire on May 31, 2015.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -460,22 +460,22 @@
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> Introduction</h1>
 <p id="rfc.section.1.p.1">The <a href="#RFC6145">Stateless IP/ICMP Translation Algorithm (SIIT)</a> <cite title="NONE">[RFC6145]</cite> specifies that when translating IPv4 addresses to IPv6 and vice versa, all addresses must be translated using the algorithm specified in <a href="#RFC6052">[RFC6052]</a>. This document specifies an alternative to the <a href="#RFC6052">[RFC6052]</a> algorithm, where IP addresses are translated according to a table of Explicit Address Mappings configured on the stateless translator. This removes the previous constraint that IPv6 nodes that communicate with IPv4 nodes through SIIT must be configured with IPv4-translatable IPv6 addresses.  </p>
-<p id="rfc.section.1.p.2">The Explicit Address Mapping Table does not replace <a href="#RFC6052">[RFC6052]</a>. For most use cases, is expected that both algorithms are used in concert. The Explicit Address Mapping algorithm is used only when a mapping matching the address to be translated exists. If no matching mapping exists, the <a href="#RFC6052">[RFC6052]</a> algorithm will be used instead. Thus, when translating an individual IP packet, an SIIT implementation might translate one of the two IP address fields according to an EAM, while the other IP address field is translated according to <a href="#RFC6052">[RFC6052]</a>.  </p>
+<p id="rfc.section.1.p.2">The Explicit Address Mapping Table does not replace <a href="#RFC6052">[RFC6052]</a>. For most use cases, it is expected that both algorithms are used in concert. The Explicit Address Mapping algorithm is used only when a mapping matching the address to be translated exists. If no matching mapping exists, the <a href="#RFC6052">[RFC6052]</a> algorithm will be used instead. Thus, when translating an individual IP packet, an SIIT implementation might translate one of the two IP address fields according to an EAM, while the other IP address field is translated according to <a href="#RFC6052">[RFC6052]</a>.  </p>
 <h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
 <p id="rfc.section.1.1.p.1">This document makes use of the following terms: </p>
 <p/>
 
 <dl>
   <dt>EAM</dt>
-  <dd style="margin-left: 8">An Explicit Address Mapping, as specified in <a href="#eam_def">Section 3</a>.</dd>
+  <dd style="margin-left: 8"><br/>An Explicit Address Mapping, as specified in <a href="#eam_def">Section 3</a>.</dd>
   <dt>EAMT</dt>
-  <dd style="margin-left: 8">The Explicit Address Mapping Table, as specified in <a href="#eam_def">Section 3</a>.</dd>
+  <dd style="margin-left: 8"><br/>The Explicit Address Mapping Table, as specified in <a href="#eam_def">Section 3</a>.</dd>
   <dt>SIIT</dt>
-  <dd style="margin-left: 8">The Stateless IP/ICMP Translation algorithm, as specified in <a href="#RFC6145">[RFC6145]</a>.</dd>
+  <dd style="margin-left: 8"><br/>The Stateless IP/ICMP Translation algorithm, as specified in <a href="#RFC6145">[RFC6145]</a>.</dd>
   <dt>IPv4-converted IPv6 addresses</dt>
-  <dd style="margin-left: 8">As defined in Section 1.3 of <a href="#RFC6052">[RFC6052]</a>.</dd>
+  <dd style="margin-left: 8"><br/>As defined in Section 1.3 of <a href="#RFC6052">[RFC6052]</a>.</dd>
   <dt>IPv4-translatable IPv6 addresses</dt>
-  <dd style="margin-left: 8">As defined in Section 1.3 of <a href="#RFC6052">[RFC6052]</a>.</dd>
+  <dd style="margin-left: 8"><br/>As defined in Section 1.3 of <a href="#RFC6052">[RFC6052]</a>.</dd>
 </dl>
 
 <p> </p>
@@ -485,10 +485,10 @@
 <p/>
 
 <dl>
-  <dt>Limited availability</dt>
-  <dd style="margin-left: 8">The number of IPv4-translatable IPv6 addresses available to an operator is equal to the number of IPv4 addresses he assigns to the SIIT function. IPv4 addresses are scarce, and as a result an operator might not have enough IPv4-translatable IPv6 addresses to number his entire IPv6 infrastructure.</dd>
-  <dt>Restricted format</dt>
-  <dd style="margin-left: 8">IPv4-translatable IPv6 addresses must conform to the format specified in Section 2.2 of <a href="#RFC6052">[RFC6052]</a>. This format is not compatible with other common IPv6 address formats, such as the EUI-64 based IPv6 address format used by <a href="#RFC4862">IPv6 Stateless Address Autoconfiguration</a> <cite title="NONE">[RFC4862]</cite>.</dd>
+  <dt>Limited availability:</dt>
+  <dd style="margin-left: 8"><br/>The number of IPv4-translatable IPv6 addresses available to an operator is equal to the number of IPv4 addresses he assigns to the SIIT function. IPv4 addresses are scarce, and as a result an operator might not have enough IPv4-translatable IPv6 addresses to number his entire IPv6 infrastructure.</dd>
+  <dt>Restricted format:</dt>
+  <dd style="margin-left: 8"><br/>IPv4-translatable IPv6 addresses must conform to the format specified in Section 2.2 of <a href="#RFC6052">[RFC6052]</a>. This format is not compatible with other common IPv6 address formats, such as the EUI-64 based IPv6 address format used by <a href="#RFC4862">IPv6 Stateless Address Autoconfiguration</a> <cite title="NONE">[RFC4862]</cite>.</dd>
 </dl>
 
 <p> </p>
@@ -496,10 +496,10 @@
 <p/>
 
 <dl>
-  <dt>Routing complexity</dt>
-  <dd style="margin-left: 8">The IPv4-translatable IPv6 addresses must be routed throughout the IPv6 network separately from the primary (non-IPv4-translatable) IPv6 addresses used by the nodes. It might be impossible to aggregate these routes, as two adjacent IPv4-translatable IPv6 addresses might not be assigned to two adjacent IPv6 nodes. As a result, in order to support SIIT, the IPv6 network might need to carry a large number of extraneous routes. These routes must be separately injected into the IPv6 routing topology somehow. Any intermediate devices in the IPv6 network such as a firewall might require special configuration in order to treat the IPv4-translatable IPv6 address the same as the primary IPv6 address, for example by requiring that any ACL entries involving the primary IPv6 address of a node must be duplicated.</dd>
-  <dt>Operational complexity</dt>
-  <dd style="margin-left: 8">The IPv4-translatable IPv6 addresses must not only be assigned to the IPv6 nodes participating in SIIT; all applications and services on those nodes must also be configured to use them. For example, if the IPv6 node is a load balancer, it might require a separate Virtual Server definition using the IPv4-translatable IPv6 address in addition to one using the service's primary IPv6 address. A web server might require specific configuration to listen for connections on both the IPv4-translatable and the primary IPv6 address. A High-Availability cluster service must be set up to fail over both addresses between cluster nodes, and depending on how the IPv6 network learns the location of the IPv4-translatable IPv6 address, the fail-over mechanism used for the two addresses might be completely different. Service monitoring must be done for both the IPv4-translatable and the primary IPv6 address, and any trouble-shooting procedures must be extended to involve both addresses.</dd>
+  <dt>Routing complexity:</dt>
+  <dd style="margin-left: 8"><br/>The IPv4-translatable IPv6 addresses must be routed throughout the IPv6 network separately from the primary (non-IPv4-translatable) IPv6 addresses used by the nodes.  It might be impossible to aggregate these routes, as two adjacent IPv4-translatable IPv6 addresses might not be assigned to two adjacent IPv6 nodes. As a result, in order to support SIIT, the IPv6 network might need to carry a large number of extraneous routes. These routes must be separately injected into the IPv6 routing topology somehow. Any intermediate devices in the IPv6 network such as a firewall might require special configuration in order to treat the IPv4-translatable IPv6 address the same as the primary IPv6 address, for example by requiring that any ACL entries involving the primary IPv6 address of a node must be duplicated.</dd>
+  <dt>Operational complexity:</dt>
+  <dd style="margin-left: 8"><br/>The IPv4-translatable IPv6 addresses must not only be assigned to the IPv6 nodes participating in SIIT; all applications and services on those nodes must also be configured to use them. For example, if the IPv6 node is a load balancer, it might require a separate Virtual Server definition using the IPv4-translatable IPv6 address in addition to one using the service's primary IPv6 address. A web server might require specific configuration to listen for connections on both the IPv4-translatable and the primary IPv6 address. A High-Availability cluster service must be set up to fail over both addresses between cluster nodes, and depending on how the IPv6 network learns the location of the IPv4-translatable IPv6 address, the fail-over mechanism used for the two addresses might be completely different. Service monitoring must be done for both the IPv4-translatable and the primary IPv6 address, and any trouble-shooting procedures must be extended to involve both addresses.</dd>
 </dl>
 
 <p> </p>
@@ -557,7 +557,7 @@
 <p id="rfc.section.6.p.1">This draft makes no request of the IANA. The RFC Editor may remove this section prior to publication.  </p>
 <h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#acks" id="acks">Acknowledgements</a></h1>
 <p id="rfc.section.7.p.1">This document was conceived due to comments made by Dave Thaler in the v6ops session at IETF 91 as well as e-mail discussions between Fred Baker and the author.  </p>
-<p id="rfc.section.7.p.2">Valuable reviews, suggestions, and other feedback was given by Brian E Carpenter, Alberto Leiva, and Andrew Yourtchenko.  </p>
+<p id="rfc.section.7.p.2">Valuable reviews, suggestions, and other feedback was given by Cameron Byrne, Brian E Carpenter, Alberto Leiva, and Andrew Yourtchenko.  </p>
 <h1 id="rfc.references"><a href="#rfc.references">8.</a> References</h1>
 <h1 id="rfc.references.1"><a href="#rfc.references.1">8.1.</a> Normative References</h1>
 <table>

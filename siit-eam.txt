@@ -4,9 +4,9 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Updates: 6145 (if approved)                            November 24, 2014
+Updates: 6145 (if approved)                            November 27, 2014
 Intended status: Standards Track
-Expires: May 28, 2015
+Expires: May 31, 2015
 
 
       Explicit Address Mappings for Stateless IP/ICMP Translation
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 28, 2015.
+   This Internet-Draft will expire on May 31, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Anderson                  Expires May 28, 2015                  [Page 1]
+Anderson                  Expires May 31, 2015                  [Page 1]
 
 Internet-Draft                  SIIT-EAM                   November 2014
 
@@ -76,7 +76,7 @@ Table of Contents
    Appendix A.  Use Cases  . . . . . . . . . . . . . . . . . . . . .   7
      A.1.  464XLAT . . . . . . . . . . . . . . . . . . . . . . . . .   8
      A.2.  SIIT-DC . . . . . . . . . . . . . . . . . . . . . . . . .   8
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   9
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
@@ -91,37 +91,41 @@ Table of Contents
    IPv4-translatable IPv6 addresses.
 
    The Explicit Address Mapping Table does not replace [RFC6052].  For
-   most use cases, is expected that both algorithms are used in concert.
-   The Explicit Address Mapping algorithm is used only when a mapping
-   matching the address to be translated exists.  If no matching mapping
-   exists, the [RFC6052] algorithm will be used instead.  Thus, when
-   translating an individual IP packet, an SIIT implementation might
-   translate one of the two IP address fields according to an EAM, while
-   the other IP address field is translated according to [RFC6052].
+   most use cases, it is expected that both algorithms are used in
+   concert.  The Explicit Address Mapping algorithm is used only when a
+   mapping matching the address to be translated exists.  If no matching
+   mapping exists, the [RFC6052] algorithm will be used instead.  Thus,
+   when translating an individual IP packet, an SIIT implementation
+   might translate one of the two IP address fields according to an EAM,
+   while the other IP address field is translated according to
+   [RFC6052].
 
 1.1.  Terminology
 
    This document makes use of the following terms:
 
-   EAM  An Explicit Address Mapping, as specified in Section 3.
-
-   EAMT  The Explicit Address Mapping Table, as specified in Section 3.
-
+   EAM
+      An Explicit Address Mapping, as specified in Section 3.
 
 
-Anderson                  Expires May 28, 2015                  [Page 2]
+
+Anderson                  Expires May 31, 2015                  [Page 2]
 
 Internet-Draft                  SIIT-EAM                   November 2014
 
 
-   SIIT  The Stateless IP/ICMP Translation algorithm, as specified in
+   EAMT
+      The Explicit Address Mapping Table, as specified in Section 3.
+
+   SIIT
+      The Stateless IP/ICMP Translation algorithm, as specified in
       [RFC6145].
 
-   IPv4-converted IPv6 addresses  As defined in Section 1.3 of
-      [RFC6052].
+   IPv4-converted IPv6 addresses
+      As defined in Section 1.3 of [RFC6052].
 
-   IPv4-translatable IPv6 addresses  As defined in Section 1.3 of
-      [RFC6052].
+   IPv4-translatable IPv6 addresses
+      As defined in Section 1.3 of [RFC6052].
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
@@ -138,15 +142,17 @@ Internet-Draft                  SIIT-EAM                   November 2014
    find that the use of IPv4-translatable IPv6 addresses is not desired
    or even possible.
 
-   Limited availability  The number of IPv4-translatable IPv6 addresses
-      available to an operator is equal to the number of IPv4 addresses
-      he assigns to the SIIT function.  IPv4 addresses are scarce, and
-      as a result an operator might not have enough IPv4-translatable
-      IPv6 addresses to number his entire IPv6 infrastructure.
+   Limited availability:
+      The number of IPv4-translatable IPv6 addresses available to an
+      operator is equal to the number of IPv4 addresses he assigns to
+      the SIIT function.  IPv4 addresses are scarce, and as a result an
+      operator might not have enough IPv4-translatable IPv6 addresses to
+      number his entire IPv6 infrastructure.
 
-   Restricted format  IPv4-translatable IPv6 addresses must conform to
-      the format specified in Section 2.2 of [RFC6052].  This format is
-      not compatible with other common IPv6 address formats, such as the
+   Restricted format:
+      IPv4-translatable IPv6 addresses must conform to the format
+      specified in Section 2.2 of [RFC6052].  This format is not
+      compatible with other common IPv6 address formats, such as the
       EUI-64 based IPv6 address format used by IPv6 Stateless Address
       Autoconfiguration [RFC4862].
 
@@ -156,46 +162,46 @@ Internet-Draft                  SIIT-EAM                   November 2014
    nodes that want to communicate with IPv4 nodes through SIIT only.
    However, doing so may result in a new set of undesired properties:
 
-   Routing complexity  The IPv4-translatable IPv6 addresses must be
-      routed throughout the IPv6 network separately from the primary
-      (non-IPv4-translatable) IPv6 addresses used by the nodes.  It
-      might be impossible to aggregate these routes, as two adjacent
-      IPv4-translatable IPv6 addresses might not be assigned to two
-      adjacent IPv6 nodes.  As a result, in order to support SIIT, the
 
 
 
-Anderson                  Expires May 28, 2015                  [Page 3]
+Anderson                  Expires May 31, 2015                  [Page 3]
 
 Internet-Draft                  SIIT-EAM                   November 2014
 
 
-      IPv6 network might need to carry a large number of extraneous
-      routes.  These routes must be separately injected into the IPv6
-      routing topology somehow.  Any intermediate devices in the IPv6
-      network such as a firewall might require special configuration in
-      order to treat the IPv4-translatable IPv6 address the same as the
-      primary IPv6 address, for example by requiring that any ACL
-      entries involving the primary IPv6 address of a node must be
-      duplicated.
+   Routing complexity:
+      The IPv4-translatable IPv6 addresses must be routed throughout the
+      IPv6 network separately from the primary (non-IPv4-translatable)
+      IPv6 addresses used by the nodes.  It might be impossible to
+      aggregate these routes, as two adjacent IPv4-translatable IPv6
+      addresses might not be assigned to two adjacent IPv6 nodes.  As a
+      result, in order to support SIIT, the IPv6 network might need to
+      carry a large number of extraneous routes.  These routes must be
+      separately injected into the IPv6 routing topology somehow.  Any
+      intermediate devices in the IPv6 network such as a firewall might
+      require special configuration in order to treat the
+      IPv4-translatable IPv6 address the same as the primary IPv6
+      address, for example by requiring that any ACL entries involving
+      the primary IPv6 address of a node must be duplicated.
 
-   Operational complexity  The IPv4-translatable IPv6 addresses must not
-      only be assigned to the IPv6 nodes participating in SIIT; all
-      applications and services on those nodes must also be configured
-      to use them.  For example, if the IPv6 node is a load balancer, it
-      might require a separate Virtual Server definition using the
-      IPv4-translatable IPv6 address in addition to one using the
-      service's primary IPv6 address.  A web server might require
-      specific configuration to listen for connections on both the
-      IPv4-translatable and the primary IPv6 address.  A High-
-      Availability cluster service must be set up to fail over both
-      addresses between cluster nodes, and depending on how the IPv6
-      network learns the location of the IPv4-translatable IPv6 address,
-      the fail-over mechanism used for the two addresses might be
-      completely different.  Service monitoring must be done for both
-      the IPv4-translatable and the primary IPv6 address, and any
-      trouble-shooting procedures must be extended to involve both
-      addresses.
+   Operational complexity:
+      The IPv4-translatable IPv6 addresses must not only be assigned to
+      the IPv6 nodes participating in SIIT; all applications and
+      services on those nodes must also be configured to use them.  For
+      example, if the IPv6 node is a load balancer, it might require a
+      separate Virtual Server definition using the IPv4-translatable
+      IPv6 address in addition to one using the service's primary IPv6
+      address.  A web server might require specific configuration to
+      listen for connections on both the IPv4-translatable and the
+      primary IPv6 address.  A High-Availability cluster service must be
+      set up to fail over both addresses between cluster nodes, and
+      depending on how the IPv6 network learns the location of the
+      IPv4-translatable IPv6 address, the fail-over mechanism used for
+      the two addresses might be completely different.  Service
+      monitoring must be done for both the IPv4-translatable and the
+      primary IPv6 address, and any trouble-shooting procedures must be
+      extended to involve both addresses.
 
    In short, the use of IPv4-translatable IPv6 addresses in parallel
    with regular IPv6 addresses is in many ways analogous to the use of
@@ -215,13 +221,7 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
 
 
-
-
-
-
-
-
-Anderson                  Expires May 28, 2015                  [Page 4]
+Anderson                  Expires May 31, 2015                  [Page 4]
 
 Internet-Draft                  SIIT-EAM                   November 2014
 
@@ -277,7 +277,7 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
 
 
-Anderson                  Expires May 28, 2015                  [Page 5]
+Anderson                  Expires May 31, 2015                  [Page 5]
 
 Internet-Draft                  SIIT-EAM                   November 2014
 
@@ -333,7 +333,7 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
 
 
-Anderson                  Expires May 28, 2015                  [Page 6]
+Anderson                  Expires May 31, 2015                  [Page 6]
 
 Internet-Draft                  SIIT-EAM                   November 2014
 
@@ -342,8 +342,9 @@ Internet-Draft                  SIIT-EAM                   November 2014
    the v6ops session at IETF 91 as well as e-mail discussions between
    Fred Baker and the author.
 
-   Valuable reviews, suggestions, and other feedback was given by Brian
-   E Carpenter, Alberto Leiva, and Andrew Yourtchenko.
+   Valuable reviews, suggestions, and other feedback was given by
+   Cameron Byrne, Brian E Carpenter, Alberto Leiva, and Andrew
+   Yourtchenko.
 
 8.  References
 
@@ -384,15 +385,17 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
 Appendix A.  Use Cases
 
-   The following subsections lists some use cases that leverage SIIT
-   with the EAM algorithm at the time of writing.
 
 
 
-Anderson                  Expires May 28, 2015                  [Page 7]
+
+Anderson                  Expires May 31, 2015                  [Page 7]
 
 Internet-Draft                  SIIT-EAM                   November 2014
 
+
+   The following subsections lists some use cases that leverage SIIT
+   with the EAM algorithm at the time of writing.
 
 A.1.  464XLAT
 
@@ -437,20 +440,15 @@ A.2.  SIIT-DC
 
                                  Figure 3
 
+Author's Address
 
 
 
 
-
-
-
-
-Anderson                  Expires May 28, 2015                  [Page 8]
+Anderson                  Expires May 31, 2015                  [Page 8]
 
 Internet-Draft                  SIIT-EAM                   November 2014
 
-
-Author's Address
 
    Tore Anderson
    Redpill Linpro
@@ -501,4 +499,6 @@ Author's Address
 
 
 
-Anderson                  Expires May 28, 2015                  [Page 9]
+
+
+Anderson                  Expires May 31, 2015                  [Page 9]
