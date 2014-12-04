@@ -4,13 +4,13 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Updates: 6145 (if approved)                            November 27, 2014
+Updates: 6145 (if approved)                            December 04, 2014
 Intended status: Standards Track
-Expires: May 31, 2015
+Expires: June 07, 2015
 
 
       Explicit Address Mappings for Stateless IP/ICMP Translation
-                    draft-anderson-v6ops-siit-eam-00
+                    draft-anderson-v6ops-siit-eam-01
 
 Abstract
 
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 31, 2015.
+   This Internet-Draft will expire on June 07, 2015.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Anderson                  Expires May 31, 2015                  [Page 1]
+Anderson                  Expires June 07, 2015                 [Page 1]
 
-Internet-Draft                  SIIT-EAM                   November 2014
+Internet-Draft                  SIIT-EAM                   December 2014
 
 
 Table of Contents
@@ -74,9 +74,9 @@ Table of Contents
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
      8.2.  Informative References  . . . . . . . . . . . . . . . . .   7
    Appendix A.  Use Cases  . . . . . . . . . . . . . . . . . . . . .   7
-     A.1.  464XLAT . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     A.1.  464XLAT . . . . . . . . . . . . . . . . . . . . . . . . .   7
      A.2.  SIIT-DC . . . . . . . . . . . . . . . . . . . . . . . . .   8
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Introduction
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Anderson                  Expires May 31, 2015                  [Page 2]
+Anderson                  Expires June 07, 2015                 [Page 2]
 
-Internet-Draft                  SIIT-EAM                   November 2014
+Internet-Draft                  SIIT-EAM                   December 2014
 
 
    EAMT
@@ -165,9 +165,9 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
 
 
-Anderson                  Expires May 31, 2015                  [Page 3]
+Anderson                  Expires June 07, 2015                 [Page 3]
 
-Internet-Draft                  SIIT-EAM                   November 2014
+Internet-Draft                  SIIT-EAM                   December 2014
 
 
    Routing complexity:
@@ -221,9 +221,9 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
 
 
-Anderson                  Expires May 31, 2015                  [Page 4]
+Anderson                  Expires June 07, 2015                 [Page 4]
 
-Internet-Draft                  SIIT-EAM                   November 2014
+Internet-Draft                  SIIT-EAM                   December 2014
 
 
 3.1.  Explicit Address Mapping Table
@@ -267,34 +267,32 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
                                  Figure 1
 
-   A stateless IP/ICMP translator MUST behave as follows:
+   When translating a packet between IPv4 and IPv6, an SIIT
+   implementation MUST individually translate each IP address it
+   encounters in the packet's IP headers (including any IP headers
+   contained within ICMP errors) as follows:
+
+   o  When translating an IPv4 address to IPv6, the SIIT implementation
+      MUST first look up a matching prefix for the IPv4 address to be
 
 
 
-
-
-
-
-
-
-Anderson                  Expires May 31, 2015                  [Page 5]
+Anderson                  Expires June 07, 2015                 [Page 5]
 
-Internet-Draft                  SIIT-EAM                   November 2014
+Internet-Draft                  SIIT-EAM                   December 2014
 
 
-   o  When translating an IPv4/ICMPv4 packet to IPv6, the SIIT
-      implementation MUST first look up a matching prefix for the IPv4
-      addresses to be translated in the IPv4 Prefix column of the EAMT.
-      If a matching EAM entry is found, the address MUST be translated
-      to IPv6 by substituting the EAM's IPv4 Prefix value for its
-      corresponding IPv6 Prefix.
+      translated in the IPv4 Prefix column of the EAMT.  If a matching
+      EAM entry is found, the address MUST be translated to IPv6 by
+      substituting its IPv4 Prefix value for the corresponding IPv6
+      Prefix from the EAM entry.
 
-   o  When translating an IPv6/ICMPv6 packet to IPv4, the SIIT
-      implementation MUST first look up a matching prefix for the IPv6
-      addresses to be translated in the IPv6 Prefix column of the EAMT.
-      If a matching EAM entry is found, the address MUST be translated
-      to IPv4 by substituting the EAM's IPv6 Prefix value for its
-      corresponding IPv4 Prefix.
+   o  When translating an IPv6 address to IPv4, the SIIT implementation
+      MUST first look up a matching prefix for the IPv6 address to be
+      translated in the IPv6 Prefix column of the EAMT.  If a matching
+      EAM entry is found, the address MUST be translated to IPv4 by
+      substituting its IPv6 Prefix value for the corresponding IPv4
+      Prefix from the EAM entry.
 
    o  If no matching EAM is found, the SIIT implementation MUST proceed
       to translate the address in accordance with [RFC6145] (and its
@@ -328,19 +326,17 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
 7.  Acknowledgements
 
-
-
-
-
-
-Anderson                  Expires May 31, 2015                  [Page 6]
-
-Internet-Draft                  SIIT-EAM                   November 2014
-
-
    This document was conceived due to comments made by Dave Thaler in
    the v6ops session at IETF 91 as well as e-mail discussions between
    Fred Baker and the author.
+
+
+
+
+Anderson                  Expires June 07, 2015                 [Page 6]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
 
    Valuable reviews, suggestions, and other feedback was given by
    Cameron Byrne, Brian E Carpenter, Alberto Leiva, and Andrew
@@ -385,19 +381,18 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
 Appendix A.  Use Cases
 
-
-
-
-
-Anderson                  Expires May 31, 2015                  [Page 7]
-
-Internet-Draft                  SIIT-EAM                   November 2014
-
-
    The following subsections lists some use cases that leverage SIIT
    with the EAM algorithm at the time of writing.
 
 A.1.  464XLAT
+
+
+
+
+Anderson                  Expires June 07, 2015                 [Page 7]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
 
    When the CLAT component in the 464XLAT [RFC6877] architecture does
    not have a dedicated IPv6 prefix assigned, it may instead use "one
@@ -416,6 +411,12 @@ A.1.  464XLAT
            +---+--------------+-------------------------------+
 
                                  Figure 2
+
+   In this particular use case, the EAM algorithm is used to translate
+   IPv6 destination addresses to IPv4, and conversively, IPv4 source
+   addresses to IPv6.  Other addresses are translated using [RFC6052].
+   Note that this is the exact opposite of the SIIT-DC use case
+   (Appendix A.2).
 
 A.2.  SIIT-DC
 
@@ -440,24 +441,32 @@ A.2.  SIIT-DC
 
                                  Figure 3
 
-Author's Address
 
 
 
 
-Anderson                  Expires May 31, 2015                  [Page 8]
+Anderson                  Expires June 07, 2015                 [Page 8]
 
-Internet-Draft                  SIIT-EAM                   November 2014
+Internet-Draft                  SIIT-EAM                   December 2014
 
+
+   In this particular use case, the EAM algorithm is used to translate
+   IPv4 destination addresses to IPv6, and conversively, IPv6 source
+   addresses to IPv4.  Other addresses are translated using [RFC6052].
+   Note that this is the exact opposite of the 464XLAT use case
+   (Appendix A.1).
+
+Author's Address
 
    Tore Anderson
    Redpill Linpro
    Vitaminveien 1A
-   0485 Oslo
-   NORWAY
+   Oslo  0485
+   Norway
 
    Phone: +47 959 31 212
    Email: tore@redpill-linpro.com
+   URI:   http://www.redpill-linpro.com
 
 
 
@@ -492,13 +501,4 @@ Internet-Draft                  SIIT-EAM                   November 2014
 
 
 
-
-
-
-
-
-
-
-
-
-Anderson                  Expires May 31, 2015                  [Page 9]
+Anderson                  Expires June 07, 2015                 [Page 9]

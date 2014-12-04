@@ -375,8 +375,8 @@
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Anderson, T." />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-anderson-v6ops-siit-eam-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-11-27" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-anderson-v6ops-siit-eam-01" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-12-04" />
   <meta name="dct.abstract" content="This document extends the Stateless IP/ICMP Translation Algorithm (SIIT) with an Explicit Address Mapping algorithm. This algorithm facilitates stateless IP/ICMP translation between arbitrary (non-IPv4-translatable) IPv6 endpoints and IPv4.  " />
   <meta name="description" content="This document extends the Stateless IP/ICMP Translation Algorithm (SIIT) with an Explicit Address Mapping algorithm. This algorithm facilitates stateless IP/ICMP translation between arbitrary (non-IPv4-translatable) IPv6 endpoints and IPv4.  " />
 
@@ -397,14 +397,14 @@
 </tr>
 <tr>
   <td class="left">Updates: 6145 (if approved)</td>
-  <td class="right">November 27, 2014</td>
+  <td class="right">December 04, 2014</td>
 </tr>
 <tr>
   <td class="left">Intended status: Standards Track</td>
   <td class="right"></td>
 </tr>
 <tr>
-  <td class="left">Expires: May 31, 2015</td>
+  <td class="left">Expires: June 07, 2015</td>
   <td class="right"></td>
 </tr>
 
@@ -413,7 +413,7 @@
   </table>
 
   <p class="title">Explicit Address Mappings for Stateless IP/ICMP Translation<br />
-  <span class="filename">draft-anderson-v6ops-siit-eam-00</span></p>
+  <span class="filename">draft-anderson-v6ops-siit-eam-01</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
@@ -425,7 +425,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on May 31, 2015.</p>
+<p>This Internet-Draft will expire on June 07, 2015.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -537,12 +537,12 @@
 +---+--------------+-----------------+
         </pre>
 <p class="figure">Figure 1</p>
-<p id="rfc.section.3.2.p.3">A stateless IP/ICMP translator MUST behave as follows: </p>
+<p id="rfc.section.3.2.p.3">When translating a packet between IPv4 and IPv6, an SIIT implementation MUST individually translate each IP address it encounters in the packet's IP headers (including any IP headers contained within ICMP errors) as follows: </p>
 <p/>
 
 <ul>
-  <li>When translating an IPv4/ICMPv4 packet to IPv6, the SIIT implementation MUST first look up a matching prefix for the IPv4 addresses to be translated in the IPv4 Prefix column of the EAMT. If a matching EAM entry is found, the address MUST be translated to IPv6 by substituting the EAM's IPv4 Prefix value for its corresponding IPv6 Prefix.</li>
-  <li>When translating an IPv6/ICMPv6 packet to IPv4, the SIIT implementation MUST first look up a matching prefix for the IPv6 addresses to be translated in the IPv6 Prefix column of the EAMT. If a matching EAM entry is found, the address MUST be translated to IPv4 by substituting the EAM's IPv6 Prefix value for its corresponding IPv4 Prefix.</li>
+  <li>When translating an IPv4 address to IPv6, the SIIT implementation MUST first look up a matching prefix for the IPv4 address to be translated in the IPv4 Prefix column of the EAMT. If a matching EAM entry is found, the address MUST be translated to IPv6 by substituting its IPv4 Prefix value for the corresponding IPv6 Prefix from the EAM entry.</li>
+  <li>When translating an IPv6 address to IPv4, the SIIT implementation MUST first look up a matching prefix for the IPv6 address to be translated in the IPv6 Prefix column of the EAMT. If a matching EAM entry is found, the address MUST be translated to IPv4 by substituting its IPv6 Prefix value for the corresponding IPv4 Prefix from the EAM entry.</li>
   <li>If no matching EAM is found, the SIIT implementation MUST proceed to translate the address in accordance with <a href="#RFC6145">[RFC6145]</a> (and its updates).</li>
 </ul>
 
@@ -640,6 +640,7 @@
 +---+--------------+-------------------------------+
         </pre>
 <p class="figure">Figure 2</p>
+<p id="rfc.section.A.1.p.3">In this particular use case, the EAM algorithm is used to translate IPv6 destination addresses to IPv4, and conversively, IPv4 source addresses to IPv6. Other addresses are translated using <a href="#RFC6052">[RFC6052]</a>. Note that this is the exact opposite of the <a href="#usecase_siit_dc">SIIT-DC use case</a> <cite title="NONE">[usecase_siit_dc]</cite>.  </p>
 <h1 id="rfc.appendix.A.2"><a href="#rfc.appendix.A.2">A.2.</a> <a href="#usecase_siit_dc" id="usecase_siit_dc">SIIT-DC</a></h1>
 <p><a href="#I-D.anderson-v6ops-siit-dc">SIIT-DC</a> <cite title="NONE">[I-D.anderson-v6ops-siit-dc]</cite> describes the use of SIIT to facilitate connectivity from the IPv4 Internet to services hosted in an IPv6-only data centre. In order to avoid the constraints relating to the use of IPv4-translatable IPv6 addresses discussed in <a href="#problemstatement">Section 2</a> the stateless IPv4/IPv6 translators are provisioned with an EAMT containing one entry per IPv6-only service that are to be made available from the IPv4 Internet, for example (assuming 2001:db8:aaaa::1 and 2001:db8:bbbb::1 are assigned to load balancers or servers that provides the IPv6-only services in question): </p>
 <div id="rfc.figure.3"/>
@@ -656,6 +657,7 @@
 +---+--------------+----------------------+
         </pre>
 <p class="figure">Figure 3</p>
+<p id="rfc.section.A.2.p.3">In this particular use case, the EAM algorithm is used to translate IPv4 destination addresses to IPv6, and conversively, IPv6 source addresses to IPv4. Other addresses are translated using <a href="#RFC6052">[RFC6052]</a>. Note that this is the exact opposite of the <a href="#usecase_464xlat">464XLAT use case</a> <cite title="NONE">[usecase_464xlat]</cite>.  </p>
 <h1 id="rfc.authors">
   <a href="#rfc.authors">Author's Address</a>
 </h1>
@@ -672,15 +674,17 @@
 	  <span>Vitaminveien 1A</span>
 
 	  <span class="vcardline">
-		<span class="locality">0485 Oslo</span>,  
+		<span class="locality">Oslo</span>,  
 		<span class="region"></span>
-		<span class="code"></span>
+		<span class="code">0485</span>
 	  </span>
-	  <span class="country-name vcardline">NORWAY</span>
+	  <span class="country-name vcardline">Norway</span>
 	</span>
 	<span class="vcardline">Phone: +47 959 31 212</span>
 
 <span class="vcardline">EMail: <a href="mailto:tore@redpill-linpro.com">tore@redpill-linpro.com</a></span>
+
+<span class="vcardline">URI: <a href="http://www.redpill-linpro.com">http://www.redpill-linpro.com</a></span>
 
   </address>
 </div>
