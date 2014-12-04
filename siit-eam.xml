@@ -225,22 +225,25 @@
         </figure>
         </t>
         <t>
-        A stateless IP/ICMP translator MUST behave as follows:
+        When translating a packet between IPv4 and IPv6, an SIIT
+        implementation MUST individually translate each IP address it
+        encounters in the packet's IP headers (including any IP headers
+        contained within ICMP errors) as follows:
         </t>
         <t>
         <list style="symbols">
-          <t>When translating an IPv4/ICMPv4 packet to IPv6, the SIIT
-          implementation MUST first look up a matching prefix for the IPv4
-          addresses to be translated in the IPv4 Prefix column of the EAMT. If
-          a matching EAM entry is found, the address MUST be translated to
-          IPv6 by substituting the EAM's IPv4 Prefix value for its
-          corresponding IPv6 Prefix.</t>
-          <t>When translating an IPv6/ICMPv6 packet to IPv4, the SIIT
-          implementation MUST first look up a matching prefix for the IPv6
-          addresses to be translated in the IPv6 Prefix column of the EAMT. If
-          a matching EAM entry is found, the address MUST be translated to
-          IPv4 by substituting the EAM's IPv6 Prefix value for its
-          corresponding IPv4 Prefix.</t>
+          <t>When translating an IPv4 address to IPv6, the SIIT implementation
+          MUST first look up a matching prefix for the IPv4 address to be
+          translated in the IPv4 Prefix column of the EAMT. If a matching EAM
+          entry is found, the address MUST be translated to IPv6 by
+          substituting its IPv4 Prefix value for the corresponding IPv6 Prefix
+          from the EAM entry.</t>
+          <t>When translating an IPv6 address to IPv4, the SIIT implementation
+          MUST first look up a matching prefix for the IPv6 address to be
+          translated in the IPv6 Prefix column of the EAMT. If a matching EAM
+          entry is found, the address MUST be translated to IPv4 by
+          substituting its IPv6 Prefix value for the corresponding IPv4 Prefix
+          from the EAM entry.</t>
           <t>If no matching EAM is found, the SIIT implementation MUST proceed
           to translate the address in accordance with <xref target="RFC6145"/>
           (and its updates).</t>
@@ -333,6 +336,13 @@
         ]]></artwork>
         </figure>
         </t>
+        <t>
+        In this particular use case, the EAM algorithm is used to translate
+        IPv6 destination addresses to IPv4, and conversively, IPv4 source
+        addresses to IPv6. Other addresses are translated using <xref
+        target="RFC6052"/>. Note that this is the exact opposite of the <xref
+        target="usecase_siit_dc">SIIT-DC use case</xref>.
+        </t>
       </section>
       <section anchor="usecase_siit_dc" title="SIIT-DC">
         <t>
@@ -359,6 +369,13 @@
 +---+--------------+----------------------+
         ]]></artwork>
         </figure>
+        </t>
+        <t>
+        In this particular use case, the EAM algorithm is used to translate
+        IPv4 destination addresses to IPv6, and conversively, IPv6 source
+        addresses to IPv4. Other addresses are translated using <xref
+        target="RFC6052"/>. Note that this is the exact opposite of the <xref
+        target="usecase_464xlat">464XLAT use case</xref>.
         </t>
       </section>
     </section>
