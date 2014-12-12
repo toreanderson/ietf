@@ -8,7 +8,7 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="std" docName="draft-anderson-v6ops-siit-eam-01"
+<rfc category="std" docName="draft-anderson-v6ops-siit-eam-02"
      ipr="trust200902" updates="6145">
 
   <front>
@@ -19,8 +19,11 @@
       <address>
         <postal>
           <street>Vitaminveien 1A</street>
-          <code>0485</code>
-          <city>Oslo</city>
+          <!-- Embedding the postal code directly in the <city> element
+               instead of using <code> in necessary to get correct Norwegian
+               syntax. For more information, see:
+               http://trac.tools.ietf.org/tools/xml2rfc/trac/ticket/280 -->
+          <city>0485 Oslo</city>
           <country>Norway</country>
         </postal>
         <phone>+47 959 31 212</phone>
@@ -34,9 +37,9 @@
     <abstract>
       <t>
       This document extends the Stateless IP/ICMP Translation Algorithm (SIIT)
-      with an Explicit Address Mapping algorithm. This algorithm facilitates
-      stateless IP/ICMP translation between arbitrary (non-IPv4-translatable)
-      IPv6 endpoints and IPv4.
+      with an Explicit Address Mapping (EAM) algorithm, and formally updates
+      RFC 6145. The EAM algorithm facilitates stateless IP/ICMP translation
+      between arbitrary (non-IPv4-translatable) IPv6 endpoints and IPv4.
       </t>
     </abstract>
   </front>
@@ -72,9 +75,9 @@
         <t>
         <list style="hanging">
          <t hangText="EAM"><vspace/>An Explicit Address Mapping, as specified
-         in <xref target="eam_def"/>.</t>
+         in <xref target="eam_spec"/>.</t>
          <t hangText="EAMT"><vspace/>The Explicit Address Mapping Table, as
-         specified in <xref target="eam_def"/>.</t>
+         specified in <xref target="eamt_spec"/>.</t>
          <t hangText="SIIT"><vspace/>The Stateless IP/ICMP Translation
          algorithm, as specified in <xref target="RFC6145"/>.</t>
          <t hangText="IPv4-converted IPv6 addresses"><vspace/>As defined in
@@ -175,7 +178,7 @@
       This normative section defines the EAM algorithm. SIIT implementations
       are REQUIRED to support the specifications herein.
       </t>
-      <section anchor="eam_tbl" title="Explicit Address Mapping Table">
+      <section anchor="eamt_spec" title="Explicit Address Mapping Table">
         <t>
         An SIIT implementation MUST include an Explicit Address Mapping Table
         (EAMT). By default, the EAMT SHOULD be empty. The operator MUST be
@@ -203,55 +206,32 @@
         convenience to the reader.
         </t>
       </section>
-      <section anchor="eam_types" title="Explicit Address Mapping Specification">
+      <section anchor="eam_spec" title="Explicit Address Mapping Specification">
         <t>
         An EAM consists of an IPv4 Prefix and an IPv6 Prefix. The prefix
         length MAY be omitted, in which case the implementation MUST assume it
-        to be 32 for IPv4 and 128 for IPv6.
+        to be 32 for IPv4 and 128 for IPv6. <xref target="fig_example_eamt"/>
+        illustrates an EAMT containing examples of valid EAMs.
         </t>
         <t>
-        <figure anchor="fig_eam_table" align="center">
-        <preamble>Example Explicit Address Mapping Table</preamble>
-        <artwork align="center"><![CDATA[
-+---+--------------+-----------------+
-| # | IPv4 Prefix  |   IPv6 Prefix   |
-+---+--------------+-----------------+
-| 1 | 192.0.2.1    | 2001:db8::      |
-| 2 | 192.0.2.2/32 | 2001:db8::2/128 |
-| 3 | 192.0.2.3    | 2001:db8::3     |
-| 4 | 192.0.2.4/30 | 2001:db8::8/126 |
-+---+--------------+-----------------+
-        ]]></artwork>
+        <figure anchor="fig_example_eamt" align="center">
+          <preamble>Example EAMT</preamble>
+          <artwork align="center"><![CDATA[
++---+----------------+----------------------+
+| # | IPv4 Prefix    |     IPv6 Prefix      |
++---+----------------+----------------------+
+| 1 | 192.0.2.1      | 2001:db8:aaaa::      |
+| 2 | 192.0.2.2/32   | 2001:db8:bbbb::b/128 |
+| 3 | 192.0.2.16/28  | 2001:db8:cccc::/124  |
+| 4 | 192.0.2.128/26 | 2001:db8:dddd::/64   |
+| 5 | 192.0.2.192/31 | 64:ff9b::/127        |
++---+----------------+----------------------+
+          ]]></artwork>
         </figure>
         </t>
         <t>
-        When translating a packet between IPv4 and IPv6, an SIIT
-        implementation MUST individually translate each IP address it
-        encounters in the packet's IP headers (including any IP headers
-        contained within ICMP errors) as follows:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>When translating an IPv4 address to IPv6, the SIIT implementation
-          MUST first look up a matching prefix for the IPv4 address to be
-          translated in the IPv4 Prefix column of the EAMT. If a matching EAM
-          entry is found, the address MUST be translated to IPv6 by
-          substituting its IPv4 Prefix value for the corresponding IPv6 Prefix
-          from the EAM entry.</t>
-          <t>When translating an IPv6 address to IPv4, the SIIT implementation
-          MUST first look up a matching prefix for the IPv6 address to be
-          translated in the IPv6 Prefix column of the EAMT. If a matching EAM
-          entry is found, the address MUST be translated to IPv4 by
-          substituting its IPv6 Prefix value for the corresponding IPv4 Prefix
-          from the EAM entry.</t>
-          <t>If no matching EAM is found, the SIIT implementation MUST proceed
-          to translate the address in accordance with <xref target="RFC6145"/>
-          (and its updates).</t>
-        </list>
-        </t>
-        <t>
-        An EAM's IPv4 Prefix and IPv6 Prefix MUST have identical suffix
-        lengths. Any suffix bits MUST be kept intact during translation. 
+        An EAM's IPv4 Prefix value MUST have an identical or smaller number of
+        suffix bits than its corresponding IPv6 Prefix value.
         </t>
         <t>
         Overlapping EAMs SHOULD be considered an error, and attempts to insert
@@ -259,6 +239,75 @@
         implementation when overlapping EAMs are present in the EAMT is left
         undefined.
         </t>
+        <t>
+        When translating a packet between IPv4 and IPv6, an SIIT
+        implementation MUST individually translate each IP address it
+        encounters in the packet's IP headers (including any IP headers
+        contained within ICMP errors) according to <xref target="eam_xlat"/>.
+        </t>
+      </section>
+      <section anchor="eam_xlat" title="IP Address Translation Procedure">
+        <t>
+        This section describes step-by-step how an SIIT implementation
+        translates addresses between IPv4 and IPv6. Only the outcome of the
+        algorithm described should be considered normative, that is, an SIIT
+        implementation MAY implement the exact procedure differently than what
+        is described here, but the outcome of the algorithm MUST be the same.
+        </t>
+        <t>
+        For concrete examples of IP addresses translations, refer to <xref
+        target="eam_examples"/>.
+        </t>
+        <section anchor="eam_xlat_v4v6"
+                 title="Address Translation Steps: IPv4 to IPv6">
+          <t>
+          <list style="numbers">
+            <t>The EAMT is searched for an EAM entry containing an IPv4 Prefix
+            identical to that of the IPv4 address being translated. The IPv4
+            Prefix and IPv6 Prefix values of the EAM entry found is from now
+            on referred to as EAM4 and EAM6, respectively.</t>
+            <t>If no matching EAM entry is found, the EAM algorithm is
+            aborted. The SIIT implementation MUST proceed to translate the
+            address in accordance with <xref target="RFC6145"/> (and its
+            updates).</t>
+            <t>The prefix bits of EAM4 are removed from IPv4 address being
+            translated. The remaining suffix bits from the IPv4 address being
+            translated are stored in a temporary buffer.</t>
+            <t>The prefix bits of EAM6 are prepended to the temporary
+            buffer.</t>
+            <t>If the temporary buffer at this point does not contain a
+            128-bit value, it is padded with trailing zeroes so that it
+            reaches a length of 128 bits.</t>
+            <t>The contents of the temporary buffer is the translated IPv6
+            address.</t>
+          </list>
+          </t>
+        </section>
+        <section anchor="eam_xlat_v6v4"
+                 title="Address Translation Steps: IPv6 to IPv4">
+          <t>
+          <list style="numbers">
+            <t>The EAMT is searched for an EAM entry containing an IPv6 Prefix
+            identical to that of the IPv6 address being translated. The IPv4
+            Prefix and IPv6 Prefix values of the EAM entry found is from now
+            on referred to as EAM4 and EAM6, respectively.</t>
+            <t>If no matching EAM entry is found, the EAM algorithm is
+            aborted. The SIIT implementation MUST proceed to translate the
+            address in accordance with <xref target="RFC6145"/> (and its
+            updates).</t>
+            <t>The prefix bits of EAM6 are removed from IPv6 address being
+            translated. The remaining suffix bits from the IPv6 address being
+            translated are stored in a temporary buffer.</t>
+            <t>The prefix bits of EAM4 are prepended to the temporary
+            buffer.</t>
+            <t>If the temporary buffer at this point does not contain a 32-bit
+            value, any trailing bits are discarded so that the buffer is
+            reduced to a length of 32 bits.</t>
+            <t>The contents of the temporary buffer is the translated IPv4
+            address.</t>
+          </list>
+          </t>
+        </section>
       </section>
     </section>
     <section title="Lack of Checksum Neutrality">
@@ -305,14 +354,15 @@
       <?rfc include="reference.RFC.4213"?>
       <?rfc include="reference.RFC.4862"?>
       <?rfc include="reference.RFC.6144"?>
+      <?rfc include="reference.RFC.6219"?>
       <?rfc include="reference.RFC.6877"?>
       <?rfc include="reference.RFC.7335"?>
       <?rfc include="reference.I-D.anderson-v6ops-siit-dc"?>
     </references>
     <section anchor="usecases" title="Use Cases">
       <t>
-      The following subsections lists some use cases that leverage SIIT with
-      the EAM algorithm at the time of writing.
+      The following subsections lists some use cases that at the time of
+      writing leverage SIIT with the EAM algorithm.
       </t>
       <section anchor="usecase_464xlat" title="464XLAT">
         <t>
@@ -326,22 +376,51 @@
         </t>
         <t>
         <figure anchor="fig_eamt_464xlat" align="center">
-        <preamble>Example EAMT for an 464XLAT CLAT</preamble>
-        <artwork align="center"><![CDATA[
+          <preamble>Example EAMT for an 464XLAT CLAT</preamble>
+          <artwork align="center"><![CDATA[
 +---+--------------+-------------------------------+
 | # | IPv4 Prefix  |          IPv6 Prefix          |
 +---+--------------+-------------------------------+
 | 1 | 192.0.0.1/32 | CLAT_claimed_IPv6_address/128 |
 +---+--------------+-------------------------------+
-        ]]></artwork>
+          ]]></artwork>
         </figure>
         </t>
         <t>
         In this particular use case, the EAM algorithm is used to translate
-        IPv6 destination addresses to IPv4, and conversively, IPv4 source
+        IPv6 destination addresses to IPv4, and conversely, IPv4 source
         addresses to IPv6. Other addresses are translated using <xref
         target="RFC6052"/>. Note that this is the exact opposite of the <xref
         target="usecase_siit_dc">SIIT-DC use case</xref>.
+        </t>
+      </section>
+      <section anchor="usecase_ivi" title="IVI">
+        <t>
+        <xref target="RFC6219">IVI</xref> describes a stateless translation
+        model that embeds IPv4 addresses in a 40-bit translation prefix where
+        bits 33-40 are required to be 1. The embedded IPv4 address is located
+        in bits 41-72 of the IPv6 address. Bits 73-128 are required to be 0.
+        </t>
+        <t>
+        The location of the eight least significant IPv4 address bits makes
+        the IVI address mapping differ from <xref target="RFC6052"/>.
+        </t>
+        <t>
+        <figure anchor="fig_eamt_ivi" align="center">
+          <preamble>Example EAMT for IVI</preamble>
+          <artwork align="center"><![CDATA[
++---+-------------+--------------------+
+| # | IPv4 Prefix |    IPv6 Prefix     |
++---+-------------+--------------------+
+| 1 | 0.0.0.0/0   | 2001:db8:ff00::/40 |
++---+-------------+--------------------+
+          ]]></artwork>
+        </figure>
+        </t>
+        <t>
+        In this particular use case, all addresses are translated according to
+        the EAM algorithm. In other words, <xref target="RFC6052"/> mapping is
+        not used at all.
         </t>
       </section>
       <section anchor="usecase_siit_dc" title="SIIT-DC">
@@ -359,28 +438,63 @@
         </t>
         <t>
         <figure anchor="fig_eamt_siit_dc" align="center">
-        <preamble>Example EAMT for SIIT-DC</preamble>
-        <artwork align="center"><![CDATA[
+          <preamble>Example EAMT for SIIT-DC</preamble>
+          <artwork align="center"><![CDATA[
 +---+--------------+----------------------+
 | # | IPv4 Prefix  |     IPv6 Prefix      |
 +---+--------------+----------------------+
 | 1 | 192.0.2.1/32 | 2001:db8:aaaa::1/128 |
 | 2 | 192.0.2.2/32 | 2001:db8:bbbb::1/128 |
 +---+--------------+----------------------+
-        ]]></artwork>
+          ]]></artwork>
         </figure>
         </t>
         <t>
         In this particular use case, the EAM algorithm is used to translate
-        IPv4 destination addresses to IPv6, and conversively, IPv6 source
+        IPv4 destination addresses to IPv6, and conversely, IPv6 source
         addresses to IPv4. Other addresses are translated using <xref
         target="RFC6052"/>. Note that this is the exact opposite of the <xref
         target="usecase_464xlat">464XLAT use case</xref>.
         </t>
       </section>
     </section>
+    <section anchor="eam_examples" title="Example IP Address Translations">
+      <t>
+      <xref target="fig_example_eam_xlat"/> demonstrates how a set of example
+      IP addresses are translated given the example EAMT in <xref
+      target="fig_example_eamt"/>.  Implementors may use the examples given to
+      develop test cases to validate correct operation. Note that the address
+      translations are bidirectional, so a single row in the table describes
+      two address translations: IPv4 to IPv6, and IPv6 to IPv4.
+      </t>
+      <t>
+      It is also assumed that the <xref target="RFC6052"/> translation prefix
+      is configured to be 64:ff9b::/96.
+      </t>
+      <t>
+      <figure anchor="fig_example_eam_xlat" align="center">
+        <preamble>Example IP Address Translations</preamble>
+        <artwork align="center"><![CDATA[
++--------------+----------------------+-----------------------+
+| IPv4 Address |     IPv6 Address     |        Comment        |
++--------------+----------------------+-----------------------+
+| 192.0.2.1    | 2001:db8:aaaa::      | According to EAM #1   |
+| 192.0.2.2    | 2001:db8:bbbb::b     | According to EAM #2   |
+| 192.0.2.16   | 2001:db8:cccc::      | According to EAM #3   |
+| 192.0.2.24   | 2001:db8:cccc::8     | According to EAM #3   |
+| 192.0.2.31   | 2001:db8:cccc::f     | According to EAM #3   |
+| 192.0.2.128  | 2001:db8:dddd::      | According to EAM #4   |
+| 192.0.2.152  | 2001:db8:dddd:0:18:: | According to EAM #4   |
+| 192.0.2.183  | 2001:db8:dddd:0:37:: | According to EAM #4   |
+| 192.0.2.191  | 2001:db8:dddd:0:3f:: | According to EAM #4   |
+| 192.0.2.193  | 64:ff9b::1           | According to EAM #5   |
+| 192.0.2.200  | 64:ff9b::c000:2c8    | According to RFC 6052 |
++--------------+----------------------+-----------------------+
+        ]]></artwork>
+      </figure>
+      </t>
+    </section>
   </back>
-
 </rfc>
 <!-- vim: syntax=xml tw=78 ai fo=2 et:
 -->
