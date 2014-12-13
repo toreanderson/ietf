@@ -4,20 +4,21 @@
 
 IPv6 Operations                                              T. Anderson
 Internet-Draft                                            Redpill Linpro
-Updates: 6145 (if approved)                            December 04, 2014
+Updates: 6145 (if approved)                            December 13, 2014
 Intended status: Standards Track
-Expires: June 07, 2015
+Expires: June 16, 2015
 
 
       Explicit Address Mappings for Stateless IP/ICMP Translation
-                    draft-anderson-v6ops-siit-eam-01
+                    draft-anderson-v6ops-siit-eam-02
 
 Abstract
 
    This document extends the Stateless IP/ICMP Translation Algorithm
-   (SIIT) with an Explicit Address Mapping algorithm.  This algorithm
-   facilitates stateless IP/ICMP translation between arbitrary (non-
-   IPv4-translatable) IPv6 endpoints and IPv4.
+   (SIIT) with an Explicit Address Mapping (EAM) algorithm, and formally
+   updates RFC 6145.  The EAM algorithm facilitates stateless IP/ICMP
+   translation between arbitrary (non-IPv4-translatable) IPv6 endpoints
+   and IPv4.
 
 Status of This Memo
 
@@ -34,12 +35,28 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 07, 2015.
+   This Internet-Draft will expire on June 16, 2015.
 
 Copyright Notice
 
    Copyright (c) 2014 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
+
+
+
+
+
+
+
+
+
+
+
+
+Anderson                  Expires June 16, 2015                 [Page 1]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
@@ -51,32 +68,30 @@ Copyright Notice
    the Trust Legal Provisions and are provided without warranty as
    described in the Simplified BSD License.
 
-
-
-Anderson                  Expires June 07, 2015                 [Page 1]
-
-Internet-Draft                  SIIT-EAM                   December 2014
-
-
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-     1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Problem Statement . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Explicit Address Mapping Algorithm  . . . . . . . . . . . . .   4
+   3.  Explicit Address Mapping Algorithm  . . . . . . . . . . . . .   5
      3.1.  Explicit Address Mapping Table  . . . . . . . . . . . . .   5
-     3.2.  Explicit Address Mapping Specification  . . . . . . . . .   5
-   4.  Lack of Checksum Neutrality . . . . . . . . . . . . . . . . .   6
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .   7
-   Appendix A.  Use Cases  . . . . . . . . . . . . . . . . . . . . .   7
-     A.1.  464XLAT . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     A.2.  SIIT-DC . . . . . . . . . . . . . . . . . . . . . . . . .   8
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   9
+     3.2.  Explicit Address Mapping Specification  . . . . . . . . .   6
+     3.3.  IP Address Translation Procedure  . . . . . . . . . . . .   6
+       3.3.1.  Address Translation Steps: IPv4 to IPv6 . . . . . . .   7
+       3.3.2.  Address Translation Steps: IPv6 to IPv4 . . . . . . .   7
+   4.  Lack of Checksum Neutrality . . . . . . . . . . . . . . . . .   8
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   8
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .   9
+   Appendix A.  Use Cases  . . . . . . . . . . . . . . . . . . . . .   9
+     A.1.  464XLAT . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     A.2.  IVI . . . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     A.3.  SIIT-DC . . . . . . . . . . . . . . . . . . . . . . . . .  10
+   Appendix B.  Example IP Address Translations  . . . . . . . . . .  11
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  12
 
 1.  Introduction
 
@@ -89,6 +104,15 @@ Table of Contents
    translator.  This removes the previous constraint that IPv6 nodes
    that communicate with IPv4 nodes through SIIT must be configured with
    IPv4-translatable IPv6 addresses.
+
+
+
+
+
+Anderson                  Expires June 16, 2015                 [Page 2]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
 
    The Explicit Address Mapping Table does not replace [RFC6052].  For
    most use cases, it is expected that both algorithms are used in
@@ -105,17 +129,10 @@ Table of Contents
    This document makes use of the following terms:
 
    EAM
-      An Explicit Address Mapping, as specified in Section 3.
-
-
-
-Anderson                  Expires June 07, 2015                 [Page 2]
-
-Internet-Draft                  SIIT-EAM                   December 2014
-
+      An Explicit Address Mapping, as specified in Section 3.2.
 
    EAMT
-      The Explicit Address Mapping Table, as specified in Section 3.
+      The Explicit Address Mapping Table, as specified in Section 3.1.
 
    SIIT
       The Stateless IP/ICMP Translation algorithm, as specified in
@@ -145,6 +162,14 @@ Internet-Draft                  SIIT-EAM                   December 2014
    Limited availability:
       The number of IPv4-translatable IPv6 addresses available to an
       operator is equal to the number of IPv4 addresses he assigns to
+
+
+
+Anderson                  Expires June 16, 2015                 [Page 3]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
+
       the SIIT function.  IPv4 addresses are scarce, and as a result an
       operator might not have enough IPv4-translatable IPv6 addresses to
       number his entire IPv6 infrastructure.
@@ -162,14 +187,6 @@ Internet-Draft                  SIIT-EAM                   December 2014
    nodes that want to communicate with IPv4 nodes through SIIT only.
    However, doing so may result in a new set of undesired properties:
 
-
-
-
-Anderson                  Expires June 07, 2015                 [Page 3]
-
-Internet-Draft                  SIIT-EAM                   December 2014
-
-
    Routing complexity:
       The IPv4-translatable IPv6 addresses must be routed throughout the
       IPv6 network separately from the primary (non-IPv4-translatable)
@@ -186,6 +203,29 @@ Internet-Draft                  SIIT-EAM                   December 2014
       the primary IPv6 address of a node must be duplicated.
 
    Operational complexity:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Anderson                  Expires June 16, 2015                 [Page 4]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
+
       The IPv4-translatable IPv6 addresses must not only be assigned to
       the IPv6 nodes participating in SIIT; all applications and
       services on those nodes must also be configured to use them.  For
@@ -219,13 +259,6 @@ Internet-Draft                  SIIT-EAM                   December 2014
    This normative section defines the EAM algorithm.  SIIT
    implementations are REQUIRED to support the specifications herein.
 
-
-
-Anderson                  Expires June 07, 2015                 [Page 4]
-
-Internet-Draft                  SIIT-EAM                   December 2014
-
-
 3.1.  Explicit Address Mapping Table
 
    An SIIT implementation MUST include an Explicit Address Mapping Table
@@ -240,6 +273,15 @@ Internet-Draft                  SIIT-EAM                   December 2014
 
       IPv6 Prefix
 
+
+
+
+
+Anderson                  Expires June 16, 2015                 [Page 5]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
+
    SIIT implementations MAY include other columns in order to support
    proprietary extensions to the EAM algorithm.
 
@@ -252,59 +294,112 @@ Internet-Draft                  SIIT-EAM                   December 2014
 
    An EAM consists of an IPv4 Prefix and an IPv6 Prefix.  The prefix
    length MAY be omitted, in which case the implementation MUST assume
-   it to be 32 for IPv4 and 128 for IPv6.
+   it to be 32 for IPv4 and 128 for IPv6.  Figure 1 illustrates an EAMT
+   containing examples of valid EAMs.
 
-                  Example Explicit Address Mapping Table
+                               Example EAMT
 
-                  +---+--------------+-----------------+
-                  | # | IPv4 Prefix  |   IPv6 Prefix   |
-                  +---+--------------+-----------------+
-                  | 1 | 192.0.2.1    | 2001:db8::      |
-                  | 2 | 192.0.2.2/32 | 2001:db8::2/128 |
-                  | 3 | 192.0.2.3    | 2001:db8::3     |
-                  | 4 | 192.0.2.4/30 | 2001:db8::8/126 |
-                  +---+--------------+-----------------+
+               +---+----------------+----------------------+
+               | # | IPv4 Prefix    |     IPv6 Prefix      |
+               +---+----------------+----------------------+
+               | 1 | 192.0.2.1      | 2001:db8:aaaa::      |
+               | 2 | 192.0.2.2/32   | 2001:db8:bbbb::b/128 |
+               | 3 | 192.0.2.16/28  | 2001:db8:cccc::/124  |
+               | 4 | 192.0.2.128/26 | 2001:db8:dddd::/64   |
+               | 5 | 192.0.2.192/31 | 64:ff9b::/127        |
+               +---+----------------+----------------------+
 
                                  Figure 1
 
-   When translating a packet between IPv4 and IPv6, an SIIT
-   implementation MUST individually translate each IP address it
-   encounters in the packet's IP headers (including any IP headers
-   contained within ICMP errors) as follows:
-
-   o  When translating an IPv4 address to IPv6, the SIIT implementation
-      MUST first look up a matching prefix for the IPv4 address to be
-
-
-
-Anderson                  Expires June 07, 2015                 [Page 5]
-
-Internet-Draft                  SIIT-EAM                   December 2014
-
-
-      translated in the IPv4 Prefix column of the EAMT.  If a matching
-      EAM entry is found, the address MUST be translated to IPv6 by
-      substituting its IPv4 Prefix value for the corresponding IPv6
-      Prefix from the EAM entry.
-
-   o  When translating an IPv6 address to IPv4, the SIIT implementation
-      MUST first look up a matching prefix for the IPv6 address to be
-      translated in the IPv6 Prefix column of the EAMT.  If a matching
-      EAM entry is found, the address MUST be translated to IPv4 by
-      substituting its IPv6 Prefix value for the corresponding IPv4
-      Prefix from the EAM entry.
-
-   o  If no matching EAM is found, the SIIT implementation MUST proceed
-      to translate the address in accordance with [RFC6145] (and its
-      updates).
-
-   An EAM's IPv4 Prefix and IPv6 Prefix MUST have identical suffix
-   lengths.  Any suffix bits MUST be kept intact during translation.
+   An EAM's IPv4 Prefix value MUST have an identical or smaller number
+   of suffix bits than its corresponding IPv6 Prefix value.
 
    Overlapping EAMs SHOULD be considered an error, and attempts to
    insert them into the EAMT SHOULD be blocked.  The behaviour of an
    SIIT implementation when overlapping EAMs are present in the EAMT is
    left undefined.
+
+   When translating a packet between IPv4 and IPv6, an SIIT
+   implementation MUST individually translate each IP address it
+   encounters in the packet's IP headers (including any IP headers
+   contained within ICMP errors) according to Section 3.3.
+
+3.3.  IP Address Translation Procedure
+
+   This section describes step-by-step how an SIIT implementation
+   translates addresses between IPv4 and IPv6.  Only the outcome of the
+   algorithm described should be considered normative, that is, an SIIT
+   implementation MAY implement the exact procedure differently than
+
+
+
+Anderson                  Expires June 16, 2015                 [Page 6]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
+
+   what is described here, but the outcome of the algorithm MUST be the
+   same.
+
+   For concrete examples of IP addresses translations, refer to
+   Appendix B.
+
+3.3.1.  Address Translation Steps: IPv4 to IPv6
+
+   1.  The EAMT is searched for an EAM entry containing an IPv4 Prefix
+       identical to that of the IPv4 address being translated.  The IPv4
+       Prefix and IPv6 Prefix values of the EAM entry found is from now
+       on referred to as EAM4 and EAM6, respectively.
+
+   2.  If no matching EAM entry is found, the EAM algorithm is aborted.
+       The SIIT implementation MUST proceed to translate the address in
+       accordance with [RFC6145] (and its updates).
+
+   3.  The prefix bits of EAM4 are removed from IPv4 address being
+       translated.  The remaining suffix bits from the IPv4 address
+       being translated are stored in a temporary buffer.
+
+   4.  The prefix bits of EAM6 are prepended to the temporary buffer.
+
+   5.  If the temporary buffer at this point does not contain a 128-bit
+       value, it is padded with trailing zeroes so that it reaches a
+       length of 128 bits.
+
+   6.  The contents of the temporary buffer is the translated IPv6
+       address.
+
+3.3.2.  Address Translation Steps: IPv6 to IPv4
+
+   1.  The EAMT is searched for an EAM entry containing an IPv6 Prefix
+       identical to that of the IPv6 address being translated.  The IPv4
+       Prefix and IPv6 Prefix values of the EAM entry found is from now
+       on referred to as EAM4 and EAM6, respectively.
+
+   2.  If no matching EAM entry is found, the EAM algorithm is aborted.
+       The SIIT implementation MUST proceed to translate the address in
+       accordance with [RFC6145] (and its updates).
+
+   3.  The prefix bits of EAM6 are removed from IPv6 address being
+       translated.  The remaining suffix bits from the IPv6 address
+       being translated are stored in a temporary buffer.
+
+   4.  The prefix bits of EAM4 are prepended to the temporary buffer.
+
+
+
+
+
+Anderson                  Expires June 16, 2015                 [Page 7]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
+
+   5.  If the temporary buffer at this point does not contain a 32-bit
+       value, any trailing bits are discarded so that the buffer is
+       reduced to a length of 32 bits.
+
+   6.  The contents of the temporary buffer is the translated IPv4
+       address.
 
 4.  Lack of Checksum Neutrality
 
@@ -330,14 +425,6 @@ Internet-Draft                  SIIT-EAM                   December 2014
    the v6ops session at IETF 91 as well as e-mail discussions between
    Fred Baker and the author.
 
-
-
-
-Anderson                  Expires June 07, 2015                 [Page 6]
-
-Internet-Draft                  SIIT-EAM                   December 2014
-
-
    Valuable reviews, suggestions, and other feedback was given by
    Cameron Byrne, Brian E Carpenter, Alberto Leiva, and Andrew
    Yourtchenko.
@@ -356,6 +443,13 @@ Internet-Draft                  SIIT-EAM                   December 2014
    [RFC6145]  Li, X., Bao, C., and F. Baker, "IP/ICMP Translation
               Algorithm", RFC 6145, April 2011.
 
+
+
+Anderson                  Expires June 16, 2015                 [Page 8]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
+
 8.2.  Informative References
 
    [I-D.anderson-v6ops-siit-dc]
@@ -372,6 +466,11 @@ Internet-Draft                  SIIT-EAM                   December 2014
    [RFC6144]  Baker, F., Li, X., Bao, C., and K. Yin, "Framework for
               IPv4/IPv6 Translation", RFC 6144, April 2011.
 
+   [RFC6219]  Li, X., Bao, C., Chen, M., Zhang, H., and J. Wu, "The
+              China Education and Research Network (CERNET) IVI
+              Translation Design and Deployment for the IPv4/IPv6
+              Coexistence and Transition", RFC 6219, May 2011.
+
    [RFC6877]  Mawatari, M., Kawashima, M., and C. Byrne, "464XLAT:
               Combination of Stateful and Stateless Translation", RFC
               6877, April 2013.
@@ -381,18 +480,10 @@ Internet-Draft                  SIIT-EAM                   December 2014
 
 Appendix A.  Use Cases
 
-   The following subsections lists some use cases that leverage SIIT
-   with the EAM algorithm at the time of writing.
+   The following subsections lists some use cases that at the time of
+   writing leverage SIIT with the EAM algorithm.
 
 A.1.  464XLAT
-
-
-
-
-Anderson                  Expires June 07, 2015                 [Page 7]
-
-Internet-Draft                  SIIT-EAM                   December 2014
-
 
    When the CLAT component in the 464XLAT [RFC6877] architecture does
    not have a dedicated IPv6 prefix assigned, it may instead use "one
@@ -404,6 +495,17 @@ Internet-Draft                  SIIT-EAM                   December 2014
 
                      Example EAMT for an 464XLAT CLAT
 
+
+
+
+
+
+
+Anderson                  Expires June 16, 2015                 [Page 9]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
+
            +---+--------------+-------------------------------+
            | # | IPv4 Prefix  |          IPv6 Prefix          |
            +---+--------------+-------------------------------+
@@ -413,12 +515,52 @@ Internet-Draft                  SIIT-EAM                   December 2014
                                  Figure 2
 
    In this particular use case, the EAM algorithm is used to translate
-   IPv6 destination addresses to IPv4, and conversively, IPv4 source
+   IPv6 destination addresses to IPv4, and conversely, IPv4 source
    addresses to IPv6.  Other addresses are translated using [RFC6052].
    Note that this is the exact opposite of the SIIT-DC use case
-   (Appendix A.2).
+   (Appendix A.3).
 
-A.2.  SIIT-DC
+A.2.  IVI
+
+   IVI [RFC6219] describes a stateless translation model that embeds
+   IPv4 addresses in a 40-bit translation prefix where bits 33-40 are
+   required to be 1.  The embedded IPv4 address is located in bits 41-72
+   of the IPv6 address.  Bits 73-128 are required to be 0.
+
+   The location of the eight least significant IPv4 address bits makes
+   the IVI address mapping differ from [RFC6052].
+
+                           Example EAMT for IVI
+
+                 +---+-------------+--------------------+
+                 | # | IPv4 Prefix |    IPv6 Prefix     |
+                 +---+-------------+--------------------+
+                 | 1 | 0.0.0.0/0   | 2001:db8:ff00::/40 |
+                 +---+-------------+--------------------+
+
+                                 Figure 3
+
+   In this particular use case, all addresses are translated according
+   to the EAM algorithm.  In other words, [RFC6052] mapping is not used
+   at all.
+
+A.3.  SIIT-DC
+
+
+
+
+
+
+
+
+
+
+
+
+Anderson                  Expires June 16, 2015                [Page 10]
+
+Internet-Draft                  SIIT-EAM                   December 2014
+
 
    SIIT-DC [I-D.anderson-v6ops-siit-dc] describes the use of SIIT to
    facilitate connectivity from the IPv4 Internet to services hosted in
@@ -439,29 +581,67 @@ A.2.  SIIT-DC
                 | 2 | 192.0.2.2/32 | 2001:db8:bbbb::1/128 |
                 +---+--------------+----------------------+
 
-                                 Figure 3
+                                 Figure 4
+
+   In this particular use case, the EAM algorithm is used to translate
+   IPv4 destination addresses to IPv6, and conversely, IPv6 source
+   addresses to IPv4.  Other addresses are translated using [RFC6052].
+   Note that this is the exact opposite of the 464XLAT use case
+   (Appendix A.1).
+
+Appendix B.  Example IP Address Translations
+
+   Figure 5 demonstrates how a set of example IP addresses are
+   translated given the example EAMT in Figure 1.  Implementors may use
+   the examples given to develop test cases to validate correct
+   operation.  Note that the address translations are bidirectional, so
+   a single row in the table describes two address translations: IPv4 to
+   IPv6, and IPv6 to IPv4.
+
+   It is also assumed that the [RFC6052] translation prefix is
+   configured to be 64:ff9b::/96.
+
+                      Example IP Address Translations
 
 
 
 
 
-Anderson                  Expires June 07, 2015                 [Page 8]
+
+
+
+
+
+
+Anderson                  Expires June 16, 2015                [Page 11]
 
 Internet-Draft                  SIIT-EAM                   December 2014
 
 
-   In this particular use case, the EAM algorithm is used to translate
-   IPv4 destination addresses to IPv6, and conversively, IPv6 source
-   addresses to IPv4.  Other addresses are translated using [RFC6052].
-   Note that this is the exact opposite of the 464XLAT use case
-   (Appendix A.1).
+      +--------------+----------------------+-----------------------+
+      | IPv4 Address |     IPv6 Address     |        Comment        |
+      +--------------+----------------------+-----------------------+
+      | 192.0.2.1    | 2001:db8:aaaa::      | According to EAM #1   |
+      | 192.0.2.2    | 2001:db8:bbbb::b     | According to EAM #2   |
+      | 192.0.2.16   | 2001:db8:cccc::      | According to EAM #3   |
+      | 192.0.2.24   | 2001:db8:cccc::8     | According to EAM #3   |
+      | 192.0.2.31   | 2001:db8:cccc::f     | According to EAM #3   |
+      | 192.0.2.128  | 2001:db8:dddd::      | According to EAM #4   |
+      | 192.0.2.152  | 2001:db8:dddd:0:18:: | According to EAM #4   |
+      | 192.0.2.183  | 2001:db8:dddd:0:37:: | According to EAM #4   |
+      | 192.0.2.191  | 2001:db8:dddd:0:3f:: | According to EAM #4   |
+      | 192.0.2.193  | 64:ff9b::1           | According to EAM #5   |
+      | 192.0.2.200  | 64:ff9b::c000:2c8    | According to RFC 6052 |
+      +--------------+----------------------+-----------------------+
+
+                                 Figure 5
 
 Author's Address
 
    Tore Anderson
    Redpill Linpro
    Vitaminveien 1A
-   Oslo  0485
+   0485 Oslo
    Norway
 
    Phone: +47 959 31 212
@@ -489,16 +669,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-Anderson                  Expires June 07, 2015                 [Page 9]
+Anderson                  Expires June 16, 2015                [Page 12]
