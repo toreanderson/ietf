@@ -8,7 +8,7 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="std" docName="draft-anderson-v6ops-siit-eam-02"
+<rfc category="std" docName="draft-anderson-v6ops-siit-eam-03"
      ipr="trust200902" updates="6145">
 
   <front>
@@ -31,7 +31,7 @@
         <uri>http://www.redpill-linpro.com</uri>
       </address>
     </author>
-    <date year="2014" />
+    <date year="2015" />
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
     <abstract>
@@ -475,21 +475,21 @@
       <figure anchor="fig_example_eam_xlat" align="center">
         <preamble>Example IP Address Translations</preamble>
         <artwork align="center"><![CDATA[
-+--------------+----------------------+-----------------------+
-| IPv4 Address |     IPv6 Address     |        Comment        |
-+--------------+----------------------+-----------------------+
-| 192.0.2.1    | 2001:db8:aaaa::      | According to EAM #1   |
-| 192.0.2.2    | 2001:db8:bbbb::b     | According to EAM #2   |
-| 192.0.2.16   | 2001:db8:cccc::      | According to EAM #3   |
-| 192.0.2.24   | 2001:db8:cccc::8     | According to EAM #3   |
-| 192.0.2.31   | 2001:db8:cccc::f     | According to EAM #3   |
-| 192.0.2.128  | 2001:db8:dddd::      | According to EAM #4   |
-| 192.0.2.152  | 2001:db8:dddd:0:18:: | According to EAM #4   |
-| 192.0.2.183  | 2001:db8:dddd:0:37:: | According to EAM #4   |
-| 192.0.2.191  | 2001:db8:dddd:0:3f:: | According to EAM #4   |
-| 192.0.2.193  | 64:ff9b::1           | According to EAM #5   |
-| 192.0.2.200  | 64:ff9b::c000:2c8    | According to RFC 6052 |
-+--------------+----------------------+-----------------------+
++--------------+------------------------+-----------------------+
+| IPv4 Address |      IPv6 Address      |        Comment        |
++--------------+------------------------+-----------------------+
+| 192.0.2.1    | 2001:db8:aaaa::        | According to EAM #1   |
+| 192.0.2.2    | 2001:db8:bbbb::b       | According to EAM #2   |
+| 192.0.2.16   | 2001:db8:cccc::        | According to EAM #3   |
+| 192.0.2.24   | 2001:db8:cccc::8       | According to EAM #3   |
+| 192.0.2.31   | 2001:db8:cccc::f       | According to EAM #3   |
+| 192.0.2.128  | 2001:db8:dddd::        | According to EAM #4   |
+| 192.0.2.152  | 2001:db8:dddd:0:6000:: | According to EAM #4   |
+| 192.0.2.183  | 2001:db8:dddd:0:dc00:: | According to EAM #4   |
+| 192.0.2.191  | 2001:db8:dddd:0:fc00:: | According to EAM #4   |
+| 192.0.2.193  | 64:ff9b::1             | According to EAM #5   |
+| 192.0.2.200  | 64:ff9b::c000:2c8      | According to RFC 6052 |
++--------------+------------------------+-----------------------+
         ]]></artwork>
       </figure>
       </t>
