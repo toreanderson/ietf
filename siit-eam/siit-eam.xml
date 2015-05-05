@@ -244,6 +244,7 @@
         implementation MUST individually translate each IP address it
         encounters in the packet's IP headers (including any IP headers
         contained within ICMP errors) according to <xref target="eam_xlat"/>.
+        See <xref target="hairpinning"/> for certain exceptions to this rule.
         </t>
       </section>
       <section anchor="eam_xlat" title="IP Address Translation Procedure">
@@ -310,6 +311,85 @@
         </section>
       </section>
     </section>
+    <section anchor="hairpinning" title="Hairpinning of IPv6 Traffic">
+      <t>
+      Two IPv6 nodes that are both covered by EAMs might in certain
+      circumstances attempt to communicate through a stateless translator,
+      rather than using native IPv6 directly. This happens if one of the nodes
+      initiate traffic towards the IPv4-converted IPv6 address whose embedded
+      IPv4 address matches an EAM that covers the other node. Special
+      consideration is required in order to make this communication pattern
+      work in a bi-directional fashion. The example below illustrates this:
+      </t>
+      <t>
+      Assume that the stateless translator is configured with an <xref
+      target="RFC6052"/> translation prefix of 64:ff9b::/96 and an EAM of
+      192.0.2.2/31,2001:db8::2/127. If the IPv6 node 2001:db8::2 transmits an
+      IPv6 packet towards 64:ff9b::192.0.2.3, it will be first translated by
+      the stateless translator to an IPv4 packet with the source,destination
+      address tuple 192.0.2.2,192.0.2.3. Because the destination address of
+      this packet is found in the EAMT, it will loop straight back into the
+      translation function, and is translated back to an IPv6 packet with
+      source,destination tuple of 2001:db8::2,2001:db8::3. This packet will
+      reach 2001:db8::3 just fine, but problem occurs when 2001:db8::3 reponds
+      with an IPv6 packet with a source,destination tuple of
+      2001:db8::3,2001:db8::2. This packet will be routed directly back to
+      2001:db8::2 using native IPv6, but it will have an unexpected source
+      address (2001:db8::3 instead of 64:ff9b::192.0.2.3), most likely causing
+      bi-directional communication to fail.
+      </t>
+      <t>
+      This communication scenario could be made to work by ensuring that the
+      stateless translator handles the traffic in both directions. Therefore,
+      in order to facilitate hairpinned traffic, an implementation SHOULD
+      support a feature that if enabled causes the EAM algorithm to be
+      disabled for the following header address fields when translating from
+      IPv4 to IPv6:
+      </t>
+      <t>
+      <list style="symbols">
+        <t>The source address field of the outer IPv4 header</t>
+        <t>The destination address field of the inner IPv4 header (embedded in
+        ICMPv4), if applicable</t>
+      </list>
+      </t>
+      <t>
+      These header address fields MUST instead translated according to <xref
+      target="RFC6145"/>, as if the addresses contained in them did not match
+      any EAM. This ensures that a bi-directional flow will be hairpinned in
+      both directions and that the IPv6 source and destination addresses
+      (including any embedded in ICMPv6 errors) will be according to the
+      involved nodes' expectations.
+      </t>
+      <t>
+      A stateless translator MAY choose to detect packets that will be
+      hairpinned and apply the feature described above to those packets only,
+      instead of applying it to all IPv4 packets being translated to IPv6.
+      The following heuristic may be used in order to detect and handle IPv6
+      packets that will be hairpinned:
+      </t>
+      <t>
+      <list style="numbers">
+        <t>If the translated IPv4 packet is not an ICMPv4 error, let (X,Y) be
+        the (source,destination) addresses in the IPv4 header.</t>
+        <t>Otherwise, if the translated IPv4 packet is an ICMPv4 error, let
+        (X,Y) be the (destination,source) addresses in the IPv4 header
+        contained within ICMPv4 payload.</t>
+        <t>If X was not translated using the <xref target="RFC6052"/>
+        algorithm, and</t>
+        <t>Y was translated using the <xref target="RFC6052"/> algorithm,
+        and</t>
+        <t>Y is found in the EAMT, then the packet will be immediately
+        hairpinned by being translated back to IPv6, instead of being
+        forwarded to the IPv4 network.</t>
+      </list>
+      </t>
+      <t>
+      Implementations that handle hairpinned packets internally per the above,
+      SHOULD ensure that the Hop Limit field of the output IPv6 packet is only
+      decremented by 1 compared to the input IPv6 packet.
+      </t>
+    </section>
     <section title="Lack of Checksum Neutrality">
       <t>
       When one or both of the address fields in an IP/ICMP packet are
@@ -340,7 +420,8 @@
       </t>
       <t>
       Valuable reviews, suggestions, and other feedback was given by Cameron
-      Byrne, Brian E Carpenter, Alberto Leiva, and Andrew Yourtchenko.
+      Byrne, Brian E Carpenter, Alberto Leiva, Michael Richardson, and Andrew
+      Yourtchenko.
       </t>
     </section>
   </middle>
