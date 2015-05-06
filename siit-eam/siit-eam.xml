@@ -332,7 +332,7 @@
       translation function, and is translated back to an IPv6 packet with
       source,destination tuple of 2001:db8::2,2001:db8::3. This packet will
       reach 2001:db8::3 just fine, but a problem occurs when 2001:db8::3
-      reponds with an IPv6 packet with a source,destination tuple of
+      responds with an IPv6 packet with a source,destination tuple of
       2001:db8::3,2001:db8::2. This packet will be routed directly back to
       2001:db8::2 using native IPv6, but it will have an unexpected source
       address (2001:db8::3 instead of 64:ff9b::192.0.2.3), most likely causing
