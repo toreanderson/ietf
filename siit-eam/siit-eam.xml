@@ -340,11 +340,15 @@
       </t>
       <t>
       This communication scenario could be made to work by ensuring that the
-      stateless translator handles the traffic in both directions. Therefore,
-      in order to facilitate hairpinned traffic, an implementation SHOULD
-      support a feature that if enabled causes the EAM algorithm to be
-      disabled for the following header address fields when translating from
-      IPv4 to IPv6:
+      stateless translator handles the traffic in both directions. The
+      remainder of this section describes how this is accomplished.
+      </t>
+      <t>
+      An implementation SHOULD include a feature that ensures that hairpinned
+      IPv6 traffic is supported. The feature SHOULD be enabled by default.
+      When the hairpinning feature is enabled, the stateless translator MUST
+      disable the EAM algorithm for the following address fields when
+      translating from IPv4 to IPv6:
       </t>
       <t>
       <list style="symbols">
@@ -354,18 +358,18 @@
       </list>
       </t>
       <t>
-      These header address fields MUST instead translated according to <xref
-      target="RFC6145"/>, as if the addresses contained in them did not match
-      any EAM. This ensures that a bi-directional flow will be hairpinned in
-      both directions and that the IPv6 source and destination addresses
-      (including any embedded in ICMPv6 errors) will be according to the
-      involved nodes' expectations.
+      When the hairpinning feature is enabled, these header address fields
+      MUST instead be translated according to <xref target="RFC6145"/>, as if
+      the addresses contained in them did not match any EAM. This ensures that
+      a bi-directional flow will be hairpinned in both directions and that the
+      IPv6 source and destination addresses (including any addresses embedded
+      in ICMPv6 errors) will be according to the involved nodes' expectations.
       </t>
       <t>
-      A stateless translator MAY choose to detect packets that will be
+      An implementation MAY choose to detect the specific packets that will be
       hairpinned and apply the feature described above to those packets only,
-      instead of applying it to all IPv4 packets being translated to IPv6.
-      The following heuristic may be used in order to detect and handle IPv6
+      instead of applying it to all IPv4 packets being translated to IPv6. The
+      following heuristic can be used in order to detect and handle IPv6
       packets that will be hairpinned:
       </t>
       <t>
@@ -381,7 +385,9 @@
         and</t>
         <t>Y is found in the EAMT, then the packet will be immediately
         hairpinned by being translated back to IPv6, instead of being
-        forwarded to the IPv4 network.</t>
+        forwarded to the IPv4 network. In this second translation pass, the
+        EAM algorithm MUST be disabled for the outer IPv4 source address field
+        and any inner ICMPv4-embedded IPv4 destination address field.</t>
       </list>
       </t>
       <t>
