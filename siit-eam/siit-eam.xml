@@ -647,11 +647,9 @@
         <t>
         <xref target="fig_example_hp"/> illustrates how a normal (i.e., it not
         an ICMP error) IPv6 packet sent from 2001:db8:aaaa:: towards
-        64:ff9b::192.0.2.2 is is hairpinned. The second line in each cell
-        denotes the address found in the inner (ICMP-embedded) IP header. The
-        important thing to note is that even though the intermediate IPv4
-        source address is covered by EAM #1, it is translated according to
-        <xref target="RFC6052"/>.
+        64:ff9b::192.0.2.2 is is hairpinned. The important thing to note is
+        that even though the intermediate IPv4 source address is covered by
+        EAM #1, it is translated according to <xref target="RFC6052"/>.
         </t>
         <t>
         <figure anchor="fig_example_hp_icmp" align="center">
@@ -675,10 +673,12 @@
         <t>
         <xref target="fig_example_hp_icmp"/> illustrates the hairpinning of an
         ICMPv6 error sent by an arbitrary IPv6 router (2001:db8::1234) in
-        response to the packet <xref target="fig_example_hp"/>. The important
-        thing to note here is that the in the second translation stage from
-        IPv4 to IPv6, the EAM algorithm is disabled for the inner
-        ICMP-embedded destination address even though it matches EAM #2.
+        response to the packet <xref target="fig_example_hp"/>. The second
+        line in each cell denotes the address found in the inner
+        (ICMP-embedded) IP header. The important thing to note here is that
+        the in the second translation stage from IPv4 to IPv6, the EAM
+        algorithm is disabled for the inner ICMP-embedded destination address
+        even though it matches EAM #2.
         </t>
         <t>
         <figure anchor="fig_example_hp_2" align="center">
