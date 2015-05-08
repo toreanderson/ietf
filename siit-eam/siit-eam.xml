@@ -400,7 +400,7 @@
             header.</t>
             <t>If the packet is an ICMPv4 error: The EAM algorithm MUST NOT be
             used when translating the destination address in the inner IPv4
-            header (embedded in ICMPv4 payload).</t>
+            header (embedded in the ICMPv4 payload).</t>
             <t>If the packet is an ICMPv4 error whose outer IPv4 source
             address is equal to its inner IPv4 destination address: The EAM
             algorithm MUST NOT be used in order to translate the source
