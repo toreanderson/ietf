@@ -671,15 +671,15 @@
         </figure>
         </t>
         <t>
-        <xref target="fig_example_hp"/> illustrates how a normal (i.e., it is
-        not an ICMP error) IPv6 packet sent from 2001:db8:aaaa:: towards
+        <xref target="fig_example_hp"/> illustrates how a normal (i.e., not an
+        ICMP error) IPv6 packet sent from 2001:db8:aaaa:: towards
         64:ff9b::192.0.2.2 is is hairpinned. In this example, rule #1 in <xref
-        target="hp_simple"/> was applied to disable the EAM algorithm when
-        translating the intermediate IPv4 source address to IPv6.
+        target="hp_simple"/> was applied in order to disable the EAM algorithm
+        when translating the intermediate IPv4 source address to IPv6.
         </t>
         <t>
         <figure anchor="fig_example_hp_icmp" align="center">
-          <preamble>Hairpinning of a host-sourced ICMPv6 error</preamble>
+          <preamble>Hairpinning of a host-originated ICMPv6 error</preamble>
           <artwork align="center"><![CDATA[
 +--------------+-----------------------+--------------------+
 | XLAT Stage   | Outer Src Addr        | Outer Dst addr     |
@@ -702,13 +702,13 @@
         response to the packet <xref target="fig_example_hp"/>. The second
         line in each cell denotes the address found in the inner
         (ICMP-embedded) IP header. In this example, rule #2 in <xref
-        target="hp_simple"/> was applied to disable the EAM algorithm when
-        translating the intermediate inner (ICPMv4-embedded) IPv4 source
+        target="hp_simple"/> was applied in order to disable the EAM algorithm
+        when translating the intermediate inner (ICPMv4-embedded) IPv4 source
         address to IPv6.
         </t>
         <t>
         <figure anchor="fig_example_hp_icmp2" align="center">
-          <preamble>Hairpinning of a host-sourced ICMPv6 error</preamble>
+          <preamble>Hairpinning of a host-originated ICMPv6 error</preamble>
           <artwork align="center"><![CDATA[
 +--------------+-----------------------+--------------------+
 | XLAT Stage   | Outer Src Addr        | Outer Dst addr     |
@@ -731,10 +731,10 @@
         response to the packet <xref target="fig_example_hp"/>. As in the
         previous example, the second line in each cell denotes the address
         found in the inner (ICMP-embedded) IP header. In this example, rules
-        #2 and #3 in <xref target="hp_simple"/> were applied to disable the
-        EAM algorithm when translating the intermediate inner
+        #2 and #3 in <xref target="hp_simple"/> were both applied in order to
+        disable the EAM algorithm when translating the intermediate inner
         (ICPMv4-embedded) IPv4 destination address and the intermediate outer
-        IPv4 destination address to IPv6, respectively.
+        IPv4 destination address to IPv6.
         </t>
         <t>
         <figure anchor="fig_example_hp_2" align="center">
@@ -754,12 +754,14 @@
         </t>
         <t>
         <xref target="fig_example_hp_2"/> illustrates how 2001:db8:bbbb::b's
-        response to the packet in <xref target="fig_example_hp"/> is also
-        hairpinned in the exact same fashion as the initial fashion. It is
-        included in order to illustrate how the addresses in the packet
-        initially sent by 2001:db8:aaaa:: matches those in the translated
-        response packet sent by 2001:db8:bbbb::b, thus facilitating
-        bi-directional communication.
+        response to the packet in <xref target="fig_example_hp"/> is
+        hairpinned in the exact same fashion as the initial packet. Again,
+        rule #1 in <xref target="hp_simple"/> was applied in order to disable
+        the EAM algorithm when translating the intermediate IPv4 source
+        address to IPv6. The example is included in order to illustrate how
+        the addresses in the packet initially sent by 2001:db8:aaaa:: matches
+        those in the translated response packet sent by 2001:db8:bbbb::b, thus
+        facilitating bi-directional communication.
         </t>
       </section>
     </section>
