@@ -644,7 +644,7 @@
         ]]></artwork>
       </figure>
       </t>
-      <section anchor="hp_examples" title="Hairpinning">
+      <section anchor="hp_examples" title="Hairpinning Examples">
         <t>
         The following examples show how hairpinned IPv6 packets between the
         IPv6 nodes 2001:db8:aaaa:: and 2001:db8:bbbb::b are translated
