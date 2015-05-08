@@ -678,7 +678,7 @@
         response to the packet <xref target="fig_example_hp"/>. The important
         thing to note here is that the in the second translation stage from
         IPv4 to IPv6, the EAM algorithm is disabled for the inner
-        ICMP-embedded destination address.
+        ICMP-embedded destination address even though it matches EAM #2.
         </t>
         <t>
         <figure anchor="fig_example_hp_2" align="center">
