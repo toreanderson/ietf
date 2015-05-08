@@ -461,7 +461,7 @@
       <?rfc include="reference.RFC.6791"?>
       <?rfc include="reference.RFC.6877"?>
       <?rfc include="reference.RFC.7335"?>
-      <?rfc include="reference.I-D.anderson-v6ops-siit-dc"?>
+      <?rfc include="reference.I-D.ietf-v6ops-siit-dc"?>
     </references>
     <section anchor="usecases" title="Use Cases">
       <t>
@@ -529,16 +529,16 @@
       </section>
       <section anchor="usecase_siit_dc" title="SIIT-DC">
         <t>
-        <xref target="I-D.anderson-v6ops-siit-dc">SIIT-DC</xref> describes the
-        use of SIIT to facilitate connectivity from the IPv4 Internet to
-        services hosted in an IPv6-only data centre. In order to avoid the
-        constraints relating to the use of IPv4-translatable IPv6 addresses
-        discussed in <xref target="problemstatement"/> the stateless IPv4/IPv6
-        translators are provisioned with an EAMT containing one entry per
-        IPv6-only service that are to be made available from the IPv4
-        Internet, for example (assuming 2001:db8:aaaa::1 and 2001:db8:bbbb::1
-        are assigned to load balancers or servers that provides the IPv6-only
-        services in question):
+        <xref target="I-D.ietf-v6ops-siit-dc">SIIT-DC</xref> describes the use
+        of SIIT to facilitate connectivity from the IPv4 Internet to services
+        hosted in an IPv6-only data centre. In order to avoid the constraints
+        relating to the use of IPv4-translatable IPv6 addresses discussed in
+        <xref target="problemstatement"/> the stateless IPv4/IPv6 translators
+        are provisioned with an EAMT containing one entry per IPv6-only
+        service that are to be made available from the IPv4 Internet, for
+        example (assuming 2001:db8:aaaa::1 and 2001:db8:bbbb::1 are assigned
+        to load balancers or servers that provides the IPv6-only services in
+        question):
         </t>
         <t>
         <figure anchor="fig_eamt_siit_dc" align="center">
