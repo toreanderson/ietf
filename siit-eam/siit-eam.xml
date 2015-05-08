@@ -206,7 +206,7 @@
         The EAMT consists of the following columns:
         </t>
         <t>
-        <list>
+        <list style="symbols">
           <t>IPv4 Prefix</t>
           <t>IPv6 Prefix</t>
         </list>
