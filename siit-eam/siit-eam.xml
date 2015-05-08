@@ -338,26 +338,31 @@
       work in a bi-directional fashion. The example below illustrates this:
       </t>
       <t>
-      Assume that the stateless translator is configured with an <xref
-      target="RFC6052"/> translation prefix of 64:ff9b::/96 and an EAM of
-      192.0.2.2/31,2001:db8::2/127. If the IPv6 node 2001:db8::2 transmits an
-      IPv6 packet towards 64:ff9b::192.0.2.3, it will be first translated by
-      the stateless translator to an IPv4 packet with the source,destination
-      address tuple 192.0.2.2,192.0.2.3. Because the destination address of
-      this packet is found in the EAMT, it will loop straight back into the
+      Assume that a stateless translator is configured with an <xref
+      target="RFC6052"/> translation prefix of 64:ff9b::/96 and the EAMT shown
+      in <xref target="fig_example_eamt"/>. The IPv6 node 2001:db8:aaaa::
+      transmits an IPv6 packet towards 64:ff9b::192.0.2.2, which reaches the
+      translator and is being translated into an IPv4 packet with source
+      address 192.0.2.1 and destination address 192.0.2.2. This destination
+      address is found in the EAMT, so the packet loops back into the
       translation function, and is translated back to an IPv6 packet with
-      source,destination tuple of 2001:db8::2,2001:db8::3. This packet will
-      reach 2001:db8::3 just fine, but a problem occurs when 2001:db8::3
-      responds with an IPv6 packet with a source,destination tuple of
-      2001:db8::3,2001:db8::2. This packet will be routed directly back to
-      2001:db8::2 using native IPv6, but it will have an unexpected source
-      address (2001:db8::3 instead of 64:ff9b::192.0.2.3), most likely causing
-      bi-directional communication to fail.
+      source address 2001:db8:aaaa:: and destination address 2001:db8:bbbb::b.
+      While this packet will reach its destination just fine, a problem will
+      occur when 2001:db8:bbbb::b replies: The response packet will have a
+      source address of 2001:db8:bbbb::b and a destination address of
+      2001:db8:aaaa::, and will be routed directly to its destination without
+      being subjected to any form of translation. Because the source address
+      of this response packet (2001:db8:bbbb::b) is not equal to the
+      destination address of the initial outgoing packet (64:ff9b::192.0.2.2),
+      the packet will most likely be discarded by 2001:db8:aaaa:: and
+      bi-directional communication will most likely fail.
       </t>
       <t>
-      This communication scenario could be made to work by ensuring that the
-      stateless translator handles the traffic in both directions. The
-      remainder of this section describes how this is accomplished.
+      The above scenario could be made to work by ensuring that the stateless
+      translator is hairpinning the traffic in both directions. The remainder
+      of this section describes how an implementation can accomplish this. The
+      resulting address translation are demonstrated step-by-step in <xref
+      target="hp_examples"/>.
       </t>
       <t>
       An implementation SHOULD include a feature that ensures that hairpinned
