@@ -95,6 +95,7 @@
          specified in <xref target="eamt_spec"/>.</t>
          <t hangText="SIIT"><vspace/>The Stateless IP/ICMP Translation
          algorithm, as specified in <xref target="RFC6145"/>.</t>
+         <t hangText="XLAT"><vspace/>Short for "translation".</t>
          <t hangText="IPv4-converted IPv6 addresses"><vspace/>As defined in
          Section 1.3 of <xref target="RFC6052"/>.</t>
          <t hangText="IPv4-translatable IPv6 addresses"><vspace/>As defined in
@@ -394,8 +395,8 @@
         <t>Otherwise, if the translated IPv4 packet is an ICMPv4 error, let
         (X,Y) be the (destination,source) addresses in the IPv4 header
         contained within ICMPv4 payload.</t>
-        <t>If X was not translated using the <xref target="RFC6052"/>
-        algorithm, and</t>
+        <t>If X was translated using either the EAM algorithm or the <xref
+        target="RFC6791"/> algorithm, and</t>
         <t>Y was translated using the <xref target="RFC6052"/> algorithm,
         and</t>
         <t>Y is found in the EAMT, then the packet will be immediately
@@ -457,6 +458,7 @@
       <?rfc include="reference.RFC.4862"?>
       <?rfc include="reference.RFC.6144"?>
       <?rfc include="reference.RFC.6219"?>
+      <?rfc include="reference.RFC.6791"?>
       <?rfc include="reference.RFC.6877"?>
       <?rfc include="reference.RFC.7335"?>
       <?rfc include="reference.I-D.anderson-v6ops-siit-dc"?>
@@ -595,6 +597,107 @@
         ]]></artwork>
       </figure>
       </t>
+      <section anchor="hp_examples" title="Hairpinning">
+        <t>
+        When an IPv6 packet is hairpinned, it is translated twice in rapid
+        succession. The first translation (from IPv6 to IPv4) is performed in
+        the exact same way as a non-hairpinned packet. Only the second
+        translation (from IPv4 to IPv6) is treated specially. Therefore, when
+        creating tests cases for hairpinning the focus should be on the second
+        step (between the Intermediate and Final translation stages in the
+        examples below).
+        </t>
+        <t>
+        However, if the translator implements the heuristic described in <xref
+        target="hairpinning"/> in order to translate hairpinned packets
+        directly from IPv6 to IPv6 (i.e., without forwarding the intermediate
+        IPv4 packet to the IPv4 network), the test cases should instead focus
+        on the Initial and Final stages.
+        </t>
+        <t>
+        The following examples show how hairpinned IPv6 packets between the
+        IPv6 nodes 2001:db8:aaaa:: and 2001:db8:bbbb::b are translated
+        according to <xref target="hairpinning"/>. As in <xref
+        target="eam_examples"/>, the EAMT in <xref target="fig_example_eamt"/>
+        is used and the <xref target="RFC6052"/> translation prefix is
+        64:ff9b::/96. In addition, the <xref target="RFC6791"/> pool is
+        assumed to contain only the single address 198.51.100.1.
+        </t>
+        <t>
+        <figure anchor="fig_example_hp" align="center">
+          <preamble>Hairpinning of a normal IPv6 packet</preamble>
+          <artwork align="center"><![CDATA[
++--------------+--------------------+--------------------+
+| XLAT Stage   | Outer Src Addr     | Outer Dst addr     |
++--------------+--------------------+--------------------+
+| Initial      | 2001:db8:aaaa::    | 64:ff9b::192.0.2.2 |
++--------------+--------------------+--------------------+
+| Intermediate | 192.0.2.1          | 192.0.2.2          |
++--------------+--------------------+--------------------+
+| Final        | 64:ff9b::192.0.2.1 | 2001:db8:bbbb::b   |
++--------------+--------------------+--------------------+
+          ]]></artwork>
+        </figure>
+        </t>
+        <t>
+        <xref target="fig_example_hp"/> illustrates how a normal (i.e., it not
+        an ICMP error) IPv6 packet sent from 2001:db8:aaaa:: towards
+        64:ff9b::192.0.2.2 is is hairpinned. The important thing to note is
+        that even though the intermediate IPv4 source address is covered by
+        EAM #1, it is translated according to <xref target="RFC6052"/>.
+        </t>
+        <t>
+        <figure anchor="fig_example_hp_icmp" align="center">
+          <preamble>Hairpinning of an ICMPv6 error packet</preamble>
+          <artwork align="center"><![CDATA[
++--------------+-----------------------+--------------------+
+| XLAT Stage   | Outer Src Addr        | Outer Dst addr     |
++--------------+-----------------------+--------------------+
+| Initial      | 2001:db8::1234        | 64:ff9b::192.0.2.1 |
+|              | 64:ff9b::192.0.2.1    | 2001:db8:bbbb::b   |
++--------------+-----------------------+--------------------+
+| Intermediate | 198.51.100.1          | 192.0.2.1          |
+|              | 192.0.2.1             | 192.0.2.2          |
++--------------+-----------------------+--------------------+
+| Final        | 64:ff9b::198.51.100.1 | 2001:db8:aaaa::    |
+|              | 2001:db8:aaaa::       | 64:ff9b::192.0.2.2 |
++--------------+--------------------+-----------------------+
+          ]]></artwork>
+        </figure>
+        </t>
+        <t>
+        <xref target="fig_example_hp_icmp"/> illustrates the hairpinning of an
+        ICMPv6 error sent by an arbitrary IPv6 router (2001:db8::1234) in
+        response to the packet <xref target="fig_example_hp"/>. The important
+        thing to note here is that the in the second translation stage from
+        IPv4 to IPv6, the EAM algorithm is disabled for the inner
+        ICMP-embedded destination address.
+        </t>
+        <t>
+        <figure anchor="fig_example_hp_2" align="center">
+          <preamble>Hairpinning of normal response packet</preamble>
+          <artwork align="center"><![CDATA[
++--------------+--------------------+--------------------+
+| XLAT Stage   | Outer Src Addr     | Outer Dst addr     |
++--------------+--------------------+--------------------+
+| Initial      | 2001:db8:bbbb::b   | 64:ff9b::192.0.2.1 |
++--------------+--------------------+--------------------+
+| Intermediate | 192.0.2.2          | 192.0.2.1          |
++--------------+--------------------+--------------------+
+| Final        | 64:ff9b::192.0.2.2 | 2001:db8:aaaa::    |
++--------------+--------------------+--------------------+
+          ]]></artwork>
+        </figure>
+        </t>
+        <t>
+        <xref target="fig_example_hp_2"/> illustrates how 2001:db8:bbbb::b's
+        response to the packet in <xref target="fig_example_hp"/> is also
+        hairpinned in the exact same fashion. It is included in order to
+        illustrate how the addresses in the packet initially sent by
+        2001:db8:aaaa:: matches those in the translated response packet sent
+        by 2001:db8:bbbb::b, thus facilitating bi-directional communication.
+        </t>
+      </section>
     </section>
   </back>
 </rfc>
