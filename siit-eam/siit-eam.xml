@@ -643,8 +643,8 @@
         <xref target="fig_example_hp"/> illustrates how a normal (i.e., it not
         an ICMP error) IPv6 packet sent from 2001:db8:aaaa:: towards
         64:ff9b::192.0.2.2 is is hairpinned. The second line in each cell
-        denotes the addresses found in the inner (ICMP-embedded) IP header.
-        The important thing to note is that even though the intermediate IPv4
+        denotes the address found in the inner (ICMP-embedded) IP header. The
+        important thing to note is that even though the intermediate IPv4
         source address is covered by EAM #1, it is translated according to
         <xref target="RFC6052"/>.
         </t>
