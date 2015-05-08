@@ -93,6 +93,14 @@
          in <xref target="eam_spec"/>.</t>
          <t hangText="EAMT"><vspace/>The Explicit Address Mapping Table, as
          specified in <xref target="eamt_spec"/>.</t>
+         <t hangText="Inner (header or address)">Refers to an IP header
+         located inside the payload of an ICMP error packet, or to an IP
+         address within that header. Compare "Outer".</t>
+         <t hangText="Outer (header or address)">Refers to the first IP header
+         in a packet, or to an IP address within that header. In other words,
+         an IP header or address that is NOT "Inner". If a reference is made
+         to an IP header or address without the "Inner" or "Outer" qualifier,
+         it should be considered as "Outer".</t>
          <t hangText="SIIT"><vspace/>The Stateless IP/ICMP Translation
          algorithm, as specified in <xref target="RFC6145"/>.</t>
          <t hangText="XLAT"><vspace/>Short for "translation".</t>
@@ -378,15 +386,6 @@
         default. The following two subsections describe two alternate ways to
         implement this feature. An implementation MAY support both approaches.
         </t>
-        <t>
-        The approach described in <xref target="hp_simple"/> is the simplest
-        to implement. However, it results to less optimised forwarding
-        compared to <xref target="hp_intrinsic"/>, as the intermediate IPv4
-        packet must be forwarded into the IPv4 network, where it will
-        immediately loop back to the stateless translator. The approach
-        described <xref target="hp_intrinsic"/> allows the stateless
-        translator to translate the packet directly from IPv6 to IPv6.
-        </t>
         <section anchor="hp_simple" title="Simple Hairpinning Support">
           <t>
           When the simple hairpinning feature is enabled, the translator MUST
@@ -400,7 +399,7 @@
             header.</t>
             <t>If the packet is an ICMPv4 error: The EAM algorithm MUST NOT be
             used when translating the destination address in the inner IPv4
-            header (embedded in the ICMPv4 payload).</t>
+            header.</t>
             <t>If the packet is an ICMPv4 error whose outer IPv4 source
             address is equal to its inner IPv4 destination address: The EAM
             algorithm MUST NOT be used in order to translate the source
@@ -434,8 +433,6 @@
               <vspace/>
               <list style="format A%d.">
                 <t>The packet is not an ICMPv4 error</t>
-                <t>The source address was translated using the EAM
-                algorithm (FIXME: Why do we need this?)</t>
                 <t>The destination address was translated using the <xref
                 target="RFC6052"/> algorithm</t>
                 <t>The destination address is found in the EAMT</t>
@@ -445,13 +442,9 @@
               <vspace/>
               <list style="format B%d.">
                 <t>The packet is an ICMPv4 error</t>
-                <t>The inner (embedded in ICMPv4 payload) destination address
-                was translated using the EAM algorithm (FIXME: Why do we need
-                this?</t>
-                <t>The inner (embedded in ICMPv4 payload) source address was
-                translated using the <xref target="RFC6052"/> algorithm</t>
-                <t>The inner (embedded in ICMPv4 payload) source address is
-                found in the EAMT</t>
+                <t>The inner source address was translated using the <xref
+                target="RFC6052"/> algorithm</t>
+                <t>The inner source address is found in the EAMT</t>
               </list>
             </t>
           </list>
@@ -658,15 +651,15 @@
         <figure anchor="fig_example_hp" align="center">
           <preamble>Hairpinning of a normal IPv6 packet</preamble>
           <artwork align="center"><![CDATA[
-+--------------+--------------------+--------------------+
-| XLAT Stage   | Outer Src Addr     | Outer Dst addr     |
-+--------------+--------------------+--------------------+
-| Initial      | 2001:db8:aaaa::    | 64:ff9b::192.0.2.2 |
-+--------------+--------------------+--------------------+
-| Intermediate | 192.0.2.1          | 192.0.2.2          |
-+--------------+--------------------+--------------------+
-| Final        | 64:ff9b::192.0.2.1 | 2001:db8:bbbb::b   |
-+--------------+--------------------+--------------------+
++--------------+--------------------+---------------------+
+| XLAT Stage   | Source Address     | Destination Address |
++--------------+--------------------+---------------------+
+| Initial      | 2001:db8:aaaa::    | 64:ff9b::192.0.2.2  |
++--------------+--------------------+---------------------+
+| Intermediate | 192.0.2.1          | 192.0.2.2           |
++--------------+--------------------+---------------------+
+| Final        | 64:ff9b::192.0.2.1 | 2001:db8:bbbb::b    |
++--------------+--------------------+---------------------+
           ]]></artwork>
         </figure>
         </t>
@@ -681,74 +674,70 @@
         <figure anchor="fig_example_hp_icmp" align="center">
           <preamble>Hairpinning of a host-originated ICMPv6 error</preamble>
           <artwork align="center"><![CDATA[
-+--------------+-----------------------+--------------------+
-| XLAT Stage   | Outer Src Addr        | Outer Dst addr     |
-+--------------+-----------------------+--------------------+
-| Initial      | 2001:db8::1234        | 64:ff9b::192.0.2.1 |
-|              | 64:ff9b::192.0.2.1    | 2001:db8:bbbb::b   |
-+--------------+-----------------------+--------------------+
-| Intermediate | 198.51.100.1          | 192.0.2.1          |
-|              | 192.0.2.1             | 192.0.2.2          |
-+--------------+-----------------------+--------------------+
-| Final        | 64:ff9b::198.51.100.1 | 2001:db8:aaaa::    |
-|              | 2001:db8:aaaa::       | 64:ff9b::192.0.2.2 |
-+--------------+--------------------+-----------------------+
++--------------+-------+-----------------------+--------------------+
+| XLAT Stage   | Loc.  | Source Address        | Destination Addr.  |
++--------------+-------+-----------------------+--------------------+
+| Initial      | Inner | 2001:db8::1234        | 64:ff9b::192.0.2.1 |
+|              | Outer | 64:ff9b::192.0.2.1    | 2001:db8:bbbb::b   |
++--------------+-------+-----------------------+--------------------+
+| Intermediate | Inner | 198.51.100.1          | 192.0.2.1          |
+|              | Outer | 192.0.2.1             | 192.0.2.2          |
++--------------+-------+-----------------------+--------------------+
+| Final        | Inner | 64:ff9b::198.51.100.1 | 2001:db8:aaaa::    |
+|              | Outer | 2001:db8:aaaa::       | 64:ff9b::192.0.2.2 |
++--------------+-------+-----------------------+--------------------+
           ]]></artwork>
         </figure>
         </t>
         <t>
         <xref target="fig_example_hp_icmp"/> illustrates the hairpinning of an
         ICMPv6 error sent by an arbitrary IPv6 router (2001:db8::1234) in
-        response to the packet <xref target="fig_example_hp"/>. The second
-        line in each cell denotes the address found in the inner
-        (ICMP-embedded) IP header. In this example, rule #2 in <xref
-        target="hp_simple"/> was applied in order to disable the EAM algorithm
-        when translating the intermediate inner (ICPMv4-embedded) IPv4 source
-        address to IPv6.
+        response to the packet <xref target="fig_example_hp"/>. In this
+        example, rule #2 in <xref target="hp_simple"/> was applied in order to
+        disable the EAM algorithm when translating the intermediate inner
+        IPv4 source address to IPv6.
         </t>
         <t>
         <figure anchor="fig_example_hp_icmp2" align="center">
           <preamble>Hairpinning of a host-originated ICMPv6 error</preamble>
           <artwork align="center"><![CDATA[
-+--------------+-----------------------+--------------------+
-| XLAT Stage   | Outer Src Addr        | Outer Dst addr     |
-+--------------+-----------------------+--------------------+
-| Initial      | 2001:db8:bbbb::b      | 64:ff9b::192.0.2.1 |
-|              | 64:ff9b::192.0.2.1    | 2001:db8:bbbb::b   |
-+--------------+-----------------------+--------------------+
-| Intermediate | 192.0.2.2             | 192.0.2.1          |
-|              | 192.0.2.1             | 192.0.2.2          |
-+--------------+-----------------------+--------------------+
-| Final        | 64:ff9b::192.0.2.2    | 2001:db8:aaaa::    |
-|              | 2001:db8:aaaa::       | 64:ff9b::192.0.2.2 |
-+--------------+--------------------+-----------------------+
++--------------+-------+-----------------------+--------------------+
+| XLAT Stage   | Loc.  | Source Address        | Destination Addr.  |
++--------------+-------+-----------------------+--------------------+
+| Initial      | Inner | 2001:db8:bbbb::b      | 64:ff9b::192.0.2.1 |
+|              | Outer | 64:ff9b::192.0.2.1    | 2001:db8:bbbb::b   |
++--------------+-------+-----------------------+--------------------+
+| Intermediate | Inner | 192.0.2.2             | 192.0.2.1          |
+|              | Outer | 192.0.2.1             | 192.0.2.2          |
++--------------+-------+-----------------------+--------------------+
+| Final        | Inner | 64:ff9b::192.0.2.2    | 2001:db8:aaaa::    |
+|              | Outer | 2001:db8:aaaa::       | 64:ff9b::192.0.2.2 |
++--------------+-------+-----------------------+--------------------+
           ]]></artwork>
         </figure>
         </t>
         <t>
         <xref target="fig_example_hp_icmp2"/> illustrates the hairpinning of
         an ICMPv6 error sent by the original destination host itself in
-        response to the packet <xref target="fig_example_hp"/>. As in the
-        previous example, the second line in each cell denotes the address
-        found in the inner (ICMP-embedded) IP header. In this example, rules
-        #2 and #3 in <xref target="hp_simple"/> were both applied in order to
-        disable the EAM algorithm when translating the intermediate inner
-        (ICPMv4-embedded) IPv4 destination address and the intermediate outer
+        response to the packet <xref target="fig_example_hp"/>. In this
+        example, rules #2 and #3 in <xref target="hp_simple"/> were both
+        applied in order to disable the EAM algorithm when translating the
+        intermediate inner IPv4 destination address and the intermediate outer
         IPv4 destination address to IPv6.
         </t>
         <t>
         <figure anchor="fig_example_hp_2" align="center">
           <preamble>Hairpinning of normal response packet</preamble>
           <artwork align="center"><![CDATA[
-+--------------+--------------------+--------------------+
-| XLAT Stage   | Outer Src Addr     | Outer Dst addr     |
-+--------------+--------------------+--------------------+
-| Initial      | 2001:db8:bbbb::b   | 64:ff9b::192.0.2.1 |
-+--------------+--------------------+--------------------+
-| Intermediate | 192.0.2.2          | 192.0.2.1          |
-+--------------+--------------------+--------------------+
-| Final        | 64:ff9b::192.0.2.2 | 2001:db8:aaaa::    |
-+--------------+--------------------+--------------------+
++--------------+--------------------+---------------------+
+| XLAT Stage   | Source Address     | Destination Address |
++--------------+--------------------+---------------------+
+| Initial      | 2001:db8:bbbb::b   | 64:ff9b::192.0.2.1  |
++--------------+--------------------+---------------------+
+| Intermediate | 192.0.2.2          | 192.0.2.1           |
++--------------+--------------------+---------------------+
+| Final        | 64:ff9b::192.0.2.2 | 2001:db8:aaaa::     |
++--------------+--------------------+---------------------+
           ]]></artwork>
         </figure>
         </t>
