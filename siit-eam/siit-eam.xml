@@ -8,8 +8,8 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="std" docName="draft-anderson-v6ops-siit-eam-03"
-     ipr="trust200902" updates="6145">
+<rfc category="std" docName="draft-ietf-v6ops-siit-eam-00" ipr="trust200902"
+     updates="6145">
 
   <front>
     <title abbrev="SIIT-EAM">Explicit Address Mappings for Stateless IP/ICMP
@@ -29,6 +29,21 @@
         <phone>+47 959 31 212</phone>
         <email>tore@redpill-linpro.com</email>
         <uri>http://www.redpill-linpro.com</uri>
+      </address>
+    </author>
+    <author fullname="Alberto Leiva Popper" initials="A.L.P."
+            surname="Leiva Popper">
+      <organization>NIC México</organization>
+      <address>
+        <postal>
+          <street>Av. Eugenio Garza Sada 427 L4-6</street>
+          <region>Nuevo León</region>
+          <city>Monterrey</city>
+          <country>México</country>
+          <code>64840</code>
+        </postal>
+        <email>ydahhrk@gmail.com</email>
+        <uri>http://www.nicmexico.mx/</uri>
       </address>
     </author>
     <date year="2015" />
@@ -78,8 +93,17 @@
          in <xref target="eam_spec"/>.</t>
          <t hangText="EAMT"><vspace/>The Explicit Address Mapping Table, as
          specified in <xref target="eamt_spec"/>.</t>
+         <t hangText="Inner (header or address)">Refers to an IP header
+         located inside the payload of an ICMP error packet, or to an IP
+         address within that header. Compare "Outer".</t>
+         <t hangText="Outer (header or address)">Refers to the first IP header
+         in a packet, or to an IP address within that header. In other words,
+         an IP header or address that is NOT "Inner". If a reference is made
+         to an IP header or address without the "Inner" or "Outer" qualifier,
+         it should be considered as "Outer".</t>
          <t hangText="SIIT"><vspace/>The Stateless IP/ICMP Translation
          algorithm, as specified in <xref target="RFC6145"/>.</t>
+         <t hangText="XLAT"><vspace/>Short for "translation".</t>
          <t hangText="IPv4-converted IPv6 addresses"><vspace/>As defined in
          Section 1.3 of <xref target="RFC6052"/>.</t>
          <t hangText="IPv4-translatable IPv6 addresses"><vspace/>As defined in
@@ -190,7 +214,7 @@
         The EAMT consists of the following columns:
         </t>
         <t>
-        <list>
+        <list style="symbols">
           <t>IPv4 Prefix</t>
           <t>IPv6 Prefix</t>
         </list>
@@ -244,6 +268,7 @@
         implementation MUST individually translate each IP address it
         encounters in the packet's IP headers (including any IP headers
         contained within ICMP errors) according to <xref target="eam_xlat"/>.
+        See <xref target="hairpinning"/> for certain exceptions to this rule.
         </t>
       </section>
       <section anchor="eam_xlat" title="IP Address Translation Procedure">
@@ -310,6 +335,123 @@
         </section>
       </section>
     </section>
+    <section anchor="hairpinning" title="Hairpinning of IPv6 Traffic">
+      <section anchor="hp_problem_statement" title="Problem Statement">
+        <t>
+        Two IPv6 nodes that are both covered by EAMs might in certain
+        circumstances attempt to communicate through a stateless translator,
+        rather than using native IPv6 directly. This happens if one of the
+        nodes initiate traffic towards the IPv4-converted IPv6 address whose
+        embedded IPv4 address matches an EAM that covers the other node.
+        Special consideration is required in order to make this communication
+        pattern work in a bi-directional fashion. This is illustrated by the
+        example below.
+        </t>
+        <t>
+        Assume that a stateless translator is configured with an <xref
+        target="RFC6052"/> translation prefix of 64:ff9b::/96 and the EAMT
+        shown in <xref target="fig_example_eamt"/>. The IPv6 node
+        2001:db8:aaaa:: transmits an IPv6 packet towards 64:ff9b::192.0.2.2,
+        which reaches the translator and is being translated into an IPv4
+        packet with source address 192.0.2.1 and destination address
+        192.0.2.2. This destination address is found in the EAMT, so the
+        packet loops back into the translation function, and is translated
+        back to an IPv6 packet with source address 2001:db8:aaaa:: and
+        destination address 2001:db8:bbbb::b.
+        </t>
+        <t>
+        While this packet will reach its destination just fine, a problem will
+        occur when 2001:db8:bbbb::b responds to it. The response packet will
+        have a source address of 2001:db8:bbbb::b and a destination address of
+        2001:db8:aaaa::, and will be routed directly to its destination
+        without being subjected to any form of translation.  Because the
+        source address of this response packet (2001:db8:bbbb::b) is not equal
+        to the destination address of the initial outgoing packet
+        (64:ff9b::192.0.2.2), the packet will most likely be discarded by
+        2001:db8:aaaa:: and bi-directional communication will most likely
+        fail.
+        </t>
+        <t>
+        The above scenario could be made to work by ensuring that the
+        stateless translator is hairpinning the traffic in both directions.
+        <xref target="hp_reccomendation"/> describes how this is accomplished.
+        The resulting address translations are demonstrated step-by-step in
+        <xref target="hp_examples"/>.
+        </t>
+      </section>
+      <section anchor="hp_reccomendation" title="Recommendation">
+        <t>
+        An SIIT implementation SHOULD include a feature that ensures that
+        hairpinned IPv6 traffic is supported. The feature SHOULD be enabled by
+        default. The following two subsections describe two alternate ways to
+        implement this feature. An implementation MAY support both approaches.
+        </t>
+        <section anchor="hp_simple" title="Simple Hairpinning Support">
+          <t>
+          When the simple hairpinning feature is enabled, the translator MUST
+          behave according to the following rules when translating from IPv4
+          to IPv6:
+          </t>
+          <t>
+          <list style="numbers">
+            <t>If the packet is not an ICMPv4 error: The EAM algorithm MUST
+            NOT be used in order to translate the source address in the IPv4
+            header.</t>
+            <t>If the packet is an ICMPv4 error: The EAM algorithm MUST NOT be
+            used when translating the destination address in the inner IPv4
+            header.</t>
+            <t>If the packet is an ICMPv4 error whose outer IPv4 source
+            address is equal to its inner IPv4 destination address: The EAM
+            algorithm MUST NOT be used in order to translate the source
+            address in the IPv4 header.</t>
+          </list>
+          </t>
+          <t>
+          Rule #2 and #3 are cumulative.
+          </t>
+          <t>
+          The addresses in question MUST instead be translated according to
+          <xref target="RFC6145"/>, as if they did not match any EAM.
+          </t>
+        </section>
+        <section anchor="hp_intrinsic" title="Intrinsic Hairpinning Support">
+          <t>
+          When the intrinsic hairpinning feature is enabled, the translator
+          behaves as follows when receiving an IPv6 packet:
+          </t>
+          <t>
+          If all the conditions in either of the two sets below is true, the
+          packet is to be hairpinned. The implementation MUST immediately
+          (i.e., prior to forwarding it to the IPv4 network) translate the
+          packet back to IPv6. During the second translation pass, the
+          behaviour specified in <xref target="hp_simple"/> MUST be applied,
+          and the Hop Limit field SHOULD NOT be decremented.
+          </t>
+          <t>
+          <list style="hanging">
+            <t hangText="Condition set A:">
+              <vspace/>
+              <list style="format A%d.">
+                <t>The packet is not an ICMPv4 error</t>
+                <t>The destination address was translated using the <xref
+                target="RFC6052"/> algorithm</t>
+                <t>The destination address is found in the EAMT</t>
+              </list>
+            </t>
+            <t hangText="Condition set B:">
+              <vspace/>
+              <list style="format B%d.">
+                <t>The packet is an ICMPv4 error</t>
+                <t>The inner source address was translated using the <xref
+                target="RFC6052"/> algorithm</t>
+                <t>The inner source address is found in the EAMT</t>
+              </list>
+            </t>
+          </list>
+          </t>
+        </section>
+      </section>
+    </section>
     <section title="Lack of Checksum Neutrality">
       <t>
       When one or both of the address fields in an IP/ICMP packet are
@@ -339,8 +481,9 @@
       Baker and the author.
       </t>
       <t>
-      Valuable reviews, suggestions, and other feedback was given by Cameron
-      Byrne, Brian E Carpenter, Alberto Leiva, and Andrew Yourtchenko.
+      Valuable reviews, suggestions, and other feedback was given by Mohamed
+      Boucadair, Cameron Byrne, Brian E Carpenter, Michael Richardson, and
+      Andrew Yourtchenko.
       </t>
     </section>
   </middle>
@@ -355,9 +498,10 @@
       <?rfc include="reference.RFC.4862"?>
       <?rfc include="reference.RFC.6144"?>
       <?rfc include="reference.RFC.6219"?>
+      <?rfc include="reference.RFC.6791"?>
       <?rfc include="reference.RFC.6877"?>
       <?rfc include="reference.RFC.7335"?>
-      <?rfc include="reference.I-D.anderson-v6ops-siit-dc"?>
+      <?rfc include="reference.I-D.ietf-v6ops-siit-dc"?>
     </references>
     <section anchor="usecases" title="Use Cases">
       <t>
@@ -425,16 +569,16 @@
       </section>
       <section anchor="usecase_siit_dc" title="SIIT-DC">
         <t>
-        <xref target="I-D.anderson-v6ops-siit-dc">SIIT-DC</xref> describes the
-        use of SIIT to facilitate connectivity from the IPv4 Internet to
-        services hosted in an IPv6-only data centre. In order to avoid the
-        constraints relating to the use of IPv4-translatable IPv6 addresses
-        discussed in <xref target="problemstatement"/> the stateless IPv4/IPv6
-        translators are provisioned with an EAMT containing one entry per
-        IPv6-only service that are to be made available from the IPv4
-        Internet, for example (assuming 2001:db8:aaaa::1 and 2001:db8:bbbb::1
-        are assigned to load balancers or servers that provides the IPv6-only
-        services in question):
+        <xref target="I-D.ietf-v6ops-siit-dc">SIIT-DC</xref> describes the use
+        of SIIT to facilitate connectivity from the IPv4 Internet to services
+        hosted in an IPv6-only data centre. In order to avoid the constraints
+        relating to the use of IPv4-translatable IPv6 addresses discussed in
+        <xref target="problemstatement"/> the stateless IPv4/IPv6 translators
+        are provisioned with an EAMT containing one entry per IPv6-only
+        service that are to be made available from the IPv4 Internet, for
+        example (assuming 2001:db8:aaaa::1 and 2001:db8:bbbb::1 are assigned
+        to load balancers or servers that provides the IPv6-only services in
+        question):
         </t>
         <t>
         <figure anchor="fig_eamt_siit_dc" align="center">
@@ -493,8 +637,124 @@
         ]]></artwork>
       </figure>
       </t>
+      <section anchor="hp_examples" title="Hairpinning Examples">
+        <t>
+        The following examples show how hairpinned IPv6 packets between the
+        IPv6 nodes 2001:db8:aaaa:: and 2001:db8:bbbb::b are translated
+        according to <xref target="hairpinning"/>. As in <xref
+        target="eam_examples"/>, the EAMT in <xref target="fig_example_eamt"/>
+        is used and the <xref target="RFC6052"/> translation prefix is
+        64:ff9b::/96. In addition, the <xref target="RFC6791"/> pool is
+        assumed to contain only the single address 198.51.100.1.
+        </t>
+        <t>
+        <figure anchor="fig_example_hp" align="center">
+          <preamble>Hairpinning of a normal IPv6 packet</preamble>
+          <artwork align="center"><![CDATA[
++--------------+--------------------+---------------------+
+| XLAT Stage   | Source Address     | Destination Address |
++--------------+--------------------+---------------------+
+| Initial      | 2001:db8:aaaa::    | 64:ff9b::192.0.2.2  |
++--------------+--------------------+---------------------+
+| Intermediate | 192.0.2.1          | 192.0.2.2           |
++--------------+--------------------+---------------------+
+| Final        | 64:ff9b::192.0.2.1 | 2001:db8:bbbb::b    |
++--------------+--------------------+---------------------+
+          ]]></artwork>
+        </figure>
+        </t>
+        <t>
+        <xref target="fig_example_hp"/> illustrates how a normal (i.e., not an
+        ICMP error) IPv6 packet sent from 2001:db8:aaaa:: towards
+        64:ff9b::192.0.2.2 is is hairpinned. In this example, rule #1 in <xref
+        target="hp_simple"/> was applied in order to disable the EAM algorithm
+        when translating the intermediate IPv4 source address to IPv6.
+        </t>
+        <t>
+        <figure anchor="fig_example_hp_icmp" align="center">
+          <preamble>Hairpinning of a host-originated ICMPv6 error</preamble>
+          <artwork align="center"><![CDATA[
++--------------+-------+-----------------------+--------------------+
+| XLAT Stage   | Loc.  | Source Address        | Destination Addr.  |
++--------------+-------+-----------------------+--------------------+
+| Initial      | Inner | 2001:db8::1234        | 64:ff9b::192.0.2.1 |
+|              | Outer | 64:ff9b::192.0.2.1    | 2001:db8:bbbb::b   |
++--------------+-------+-----------------------+--------------------+
+| Intermediate | Inner | 198.51.100.1          | 192.0.2.1          |
+|              | Outer | 192.0.2.1             | 192.0.2.2          |
++--------------+-------+-----------------------+--------------------+
+| Final        | Inner | 64:ff9b::198.51.100.1 | 2001:db8:aaaa::    |
+|              | Outer | 2001:db8:aaaa::       | 64:ff9b::192.0.2.2 |
++--------------+-------+-----------------------+--------------------+
+          ]]></artwork>
+        </figure>
+        </t>
+        <t>
+        <xref target="fig_example_hp_icmp"/> illustrates the hairpinning of an
+        ICMPv6 error sent by an arbitrary IPv6 router (2001:db8::1234) in
+        response to the packet <xref target="fig_example_hp"/>. In this
+        example, rule #2 in <xref target="hp_simple"/> was applied in order to
+        disable the EAM algorithm when translating the intermediate inner
+        IPv4 source address to IPv6.
+        </t>
+        <t>
+        <figure anchor="fig_example_hp_icmp2" align="center">
+          <preamble>Hairpinning of a host-originated ICMPv6 error</preamble>
+          <artwork align="center"><![CDATA[
++--------------+-------+-----------------------+--------------------+
+| XLAT Stage   | Loc.  | Source Address        | Destination Addr.  |
++--------------+-------+-----------------------+--------------------+
+| Initial      | Inner | 2001:db8:bbbb::b      | 64:ff9b::192.0.2.1 |
+|              | Outer | 64:ff9b::192.0.2.1    | 2001:db8:bbbb::b   |
++--------------+-------+-----------------------+--------------------+
+| Intermediate | Inner | 192.0.2.2             | 192.0.2.1          |
+|              | Outer | 192.0.2.1             | 192.0.2.2          |
++--------------+-------+-----------------------+--------------------+
+| Final        | Inner | 64:ff9b::192.0.2.2    | 2001:db8:aaaa::    |
+|              | Outer | 2001:db8:aaaa::       | 64:ff9b::192.0.2.2 |
++--------------+-------+-----------------------+--------------------+
+          ]]></artwork>
+        </figure>
+        </t>
+        <t>
+        <xref target="fig_example_hp_icmp2"/> illustrates the hairpinning of
+        an ICMPv6 error sent by the original destination host itself in
+        response to the packet <xref target="fig_example_hp"/>. In this
+        example, rules #2 and #3 in <xref target="hp_simple"/> were both
+        applied in order to disable the EAM algorithm when translating the
+        intermediate inner IPv4 destination address and the intermediate outer
+        IPv4 destination address to IPv6.
+        </t>
+        <t>
+        <figure anchor="fig_example_hp_2" align="center">
+          <preamble>Hairpinning of normal response packet</preamble>
+          <artwork align="center"><![CDATA[
++--------------+--------------------+---------------------+
+| XLAT Stage   | Source Address     | Destination Address |
++--------------+--------------------+---------------------+
+| Initial      | 2001:db8:bbbb::b   | 64:ff9b::192.0.2.1  |
++--------------+--------------------+---------------------+
+| Intermediate | 192.0.2.2          | 192.0.2.1           |
++--------------+--------------------+---------------------+
+| Final        | 64:ff9b::192.0.2.2 | 2001:db8:aaaa::     |
++--------------+--------------------+---------------------+
+          ]]></artwork>
+        </figure>
+        </t>
+        <t>
+        <xref target="fig_example_hp_2"/> illustrates how 2001:db8:bbbb::b's
+        response to the packet in <xref target="fig_example_hp"/> is
+        hairpinned in the exact same fashion as the initial packet. Again,
+        rule #1 in <xref target="hp_simple"/> was applied in order to disable
+        the EAM algorithm when translating the intermediate IPv4 source
+        address to IPv6. The example is included in order to illustrate how
+        the addresses in the packet initially sent by 2001:db8:aaaa:: matches
+        those in the translated response packet sent by 2001:db8:bbbb::b, thus
+        facilitating bi-directional communication.
+        </t>
+      </section>
     </section>
   </back>
 </rfc>
-<!-- vim: syntax=xml tw=78 ai fo=2 et:
+<!-- vim: syntax=xml tw=78 ai fo=2 sw=2 et:
 -->
