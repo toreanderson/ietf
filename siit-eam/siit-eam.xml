@@ -672,7 +672,7 @@
         </t>
         <t>
         <figure anchor="fig_example_hp_icmp" align="center">
-          <preamble>Hairpinning of a host-originated ICMPv6 error</preamble>
+          <preamble>Hairpinning of a router-originated ICMPv6 error</preamble>
           <artwork align="center"><![CDATA[
 +--------------+-------+-----------------------+--------------------+
 | XLAT Stage   | Loc.  | Source Address        | Destination Addr.  |
