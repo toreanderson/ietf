@@ -93,14 +93,14 @@
          in <xref target="eam_spec"/>.</t>
          <t hangText="EAMT"><vspace/>The Explicit Address Mapping Table, as
          specified in <xref target="eamt_spec"/>.</t>
-         <t hangText="Inner (header or address)">Refers to an IP header
-         located inside the payload of an ICMP error packet, or to an IP
-         address within that header. Compare "Outer".</t>
-         <t hangText="Outer (header or address)">Refers to the first IP header
-         in a packet, or to an IP address within that header. In other words,
-         an IP header or address that is NOT "Inner". If a reference is made
-         to an IP header or address without the "Inner" or "Outer" qualifier,
-         it should be considered as "Outer".</t>
+         <t hangText="Inner (header or address)"><vspace/>Refers to an IP
+         header located inside the payload of an ICMP error packet, or to an
+         IP address within that header. Compare "Outer".</t>
+         <t hangText="Outer (header or address)"><vspace/>Refers to the first
+         IP header in a packet, or to an IP address within that header. In
+         other words, an IP header or address that is NOT "Inner". If a
+         reference is made to an IP header or address without the "Inner" or
+         "Outer" qualifier, it should be considered as "Outer".</t>
          <t hangText="SIIT"><vspace/>The Stateless IP/ICMP Translation
          algorithm, as specified in <xref target="RFC6145"/>.</t>
          <t hangText="XLAT"><vspace/>Short for "translation".</t>
@@ -701,18 +701,18 @@
         <figure anchor="fig_example_hp_icmp2" align="center">
           <preamble>Hairpinning of a host-originated ICMPv6 error</preamble>
           <artwork align="center"><![CDATA[
-+--------------+-------+-----------------------+--------------------+
-| XLAT Stage   | Loc.  | Source Address        | Destination Addr.  |
-+--------------+-------+-----------------------+--------------------+
-| Initial      | Inner | 2001:db8:bbbb::b      | 64:ff9b::192.0.2.1 |
-|              | Outer | 64:ff9b::192.0.2.1    | 2001:db8:bbbb::b   |
-+--------------+-------+-----------------------+--------------------+
-| Intermediate | Inner | 192.0.2.2             | 192.0.2.1          |
-|              | Outer | 192.0.2.1             | 192.0.2.2          |
-+--------------+-------+-----------------------+--------------------+
-| Final        | Inner | 64:ff9b::192.0.2.2    | 2001:db8:aaaa::    |
-|              | Outer | 2001:db8:aaaa::       | 64:ff9b::192.0.2.2 |
-+--------------+-------+-----------------------+--------------------+
++--------------+-------+--------------------+--------------------+
+| XLAT Stage   | Loc.  | Source Address     | Destination Addr.  |
++--------------+-------+--------------------+--------------------+
+| Initial      | Inner | 2001:db8:bbbb::b   | 64:ff9b::192.0.2.1 |
+|              | Outer | 64:ff9b::192.0.2.1 | 2001:db8:bbbb::b   |
++--------------+-------+--------------------+--------------------+
+| Intermediate | Inner | 192.0.2.2          | 192.0.2.1          |
+|              | Outer | 192.0.2.1          | 192.0.2.2          |
++--------------+-------+--------------------+--------------------+
+| Final        | Inner | 64:ff9b::192.0.2.2 | 2001:db8:aaaa::    |
+|              | Outer | 2001:db8:aaaa::    | 64:ff9b::192.0.2.2 |
++--------------+-------+--------------------+--------------------+
           ]]></artwork>
         </figure>
         </t>
