@@ -403,7 +403,7 @@
             <t>If the packet is an ICMPv4 error whose outer IPv4 source
             address is equal to its inner IPv4 destination address: The EAM
             algorithm MUST NOT be used in order to translate the source
-            address in the IPv4 header.</t>
+            address in the outer IPv4 header.</t>
           </list>
           </t>
           <t>
@@ -481,9 +481,9 @@
       Baker and the author.
       </t>
       <t>
-      Valuable reviews, suggestions, and other feedback was given by Mohamed
-      Boucadair, Cameron Byrne, Brian E Carpenter, Michael Richardson, and
-      Andrew Yourtchenko.
+      Valuable reviews, suggestions, and other feedback was given by Fred
+      Baker, Mohamed Boucadair, Cameron Byrne, Brian E Carpenter, Michael
+      Richardson, Hemant Singh, and Andrew Yourtchenko.
       </t>
     </section>
   </middle>
@@ -534,8 +534,7 @@
         In this particular use case, the EAM algorithm is used to translate
         IPv6 destination addresses to IPv4, and conversely, IPv4 source
         addresses to IPv6. Other addresses are translated using <xref
-        target="RFC6052"/>. Note that this is the exact opposite of the <xref
-        target="usecase_siit_dc">SIIT-DC use case</xref>.
+        target="RFC6052"/>.
         </t>
       </section>
       <section anchor="usecase_ivi" title="IVI">
@@ -584,12 +583,12 @@
         <figure anchor="fig_eamt_siit_dc" align="center">
           <preamble>Example EAMT for SIIT-DC</preamble>
           <artwork align="center"><![CDATA[
-+---+--------------+----------------------+
-| # | IPv4 Prefix  |     IPv6 Prefix      |
-+---+--------------+----------------------+
-| 1 | 192.0.2.1/32 | 2001:db8:aaaa::1/128 |
-| 2 | 192.0.2.2/32 | 2001:db8:bbbb::1/128 |
-+---+--------------+----------------------+
++---+----------------+----------------------+
+| # |  IPv4 Prefix   |     IPv6 Prefix      |
++---+----------------+----------------------+
+| 1 | 203.0.113.1/32 | 2001:db8:aaaa::1/128 |
+| 2 | 203.0.113.2/32 | 2001:db8:bbbb::1/128 |
++---+----------------+----------------------+
           ]]></artwork>
         </figure>
         </t>
@@ -597,8 +596,7 @@
         In this particular use case, the EAM algorithm is used to translate
         IPv4 destination addresses to IPv6, and conversely, IPv6 source
         addresses to IPv4. Other addresses are translated using <xref
-        target="RFC6052"/>. Note that this is the exact opposite of the <xref
-        target="usecase_464xlat">464XLAT use case</xref>.
+        target="RFC6052"/>.
         </t>
       </section>
     </section>
@@ -677,14 +675,14 @@
 +--------------+-------+-----------------------+--------------------+
 | XLAT Stage   | Loc.  | Source Address        | Destination Addr.  |
 +--------------+-------+-----------------------+--------------------+
-| Initial      | Inner | 2001:db8::1234        | 64:ff9b::192.0.2.1 |
-|              | Outer | 64:ff9b::192.0.2.1    | 2001:db8:bbbb::b   |
+| Initial      | Outer | 2001:db8::1234        | 64:ff9b::192.0.2.1 |
+|              | Inner | 64:ff9b::192.0.2.1    | 2001:db8:bbbb::b   |
 +--------------+-------+-----------------------+--------------------+
-| Intermediate | Inner | 198.51.100.1          | 192.0.2.1          |
-|              | Outer | 192.0.2.1             | 192.0.2.2          |
+| Intermediate | Outer | 198.51.100.1          | 192.0.2.1          |
+|              | Inner | 192.0.2.1             | 192.0.2.2          |
 +--------------+-------+-----------------------+--------------------+
-| Final        | Inner | 64:ff9b::198.51.100.1 | 2001:db8:aaaa::    |
-|              | Outer | 2001:db8:aaaa::       | 64:ff9b::192.0.2.2 |
+| Final        | Outer | 64:ff9b::198.51.100.1 | 2001:db8:aaaa::    |
+|              | Inner | 2001:db8:aaaa::       | 64:ff9b::192.0.2.2 |
 +--------------+-------+-----------------------+--------------------+
           ]]></artwork>
         </figure>
@@ -704,14 +702,14 @@
 +--------------+-------+--------------------+--------------------+
 | XLAT Stage   | Loc.  | Source Address     | Destination Addr.  |
 +--------------+-------+--------------------+--------------------+
-| Initial      | Inner | 2001:db8:bbbb::b   | 64:ff9b::192.0.2.1 |
-|              | Outer | 64:ff9b::192.0.2.1 | 2001:db8:bbbb::b   |
+| Initial      | Outer | 2001:db8:bbbb::b   | 64:ff9b::192.0.2.1 |
+|              | Inner | 64:ff9b::192.0.2.1 | 2001:db8:bbbb::b   |
 +--------------+-------+--------------------+--------------------+
-| Intermediate | Inner | 192.0.2.2          | 192.0.2.1          |
-|              | Outer | 192.0.2.1          | 192.0.2.2          |
+| Intermediate | Outer | 192.0.2.2          | 192.0.2.1          |
+|              | Inner | 192.0.2.1          | 192.0.2.2          |
 +--------------+-------+--------------------+--------------------+
-| Final        | Inner | 64:ff9b::192.0.2.2 | 2001:db8:aaaa::    |
-|              | Outer | 2001:db8:aaaa::    | 64:ff9b::192.0.2.2 |
+| Final        | Outer | 64:ff9b::192.0.2.2 | 2001:db8:aaaa::    |
+|              | Inner | 2001:db8:aaaa::    | 64:ff9b::192.0.2.2 |
 +--------------+-------+--------------------+--------------------+
           ]]></artwork>
         </figure>
