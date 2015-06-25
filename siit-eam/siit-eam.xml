@@ -693,7 +693,7 @@
         response to the packet <xref target="fig_example_hp"/>. In this
         example, rule #2 in <xref target="hp_simple"/> was applied in order to
         disable the EAM algorithm when translating the intermediate inner
-        IPv4 source address to IPv6.
+        IPv4 destination address to IPv6.
         </t>
         <t>
         <figure anchor="fig_example_hp_icmp2" align="center">
