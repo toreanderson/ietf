@@ -132,9 +132,9 @@
       <list style="hanging">
        <t hangText="Limited availability:"><vspace/>The number of
        IPv4-translatable IPv6 addresses available to an operator is equal to
-       the number of IPv4 addresses he assigns to the SIIT function. IPv4
-       addresses are scarce, and as a result an operator might not have enough
-       IPv4-translatable IPv6 addresses to number his entire IPv6
+       the number of IPv4 addresses that is assigned to the SIIT function.
+       IPv4 addresses are scarce, and as a result an operator might not have
+       enough IPv4-translatable IPv6 addresses to number the entire IPv6
        infrastructure.</t>
        <t hangText="Restricted format:"><vspace/>IPv4-translatable IPv6
        addresses must conform to the format specified in Section 2.2 of <xref
@@ -167,7 +167,7 @@
        requiring that any ACL entries involving the primary IPv6 address of a
        node must be duplicated.</t>
        <t hangText="Operational complexity:"><vspace/>The IPv4-translatable
-       IPv6 addresses must not only be assigned to the IPv6 nodes
+       IPv6 addresses not only have to be assigned to the IPv6 nodes
        participating in SIIT; all applications and services on those nodes
        must also be configured to use them. For example, if the IPv6 node is a
        load balancer, it might require a separate Virtual Server definition
@@ -181,7 +181,10 @@
        two addresses might be completely different. Service monitoring must be
        done for both the IPv4-translatable and the primary IPv6 address, and
        any trouble-shooting procedures must be extended to involve both
-       addresses.</t>
+       addresses. Finally, the <xref target="RFC6724">Default Address
+       Selection Policy Table</xref> on the IPv6 nodes might need to be
+       altered in order to ensure that outbound sessions towards the IPv4
+       Internet are sourced from an IPv4-translatable IPv6 address.</t>
       </list>
       </t>
       <t>
@@ -200,7 +203,7 @@
     <section anchor="eam_def" title="Explicit Address Mapping Algorithm">
       <t>
       This normative section defines the EAM algorithm. SIIT implementations
-      are REQUIRED to support the specifications herein.
+      MUST support the specifications herein.
       </t>
       <section anchor="eamt_spec" title="Explicit Address Mapping Table">
         <t>
@@ -258,12 +261,6 @@
         suffix bits than its corresponding IPv6 Prefix value.
         </t>
         <t>
-        Overlapping EAMs SHOULD be considered an error, and attempts to insert
-        them into the EAMT SHOULD be blocked. The behaviour of an SIIT
-        implementation when overlapping EAMs are present in the EAMT is left
-        undefined.
-        </t>
-        <t>
         When translating a packet between IPv4 and IPv6, an SIIT
         implementation MUST individually translate each IP address it
         encounters in the packet's IP headers (including any IP headers
@@ -287,10 +284,11 @@
                  title="Address Translation Steps: IPv4 to IPv6">
           <t>
           <list style="numbers">
-            <t>The EAMT is searched for an EAM entry containing an IPv4 Prefix
-            identical to that of the IPv4 address being translated. The IPv4
-            Prefix and IPv6 Prefix values of the EAM entry found is from now
-            on referred to as EAM4 and EAM6, respectively.</t>
+            <t>The IPv4 Prefix column of the EAMT is searched for the EAM
+            entry that shares the longest common prefix with the IPv4 address
+            being translated. The IPv4 Prefix and IPv6 Prefix values of the
+            EAM entry found is from now on referred to as EAM4 and EAM6,
+            respectively.</t>
             <t>If no matching EAM entry is found, the EAM algorithm is
             aborted. The SIIT implementation MUST proceed to translate the
             address in accordance with <xref target="RFC6145"/> (and its
@@ -312,10 +310,11 @@
                  title="Address Translation Steps: IPv6 to IPv4">
           <t>
           <list style="numbers">
-            <t>The EAMT is searched for an EAM entry containing an IPv6 Prefix
-            identical to that of the IPv6 address being translated. The IPv4
-            Prefix and IPv6 Prefix values of the EAM entry found is from now
-            on referred to as EAM4 and EAM6, respectively.</t>
+            <t>The IPv6 Prefix column of the EAMT is searched for the EAM
+            entry that shares the longest common prefix with the IPv6 address
+            being translated. The IPv4 Prefix and IPv6 Prefix values of the
+            EAM entry found is from now on referred to as EAM4 and EAM6,
+            respectively.</t>
             <t>If no matching EAM entry is found, the EAM algorithm is
             aborted. The SIIT implementation MUST proceed to translate the
             address in accordance with <xref target="RFC6145"/> (and its
@@ -334,6 +333,68 @@
           </t>
         </section>
       </section>
+    </section>
+    <section anchor="eam_overlaps"
+             title="Overlapping Explicit Address Mappings">
+      <t>
+      The algorithm specified in <xref target="eam_def"/> relies on making a
+      lookup in the EAMT in order to find the EAM entry that shares the
+      longest common prefix with the address being translated. Operators
+      should note that configuring EAMs with overlapping or identical IPv4 or
+      IPv6 Prefixes in the EAMT may create configurations where the
+      IPv4-to-IPv6 and IPv6-to-IPv4 address translations will not be
+      symmetric. This has the potential of making bi-directional communication
+      impossible.
+      </t>
+      <t>
+      In <xref target="fig_example_overlap"/> below, the IPv6 Prefixes of the
+      two EAMs overlap, while the IPv4 Prefixes do not. This results in a
+      situation where a packet addressed to the IPv4 address 203.0.113.10
+      would be translated (according to EAM #1) to have the IPv6 destination
+      address 2001:db8:cb00:710a::, while a return packet sent from
+      2001:db8:cb00:710a:: would be translated (according to EAM #2) to have
+      the IPv4 source address 203.0.113.20. Because the IPv6-to-IPv4
+      translation in this example did not mirror the corresponding
+      IPv4-to-IPv6 translation, bi-directional communication might fail. In
+      order to help avoid such situations, implementations MAY warn the
+      operator when a new EAM that overlaps with a previously existing one is
+      inserted into the EAMT.
+      </t>
+      <t>
+      <figure anchor="fig_example_overlap" align="center">
+        <preamble>EAMT with overlapping prefixes</preamble>
+        <artwork align="center"><![CDATA[
++---+-----------------+--------------------------+
+| # |   IPv4 Prefix   |       IPv6 Prefix        |
++---+-----------------+--------------------------+
+| 1 | 203.0.113.10/32 | 2001:db8::/32            |
+| 2 | 203.0.113.20/32 | 2001:db8:cb00:710a::/128 |
++---+-----------------+--------------------------+
+        ]]></artwork>
+      </figure>
+      </t>
+      <t>
+      In <xref target="fig_example_identical"/>, the IPv6 Prefixes of the two
+      EAMs are identical. The behaviour of the stateless translator when
+      translating an IPv6 packet that contains the address 2001:db8::1 to IPv4
+      is in this case unspecified. In order to prevent this situation from
+      occurring, implementations MAY refuse to insert a new EAM, whose IPv4 or
+      IPv6 Prefix value is identical to that of an already existing EAM, into
+      the EAMT.
+      </t>
+      <t>
+      <figure anchor="fig_example_identical" align="center">
+        <preamble>EAMT with identical prefixes</preamble>
+        <artwork align="center"><![CDATA[
++---+-----------------+-----------------+
+| # |   IPv4 Prefix   |   IPv6 Prefix   |
++---+-----------------+-----------------+
+| 1 | 203.0.113.10/32 | 2001:db8::1/128 |
+| 2 | 203.0.113.20/32 | 2001:db8::1/128 |
++---+-----------------+-----------------+
+        ]]></artwork>
+      </figure>
+      </t>
     </section>
     <section anchor="hairpinning" title="Hairpinning of IPv6 Traffic">
       <section anchor="hp_problem_statement" title="Problem Statement">
@@ -482,8 +543,8 @@
       </t>
       <t>
       Valuable reviews, suggestions, and other feedback was given by Fred
-      Baker, Mohamed Boucadair, Cameron Byrne, Brian E Carpenter, Michael
-      Richardson, Hemant Singh, and Andrew Yourtchenko.
+      Baker, Mohamed Boucadair, Cameron Byrne, Brian E Carpenter, Ray Hunter,
+      Michael Richardson, Hemant Singh, and Andrew Yourtchenko.
       </t>
     </section>
   </middle>
@@ -498,6 +559,7 @@
       <?rfc include="reference.RFC.4862"?>
       <?rfc include="reference.RFC.6144"?>
       <?rfc include="reference.RFC.6219"?>
+      <?rfc include="reference.RFC.6724"?>
       <?rfc include="reference.RFC.6791"?>
       <?rfc include="reference.RFC.6877"?>
       <?rfc include="reference.RFC.7335"?>
