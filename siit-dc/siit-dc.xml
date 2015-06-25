@@ -79,11 +79,11 @@
         <t>Provide IPv4 service availability for legacy users with no loss of
         performance or functionality.</t>
         <t>To ensure that that the legacy users' IPv4 addresses remain visible
-        to the servers and applications.</t>
+        to the nodes and applications.</t>
         <t>To conserve and maximise the utilisation of the operator's public
         IP4 addresses.</t>
         <t>To avoid introducing more complexity than absolutely necessary,
-        especially on the servers and applications.</t>
+        especially on the nodes and applications.</t>
         <t>To be easy to scale and deploy in a fault-tolerant manner.</t>
       </list>
       </t>
@@ -92,19 +92,19 @@
       </t>
       <section anchor="intro_v6only" title="Single Stack IPv6 Operation">
         <t>
-        SIIT-DC allows operators to build their infrastructure and
+        SIIT-DC allows IDC operators to build their infrastructure and
         applications on an IPv6-only foundation. IPv4 end-user connectivity
         becomes a service provided by the network, which systems
         administration and application development staff do not need to
         concern themselves with. This promotes universal IPv6 deployment for
-        the operator's services and applications.
+        the IDC operator's services and applications.
         </t>
         <t>
         SIIT-DC requires no special support or change from the underlying IPv6
-        infrastructure, it will work with any kind of IPv6 network. Traffic
-        between IPv6-enabled end users and IPv6-enabled services will always
-        be transported native end-to-end; SIIT-DC does not intercept or handle
-        native IPv6 traffic at all.
+        infrastructure, it is compatible with all standard IPv6 networks.
+        Traffic between IPv6-enabled end users and IPv6-enabled services will
+        always be transported native end-to-end; SIIT-DC does not intercept or
+        handle native IPv6 traffic at all.
         </t>
         <t>
         When the day comes to discontinue all support for IPv4, no change
@@ -127,15 +127,15 @@
         initiation rates are irrelevant for performance.
         </t>
         <t>
-        This not only allows individual SIIT-DC Border Relays (BRs) to easily
-        attain "line rate" performance, it also allows for per-packet load
-        balancing between multiple BRs using <xref target="RFC2991">Equal-Cost
-        Multipath Routing</xref>. Asymmetric routing is also acceptable, which
-        makes it easy to avoid sub-optimal traffic patterns; the prefixes
-        involved may be anycasted from all the BRs in the provider's network,
-        thus ensuring that the most optimal path through the network is used,
-        even where the optimal path in one direction differs from the optimal
-        path in the opposite direction.
+        This not only allows individual BRs to easily attain "line rate"
+        performance, it also allows for per-packet load balancing between
+        multiple BRs using <xref target="RFC2991">Equal-Cost Multipath
+        Routing</xref>. Asymmetric routing is also acceptable, which makes it
+        easy to avoid sub-optimal traffic patterns; the prefixes involved may
+        be anycasted from all the BRs in the provider's network, thus ensuring
+        that the most optimal path through the network is used, even where the
+        optimal path in one direction differs from the optimal path in the
+        opposite direction.
         </t>
         <t>
         Finally, stateless operation means that high availability is easily
@@ -195,10 +195,10 @@
                title="Compatible with Standard IPv4 and IPv6 Stacks">
         <t>
         Except for the introduction of the BRs themselves, no change to the
-        network, servers, applications, or anything else is required in order
+        network, nodes , applications, or anything else is required in order
         to support SIIT-DC. SIIT-DC is practically invisible from the point of
-        view of the IPv4 clients, the IPv6 servers, the IPv6 data centre
-        network, and the IPv4 Internet. SIIT-DC interoperates with all
+        view of the IPv4 clients, the IPv6 node, the IPv6 data centre network,
+        and the IPv4 Internet. SIIT-DC interoperates with all
         standards-compliant IPv4 or IPv6 stacks.
         </t>
       </section>
@@ -217,29 +217,29 @@
        function that provides "native" IPv4 connectivity to IPv4-only devices
        or application software. It is very similar in function to a BR, but is
        typically located close to the IPv4-only component(s) it is supporting
-       rather than on the network border. The ERs is an optional component of
-       SIIT-DC. It is discussed in more detail in <xref
+       rather than on the IDC's outer network border. The ERs is an optional
+       component of SIIT-DC. It is discussed in more detail in <xref
        target="I-D.ietf-v6ops-siit-dc-2xlat"/>.</t>
        <t hangText="IPv4 Service Address"><vspace/>A public IPv4 address with
-       which IPv4-only clients will communicate. This communication will be
+       which IPv4-only clients communicates. This communication will be
        translated to IPv6 by a BR. The service's "IN A" DNS record will
        typically point to the IPv4 Service Address.</t>
        <t hangText="IPv4 Service Address Pool"><vspace/>One or more IPv4
        prefixes routed to the BR's IPv4 interface. IPv4 Service Addresses are
-       allocated from this pool. Note that this does not necessarily have to
-       be a "pool" per se, as it could also be one or more host routes (whose
+       allocated from this pool. That this does not necessarily have to be a
+       "pool" per se, as it could also be one or more host routes (whose
        prefix length is equal to /32). The purpose of using a pool rather than
        host routes is to facilitate IPv4 route aggregation and ease
        provisioning of new IPv4 Service Addresses.</t>
        <t hangText="IPv6 Service Address"><vspace/>A public IPv6 address
-       assigned to a server, load-balancer, or application in the IPv6
-       network. IPv6-capable clients communicates directly with the IPv6
-       Service Address using native IPv6. The service's "IN AAAA" DNS record
-       will typically point to the IPv6 Service Address. IPv4-only clients
-       will indirectly communicate with the IPv6 Service Address, via
-       SIIT-DC.</t>
+       assigned to a node (such as a server or load-balancer) or an individual
+       application in the IPv6 network. IPv6-capable clients communicate
+       directly with the IPv6 Service Address using native IPv6. The service's
+       "IN AAAA" DNS record will typically point to the IPv6 Service Address.
+       IPv4-only clients indirectly communicate with the IPv6 Service Address
+       through SIIT-DC.</t>
        <t hangText="Explicit Address Mapping (EAM)"><vspace/>A bi-directional
-       mapping between an IPv4 Service Address and an IPv6 Service Address
+       coupling between an IPv4 Service Address and an IPv6 Service Address
        configured in a BR or ER. When translating between IPv4 and IPv6, the
        BR/ER changes the address fields in the translated packet's IP header
        according to any matching EAM. See <xref
@@ -248,9 +248,9 @@
        entire IPv4 address space is mapped. This prefix is routed to the BR's
        IPv6 interface. It is either a Network-Specific Prefix or the
        Well-Known Prefix 64:ff9b::/96, cf. <xref target="RFC6052"/>. When
-       translating between IPv4 and IPv6, a BR/ER prepends or strips the
+       translating between IPv4 and IPv6, a BR/ER inserts or removes the
        Translation Prefix from the address fields in the translated packet's
-       IP header, unless an EAM for the IP address to be translated
+       IP header, unless an EAM for the IP address being translated
        exists.</t>
        <t hangText="IPv4-translatable IPv6 addresses"><vspace/>As defined in
        Section 1.3 of <xref target="RFC6052"/>.</t>
@@ -302,10 +302,10 @@
       </figure>
       </t>
       <t>
-      In <xref target="fig_architecture"/> 192.0.2.0/24 is the IPv4 Service
+      In <xref target="fig_architecture"/>, 192.0.2.0/24 is the IPv4 Service
       Address Pool. Individual IPv4 Service Addresses are assigned from this
       prefix, and traffic destined for it is routed to the BR's IPv4-facing
-      network interface. There exist no restrictions on how many IPv4 Service
+      network interface. There are no restrictions on how many IPv4 Service
       Address Pools are used or their prefix length, as long as they are all
       routed to the BR's IPv4-facing network interface.
       </t>
@@ -313,8 +313,8 @@
       When translating packets between IPv4 and IPv6, the BR uses the EAM to
       replace any occurrence of the IPv4 Service Address (192.0.2.1) with its
       corresponding IPv6 Service Address (2001:db8:12:34::1). Addresses that
-      do not match any EAM configured in the BR are translated by prepending
-      or stripping the Translation Prefix (2001:db8:46::/96), cf. <xref
+      do not match any EAM configured in the BR are translated by inserting or
+      removing the Translation Prefix (2001:db8:46::/96), cf. <xref
       target="RFC6052">Section 2.2 of RFC6052</xref>.
       </t>
       <t>
@@ -373,7 +373,7 @@
         <t>
         It is important to note that neither the IPv4 client nor the IPv6
         server/application need any special support to participate in SIIT-DC.
-        However, the server may optionally be taught to extract the client's
+        However, the application may optionally be taught to extract the
         embedded IPv4 source address from incoming IPv6 packets with source
         addresses within the Translation Prefix. This will allow it to perform
         IPv4-specific tasks such as Geo-Location, logging, abuse handling, and
@@ -385,16 +385,15 @@
       <section title="Application/Device Support for IPv6">
         <t>
         SIIT-DC as described in this document requires that the application
-        (and/or the device the application is located on) supports IPv6
+        (and/or the node the application is located on) supports IPv6
         networking, and that it has no dependency on local IPv4 network
-        connectivity. However, SIIT-DC supports IPv4-dependent
-        applications/devices through the introduction of an ER. The ER
-        provides the application or device with seemingly native IPv4
-        connectivity, by translating the packets (that were previously
-        translated from IPv4 to IPv6) by the BR back to IPv4 before passing
-        them to the IPv4-dependent application or device. This approach is
-        described in more detail in <xref
-        target="I-D.ietf-v6ops-siit-dc-2xlat"/>.
+        connectivity. However, SIIT-DC supports IPv4-dependent applications
+        and nodes through the introduction of an ER. The ER provides the
+        application or node with seemingly native IPv4 connectivity, by
+        translating the packets (that were previously translated from IPv4 to
+        IPv6) by the BR back to IPv4 before passing them to the IPv4-dependent
+        application or node. This approach is described in more detail in
+        <xref target="I-D.ietf-v6ops-siit-dc-2xlat"/>.
         </t>
       </section>
       <section title="Application Support for NAT">
@@ -534,19 +533,14 @@
         <t>
         Finally, another possibility is that the IDC operator outsources the
         SIIT-DC service to another entity, for example his upstream ISP. Doing
-        so allows the data centre operator to build a true IPv6-only
-        infrastructure. However, in this case, care must be taken to ensure
-        that the path between the data centre and the SIIT-DC operator has a
-        stable and known MTU, and that the BRs are not located too far away
-        from the data centre (otherwise, translated traffic could incur a
-        latency penalty).
+        so allows the IDC operator to build a true IPv6-only infrastructure.
         </t>
       </section>
       <section title="Migration from Dual Stack">
         <t>
-        While this document mainly discusses the use of IPv6-only servers and
+        While this document mainly discusses the use of IPv6-only nodes and
         applications, it is important to note that SIIT-DC is fully compatible
-        with a dual stack infrastructure, including dual stack servers and
+        with dual stack infrastructures, including dual stack nodes and
         applications.
         </t>
         <t>
@@ -616,13 +610,13 @@
           flag cleared will need to be fragmented by the BR. This may be
           avoided by increasing the Path MTU between the BR and the IPv6 nodes
           to 1520 bytes or greater. If this is done, the MTU on the IPv6 nodes
-          themselves SHOULD NOT be increased accordingly, as that would cause
-          them to undergo Path MTU Discovery for all destinations on the IPv6
-          Internet. However, the nodes would need to be able to accept and
-          process incoming packets larger than their own MTU. However, if the
-          server's IPv6 implementation allows the initial Path MTU to be set
-          differently for specific destinations, it could be increased to 1520
-          for destinations within the Translation Prefix specifically.
+          themselves SHOULD NOT be increased accordingly, as doing so would
+          cause them to undergo Path MTU Discovery for all destinations on the
+          IPv6 Internet. The nodes MUST however be able to accept and process
+          incoming packets larger than their own MTU. If the nodes' IPv6
+          implementation allows the initial Path MTU to be set differently for
+          specific destinations, it MAY be increased to 1520 for destinations
+          within the Translation Prefix specifically.
           </t>
         </section>
         <section title="IPv6 Atomic Fragments">
@@ -745,8 +739,8 @@
         SIIT-DC is designed so that the IPv6 Service Addresses are not
         required to be IPv4-translatable IPv6 addresses. <xref
         target="I-D.ietf-v6ops-siit-eam">Section 2 of
-        I-D.ietf-v6ops-siit-eam</xref> discusses why IPv4-translatable IPv6
-        addresses are undesired.
+        I-D.ietf-v6ops-siit-eam</xref> discusses why it is desirable to avoid
+        requiring the use of IPv4-translatable IPv6 addresses.
         </t>
         <t>
         It is however quite possible to deploy SIIT-DC in combination with
@@ -763,9 +757,9 @@
         </list>
         </t>
         <t>
-        However, the trade-off is that the IPv4-translatable IPv6 Service
-        Addresses must be configured on the IPv6 nodes, and the applications
-        must be set up to use them - likely in addition to their primary
+        The trade-off is that the IPv4-translatable IPv6 Service Addresses
+        must be configured on the IPv6 nodes, and the applications must be set
+        up to use them - likely in addition to their primary
         (non-IPv4-translatable) IPv6 addresses. The IPv4-translatable IPv6
         Service Addresses must also be routed from the BR through the IDC's
         IPv6 network infrastructure to the nodes on which they are assigned.
@@ -943,7 +937,7 @@
         also work when located behind an <xref
         target="I-D.ietf-v6ops-siit-dc-2xlat">ER</xref>. Tenant A's FTP server
         illustrates how an ER may be located in the networking stack of a
-        server, while Tenant B's FTP server illustrates how the ER may be
+        node, while Tenant B's FTP server illustrates how the ER may be
         deployed as a network service. The latter approach enables SIIT-DC to
         support IPv4-only nodes/devices.</t>
       </list>
