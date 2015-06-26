@@ -277,42 +277,8 @@
         Each host on the IPv4 network segment must acquire and assign an IPv4
         Service Address to a local network interface. This document does not
         attempt to explore all the various methods by which this can be
-        accomplished, however one relatively straight-forward possibility
-        would be to ensure the IPv4 Service Address(es) can be enclosed in an
-        IPv4 prefix. The ET will then claim one address in this prefix for
-        itself (used as the IPv4 default router address), and could assign the
-        IPv4 Service Address(es) to the host(s) using DHCPv4. For example, if
-        the IPv4 Service Addresses are 192.0.2.26 and 192.0.2.27, the ET would
-        configure the address 192.0.2.25/29 on its IPv4-facing interface and
-        would add the two IPv4 Service Addresses to its DHCPv4 pool.
-        </t>
-        <t>
-        One disadvantage of this method is that IPv4 communication between the
-        IPv4 hosts and other services made available through SIIT-DC using the
-        method described in <xref target="intra_dc_v4"/> becomes impossible,
-        if those other services are assigned IPv4 Service Addresses that also
-        are covered by the same IPv4 prefix (e.g., 192.0.2.28). This is
-        because the IPv4 nodes will mistakenly believe they have an on-link
-        route to the entire prefix, and attempt to resolve the addresses using
-        ARP (instead of forwarding them to the ET for translation to IPv6).
-        This problem could however be overcome by avoiding assigning IPv4
-        Service Addresses which overlaps with an IPv4 prefix handled by an ET
-        (at the expense of wasting some potential IPv4 Service Addresses), or
-        by ensuring that they are only assigned to services which do not need
-        to communicate with the IPv4 host(s) behind the ET.
-        </t>
-        <t>
-        Another way to avoid the problem is to use a private unrouted IPv4
-        network that does not encompass the IPv4 Service Addresses as the
-        IPv4, and instead assign the IPv4 Service Addresses as secondary
-        addresses on the servers. The ET must then route each IPv4 Service
-        Address to its respective server using the server's private on-link
-        IPv4 address as the next-hop. This approach would ensure there are no
-        overlaps, but on the other hand it would preclude the use of DHCPv4
-        for assigning the IPv4 Service Addresses, as well as create a need to
-        ensure that the IPv4 application software is selecting the IPv4
-        Service Address (as opposed to its private on-link IPv4 address) as
-        its source address when initiating outbound connections.
+        accomplished. Some examples of such methods are given in <xref
+        target="examples_netbased_connectivity" />.
         </t>
         <t>
         The basic ET illustrated in <xref target="fig_netbased_et_basic"/>
@@ -832,6 +798,56 @@
       <?rfc include="reference.RFC.6145"?>
       <?rfc include="reference.RFC.6877"?>
     </references>
+
+    <section anchor="examples_netbased_connectivity"
+      title="Examples: Network-Based IPv4 connectivity">
+      <section anchor="et_netbased_subnet_v4sa"
+        title="Subnet with IPv4 Service Addresses">
+        <t>
+          One relatively straight-forward possibility for providing IPv4
+          connectivity from the ET to the IPv4 devices
+          would be to ensure the IPv4 Service Address(es) can be enclosed in an
+          IPv4 prefix. The ET will then claim one address in this prefix for
+          itself (used as the IPv4 default router address), and could assign the
+          IPv4 Service Address(es) to the host(s) using DHCPv4. For example, if
+          the IPv4 Service Addresses are 192.0.2.26 and 192.0.2.27, the ET would
+          configure the address 192.0.2.25/29 on its IPv4-facing interface and
+          would add the two IPv4 Service Addresses to its DHCPv4 pool.
+        </t>
+        <t>
+          One disadvantage of this method is that IPv4 communication between the
+          IPv4 hosts and other services made available through SIIT-DC using the
+          method described in <xref target="intra_dc_v4"/> becomes impossible,
+          if those other services are assigned IPv4 Service Addresses that also
+          are covered by the same IPv4 prefix (e.g., 192.0.2.28). This is
+          because the IPv4 nodes will mistakenly believe they have an on-link
+          route to the entire prefix, and attempt to resolve the addresses using
+          ARP (instead of forwarding them to the ET for translation to IPv6).
+          This problem could however be overcome by avoiding assigning IPv4
+          Service Addresses which overlaps with an IPv4 prefix handled by an ET
+          (at the expense of wasting some potential IPv4 Service Addresses), or
+          by ensuring that they are only assigned to services which do not need
+          to communicate with the IPv4 host(s) behind the ET.
+        </t>
+      </section>
+      
+      <section anchor="et_netbased_subnet_unrouted"
+        title="Subnet with unrouted IPv4 addresses">
+        <t>
+          Another way to avoid the problem is to use a private unrouted IPv4
+          network that does not encompass the IPv4 Service Addresses as the
+          IPv4, and instead assign the IPv4 Service Addresses as secondary
+          addresses on the servers. The ET must then route each IPv4 Service
+          Address to its respective server using the server's private on-link
+          IPv4 address as the next-hop. This approach would ensure there are no
+          overlaps, but on the other hand it would preclude the use of DHCPv4
+          for assigning the IPv4 Service Addresses, as well as create a need to
+          ensure that the IPv4 application software is selecting the IPv4
+          Service Address (as opposed to its private on-link IPv4 address) as
+          its source address when initiating outbound connections.
+        </t>
+      </section>
+    </section>
   </back>
 
 </rfc>
