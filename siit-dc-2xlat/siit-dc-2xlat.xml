@@ -296,26 +296,16 @@
         node-based ER might not be available for every node. If the
         application protocol in question does not work correctly in a NAT
         environment, standard SIIT-DC cannot be used either, which leaves a
-        network-based ER is the only remaining solution.
+        network-based ER is the only remaining solution. The following
+        subsections contains examples on how the ER could be implemented in a
+        way that provides IPv6 connectivity for dual-stack capable nodes.
         </t>
-        <t>
-        The operator could avoid breaking the nodes' IPv6 connectivity by
-        connecting the ER's IPv4 and IPv6 interfaces to the same network
-        segment, or by using a single dual-stacked interface instead. The
-        latter alternative is shown in <xref
-        target="fig_netbased_er_onastick"/>. This could be thought of as an
-        "ER on a stick". Native IPv6 traffic between the network and the nodes
-        will bypass the ER entirely. IPv4 traffic from the nodes will be
-        routed directly to the ER (because it is their default IPv4 router),
-        and translated to IPv6 before transmission to the upstream default
-        IPv6 router. The ER could attract inbound traffic to its IPv6 Service
-        Addresses by responding to the upstream router's <xref
-        target="RFC4861">IPv6 Neighbor Discovery</xref> messages for them.
-        </t>
-        <t>
-        <figure anchor="fig_netbased_er_onastick" align="center">
-          <preamble>A Network-based Edge Relay "on a stick"</preamble>
-          <artwork align="center"><![CDATA[
+        <section anchor="er_netbased_onastick"
+                 title='Edge Router "On A Stick"'>
+          <t>
+          <figure anchor="fig_netbased_er_onastick" align="center">
+            <preamble>A Network-based Edge Relay "On A Stick"</preamble>
+            <artwork align="center"><![CDATA[
 [IPv4 Internet]  [IPv6 Internet]
       |             |
 +-----|-----+       |
@@ -336,24 +326,31 @@
                                |  \--AF_INET6  Software    ||
                                |          +----------------+|
                                +----------------------------+
-          ]]></artwork>
-        </figure>
-        </t>
-        <t>
-        Yet another variation would be to implement the ER so that it
-        transparently passes IPv6 traffic between its downstream and upstream
-        network ports unmodified, e.g., using Layer-2 bridging. Packets sent
-        to its own IPv6 Service Addresses from the upstream network are
-        intercepted (e.g, by responding to <xref target="RFC4861">IPv6
-        Neighbor Discovery</xref> messages for them) and routed through the
-        translation function, and forwarded out its downstream interface. The
-        downstream network segment is thus becomes dual-stacked. This model is
-        illustrated in <xref target="fig_transparent_er"/>.
-        </t>
-        <t>
-        <figure anchor="fig_transparent_er" align="center">
-          <preamble>A Transparent Network-based Edge Relay</preamble>
-          <artwork align="center"><![CDATA[
+            ]]></artwork>
+          </figure>
+          </t>
+          <t>
+          The ER "On A Stick" approach illustrated in <xref
+          target="fig_netbased_er_onastick"/> ensures that the dual-stack
+          capable node retains native IPv6 connectivity by connecting the ER's
+          IPv4 and IPv6 interfaces to the same network segment, alternatively
+          by using a single dual-stacked interface. Native IPv6 traffic
+          between the IDC network and the node bypasses the ER entirely, while
+          IPv4 traffic from the node will be routed directly to the ER
+          (because it acts as its default IPv4 router), where it is translated
+          to IPv6 before being transmitted to the upstream default IPv6
+          router. The ER could attract inbound traffic to the IPv6 Service
+          Addresses by responding to the upstream router's <xref
+          target="RFC4861">IPv6 Neighbor Discovery</xref> messages for them.
+          </t>
+        </section>
+        <section anchor="et_netbased_v6bridge"
+                 title="Edge Router that Bridges IPv6 Packets">
+          <t>
+          <figure anchor="fig_transparent_er" align="center">
+            <preamble>A Network-based Edge Relay containing an IPv6
+            Bridge</preamble>
+            <artwork align="center"><![CDATA[
 [IPv4 Internet]  [IPv6 Internet]
       |             |
 +-----|-----+       |
@@ -374,9 +371,20 @@
                                |  \--AF_INET6  Software    ||
                                |          +----------------+|
                                +----------------------------+
-          ]]></artwork>
-        </figure>
-        </t>
+            ]]></artwork>
+          </figure>
+          </t>
+          <t>
+          The ER illustrated in <xref target="fig_transparent_er"/> will
+          transparently bridge IPv6 frames between its upstream and downstream
+          interfaces. IPv6 packets addressed the ER's own IPv6 Service
+          Addresses from the upstream IDC network are intercepted (e.g., by
+          responding to <xref target="RFC4861">IPv6 Neighbor Discovery</xref>
+          messages for them) and routed through the translation function
+          before being forwarded out its downstream interface as IPv4 packets.
+          The downstream network segment thus becomes dual-stacked.
+          </t>
+        </section>
       </section>
     </section>
     <section title="Deployment Considerations">
