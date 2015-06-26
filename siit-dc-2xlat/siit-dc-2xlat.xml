@@ -204,8 +204,8 @@
         with IPv4 connectivity. The IPv4 Service Address it handles is
         considered local, allowing application software running on the same
         host to use traditional IPv4-only API calls, e.g., to create AF_INET
-        sockets that listens for and accepts incoming connections to its IPv4
-        Service Address. An ET could accomplish this by creating an virtual
+        sockets that listen for and accept incoming connections to its IPv4
+        Service Address. An ET could accomplish this by creating a virtual
         network adapter to which it assigns the IPv4 Service Address and
         points a default IPv4 route.
         </t>
