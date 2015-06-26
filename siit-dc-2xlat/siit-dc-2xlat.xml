@@ -280,36 +280,11 @@
         accomplished. Some examples of such methods are given in <xref
         target="examples_netbased_connectivity" />.
         </t>
-        <t>
-        The basic ET illustrated in <xref target="fig_netbased_et_basic"/>
-        establishes an IPv4-only network segment behind itself. This is fine
-        if the devices it provides IPv4 access have no support for IPv6
-        whatsoever; however if they are dual-stack capable, it is would not be
-        ideal to take away their IPv6 connectivity. While it is recommended to
-        use a host-based ET in this case, appropriate implementations of a
-        host-based ET might not be available for every device. If the
-        application protocol does not work correctly in a NAT environment,
-        standard SIIT-DC cannot be used either. Thus, a network-based ET is
-        the only solution.
-        </t>
-        <t>
-        The operator could avoid breaking the hosts' IPv4 connectivity by
-        connecting the ET's IPv4 and IPv6 interfaces to the same network
-        segment, or by using a single dual-stacked interface instead. The
-        latter alternative is shown in <xref
-        target="fig_netbased_et_onastick"/>. This could be thought of as an
-        "ET on a stick". IPv6 traffic between the network and the hosts will
-        bypass the ET entirely. IPv4 traffic from the hosts will be routed
-        directly to the ET (because it's their default IPv4 router), and
-        translated to IPv6 before its being transmitted to the upstream
-        default IPv6 router. The ET could attract inbound traffic to its IPv6
-        Service Addresses by responding to the upstream router's <xref
-        target="RFC4861">IPv6 Neighbor Discovery</xref> messages for them.
-        </t>
-        <t>
-        <figure anchor="fig_netbased_et_onastick" align="center">
-          <preamble>A Network-based Edge Translator "on a stick"</preamble>
-          <artwork align="center"><![CDATA[
+        <section anchor="et_netbased_onastick" title="Variant: ET on a stick">
+          <t>
+          <figure anchor="fig_netbased_et_onastick" align="center">
+            <preamble>A Network-based Edge Translator "on a stick"</preamble>
+            <artwork align="center"><![CDATA[
 [IPv4 Internet]   [IPv6 Internet]
    |                         |
 +--|--<SIIT-DC GW>--+        |
@@ -335,24 +310,42 @@
 |  \--AF_INET6  Software    ||
 |          +----------------+|
 +----------------------------+
-          ]]></artwork>
-        </figure>
-        </t>
-        <t>
-        Yet another variation would be to implement the ET so that it
-        transparently passes IPv6 traffic between its downstream and upstream
-        network ports unmodified, e.g., using Layer-2 bridging. Packets sent
-        to its own IPv6 Service Addresses from the upstream network are
-        intercepted (e.g, by responding to <xref target="RFC4861">IPv6
-        Neighbor Discovery</xref> messages for them) and routed through the
-        translation function, and forwarded out its downstream interface. The
-        downstream network segment is thus becomes dual-stacked. This model is
-        shown in <xref target="fig_transparent_et"/>.
-        </t>
-        <t>
-        <figure anchor="fig_transparent_et" align="center">
-          <preamble>A Transparent Network-based Edge Translator</preamble>
-          <artwork align="center"><![CDATA[
+            ]]></artwork>
+          </figure>
+          </t>
+          <t>
+          The basic ET illustrated in <xref target="fig_netbased_et_basic"/>
+          establishes an IPv4-only network segment behind itself. This is fine
+          if the devices it provides IPv4 access have no support for IPv6
+          whatsoever; however if they are dual-stack capable, it is would not be
+          ideal to take away their IPv6 connectivity. While it is recommended to
+          use a host-based ET in this case, appropriate implementations of a
+          host-based ET might not be available for every device. If the
+          application protocol does not work correctly in a NAT environment,
+          standard SIIT-DC cannot be used either. Thus, a network-based ET is
+          the only solution.
+          </t>
+          <t>
+          The operator could avoid breaking the hosts' IPv4 connectivity by
+          connecting the ET's IPv4 and IPv6 interfaces to the same network
+          segment, or by using a single dual-stacked interface instead. The
+          latter alternative is shown in <xref
+          target="fig_netbased_et_onastick"/>. This could be thought of as an
+          "ET on a stick". IPv6 traffic between the network and the hosts will
+          bypass the ET entirely. IPv4 traffic from the hosts will be routed
+          directly to the ET (because it's their default IPv4 router), and
+          translated to IPv6 before its being transmitted to the upstream
+          default IPv6 router. The ET could attract inbound traffic to its IPv6
+          Service Addresses by responding to the upstream router's <xref
+          target="RFC4861">IPv6 Neighbor Discovery</xref> messages for them.
+          </t>
+        </section>
+        <section anchor="et_netbased_v6bridge"
+                 title="Variant: ET with IPv6 bridge">
+          <t>
+          <figure anchor="fig_transparent_et" align="center">
+            <preamble>A Transparent Network-based Edge Translator</preamble>
+            <artwork align="center"><![CDATA[
 [IPv4 Internet]   [IPv6 Internet]
    |                         |
 +--|--<SIIT-DC GW>--+        |
@@ -378,9 +371,21 @@
 |  \--AF_INET6  Software    ||
 |          +----------------+|
 +----------------------------+
-          ]]></artwork>
-        </figure>
-        </t>
+            ]]></artwork>
+          </figure>
+          </t>
+          <t>
+          Yet another variation would be to implement the ET so that it
+          transparently passes IPv6 traffic between its downstream and upstream
+          network ports unmodified, e.g., using Layer-2 bridging. Packets sent
+          to its own IPv6 Service Addresses from the upstream network are
+          intercepted (e.g, by responding to <xref target="RFC4861">IPv6
+          Neighbor Discovery</xref> messages for them) and routed through the
+          translation function, and forwarded out its downstream interface. The
+          downstream network segment is thus becomes dual-stacked. This model is
+          shown in <xref target="fig_transparent_et"/>.
+          </t>
+        </section>
       </section>
     </section>
     <section title="Detailed Topology Example">
