@@ -280,49 +280,10 @@
         </t>
         <t>
         Each node on the IPv4 network segment MUST acquire and assign an IPv4
-        Service Address to a local network interface. This document does not
-        attempt to explore all the various methods by which this can be
-        accomplished, however one relatively straight-forward possibility
-        would be to ensure the IPv4 Service Address(es) can be enclosed within
-        a larger IPv4 prefix. The ER may then claim one address in this prefix
-        for itself, and use it to provide an IPv4 default router address. The
-        ER may then proceed to assign the IPv4 Service Address(es) to its
-        downstream nodes using <xref target="RFC2131">DHCPv4</xref>. For
-        example, if the IPv4 Service Addresses are 192.0.2.26 and 192.0.2.27,
-        the ER would configure the address 192.0.2.25/29 on its IPv4-facing
-        interface and would add the two IPv4 Service Addresses to its DHCPv4
-        pool.
-        </t>
-        <t>
-        One disadvantage of this method is that IPv4 communication between the
-        IPv4 node(s) behind the ER and other services made available through
-        SIIT-DC becomes impossible, if those other services are assigned IPv4
-        Service Addresses that also are covered by the same IPv4 prefix (e.g.,
-        192.0.2.28). This happens because the IPv4 nodes will mistakenly
-        believe they have an on-link route to the entire prefix, and attempt
-        to resolve the addresses using <xref target="RFC0826">ARP</xref>
-        (instead of sending them to the ER for translation to IPv6). This
-        problem could however be overcome by avoiding assigning IPv4 Service
-        Addresses which overlaps with an IPv4 prefix handled by an ER (at the
-        expense of wasting some potential IPv4 Service Addresses), or by
-        ensuring that the overlapping IPv6 Service Addresses are only assigned
-        to services which do not need to communicate with the IPv4 node(s)
-        behind the ET.
-        </t>
-        <t>
-        Another way to avoid the problem is to use a private unrouted IPv4
-        network that does not encompass the IPv4 Service Addresses to provide
-        the connectivity between the ER and the IPv4-only nodes. Instead, the
-        IPv4-only nodes assign the IPv4 Service Addresses as secondary
-        addresses, while the ER routes each of the IPv4 Service Address to its
-        assigned node using the node's private on-link IPv4 address as the
-        next-hop. This approach would ensure there are no overlaps with IPv4
-        Service addresses elsewhere in the infrastructure, but on the other
-        hand it would preclude the use of DHCPv4 for assigning the IPv4
-        Service Addresses, as well as create a need to ensure that the IPv4
-        application is selecting the IPv4 Service Address (as opposed to its
-        private on-link IPv4 address) as its source address when initiating
-        outbound connections.
+        Service Address to a local network interface. While this document does
+        not attempt to explore all the various methods by which this could be
+        accomplished, some examples are provided in <xref
+        target="examples_netbased_connectivity"/>.
         </t>
         <t>
         The basic ER illustrated in <xref target="fig_netbased_et_basic"/>
@@ -346,9 +307,9 @@
         "ER on a stick". Native IPv6 traffic between the network and the nodes
         will bypass the ER entirely. IPv4 traffic from the nodes will be
         routed directly to the ER (because it is their default IPv4 router),
-        and translated to IPv6 before its being transmitted to the upstream
-        default IPv6 router. The ER could attract inbound traffic to its IPv6
-        Service Addresses by responding to the upstream router's <xref
+        and translated to IPv6 before transmission to the upstream default
+        IPv6 router. The ER could attract inbound traffic to its IPv6 Service
+        Addresses by responding to the upstream router's <xref
         target="RFC4861">IPv6 Neighbor Discovery</xref> messages for them.
         </t>
         <t>
@@ -387,7 +348,7 @@
         Neighbor Discovery</xref> messages for them) and routed through the
         translation function, and forwarded out its downstream interface. The
         downstream network segment is thus becomes dual-stacked. This model is
-        shown in <xref target="fig_transparent_er"/>.
+        illustrated in <xref target="fig_transparent_er"/>.
         </t>
         <t>
         <figure anchor="fig_transparent_er" align="center">
@@ -683,9 +644,70 @@
       <?rfc include="reference.RFC.6052"?>
       <?rfc include="reference.RFC.6145"?>
       <?rfc include="reference.RFC.6535"?>
+      <?rfc include="reference.RFC.6724"?>
       <?rfc include="reference.RFC.6877"?>
       <?rfc include="reference.RFC.7335"?>
     </references>
+    <section anchor="examples_netbased_connectivity"
+             title="Examples: Network-Based IPv4 Connectivity">
+      <section anchor="er_netbased_subnet_v4sa"
+               title="Subnet with IPv4 Service Addresses">
+        <t>
+        One relatively straight-forward way to provide IPv4 connectivity
+        between the ER and the IPv4 node(s) it serves is to ensure the IPv4
+        Service Address(es) can be enclosed within a larger IPv4 prefix. The
+        ER may then claim one address in this prefix for itself, and use it to
+        provide an IPv4 default router address. The ER may then proceed to
+        assign the IPv4 Service Address(es) to its downstream node(s) using
+        <xref target="RFC2131">DHCPv4</xref>. For example, if the IPv4 Service
+        Addresses are 192.0.2.26 and 192.0.2.27, the ER would configure the
+        address 192.0.2.25/29 on its IPv4-facing interface and would add the
+        two IPv4 Service Addresses to its DHCPv4 pool.
+        </t>
+        <t>
+        One disadvantage of this method is that IPv4 communication between the
+        IPv4 node(s) behind the ER and other services made available through
+        SIIT-DC becomes impossible, if those other services are assigned IPv4
+        Service Addresses that also are covered by the same IPv4 prefix (e.g.,
+        192.0.2.28). This happens because the IPv4 nodes will mistakenly
+        believe they have an on-link route to the entire prefix, and attempt
+        to resolve the addresses using <xref target="RFC0826">ARP</xref>,
+        instead of sending them to the ER for translation to IPv6. This
+        problem could however be overcome by avoiding assigning IPv4 Service
+        Addresses which overlaps with an IPv4 prefix handled by an ER (at the
+        expense of wasting some potential IPv4 Service Addresses), or by
+        ensuring that the overlapping IPv6 Service Addresses are only assigned
+        to services which do not need to communicate with the IPv4 node(s)
+        behind the ET. A third way to avoid this problem is discussed in <xref
+        target="er_netbased_subnet_unrouted"/>.
+        </t>
+      </section>
+      <section anchor="er_netbased_subnet_unrouted"
+               title="Subnet with Unrouted IPv4 Addresses">
+        <t>
+        In order to avoid the problem discussed in <xref
+        target="er_netbased_subnet_v4sa"/>, a private unrouted IPv4 network
+        that does not encompass the IPv4 Service Address(es) could be used to
+        provide connectivity between the ER and the IPv4-only node(s) it
+        serves. An IPv4-only node must then assign its IPv4 Service Address as
+        secondary local address, while the ER routes each of the IPv4 Service
+        Addresses to its assigned node using that node's private on-link IPv4
+        address as the next-hop. This approach would ensure there are no
+        overlaps with IPv4 Service addresses elsewhere in the infrastructure,
+        but on the other hand it would preclude the use of <xref
+        target="RFC2131">DHCPv4</xref> for assigning the IPv4 Service
+        Addresses.
+        </t>
+        <t>
+        This approach creates a need to ensure that the IPv4 application is
+        selecting the IPv4 Service Address (as opposed to its private on-link
+        IPv4 address) as its source address when initiating outbound
+        connections. This could be accomplished by altering the <xref
+        target="RFC6724">Default Address Selection Policy Table</xref> on the
+        IPv4 node.
+        </t>
+      </section>
+    </section>
   </back>
 
 </rfc>
