@@ -216,9 +216,9 @@
         provides applications running on the same node with IPv4 connectivity.
         Its IPv4 Service Address SHOULD be considered a regular local address
         that allows application running on the same node to use it with
-        IPv4-only API calls, e.g., to create AF_INET sockets that listens for
-        and accepts incoming connections to its IPv4 Service Address. An ER
-        may accomplish this by creating an virtual network adapter to which it
+        IPv4-only API calls, e.g., to create AF_INET sockets that listen for
+        and accept incoming connections to its IPv4 Service Address. An ER may
+        accomplish this by creating a virtual network adapter to which it
         assigns the IPv4 Service Address and points a default IPv4 route.
         This approach is similar to the "Bump-in-the-Stack" approach discussed
         in <xref target="RFC6535"/>, however it does not include an Extension
