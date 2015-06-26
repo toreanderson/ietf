@@ -204,8 +204,8 @@
         with IPv4 connectivity. The IPv4 Service Address it handles is
         considered local, allowing application software running on the same
         host to use traditional IPv4-only API calls, e.g., to create AF_INET
-        sockets that listens for and accepts incoming connections to its IPv4
-        Service Address. An ET could accomplish this by creating an virtual
+        sockets that listen for and accept incoming connections to its IPv4
+        Service Address. An ET could accomplish this by creating a virtual
         network adapter to which it assigns the IPv4 Service Address and
         points a default IPv4 route.
         </t>
@@ -277,73 +277,14 @@
         Each host on the IPv4 network segment must acquire and assign an IPv4
         Service Address to a local network interface. This document does not
         attempt to explore all the various methods by which this can be
-        accomplished, however one relatively straight-forward possibility
-        would be to ensure the IPv4 Service Address(es) can be enclosed in an
-        IPv4 prefix. The ET will then claim one address in this prefix for
-        itself (used as the IPv4 default router address), and could assign the
-        IPv4 Service Address(es) to the host(s) using DHCPv4. For example, if
-        the IPv4 Service Addresses are 192.0.2.26 and 192.0.2.27, the ET would
-        configure the address 192.0.2.25/29 on its IPv4-facing interface and
-        would add the two IPv4 Service Addresses to its DHCPv4 pool.
+        accomplished. Some examples of such methods are given in <xref
+        target="examples_netbased_connectivity" />.
         </t>
-        <t>
-        One disadvantage of this method is that IPv4 communication between the
-        IPv4 hosts and other services made available through SIIT-DC using the
-        method described in <xref target="intra_dc_v4"/> becomes impossible,
-        if those other services are assigned IPv4 Service Addresses that also
-        are covered by the same IPv4 prefix (e.g., 192.0.2.28). This is
-        because the IPv4 nodes will mistakenly believe they have an on-link
-        route to the entire prefix, and attempt to resolve the addresses using
-        ARP (instead of forwarding them to the ET for translation to IPv6).
-        This problem could however be overcome by avoiding assigning IPv4
-        Service Addresses which overlaps with an IPv4 prefix handled by an ET
-        (at the expense of wasting some potential IPv4 Service Addresses), or
-        by ensuring that they are only assigned to services which do not need
-        to communicate with the IPv4 host(s) behind the ET.
-        </t>
-        <t>
-        Another way to avoid the problem is to use a private unrouted IPv4
-        network that does not encompass the IPv4 Service Addresses as the
-        IPv4, and instead assign the IPv4 Service Addresses as secondary
-        addresses on the servers. The ET must then route each IPv4 Service
-        Address to its respective server using the server's private on-link
-        IPv4 address as the next-hop. This approach would ensure there are no
-        overlaps, but on the other hand it would preclude the use of DHCPv4
-        for assigning the IPv4 Service Addresses, as well as create a need to
-        ensure that the IPv4 application software is selecting the IPv4
-        Service Address (as opposed to its private on-link IPv4 address) as
-        its source address when initiating outbound connections.
-        </t>
-        <t>
-        The basic ET illustrated in <xref target="fig_netbased_et_basic"/>
-        establishes an IPv4-only network segment behind itself. This is fine
-        if the devices it provides IPv4 access have no support for IPv6
-        whatsoever; however if they are dual-stack capable, it is would not be
-        ideal to take away their IPv6 connectivity. While it is recommended to
-        use a host-based ET in this case, appropriate implementations of a
-        host-based ET might not be available for every device. If the
-        application protocol does not work correctly in a NAT environment,
-        standard SIIT-DC cannot be used either. Thus, a network-based ET is
-        the only solution.
-        </t>
-        <t>
-        The operator could avoid breaking the hosts' IPv4 connectivity by
-        connecting the ET's IPv4 and IPv6 interfaces to the same network
-        segment, or by using a single dual-stacked interface instead. The
-        latter alternative is shown in <xref
-        target="fig_netbased_et_onastick"/>. This could be thought of as an
-        "ET on a stick". IPv6 traffic between the network and the hosts will
-        bypass the ET entirely. IPv4 traffic from the hosts will be routed
-        directly to the ET (because it's their default IPv4 router), and
-        translated to IPv6 before its being transmitted to the upstream
-        default IPv6 router. The ET could attract inbound traffic to its IPv6
-        Service Addresses by responding to the upstream router's <xref
-        target="RFC4861">IPv6 Neighbor Discovery</xref> messages for them.
-        </t>
-        <t>
-        <figure anchor="fig_netbased_et_onastick" align="center">
-          <preamble>A Network-based Edge Translator "on a stick"</preamble>
-          <artwork align="center"><![CDATA[
+        <section anchor="et_netbased_onastick" title="Variant: ET on a stick">
+          <t>
+          <figure anchor="fig_netbased_et_onastick" align="center">
+            <preamble>A Network-based Edge Translator "on a stick"</preamble>
+            <artwork align="center"><![CDATA[
 [IPv4 Internet]   [IPv6 Internet]
    |                         |
 +--|--<SIIT-DC GW>--+        |
@@ -369,24 +310,42 @@
 |  \--AF_INET6  Software    ||
 |          +----------------+|
 +----------------------------+
-          ]]></artwork>
-        </figure>
-        </t>
-        <t>
-        Yet another variation would be to implement the ET so that it
-        transparently passes IPv6 traffic between its downstream and upstream
-        network ports unmodified, e.g., using Layer-2 bridging. Packets sent
-        to its own IPv6 Service Addresses from the upstream network are
-        intercepted (e.g, by responding to <xref target="RFC4861">IPv6
-        Neighbor Discovery</xref> messages for them) and routed through the
-        translation function, and forwarded out its downstream interface. The
-        downstream network segment is thus becomes dual-stacked. This model is
-        shown in <xref target="fig_transparent_et"/>.
-        </t>
-        <t>
-        <figure anchor="fig_transparent_et" align="center">
-          <preamble>A Transparent Network-based Edge Translator</preamble>
-          <artwork align="center"><![CDATA[
+            ]]></artwork>
+          </figure>
+          </t>
+          <t>
+          The basic ET illustrated in <xref target="fig_netbased_et_basic"/>
+          establishes an IPv4-only network segment behind itself. This is fine
+          if the devices it provides IPv4 access have no support for IPv6
+          whatsoever; however if they are dual-stack capable, it is would not be
+          ideal to take away their IPv6 connectivity. While it is recommended to
+          use a host-based ET in this case, appropriate implementations of a
+          host-based ET might not be available for every device. If the
+          application protocol does not work correctly in a NAT environment,
+          standard SIIT-DC cannot be used either. Thus, a network-based ET is
+          the only solution.
+          </t>
+          <t>
+          The operator could avoid breaking the hosts' IPv4 connectivity by
+          connecting the ET's IPv4 and IPv6 interfaces to the same network
+          segment, or by using a single dual-stacked interface instead. The
+          latter alternative is shown in <xref
+          target="fig_netbased_et_onastick"/>. This could be thought of as an
+          "ET on a stick". IPv6 traffic between the network and the hosts will
+          bypass the ET entirely. IPv4 traffic from the hosts will be routed
+          directly to the ET (because it's their default IPv4 router), and
+          translated to IPv6 before its being transmitted to the upstream
+          default IPv6 router. The ET could attract inbound traffic to its IPv6
+          Service Addresses by responding to the upstream router's <xref
+          target="RFC4861">IPv6 Neighbor Discovery</xref> messages for them.
+          </t>
+        </section>
+        <section anchor="et_netbased_v6bridge"
+                 title="Variant: ET with IPv6 bridge">
+          <t>
+          <figure anchor="fig_transparent_et" align="center">
+            <preamble>A Transparent Network-based Edge Translator</preamble>
+            <artwork align="center"><![CDATA[
 [IPv4 Internet]   [IPv6 Internet]
    |                         |
 +--|--<SIIT-DC GW>--+        |
@@ -412,9 +371,21 @@
 |  \--AF_INET6  Software    ||
 |          +----------------+|
 +----------------------------+
-          ]]></artwork>
-        </figure>
-        </t>
+            ]]></artwork>
+          </figure>
+          </t>
+          <t>
+          Yet another variation would be to implement the ET so that it
+          transparently passes IPv6 traffic between its downstream and upstream
+          network ports unmodified, e.g., using Layer-2 bridging. Packets sent
+          to its own IPv6 Service Addresses from the upstream network are
+          intercepted (e.g, by responding to <xref target="RFC4861">IPv6
+          Neighbor Discovery</xref> messages for them) and routed through the
+          translation function, and forwarded out its downstream interface. The
+          downstream network segment is thus becomes dual-stacked. This model is
+          shown in <xref target="fig_transparent_et"/>.
+          </t>
+        </section>
       </section>
     </section>
     <section title="Detailed Topology Example">
@@ -832,6 +803,56 @@
       <?rfc include="reference.RFC.6145"?>
       <?rfc include="reference.RFC.6877"?>
     </references>
+
+    <section anchor="examples_netbased_connectivity"
+      title="Examples: Network-Based IPv4 connectivity">
+      <section anchor="et_netbased_subnet_v4sa"
+        title="Subnet with IPv4 Service Addresses">
+        <t>
+          One relatively straight-forward possibility for providing IPv4
+          connectivity from the ET to the IPv4 devices
+          would be to ensure the IPv4 Service Address(es) can be enclosed in an
+          IPv4 prefix. The ET will then claim one address in this prefix for
+          itself (used as the IPv4 default router address), and could assign the
+          IPv4 Service Address(es) to the host(s) using DHCPv4. For example, if
+          the IPv4 Service Addresses are 192.0.2.26 and 192.0.2.27, the ET would
+          configure the address 192.0.2.25/29 on its IPv4-facing interface and
+          would add the two IPv4 Service Addresses to its DHCPv4 pool.
+        </t>
+        <t>
+          One disadvantage of this method is that IPv4 communication between the
+          IPv4 hosts and other services made available through SIIT-DC using the
+          method described in <xref target="intra_dc_v4"/> becomes impossible,
+          if those other services are assigned IPv4 Service Addresses that also
+          are covered by the same IPv4 prefix (e.g., 192.0.2.28). This is
+          because the IPv4 nodes will mistakenly believe they have an on-link
+          route to the entire prefix, and attempt to resolve the addresses using
+          ARP (instead of forwarding them to the ET for translation to IPv6).
+          This problem could however be overcome by avoiding assigning IPv4
+          Service Addresses which overlaps with an IPv4 prefix handled by an ET
+          (at the expense of wasting some potential IPv4 Service Addresses), or
+          by ensuring that they are only assigned to services which do not need
+          to communicate with the IPv4 host(s) behind the ET.
+        </t>
+      </section>
+      
+      <section anchor="et_netbased_subnet_unrouted"
+        title="Subnet with unrouted IPv4 addresses">
+        <t>
+          Another way to avoid the problem is to use a private unrouted IPv4
+          network that does not encompass the IPv4 Service Addresses as the
+          IPv4, and instead assign the IPv4 Service Addresses as secondary
+          addresses on the servers. The ET must then route each IPv4 Service
+          Address to its respective server using the server's private on-link
+          IPv4 address as the next-hop. This approach would ensure there are no
+          overlaps, but on the other hand it would preclude the use of DHCPv4
+          for assigning the IPv4 Service Addresses, as well as create a need to
+          ensure that the IPv4 application software is selecting the IPv4
+          Service Address (as opposed to its private on-link IPv4 address) as
+          its source address when initiating outbound connections.
+        </t>
+      </section>
+    </section>
   </back>
 
 </rfc>
