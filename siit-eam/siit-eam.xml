@@ -242,7 +242,7 @@
           <preamble>Example EAMT</preamble>
           <artwork align="center"><![CDATA[
 +---+----------------+----------------------+
-| # | IPv4 Prefix    |     IPv6 Prefix      |
+| # |  IPv4 Prefix   |     IPv6 Prefix      |
 +---+----------------+----------------------+
 | 1 | 192.0.2.1      | 2001:db8:aaaa::      |
 | 2 | 192.0.2.2/32   | 2001:db8:bbbb::b/128 |
@@ -650,7 +650,7 @@
           <preamble>Hairpinning of a normal IPv6 packet</preamble>
           <artwork align="center"><![CDATA[
 +--------------+--------------------+---------------------+
-| XLAT Stage   | Source Address     | Destination Address |
+|  XLAT Stage  |   Source Address   | Destination Address |
 +--------------+--------------------+---------------------+
 | Initial      | 2001:db8:aaaa::    | 64:ff9b::192.0.2.2  |
 +--------------+--------------------+---------------------+
@@ -673,7 +673,7 @@
           <preamble>Hairpinning of a router-originated ICMPv6 error</preamble>
           <artwork align="center"><![CDATA[
 +--------------+-------+-----------------------+--------------------+
-| XLAT Stage   | Loc.  | Source Address        | Destination Addr.  |
+|  XLAT Stage  | Loc.  |    Source Address     | Destination Addr.  |
 +--------------+-------+-----------------------+--------------------+
 | Initial      | Outer | 2001:db8::1234        | 64:ff9b::192.0.2.1 |
 |              | Inner | 64:ff9b::192.0.2.1    | 2001:db8:bbbb::b   |
@@ -700,7 +700,7 @@
           <preamble>Hairpinning of a host-originated ICMPv6 error</preamble>
           <artwork align="center"><![CDATA[
 +--------------+-------+--------------------+--------------------+
-| XLAT Stage   | Loc.  | Source Address     | Destination Addr.  |
+|  XLAT Stage  | Loc.  |   Source Address   | Destination Addr.  |
 +--------------+-------+--------------------+--------------------+
 | Initial      | Outer | 2001:db8:bbbb::b   | 64:ff9b::192.0.2.1 |
 |              | Inner | 64:ff9b::192.0.2.1 | 2001:db8:bbbb::b   |
@@ -728,7 +728,7 @@
           <preamble>Hairpinning of normal response packet</preamble>
           <artwork align="center"><![CDATA[
 +--------------+--------------------+---------------------+
-| XLAT Stage   | Source Address     | Destination Address |
+|  XLAT Stage  |   Source Address   | Destination Address |
 +--------------+--------------------+---------------------+
 | Initial      | 2001:db8:bbbb::b   | 64:ff9b::192.0.2.1  |
 +--------------+--------------------+---------------------+
