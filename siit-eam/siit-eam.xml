@@ -467,11 +467,11 @@
       In <xref target="fig_example_overlap"/> below, the IPv6 Prefixes of the
       two EAMs overlap, while the IPv4 Prefixes do not. This results in a
       situation where a packet addressed to the IPv4 address 203.0.113.10
-      would be translated (according to EAM #1) to have the IPv6 destination
+      will be translated (according to EAM #1) to have the IPv6 destination
       address 2001:db8:cb00:710a::, while a return packet sent from
-      2001:db8:cb00:710a:: would be translated (according to EAM #2) to have
+      2001:db8:cb00:710a:: will be translated (according to EAM #2) to have
       the IPv4 source address 203.0.113.20. Because the IPv6-to-IPv4
-      translation in this example did not mirror the corresponding
+      translation in this example does not mirror the corresponding
       IPv4-to-IPv6 translation, bi-directional communication might fail. In
       order to help avoid such situations, implementations MAY warn the
       operator when a new EAM that overlaps with a previously existing one is
