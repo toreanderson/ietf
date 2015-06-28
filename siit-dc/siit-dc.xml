@@ -8,7 +8,7 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="std" docName="draft-ietf-v6ops-siit-dc-00" ipr="trust200902">
+<rfc category="info" docName="draft-ietf-v6ops-siit-dc-01" ipr="trust200902">
 
   <front>
     <title abbrev="SIIT-DC">SIIT-DC: Stateless IP/ICMP Translation for IPv6
@@ -30,191 +30,177 @@
         <uri>http://www.redpill-linpro.com</uri>
       </address>
     </author>
-    <date year="2014" />
+    <date year="2015"/>
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
     <abstract>
       <t>
-      This document describes SIIT-DC, an extension to the Stateless IP/ICMP
-      Translation (SIIT) algorithm, that makes it ideally suited for use in
-      IPv6 data centre environments. SIIT-DC simultaneously facilitates IPv6
-      deployment and IPv4 address conservation. The overall SIIT-DC
-      architecture is described, as well as guidelines for operators.
-      Finally, the normative implementation requirements are described, as a
-      list of additions and changes to SIIT.
+      This document describes the use of the Stateless IP/ICMP Translation
+      (SIIT) algorithm in an IPv6 Internet Data Centre (IDC). In this
+      deployment model, traffic from legacy IPv4-only clients on the Internet
+      is translated to IPv6 when reaches the IDC operator's network
+      infrastructure. From that point on, it is treated just as if it was
+      traffic from any other IPv6-capable end user. This facilitates a
+      single-stack IPv6-only network infrastructure, as well as efficient
+      utilisation of public IPv4 addresses.
+      </t>
+      <t>
+      The primary audience is IDC operators who are deploying IPv6, running
+      out of available IPv4 addresses, and/or feel that dual stack causes
+      undesirable operational complexity.
       </t>
     </abstract>
   </front>
-
   <middle>
-    <section title="Introduction">
+    <section anchor="intro" title="Introduction">
       <t>
-      SIIT-DC is an extension of <xref target="RFC6145">SIIT</xref> that
-      provides a network-centric stateless translation service that allows a
-      data centre operator or Internet Content Provider (ICP) to run a data
-      centre network, servers, and applications using exclusively IPv6, while
-      at the same time ensuring that end users that have only IPv4
-      connectivity will be able to continue to access the services and
-      applications.
+      Historically, dual stack <xref target="RFC4213"/> <xref
+      target="RFC6883"/> has been the recommended way to transition from a
+      legacy IPv4-only environment to one capable of serving IPv6 users.
+      However, for IDC operators, dual stack operation has a number of
+      disadvantages compared to single stack operation. In particular, running
+      two protocols rather than one results in increased complexity and
+      operational overhead, with little return on investment for as long as
+      large parts of the public Internet remains predominantly IPv4-only.
+      Furthermore, the dual stack approach does not in any way help with the
+      depletion of the IPv4 address space, which at the time of writing is a
+      pressing concern in most parts of the world.
       </t>
-      <section title="Motivation and Goals">
+      <t>
+      Therefore, some IDC operators may instead prefer an approach in which
+      they only need to operate one protocol in the data centre as they
+      prepare for the future. SIIT-DC is one such approach. Its design goals
+      include:
+      </t>
+      <t>
+      <list style="symbols">
+        <t>Promote the deployment of native IPv6 services (cf. <xref
+        target="RFC6540"/>).</t>
+        <t>Provide IPv4 service availability for legacy users with no loss of
+        performance or functionality.</t>
+        <t>To ensure that that the legacy users' IPv4 addresses remain visible
+        to the nodes and applications.</t>
+        <t>To conserve and maximise the utilisation of the operator's public
+        IPv4 addresses.</t>
+        <t>To avoid introducing more complexity than absolutely necessary,
+        especially on the nodes and applications.</t>
+        <t>To be easy to scale and deploy in a fault-tolerant manner.</t>
+      </list>
+      </t>
+      <t>
+      The following subsections elaborates on how SIIT-DC meets these goals.
+      </t>
+      <section anchor="intro_v6only" title="Single Stack IPv6 Operation">
         <t>
-        Historically, dual stack <xref target="RFC4213"/> <xref
-        target="RFC6883"/> has been the recommended way to transition from an
-        IPv4-only environment to one capable of serving IPv6 users. However,
-        for data centre operators and Internet content providers, dual stack
-        operation has a number of disadvantages compared to single stack
-        operation. In particular, running two protocols rather than one
-        results in increased complexity and operational overhead, with a very
-        low expected return on investment in the short to medium term while
-        few end-users only have connectivity to the IPv6 Internet.
-        Furthermore, the dual stack approach does not in any way help with the
-        depletion of the IPv4 address space.
+        SIIT-DC allows IDC operators to build their infrastructure and
+        applications on an IPv6-only foundation. IPv4 end-user connectivity
+        becomes a service provided by the network, which systems
+        administration and application development staff do not need to
+        concern themselves with. This promotes universal IPv6 deployment for
+        the IDC operator's services and applications.
         </t>
         <t>
-        Therefore, some operators may prefer an approach in which they only
-        need to operate one protocol in the data centre as they prepare for
-        the future. The design goals are:
+        SIIT-DC requires no special support or change from the underlying IPv6
+        infrastructure, it is compatible with all standard IPv6 networks.
+        Traffic between IPv6-enabled end users and IPv6-enabled services will
+        always be transported native end-to-end; SIIT-DC does not intercept or
+        handle native IPv6 traffic at all.
         </t>
         <t>
-        <list style="symbols">
-          <t>Promote the deployment of native IPv6 services (cf. <xref
-          target="RFC6540"/>).</t>
-          <t>Provide IPv4 service availability for legacy users with no loss
-          of performance or functionality.</t>
-          <t>To ensure that that the legacy users' IPv4 addresses remain
-          available to the servers and applications.</t>
-          <t>To conserve and maximise the utilisation of IPv4 addresses.</t>
-          <t>To avoid introducing more complexity than absolutely necessary,
-          especially on the servers and applications.</t>
-          <t>To be easy to scale and deploy in a fault-tolerant manner.</t>
-        </list>
+        When the day comes to discontinue all support for IPv4, no change
+        needs to be made to the overall architecture - it's only a matter of
+        shutting off the BRs. Operators who deploy native IPv6 along with
+        SIIT-DC will thus avoid requiring any future migration or deployment
+        projects relating to IPv6 deployment and/or IPv4 sun-setting.
+        </t>
+      </section>
+      <section anchor="intro_stateless" title="Stateless Operation">
+        <t>
+        Unlike other solutions that provide either dual stack availability to
+        single-stack services (e.g., <xref target="RFC6146">Stateful
+        NAT64</xref> and Layer-4/7 proxies), or that provide conservation of
+        IPv4 addresses (e.g., <xref target="RFC3022">NAPT44</xref>), SIIT-DC
+        does not keep any state between each packet in a single connection or
+        flow. In this sense it operates exactly like a regular IP router, and
+        has similar scaling properties - the limiting factors are packets per
+        second and bandwidth. The number of concurrent flows and flow
+        initiation rates are irrelevant for performance.
         </t>
         <t>
-        The following subsections elaborates on how SIIT-DC meets these goals.
+        This not only allows individual BRs to easily attain "line rate"
+        performance, it also allows for per-packet load balancing between
+        multiple BRs using <xref target="RFC2991">Equal-Cost Multipath
+        Routing</xref>. Asymmetric routing is also acceptable, which makes it
+        easy to avoid sub-optimal traffic patterns; the prefixes involved may
+        be anycasted from all the BRs in the provider's network, thus ensuring
+        that the most optimal path through the network is used, even where the
+        optimal path in one direction differs from the optimal path in the
+        opposite direction.
         </t>
-        <section title="Single Stack IPv6 Operation">
-          <t>
-          SIIT-DC allows an operator to build their applications on an
-          IPv6-only foundation. IPv4 end-user connectivity becomes a service
-          provided by the network, which systems administration and
-          application development staff do not need to concern themselves
-          with.
-          </t>
-          <t>
-          Obviously, this will promote universal IPv6 deployment for all of
-          the provider's services and applications.
-          </t>
-          <t>
-          It is worth noting that SIIT-DC requires no special support or
-          change from the underlying IPv6 infrastructure, it will work with
-          any kind of IPv6 network. Traffic between IPv6-enabled end users and
-          IPv6-enabled services will always be native, and SIIT-DC will not be
-          involved in it at all.
-          </t>
-        </section>
-        <section title="Stateless Operation">
-          <t>
-          Unlike other solutions that provide either dual stack availability
-          to single-stack services (e.g., <xref target="RFC6146">Stateful
-          NAT64</xref> and Layer-4/7 proxies), or that provide conservation of
-          IPv4 addresses (e.g., <xref target="RFC3022">NAPT44</xref>), a
-          SIIT-DC Gateway does not keep any state between each packet in a
-          single connection or flow. In this sense it operates exactly like a
-          normal IP router, and has similar scaling properties - the limiting
-          factors are packets per second and bandwidth. The number of
-          concurrent flows and flow initiation rates are irrelevant for
-          performance.
-          </t>
-          <t>
-          This not only allows individual SIIT-DC Gateways to easily attain
-          "line rate" performance, it also allows for per-packet load
-          balancing between multiple SIIT-DC Gateways using <xref
-          target="RFC2991">Equal-Cost Multipath Routing</xref>. Asymmetric
-          routing is also acceptable, which makes it easy to avoid sub-optimal
-          traffic patterns; the prefixes involved may be anycasted from all
-          the SIIT-DC Gateways in the provider's network, thus ensuring that
-          the most optimal path through the network is used, even where the
-          optimal path in one direction differs from the optimal path in the
-          opposite direction.
-          </t>
-          <t>
-          Finally, stateless operation means that high availability is easily
-          achieved. If an SIIT-DC Gateway should fail, its traffic can be
-          re-routed onto another SIIT-DC Gateway using a standard IP routing
-          protocol. This does not impact existing flows any more than what any
-          other IP re-routing event would.
-          </t>
-        </section>
-        <section title="IPv4 Address Conservation">
-          <t>
-          In most parts of the world, it is difficult or even impossible to
-          obtain generously sized IPv4 allocations from the Regional Internet
-          Registries. The resulting scarcity in turn impacts individual end
-          users and operators, which might be forced to purchase IPv4
-          addresses from other operators in order to cover their needs. This
-          process can be risky to business continuity, in the case no suitable
-          block for sale can be located, and/or turn out to be prohibitively
-          expensive. Even so, a data centre operator will find that providing
-          IPv4 service is essential, as a large share of the Internet users
-          still does not have IPv6 connectivity.
-          </t>
-          <t>
-          A key goal of SIIT-DC is to help reduce a data centre operator's
-          IPv4 address requirement to the absolute minimum, by allowing the
-          operator to remove them entirely from components that do not need to
-          communicate with endpoints in the IPv4 Internet. One example would
-          be servers that are operating in a supporting/back-end role and only
-          communicates with to other servers (database servers, file servers,
-          and so on). Another example would be the network infrastructure
-          itself (router-to-router links, loopback addresses, and so on).
-          Furthermore, as LAN prefix sizes must always be rounded up to the
-          nearest power of two (or larger, if one reserves space for future
-          growth), even more IPv4 addresses will often end up being wasted
-          without even being used.
-          </t>
-          <t>
-          With SIIT-DC, the operator can remove these valuable IPv4 addresses
-          from his back-end servers and network infrastructure, and reassign
-          them to the SIIT-DC service as IPv4 Service Addresses. There is no
-          requirement that IPv4 Service Addresses are assigned in an
-          aggregated manner, so there is nothing lost due to infrastructure
-          overhead; every single IPv4 address assigned to SIIT-DC can be used
-          an IPv4 Service Address.
-          </t>
-        </section>
-        <section title="No Loss of End User's IPv4 Source Address">
-          <t>
-          SIIT-DC will map the entire end-user's IPv4 source address into an
-          predefined IPv6 translation prefix. This ensures that there is no
-          loss of information; the end-user's IPv4 source address remains
-          available to the server/application, allowing it to perform tasks
-          like Geo-Location, logging, abuse handling, and so forth.
-          </t>
-        </section>
-        <section title="Compatible with Standard IPv6 Implementations">
-          <t>
-          Except for the introduction of the SIIT-DC Gateways themselves, no
-          change to the network, servers, applications, or anything else is
-          required in order to support SIIT-DC. SIIT-DC is practically
-          invisible from the point of view of the the IPv4 clients, the IPv6
-          servers, the IPv6 data centre network, and the IPv4 Internet.
-          SIIT-DC interoperates with all standards-compliant IPv4 or IPv6
-          stacks.
-          </t>
-        </section>
-        <section title="No Architectural Dependency on IPv4">
-          <t>
-          SIIT-DC will allow an ICP or data centre operator to build
-          infrastructure and applications entirely on IPv6. This means that
-          when the day comes to discontinue support for IPv4, no change needs
-          to be made to the overall architecture - it's only a matter of
-          shutting off the SIIT-DC Gateways. Therefore, by deploying native
-          IPv6 along with SIIT-DC, operators will avoid future migration or
-          deployment projects relating to IPv6 roll-out and/or IPv4
-          sun-setting.
-          </t>
-        </section>
+        <t>
+        Finally, stateless operation means that high availability is easily
+        achieved. If a BR should fail, its traffic can be re-routed onto
+        another BR using a standard IP routing protocol. This does not impact
+        existing flows any more than what any other IP re-routing event would.
+        </t>
+      </section>
+      <section anchor="intro_v4conserv" title="IPv4 Address Conservation">
+        <t>
+        In most parts of the world, it is difficult or even impossible to
+        obtain generously sized IPv4 delegation from the <xref
+        target="RFC7020">Internet Numbers Registry System</xref>. The
+        resulting scarcity in turn impacts individual end users and operators,
+        which might be forced to purchase IPv4 addresses from other operators
+        in order to cover their needs. This process can be risky to business
+        continuity, in the case no suitable block for sale can be located,
+        and/or turn out to be prohibitively expensive. In spite of this, an
+        IDC operator will find that providing IPv4 service remains essential,
+        as a large share of the Internet end users still do not have IPv6
+        connectivity.
+        </t>
+        <t>
+        A key goal of SIIT-DC is to help reduce a data centre operator's IPv4
+        address requirement to the absolute minimum, by allowing the operator
+        to remove them entirely from nodes and applications that do not need
+        to communicate with endpoints in the IPv4 Internet. One example would
+        be servers that are operating in a supporting/back-end role and only
+        communicates with to other servers (database servers, file servers,
+        and so on). Another example would be the network infrastructure itself
+        (router-to-router links, loopback addresses, and so on). Furthermore,
+        as LAN prefix sizes must always be rounded up to the nearest power of
+        two (or larger, if one reserves space for future growth), even more
+        IPv4 addresses will often end up being wasted without even being used.
+        </t>
+        <t>
+        With SIIT-DC, the operator can remove these valuable IPv4 addresses
+        from his back-end servers and network infrastructure, and reassign
+        them to the SIIT-DC service as IPv4 Service Addresses. There exists no
+        requirement that IPv4 Service Addresses are assigned in an aggregated
+        manner, so there is nothing lost due to infrastructure overhead; every
+        single IPv4 address assigned to SIIT-DC can be used an IPv4 Service
+        Address.
+        </t>
+      </section>
+      <section title="Clients' IPv4 Source Addresses Visible to Applications">
+        <t>
+        SIIT-DC uses the <xref target="RFC6052"/> algorithm to map the entire
+        end-user's IPv4 source address into an predefined IPv6 Translation
+        Prefix. This ensures that there is no loss of information; the
+        end-user's IPv4 source address remains available to the application,
+        allowing it to perform tasks like Geo-Location, logging, abuse
+        handling, and so forth.
+        </t>
+      </section>
+      <section anchor="intro_compat"
+               title="Compatible with Standard IPv4 and IPv6 Stacks">
+        <t>
+        Except for the introduction of the BRs themselves, no change to the
+        network, nodes, applications, or anything else is required in order to
+        support SIIT-DC. SIIT-DC is practically invisible from the point of
+        view of the IPv4 clients, the IPv6 nodes, the IPv6 data centre
+        network, and the IPv4 Internet. SIIT-DC interoperates with all
+        standards-compliant IPv4 or IPv6 stacks.
+        </t>
       </section>
     </section>
     <section anchor="terminology" title="Terminology">
@@ -223,44 +209,66 @@
       </t>
       <t>
       <list style="hanging">
-       <t hangText="IPv4 Service Address">A public IPv4 address with which
-       IPv4-only clients will communicate. This communication will be
-       translated to IPv6 by the SIIT-DC Gateway.</t>
-       <t hangText="IPv4 Service Address Pool">One or more IPv4 prefixes
-       routed to the SIIT-DC Gateway's IPv4 interface. IPv4 Service Addresses
-       are allocated from this pool. Note that this does not necessarily have
-       to be a "pool" per se, as it could also be one or more host routes
-       (whose prefix length is equal to /32). The primary purpose of using a
-       pool rather than host routes is to facilitate IPv4 route aggregation
-       and ease provisioning of new IPv4 Service Addresses.</t>
-       <t hangText="IPv6 Service Address">A public IPv6 address assigned to a
-       server or application in the IPv6 network. IPv6-only and dual stacked
-       clients communicates with this address directly without invoking
-       SIIT-DC.  IPv4-only clients also communicates with this address through
-       the SIIT-DC Gateway and via an IPv4 Service Address.</t>
-       <t hangText="SIIT-DC Host Agent">A logical function very similar to an
-       SIIT-DC Gateway that resides on a server and provides virtual IPv4
-       connectivity to applications, by reversing the translations done by the
-       SIIT-DC Gateway. It is an optional component of the SIIT-DC
-       architecture, that may be used to increase application support. See
-       <xref target="I-D.anderson-v6ops-siit-dc-2xlat"/>.</t>
-       <t hangText="SIIT-DC Gateway">A device or a logical function that
-       translates between IPv4 and IPv6 in accordance with <xref
-       target="implementation_reqs"/>.</t>
-       <t hangText="Static Address Mapping">A bi-directional mapping between
-       an IPv4 Service Address and an IPv6 Service Address configured in the
-       SIIT-DC Gateway. When translating between IPv4 and IPv6, the SIIT-DC
-       Gateway changes the address fields in the translated packet's IP header
-       according to any matching Static Address Mapping.</t>
-       <t hangText="Translation Prefix">An IPv6 prefix into which the entire
-       IPv4 address space is mapped. This prefix is routed to the SIIT-DC
-       Gateway's IPv6 interface. It is either an Network-Specific Prefix or a
-       Well-Known Prefix as specified in <xref target="RFC6052"/>. When
-       translating between IPv4 and IPv6, the SIIT-DC Gateway prepends or
-       strips the Translation Prefix from the address fields in the translated
-       packet's IP header, unless a Static Address Mapping exists for the IP
-       address in question.</t>
+       <t hangText="SIIT-DC Border Relay (BR)"><vspace/>A device or a logical
+       function that performs stateless protocol translation between IPv4 and
+       IPv6 in accordance with <xref target="RFC6145"/> and <xref
+       target="I-D.ietf-v6ops-siit-eam"/>.</t>
+       <t hangText="SIIT-DC Edge Relay (ER)"><vspace/>A device or logical
+       function that provides "native" IPv4 connectivity to IPv4-only devices
+       or application software. It is very similar in function to a BR, but is
+       typically located close to the IPv4-only component(s) it is supporting
+       rather than on the IDC's outer network border. The ERs is an optional
+       component of SIIT-DC. It is discussed in more detail in <xref
+       target="I-D.ietf-v6ops-siit-dc-2xlat"/>.</t>
+       <t hangText="IPv4 Service Address"><vspace/>A public IPv4 address with
+       which IPv4-only clients communicates. This communication will be
+       translated to IPv6 by a BR. The service's "IN A" DNS record will
+       typically point to the IPv4 Service Address.</t>
+       <t hangText="IPv4 Service Address Pool"><vspace/>One or more IPv4
+       prefixes routed to the BR's IPv4 interface. IPv4 Service Addresses are
+       allocated from this pool. That this does not necessarily have to be a
+       "pool" per se, as it could also be one or more host routes (whose
+       prefix length is equal to /32). The purpose of using a pool rather than
+       host routes is to facilitate IPv4 route aggregation and ease
+       provisioning of new IPv4 Service Addresses.</t>
+       <t hangText="IPv6 Service Address"><vspace/>A public IPv6 address
+       assigned to a node (such as a server or load-balancer) or an individual
+       application in the IPv6 network. IPv6-capable clients communicate
+       directly with the IPv6 Service Address using native IPv6. The service's
+       "IN AAAA" DNS record will typically point to the IPv6 Service Address.
+       IPv4-only clients indirectly communicate with the IPv6 Service Address
+       through SIIT-DC.</t>
+       <t hangText="Explicit Address Mapping (EAM)"><vspace/>A bi-directional
+       coupling between an IPv4 Service Address and an IPv6 Service Address
+       configured in a BR or ER. When translating between IPv4 and IPv6, the
+       BR/ER changes the address fields in the translated packet's IP header
+       according to any matching EAM. See <xref
+       target="I-D.ietf-v6ops-siit-eam"/>.</t>
+       <t hangText="Translation Prefix"><vspace/>An IPv6 prefix into which the
+       entire IPv4 address space is mapped. This prefix is routed to the BR's
+       IPv6 interface. It is either a Network-Specific Prefix or the
+       Well-Known Prefix 64:ff9b::/96, cf. <xref target="RFC6052"/>. When
+       translating between IPv4 and IPv6, a BR/ER inserts or removes the
+       Translation Prefix from the address fields in the translated packet's
+       IP header, unless an EAM for the IP address being translated
+       exists.</t>
+       <t hangText="IPv4-translatable IPv6 addresses"><vspace/>As defined in
+       Section 1.3 of <xref target="RFC6052"/>.</t>
+       <t hangText="IDC"><vspace/>Short for "Internet Data Centre"; a data
+       centre whose main purpose is to deliver services to the public
+       Internet, the use case SIIT-DC is primarily targeted at. IDCs are
+       typically operated by Internet Content Providers or Managed Services
+       Providers.</t>
+       <t hangText="SIIT"><vspace/>The Stateless IP/ICMP Translation
+       algorithm, as specified in <xref target="RFC6145"/>.</t>
+       <t hangText="XLAT"><vspace/>Short for "translation".</t>
      </list>
+     </t>
+     <t>
+     The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+     "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+     document are to be interpreted as described in <xref
+     target="RFC2119"/>.
      </t>
     </section>
     <section anchor="overview" title="Architectural Overview">
@@ -269,309 +277,196 @@
       <figure anchor="fig_architecture" align="center">
         <preamble>SIIT-DC Architecture</preamble>
         <artwork align="center"><![CDATA[
-  +-------------------+         +----------------+
-  | IPv6-capable user |         | IPv4-only user |
-  | ================= |         | ============== |
-  |                   |         |                |
-  +-<2001:db8::ab:cd>-+         +-<203.0.113.50>-+
-      |                                  |
-   (the IPv6 internet)         (the IPv4 Internet)
-      |                                  |
-      |        +------------------<192.0.2.0/24>-+
-      |        |                                 |
-      |        |         SIIT-DC Gateway         |
-      |        |         ===============         |
-      |        |                                 |
-      |        |       Translation Prefix:       |
-      |        |         2001:db8:46::/96        |
-      |        |                                 |
-      |        |     Static Address Mapping:     |
-      |        | 192.0.2.1 <=> 2001:db8:12:34::1 |
-      |        |                                 |
-      |        +--------------<2001:db8:46::/96>-+
-      |                               |
-     (the IPv6-only data centre network)
-      |                               |
-      | ------------------------------/
-      |/
-      |
-+--<2001:db8:12:34::1>------------------------------+
-|     |                                             |
-|     |          IPv6-only server                   |
-|     |          ================                   |
-|     |                                             |
-| +-[2001:db8:12:34::1]---------------------------+ |
-| |      AF_INET6                                 | |
-| |                                               | |
-| |             IPv6-only application             | |
-| |                                               | |
-| +-----------------------------------------------+ |
-+---------------------------------------------------+
+  IPv6-capable user      IPv4-only user
+  <2001:db8::ab:cd>      <203.0.113.50>
+    |                          |
+ (the IPv6 internet)   (the IPv4 Internet)
+    |                          |
+    |  +-[BR]---------<192.0.2.0/24>--------------+
+    |  |                                          |
+    |  | EAM #1:      192.0.2.1,2001:db8:12:34::1 |
+    |  | EAM #2..#n:  [...]                       |
+    |  | XLAT Prefix: 2001:db8:46::/96            |
+    |  |                                          |
+    |  +------------<2001:db8:46::/96>------------+
+    |                        |
+   (the IPv6-only data centre network)
+               |
++--<2001:db8:12:34::1>--[v6-only server]-+
+|     |                                  |
+| +-[2001:db8:12:34::1]--[v6-only app]-+ |
+| |   AF_INET6 socket                  | |
+| +------------------------------------+ |
++----------------------------------------+
         ]]></artwork>
       </figure>
       </t>
       <t>
-      In this example, 192.0.2.0/24 is allocated as an IPv4 Service Address
-      Pool. Individual IPv4 Service Addresses are assigned from this pool.
-      The provider must route this prefix to the SIIT-DC Gateway's IPv4
-      interface. Note that there are no restrictions on how many IPv4 Service
+      In <xref target="fig_architecture"/>, 192.0.2.0/24 is the IPv4 Service
+      Address Pool. Individual IPv4 Service Addresses are assigned from this
+      prefix, and traffic destined for it is routed to the BR's IPv4-facing
+      network interface. There are no restrictions on how many IPv4 Service
       Address Pools are used or their prefix length, as long as they are all
-      routed to the SIIT-DC Gateway's IPv4 interface.
+      routed to the BR's IPv4-facing network interface.
       </t>
       <t>
-      The Static Address Mapping list is used when translating an IPv4 Service
-      Address (here 192.0.2.1) to its corresponding IPv6 Service Address (here
-      2001:db8:12:34::1) and vice versa. When the SIIT-DC Gateway translates
-      an IPv4 packet to IPv6, any IPv4 Service Address found in the original
-      IPv4 header will be replaced with the corresponding IPv6 Service Address
-      in the resulting IPv6 header, and vice versa when translating an IPv6
-      packet to IPv4.
+      When translating packets between IPv4 and IPv6, the BR uses the EAM to
+      replace any occurrence of the IPv4 Service Address (192.0.2.1) with its
+      corresponding IPv6 Service Address (2001:db8:12:34::1). Addresses that
+      do not match any EAM configured in the BR are translated by inserting or
+      removing the Translation Prefix (2001:db8:46::/96), cf. <xref
+      target="RFC6052">Section 2.2 of RFC6052</xref>.
       </t>
       <t>
-      2001:db8:46::/96 is the Translation Prefix into which the entire IPv4
-      address space is mapped. It is used for translation of the end user's
-      IPv4 address to IPv6 and vice versa according to the algorithm defined
-      in <xref target="RFC6052">Section 2.2 of RFC6052</xref>. This
-      algorithmic mapping has a lower precedence than the configured Static
-      Address Mappings.
+      The BR can be deployed as a separate device or as a logical function in
+      another multi-purpose device, such as an IP router. Any number of BRs
+      may exist simultaneously in the IDC's network infrastructure, as long as
+      they all configured with the same Translation Prefix and an identical
+      EAM Table.
       </t>
       <t>
-      The SIIT-DC Gateway itself can be either a separate device or a logical
-      function in another multi-purpose device, for example an IP router. Any
-      number of SIIT-DC Gateways may exist simultaneously in an operators
-      infrastructure, as long as they all have the same translation prefix and
-      list of Static Mappings configured.
+      The IPv6 Service Address of should be registered in DNS using an "IN
+      AAAA" record, while its corresponding IPv4 Service Address should be
+      registered using an "IN A" record. This ensures that IPv6-capable
+      clients access the application/service directly using its native IPv6
+      end-to-end, while IP4-only clients will access it through SIIT-DC.
       </t>
-      <section title="DNS Configuration">
-        <t>
-        The IPv6 Service Address of should be registered in DNS using an "IN
-        AAAA" record, while its corresponding IPv4 Service Address should be
-        registered using an "IN A" record. This results in the following DNS
-        records:
-        </t>
-        <t>
-        <figure anchor="fig_dnsconfig" align="center">
-          <preamble>DNS Configuration for a SIIT-DC enabled service</preamble>
-          <artwork align="center"><![CDATA[
-www.example.com.  IN AAAA  2001:db8:12:34::1
-www.example.com.  IN A     192.0.2.1
-          ]]></artwork>
-        </figure>
-        </t>
-      </section>
       <section title="Packet Flow">
         <t>
-        In this example, "IPv4-only user" initiates a request to the
-        application running on the IPv6-only server. He starts by looking up
-        the "IN A" record of "www.example.org" in DNS, and attempts to connect
-        to this address on the service by transmitting the following IPv4
-        packet destined for the IPv4 Service Address:
+        In this example, the "IPv4-only user" from <xref
+        target="fig_architecture"/> initiates a connection to the application
+        running on the IPv6-only server. After first having looked up the "IN
+        A" record in DNS, the user starts by transmitting an TCP SYN packet to
+        the IPv4 Service Address. This IPv4 packet is routed to the BR, and is
+        there translated to IPv6 as follows:
         </t>
         <t>
-        <figure anchor="fig_xlat_s1" align="center">
-          <preamble>Stage 1: Client -&gt; Server, IPv4</preamble>
+        <figure anchor="fig_xlat_v4v6" align="center">
+          <preamble>IPv4 to IPv6 translation</preamble>
           <artwork align="center"><![CDATA[
-+------------------------------------------------+
-| IP Version:           4                        |
-| Source Address:       203.0.113.50             |
-| Destination Address:  192.0.2.1                |
-| Protocol:             TCP                      |
-|------------------------------------------------|
-| TCP SYN [...]                                  |
-+------------------------------------------------+
++--[IPv4]----------+     +--[IPv6]-----------------------+
+| SRC 203.0.113.50 |     | SRC 2001:db8:46::203.0.113.50 |
+| DST 192.0.2.1    | --> | DST 2001:db8:12:34::1         |
+| TCP SYN [..]     |     | TCP SYN [..]                  |
++------------------+     +-------------------------------+
           ]]></artwork>
         </figure>
         </t>
         <t>
-        This packet is then routed over the Internet to the (nearest) SIIT-DC
-        Gateway, which translates it into the following IPv6 packet and
-        forward it into the IPv6 network:
+        The resulting IPv6 packet is routed to the IPv6-only server, which
+        processes and responds to it as if it had been a native IPv6 packet
+        all along. The server's IPv6 response packet is then routed back to
+        the BR, where it is translated back to IPv4 as follows:
         </t>
         <t>
-        <figure anchor="fig_xlat_s2" align="center">
-          <preamble>Stage 2: Client -&gt; Server request, IPv4</preamble>
+        <figure anchor="fig_xlat_v6v4" align="center">
+          <preamble>IPv6 to IPv4 translation</preamble>
           <artwork align="center"><![CDATA[
-+-------------------------------------------------+
-| IP Version:           6                         |
-| Source Address:       2001:db8:46::203.0.113.50 |
-| Destination Address:  2001:db8:12:34::1         |
-| Next Header:          TCP                       |
-|-------------------------------------------------|
-| TCP SYN [...]                                   |
-+-------------------------------------------------+
++--[IPv6]-----------------------+      +--[IPv4]----------+
+| SRC 2001:db8:12:34::1         |      | SRC 192.0.2.1    |
+| DST 2001:db8:46::203.0.113.50 | -->  | DST 203.0.113.50 |
+| TCP SYN/ACK [..]              |      | TCP SYN/ACK [..] |
++-------------------------------+      +------------------+
           ]]></artwork>
         </figure>
         </t>
         <t>
-        The destination address field was translated to the IPv6 Service
-        Address according to the configured Static Address Mapping, while the
-        source address was field translated according to the <xref
-        target="RFC6052"/> mapping using the Translation Prefix (because it
-        did not match any Static Address Mapping). The rest of the IP header
-        was translated according to <xref target="RFC6145"/>. The Layer 4
-        payload is copied verbatim, with the exception of the TCP checksum
-        being recalculated.
-        </t>
-        <t>
-        Note that the IPv6 address 2001:db8:46::203.0.113.50 may also be
-        expressed as 2001:db8:46::cb00:7132, cf. <xref
-        target="RFC4291">Section 2.2 of RFC4291</xref>.
-        </t>
-        <t>
-        Next, the application receives receives this IPv6 packet and responds
-        to it like it would with any other IPv6 packet:
-        </t>
-        <t>
-        <figure anchor="fig_xlat_s3" align="center">
-          <preamble>Stage 3: Server -&gt; Client response, IPv6</preamble>
-          <artwork align="center"><![CDATA[
-+-------------------------------------------------+
-| IP Version:           6                         |
-| Source Address:       2001:db8:12:34::1         |
-| Destination Address:  2001:db8:46::203.0.113.50 |
-| Next Header:          TCP                       |
-|-------------------------------------------------|
-| TCP SYN+ACK [...]                               |
-+-------------------------------------------------+
-          ]]></artwork>
-        </figure>
-        </t>
-        <t>
-        The response packet is routed to the (nearest) SIIT-DC Gateway's IPv6
-        interface, which will translate it back to IPv4 as follows:
-        </t>
-        <t>
-        <figure anchor="fig_xlat_s4" align="center">
-          <preamble>Stage 4: Server -&gt; Client response, IPv4</preamble>
-          <artwork align="center"><![CDATA[
-+------------------------------------------------+
-| IP Version:           4                        |
-| Source Address:       192.0.2.2                |
-| Destination Address:  203.0.113.50             |
-| Protocol:             TCP                      |
-|------------------------------------------------|
-| TCP SYN+ACK [...]                              |
-+------------------------------------------------+
-          ]]></artwork>
-        </figure>
-        </t>
-        <t>
-        This time, the source address matched the Static Address Mapping and
-        was translated accordingly, while the destination address did not, and
-        was therefore translated according to <xref target="RFC6052"/> by
-        having the Translation Prefix stripped. The rest of the packet was
-        translated according to <xref target="RFC6145"/>.
-        </t>
-        <t>
-        The resulting IPv4 packet is transmitted back to the end user over the
-        IPv4 Internet. Subsequent packets in the flow will follow the exact
-        same translation pattern. They may or may not cross the same
-        translators as earlier packets in the same flow.
-        </t>
-        <t>
-        The end user's IPv4 stack has no idea that it is communicating with an
-        IPv6 server, nor does the server's IPv6 stack have any idea that is is
-        communicating with an IPv4 client. To them, it's just plain IPv4 or
-        IPv6, respectively. However, the applications running on the server
-        may optionally be updated to recognise and strip the Translation
-        Prefix, so that the end user's IPv4 address may be used for logging,
-        Geo-Location, abuse handling, and so forth.
+        It is important to note that neither the IPv4 client nor the IPv6
+        server/application need any special support to participate in SIIT-DC.
+        However, the application may optionally be taught to extract the
+        embedded IPv4 source address from incoming IPv6 packets with source
+        addresses within the Translation Prefix. This will allow it to perform
+        IPv4-specific tasks such as Geo-Location, logging, abuse handling, and
+        so on.
         </t>
       </section>
     </section>
-    <section title="Deployment Guidelines">
-      <t>
-      In this section, we list recommendations and guidelines for operators
-      who would like to deploy a SIIT-DC service in their data centre network.
-      </t>
+    <section title="Deployment Considerations and Guidelines">
+      <section title="Application/Device Support for IPv6">
+        <t>
+        SIIT-DC as described in this document requires that the application
+        (and/or the node the application is located on) supports IPv6
+        networking, and that it has no dependency on local IPv4 network
+        connectivity. However, SIIT-DC supports IPv4-dependent applications
+        and nodes through the introduction of an ER. The ER provides the
+        application or node with seemingly native IPv4 connectivity, by
+        translating the packets (that were previously translated from IPv4 to
+        IPv6) by the BR back to IPv4 before passing them to the IPv4-dependent
+        application or node. This approach is described in more detail in
+        <xref target="I-D.ietf-v6ops-siit-dc-2xlat"/>.
+        </t>
+      </section>
       <section title="Application Support for NAT">
         <t>
-        Not all application protocols are able to operate in a network
-        environment where rewriting of IP addresses occur. An operator should
-        therefore carefully evaluate the applications he would like to make
-        available for IPv4 users through SIIT-DC, to ensure they do not fall
-        in this category. In general, if an application layer protocol works
-        correctly through standard NAT44 (see <xref target="RFC3235"/>), it
-        will most likely work correctly through SIIT-DC as well.
+        The operator should carefully examine whether or not the application
+        protocols he would like to use SIIT-DC with are able to operate in a
+        network environment where rewriting of IP addresses occur. In general,
+        if an application layer protocol works correctly through standard
+        NAT44 (see <xref target="RFC3235"/>), it will most likely work
+        correctly through SIIT-DC as well.
         </t>
         <t>
         Higher-level protocols that embed IP addresses as part of their
-        payload are especially problematic, as noted in <xref
-        target="RFC2663"/>, <xref target="RFC2993"/>, and <xref
-        target="RFC3022"/>. Such protocols will most likely not work through
-        any form of address translation, including SIIT-DC. One well-known
-        example of such a protocol is <xref target="RFC0959">FTP</xref>.
-        </t>
-        <t>
-        The SIIT-DC architecture may be extended with a Host Agent that
-        reverses the translation performed by the SIIT-DC Gateway before
-        passing the packets to the application software. This allows the
-        problematic application protocols described above to work correctly in
-        an SIIT-DC environment as well. See <xref
-        target="I-D.anderson-v6ops-siit-dc-2xlat"/> for a description of this
-        extension.
-        </t>
-      </section>
-      <section title="Application Support for IPv6">
-        <t>
-        SIIT-DC requires that the application software supports IPv6
-        networking, and that it has no dependency on IPv4 networking. If this
-        is not the case, the approach described in <xref
-        target="I-D.anderson-v6ops-siit-dc-2xlat"/> may be used, as it
-        provides the application with seemingly native IPv4 connectivity. This
-        allows IPv4-only applications to work correctly in an otherwise
-        IPv6-only environment.
+        payload are particularly problematic <xref target="RFC2663"/> <xref
+        target="RFC2993"/> <xref target="RFC3022"/>. One well-known example of
+        such a protocol is <xref target="RFC0959">FTP</xref>. Such protocols
+        can be made to work with SIIT-DC through the introduction of an ER,
+        which provides end-to-end IPv4 address transparency by reversing the
+        translations performed by the BR before passing the packets to the
+        NAT-incompatible application. This approach is described in more
+        detail in <xref target="I-D.ietf-v6ops-siit-dc-2xlat"/>.
         </t>
       </section>
       <section title="Application Communication Pattern">
         <t>
-        SIIT-DC is ideally suited for applications where IPv4-only nodes on
-        the Internet initiate traffic towards the IPv6-only services, which in
-        turn are only passively listening for inbound traffic and responding
-        as necessary. One well-known example of such a protocol is  <xref
-        target="RFC7230">HTTP</xref>. This is due to the fact that in this
-        case, an IPv4 user looks exactly like an ordinary IPv6 user from the
-        host and application's point of view, and requires no special
-        treatment.
+        SIIT-DC is best suited for traditional client/server applications
+        where IPv4-only clients on the Internet initiate traffic towards an
+        IPv6-only service, which in turn is passively listening for inbound
+        traffic and responding as necessary. In this case, an IPv4 client
+        looks exactly like an native IPv6 client from the IPv6 service's point
+        of view, and thus does not require any special treatment. One
+        particularly common application protocol that follows this
+        client/server communication pattern, and thus is ideally suited for
+        use with SIIT-DC, is <xref target="RFC7230">HTTP</xref>.
         </t>
         <t>
-        It is possible to combine SIIT-DC with <xref
+        It is also possible to combine SIIT-DC with <xref
         target="RFC6147">DNS64</xref> in order to allow an IPv6-only
-        application to initiate communication with IPv4-only nodes through an
-        SIIT-DC Gateway. However, in this case, care must be taken so that all
-        outgoing communication is sourced from the IPv6 Service Address that
-        has a Static Mapping configured on the SIIT-DC Gateway. If another
-        unmapped address is used, the SIIT-DC Gateway will discard the packet.
+        application to initiate communication with IPv4-only nodes through
+        SIIT-DC. However, in this case, care must be taken so that all
+        outgoing communication is sourced from an IPv6 Service Address that is
+        found in an EAM configured in the BR. If another address is used, the
+        BR will most likely be unable to translate it to IPv4, causing the
+        packet to be discarded. This could be prevented by altering the <xref
+        target="RFC6724">Default Address Selection Policy Table</xref> on the
+        IPv6 node.
         </t>
         <t>
-        An alternative approach to the above would be to make use of an
-        SIIT-DC Host Agent as described in <xref
-        target="I-D.anderson-v6ops-siit-dc-2xlat"/>. This provides the
-        application with seemingly native IPv4 connectivity, which it may use
-        for both inbound and outbound communication without requiring the
-        application to select a specific source address for its outbound
-        communications.
+        An alternative approach to the above would be to place an ER in front
+        of the application in question, as described <xref
+        target="I-D.ietf-v6ops-siit-dc-2xlat"/>. This provides the application
+        with seemingly native IPv4 connectivity, which it may use freely for
+        bi-directional communication with the IPv4 Internet. An application or
+        node located behind an ER does not need to worry about selecting a
+        specific source address, as it will only have valid options available.
         </t>
       </section>
-      <section title="Choice of Translation Prefix">
+      <section anchor="xlat_pfx" title="Choice of Translation Prefix">
         <t>
         Either a Network-Specific Prefix (NSP) from the provider's own IPv6
         address space or the IANA-allocated Well-Known Prefix 64:ff9b::/96
-        (WKP) may be used. From a technical point of view, both should work
-        equally well, however as only a single WKP exists, if a provider would
-        like to deploy more than one instance of SIIT-DC in his network, or
-        <xref target="RFC6146">Stateful NAT64</xref>, an NSP must be used
-        anyway for all but one of those deployments.
+        (WKP) may be used. From a technical point of view, both work equally
+        well. However, only a single WKP exists, so if a provider would like
+        to deploy more than one instance of SIIT-DC in his network, or another
+        translation technology such as <xref target="RFC6146">Stateful
+        NAT64</xref>, the operator will be forced to use an NSP for all but
+        one of those deployments.
         </t>
         <t>
-        Furthermore, the WKP cannot be used in inter-domain routing. By using
-        an NSP, a provider will have the possibility to provide SIIT-DC
-        service to other operators across Autonomous System borders.
-        </t>
-        <t>
-        For these reasons, this document recommends that an NSP is used.
-        Section 3.3 of <xref target="RFC6052"/> discusses the choice of
-        translation prefix in more detail.
+        Another consideration is that the WKP cannot be used in inter-domain
+        routing. By using an NSP instead, SIIT-DC will support a deployment
+        where the BR and the IPv6 Service Address are located in different
+        Autonomous Systems.
         </t>
         <t>
         The Translation Prefix may use any of the lengths described in <xref
@@ -584,104 +479,100 @@ www.example.com.  IN A     192.0.2.1
         target="RFC6052">Section 2.4 of RFC6052</xref>)), instead of being
         converted to hexadecimal notation. This makes it easier to write IPv6
         ACLs and similar that match translated endpoints in the IPv4 Internet.
-        Use of a /96 prefix length is therefore recommended.
+        </t>
+        <t>
+        For the reasons discussed above, this document recommends that an NSP
+        with a prefix length of /96 is used. Section 3.3 of <xref
+        target="RFC6052"/> discusses the choice of translation prefix in more
+        detail.
         </t>
       </section>
       <section title="Routing Considerations">
         <t>
         The prefixes that constitute the IPv4 Service Address Pool and the
-        IPv6 Translation Prefix may be routed to the SIIT-DC Gateway(s) as any
-        other IPv4 or IPv6 route in the provider's network.
-        </t>
-        <t>
-        If more than one SIIT-DC Gateway is being deployed, it is recommended
-        that a dynamic routing protocol (such as BGP, IS-IS, or OSPF) is being
-        used to advertise the routes within the provider's network. This will
-        ensure that the traffic that is to be translated will reach the
-        closest SIIT-DC Gateway, reducing or eliminating sub-optimal traffic
-        patterns, as well as provide high availability - if one SIIT-DC
-        Gateway fails, the dynamic routing protocol will automatically
-        redirect the traffic to the next-best translator.
+        IPv6 Translation Prefix may be routed to the BRs as any other IPv4 or
+        IPv6 route in the provider's network. If more than one BR is being
+        deployed, it is recommended that a routing protocol (IGP) used to
+        advertise the routes within the provider's network. This will ensure
+        that the traffic that is to be translated will reach the closest BR,
+        reducing or eliminating sub-optimal traffic patterns, as well as
+        providing high availability: Should one BR fail, the IGP will
+        automatically redirect the traffic to the closest alternate BR.
         </t>
       </section>
-      <section title="Location of the SIIT-DC Gateways">
+      <section title="Location of the SIIT-DC Border Relays">
         <t>
         The goal of SIIT-DC is to facilitate a true IPv6-only application and
         network architecture, with the sole exception being the IPv4
-        interfaces of the SIIT-DC Gateways and the network infrastructure
-        required to connect them to the IPv4 Internet. Therefore, the SIIT-DC
-        Gateways should be located somewhere between the IPv4 Internet and the
-        application delivery stack. This should be understood to include all
-        servers, load balancers, firewalls, intrusion detection systems, and
-        similar devices that are processing traffic to a greater extent than
-        merely forwarding it.
+        interfaces of the BRs and the network infrastructure required to
+        connect the BRs to the IPv4 Internet. Therefore, the BRs must be
+        located somewhere between the IPv4 Internet and the application
+        delivery stack. This should be understood to include all servers, load
+        balancers, firewalls, intrusion detection systems, and similar devices
+        that are processing traffic to a greater extent than merely forwarding
+        it.
         </t>
         <t>
-        It is optimal to place the SIIT-DC Gateways as close as possible to
-        the direct path between the servers and the end users. If the closest
-        translator is located a long way from the optimal path, all packets in
-        both directions must make a detour. This would increase the RTT
-        between the server and the end user by by two times the extra latency
-        incurred by the detour, as well as cause unnecessary load on the
-        network links on the detour path.
+        It is optimal to place the BRs as close as possible to the direct path
+        between the location of the IPv6 Service Address and the end users. If
+        the closest BR was located a long way from the direct path, all
+        packets in both directions must make a detour in order to traverse the
+        BR. This would increase the RTT between the service and the end user
+        by by two times the extra latency incurred by the detour, as well as
+        cause unnecessary load on the network links on the detour path.
         </t>
         <t>
-        Where possible, it is beneficial to implement the SIIT-DC Gateways as
-        a logical function within the routers would have handled the traffic
-        anyway, had the topology been dual stacked. This way, the translation
-        service would not need to be assigned separate networks ports (which
-        might become saturated and impact the service quality), nor would it
-        require extra rack space and energy. Some particularly good choices of
-        the location could be within a data centre's access routers, or within
-        the provider's border routers. When every single application in the
-        data centre or the provider's network eventually runs on single-stack
-        IPv6, there would no need to run IPv4 on the inside of the SIIT-DC
-        Gateway. This reduces complexity, and allows the operator to reclaim
-        IPv4 addresses from the network infrastructure that may instead be
-        used as IPv4 Service Address Pools.
+        Where possible, it is beneficial to implement the BRs as a logical
+        function within the routers would have handled the traffic anyway, had
+        the topology been dual stacked. This way, a SIIT-DC deployment does
+        not require separate networks ports (which might become saturated and
+        impact the service quality), nor will it require extra rack space and
+        energy. Some particularly good choices of the location could be within
+        an IDC's access routers, or within the Autonomous System's border
+        routers.
         </t>
         <t>
-        Finally, another possibility is that the data centre operator
-        outsources the SIIT-DC service to another entity, for example his
-        upstream ISP. Doing so allows the data centre operator to build a true
-        IPv6-only infrastructure. However, in this case, care must be taken to
-        ensure that the path between the data centre and the SIIT-DC operator
-        has a stable and known MTU, and that the SIIT-DC Gateways are not too
-        far away from the data centre (otherwise, translated traffic could
-        incur a latency penalty).
+        Finally, another possibility is that the IDC operator outsources the
+        SIIT-DC service to another entity, for example his upstream ISP. Doing
+        so allows the IDC operator to build a true IPv6-only infrastructure.
         </t>
       </section>
       <section title="Migration from Dual Stack">
         <t>
-        While this document discusses the use of IPv6-only servers and
-        applications, there is no technical requirement that the servers are
-        IPv4 free. SIIT-DC works equally well for dual stacked servers, which
-        makes migration easy - after setting up the translation function, the
-        DNS "IN A" record for the service is updated to point to the IPv4
-        address that will be translated to IPv6, the previously used IPv4
-        service address may continue to be assigned to the server. This makes
-        roll-back to dual stack easy, as it is only a matter of changing the
-        DNS record back to what it was before.
+        While this document mainly discusses the use of IPv6-only nodes and
+        applications, it is important to note that SIIT-DC is fully compatible
+        with dual stack infrastructures, including dual stack nodes and
+        applications.
         </t>
         <t>
-        It is also possible to use DNS Round Robin to gradually migrate a
-        dual-stacked service's IPv4 traffic from native to SIIT-DC. This is
-        done by configuring multiple DNS "IN A" records for the service's
-        hostname, and pointing one portion of them to the service's native
-        IPv4 addresses and another portion to IPv4 Service Addresses handled
-        by SIIT-DC. The distribution of "IN A" records determines how much of
-        the client traffic will pass through the SIIT-DC Gateway and how much
-        will remain native. This operator may then gradually increase the
-        share of SIIT-DC "IN A" DNS records until no native addresses remain.
-        </t>
-        <t>
-        When all client traffic is handled by SIIT-DC, the operator may
-        proceed to remove the (now unused) IPv4 addresses assigned to the
-        servers in question. They could then potentially be recycled as
-        another IPv4 Service Address Pool assigned to SIIT-DC.
+        Thus, migrating a dual-stacked service to an IPv6-only one where
+        SIIT-DC provides the IPv4 Internet connectivity is easy. The operator
+        would start out by designating the service's current native IPv6
+        address as the IPv6 Service Address, and assign it a corresponding
+        IPv4 Service Address. At this point, the service will respond on both
+        its old (native) IPv4 address, and the SIIT-DC IPv4 Service Address.
+        The operator may now move traffic from the former to the latter by
+        changing the service's "IN A" DNS record. Once all IPv4 traffic has
+        been successfully moved to SIIT-DC, the old IPv4 address may be
+        reclaimed.
         </t>
       </section>
-      <section title="Packet Size and Fragmentation Considerations">
+      <section title="Translation of ICMPv6 Errors to IPv4">
+        <t>
+        In response to an IPv4 packet subsequently translated to IPv6 by the
+        BR, an IPv6 router in the IDC network may need to transmit an ICMPv6
+        error back to the origin IPv4 node. By default, such an ICMPv6 error
+        will most likely be discarded by the BR, unless the source address of
+        the ICMPv6 error happens to be a IPv4-translatable IPv6 address or
+        covered by an EAM.
+        </t>
+        <t>
+        To facilitate reliable delivery of such ICMPv6 errors, an SIIT-DC
+        operator SHOULD implement the recommendations in <xref
+        target="RFC6791"/> in the BRs.
+        </t>
+      </section>
+      <section title="MTU and Fragmentation">
         <t>
         There are some key differences between IPv4 and IPv6 relating to
         packet sizes and fragmentation that one should consider when deploying
@@ -692,7 +583,7 @@ www.example.com.  IN A     192.0.2.1
         <t>
         In particular, the operator may find that relying on fragmentation in
         the IPv6 domain is undesired or even operationally impossible <xref
-        target="I-D.taylor-v6ops-fragdrop"/>.  For this reason, the
+        target="I-D.taylor-v6ops-fragdrop"/>. For this reason, the
         recommendations in this section seeks to minimise the use of IPv6
         fragmentation.
         </t>
@@ -710,40 +601,38 @@ www.example.com.  IN A     192.0.2.1
           </t>
           <t>
           If the transport protocol used is TCP, this is generally not a
-          problem, as the IPv6 server will advertise a TCP MSS of 1440 bytes.
-          This causes the client to never send larger packets than what can be
-          translated to a single full-size IPv6 packet, eliminating any need
-          for fragmentation.
+          problem, the IPv6 node will advertise a TCP MSS of 1440 bytes during
+          the initial TCP handshake. This causes the IPv4 clients to never
+          send larger packets than what can be translated to a single
+          full-size IPv6 packet, eliminating any need for fragmentation.
           </t>
           <t>
           For other transport protocols, full-size IPv4 packets with the DF
-          flag cleared will need to be fragmented by the SIIT-DC Gateway. The
-          only way to avoid this is to increase the Path MTU between the
-          SIIT-DC Gateway and the servers to 1520 bytes. Note that the
-          servers' MTU SHOULD NOT be increased accordingly, as that would
-          cause them to undergo Path MTU Discovery for most native IPv6
-          destinations. However, the servers would need to be able to accept
-          and process incoming packets larger than their own MTU. If the
-          server's IPv6 implementation allows the MTU to be set differently
-          for specific destinations, it could be increased to 1520 for
-          destinations within the Translation Prefix specifically.
+          flag cleared will need to be fragmented by the BR. This may be
+          avoided by increasing the Path MTU between the BR and the IPv6 nodes
+          to 1520 bytes or greater. If this is done, the MTU on the IPv6 nodes
+          themselves SHOULD NOT be increased accordingly, as doing so would
+          cause them to undergo Path MTU Discovery for all destinations on the
+          IPv6 Internet. The nodes MUST however be able to accept and process
+          incoming packets larger than their own MTU. If the nodes' IPv6
+          implementation allows the initial Path MTU to be set differently for
+          specific destinations, it MAY be increased to 1520 for destinations
+          within the Translation Prefix specifically.
           </t>
         </section>
         <section title="IPv6 Atomic Fragments">
           <t>
           In keeping with <xref target="RFC6145">the fifth paragraph of
-          Section 4 of RFC6145</xref>, an SIIT-DC Gateway will by default add
-          an IPv6 Fragmentation header to the resulting IPv6 packet when
-          translating an IPv4 packet with the Don't Fragment flag set to 0.
-          </t>
-          <t>
-          This happens even though the resulting IPv6 packet isn't actually
-          fragmented into several pieces, resulting in an IPv6 Atomic Fragment
-          <xref target="RFC6946"/>. These Atomic Fragments are generally not
-          useful in a data centre environment, and it is therefore recommended
-          that this behaviour is disabled in the SIIT-DC Gateways. To this
-          end, <xref target="RFC6145">Section 4 of RFC6145</xref> notes that
-          the "translator MAY provide a configuration function that allows the
+          Section 4 of RFC6145</xref>, a stateless translator like a BR will
+          by default add an IPv6 Fragmentation header to the resulting IPv6
+          packet when translating an IPv4 packet with the Don't Fragment flag
+          set to 0. This happens even though the resulting IPv6 packet isn't
+          actually fragmented into several pieces, resulting in an IPv6 Atomic
+          Fragment <xref target="RFC6946"/>. These Atomic Fragments are
+          generally not useful in an IDC environment, and it is therefore
+          recommended that this behaviour is disabled in the BRs. To this end,
+          <xref target="RFC6145">Section 4 of RFC6145</xref> notes that the
+          "translator MAY provide a configuration function that allows the
           translator not to include the Fragment Header for the non-fragmented
           IPv6 packets".
           </t>
@@ -768,25 +657,26 @@ www.example.com.  IN A     192.0.2.1
           reasonably assume that if it transmits an IPv6 packet that is 1280
           bytes or smaller, it is guaranteed to reach its destination without
           requiring fragmentation or invoking the Path MTU Discovery algorithm
-          <xref target="RFC1981"/>. However, this assumption fails if the
-          destination is an IPv4 node reached through a protocol translator
-          such as an SIIT-DC Gateway, as the minimum IPv4 link MTU is 68
-          bytes. See <xref target="RFC0791">Section 3.2 of RFC791</xref>.
+          <xref target="RFC1981"/>. However, this assumption might prove false
+          if the destination is an IPv4 node reached through a protocol
+          translator such as a BR, as the minimum IPv4 link MTU is 68 bytes.
+          See <xref target="RFC0791">Section 3.2 of RFC791</xref>.
           </t>
           <t>
           <xref target="RFC6145">Section 5.1 of RFC6145</xref> specifies that
-          an SIIT-DC Gateway should set the IPv4 Don't Fragment flag to 1 when
-          it translates a non-fragmented IPv6 packet to IPv4. This means that
-          when the path to the destination IPv4 node contains an IPv4 link
-          with an MTU smaller than 1260 bytes (which corresponds to an IPv6
-          MTU smaller than 1280 bytes, cf. <xref target="ip_hdr_size_diff"/>),
-          the Path MTU Discovery algorithm will be invoked, even if the
-          original IPv6 packet was only 1280 bytes large. This happens as a
-          result of the IPv4 router connecting to the IPv4 link with the small
-          MTU returning an ICMPv4 Need To Fragment error with an MTU value
-          smaller than 1260, which in turns is translated by the SIIT-DC
-          Gateway to an ICMPv6 Packet Too Big error with an MTU value smaller
-          than 1280 which is then transmitted to the origin IPv6 node.
+          a stateless translator should set the IPv4 Don't Fragment flag to 1
+          when it translates a non-fragmented IPv6 packet to IPv4. This means
+          that when the path to the destination IPv4 node contains an IPv4
+          link with an MTU smaller than 1260 bytes (which corresponds to an
+          IPv6 MTU smaller than 1280 bytes, cf. <xref
+          target="ip_hdr_size_diff"/>), the Path MTU Discovery algorithm will
+          be invoked, even if the original IPv6 packet was only 1280 bytes
+          large. This happens as a result of the IPv4 router connecting to the
+          IPv4 link with the small MTU returning an ICMPv4 Need To Fragment
+          error with an MTU value smaller than 1260, which in turns is
+          translated by the BR to an ICMPv6 Packet Too Big error with an MTU
+          value smaller than 1280 which is then transmitted to the origin IPv6
+          node.
           </t>
           <t>
           When an IPv6 node receives an ICMPv6 Packet Too Big error indicating
@@ -800,15 +690,14 @@ www.example.com.  IN A     192.0.2.1
             Packet Too Big, i.e., limit the size of subsequent packets
             transmitted to that destination to the indicated value. This
             approach causes no problems for the SIIT-DC function, as it simply
-            allows Path MTU Discovery to work transparently across the SIIT-DC
-            Gateway.</t>
+            allows Path MTU Discovery to work transparently across the BR.</t>
             <t>It may reduce its Path MTU value to exactly 1280, and in
             addition include a Fragmentation header in subsequent packets sent
             to that destination. In other words, the IPv6 node will start
             emitting Atomic Fragments. The Fragmentation header signals to the
-            the SIIT-DC Gateway that the Don't Fragment flag should be set to
-            0 in the resulting IPv4 packet, and it also provides the
-            Identification value.</t>
+            the BR that the Don't Fragment flag should be set to 0 in the
+            resulting IPv4 packet, and it also provides the Identification
+            value.</t>
           </list>
           </t>
           <t>
@@ -816,8 +705,8 @@ www.example.com.  IN A     192.0.2.1
           operator has IPv6 nodes that implement the second option above, the
           operator should consider enabling the functionality described as
           <xref target="RFC6145"> the "second approach" in Section 6 of
-          RFC6145</xref>. This functionality changes the SIIT-DC Gateway's
-          behaviour as follows:
+          RFC6145</xref>. This functionality changes the BR's behaviour as
+          follows:
           </t>
           <t>
           <list style="symbols">
@@ -846,113 +735,40 @@ www.example.com.  IN A     192.0.2.1
           </t>
         </section>
       </section>
-    </section>
-    <section anchor="implementation_reqs" title="Implementation Requirements">
-      <t>
-      This normative section specifies the SIIT-DC protocol that is
-      implemented by an SIIT-DC Gateway. Because SIIT-DC builds on and closely
-      resembles <xref target="RFC6145">SIIT</xref>, this section should be
-      read as a set of additions and changes that are applied to an
-      implementation already compliant to <xref target="RFC6145">SIIT</xref>.
-      Each of the following subsections discuss how the requirement relates to
-      with any corresponding requirements in <xref
-      target="RFC6145">SIIT</xref>.
-      </t>
-      <section title="Compliance with RFC6145 and RFC6052">
+      <section title="IPv4-translatable IPv6 Service Addresses">
         <t>
-        Unless otherwise stated in the following sections, an SIIT-DC
-        implementation MUST comply fully with <xref target="RFC6145"/>. It
-        must also implement the algorithmic address mapping defined in <xref
-        target="RFC6052"/>.
-        </t>
-      </section>
-      <section title="Static Address Mapping Function">
-        <t>
-        The implementation MUST allow the operator to configure an arbitrary
-        number of Static Address Mappings which override the default <xref
-        target="RFC6052"/> algorithm. It SHOULD be possible to specify a
-        single bi-directional mapping that will be used in both the
-        IPv4=&gt;IPv6 and IPv6=&gt;IPv4 directions, but it MAY additionally
-        (or alternatively) support unidirectional mappings.
+        SIIT-DC is designed so that the IPv6 Service Addresses are not
+        required to be IPv4-translatable IPv6 addresses. <xref
+        target="I-D.ietf-v6ops-siit-eam">Section 2 of
+        I-D.ietf-v6ops-siit-eam</xref> discusses why it is desirable to avoid
+        requiring the use of IPv4-translatable IPv6 addresses.
         </t>
         <t>
-        An example of such a bidirectional Static Address Mapping would be:
+        It is however quite possible to deploy SIIT-DC in combination with
+        IPv4-translatable IPv6 Service Addresses. The primary benefits in
+        doing so are:
         </t>
         <t>
         <list style="symbols">
-          <t>192.0.2.1 &lt;=&gt; 2001:db8:12:34::1</t>
+          <t>The operator is not required to provision EAMs for
+          IPv4-translatable IPv6 Service Addresses onto the BR/ERs.</t>
+          <t><xref target="RFC6145"/> translation can be performed in a
+          checksum-neutral manner, cf. <xref target="RFC6052">Section 4.1 of
+          RFC6052</xref>.</t>
         </list>
         </t>
         <t>
-        To accomplish the same using unidirectional mappings, the following
-        two mappings must instead be configured:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>192.0.2.1 =&gt; 2001:db8:12:34::1</t>
-          <t>2001:db8:12:34::1 =&gt; 192.0.2.1</t>
-        </list>
-        </t>
-        <t>
-        In both cases, if the SIIT-DC Gateway receives an IPv6 packet that has
-        the value 2001:db8:12:34::1 in either the source or destination field
-        of the IPv6 header, it MUST rewrite this field to 192 0.2.1 when
-        translating to IPv4. Similarly, if the SIIT-DC Gateway receives an
-        IPv4 packet that has the value 192.0.2.1 as the either the source or
-        destination field of the IPv4 header, it MUST rewrite this field to
-        2001:db8:12:34::1 when translating to IPv6. For all IPv4 or IPv6
-        source or destination field values for which there are no matching
-        Static Address Mapping, <xref target="RFC6052"/> compliant mapping
-        MUST be used instead.
-        </t>
-        <t>
-        Relation to <xref target="RFC6145"/>: The Static Address Mapping is a
-        novel feature feature that is not discussed in <xref
-        target="RFC6145"/>. It conflicts with the <xref target="RFC6145"/>
-        requirement that all addresses must be translated according to the
-        <xref target="RFC6052"/> algorithm.
-        </t>
-      </section>
-      <section anchor="feat_incrv6pmtu"
-       title="Support for Increasing the IPv6 Path MTU">
-        <t>
-        The SIIT-DC Gateway MUST provide a configuration function for the
-        network administrator to adjust the threshold of the minimum IPv6 MTU
-        to a value that reflects the real value of the minimum IPv6 MTU in the
-        network (greater than 1280 bytes). This will help reduce the chance of
-        including the Fragment Header in the resulting IPv6 packets.
-        </t>
-        <t>
-        Relation to <xref target="RFC6145"/>: This strengthens the
-        corresponding "MAY" requirement located in <xref
-        target="RFC6145">Section 4 of RFC6145</xref> to a "MUST".
-        </t>
-      </section>
-      <section title="Loop Prevention Mechanism">
-        <t>
-        As noted in <xref target="sec_loops"/>, there is a potential for
-        packets looping through the SIIT-DC function if it receives an IPv4
-        packet for which there is no Static Address Mapping. It is therefore
-        RECOMMENDED that the implementation has a mechanism that automatically
-        prevents this behaviour. One way this could be accomplished would be
-        to discard any IPv4 packets that would be translated into an IPv6
-        packet that would be routed straight back into the SIIT-DC function.
-        </t>
-        <t>
-        If such a mechanism isn't provided, the implementation MUST provide a
-        way to manually filter or null-route the destination addresses that
-        would otherwise cause loops.
-        </t>
-        <t>
-        Relation to <xref target="RFC6145"/>: This security consideration
-        applies only when an SIIT-DC Gateway translates a packet in "pure"
-        <xref target="RFC6145">SIIT</xref> mode (i.e., when both address
-        fields are translated according to <xref target="RFC6052"/>). This
-        consideration is in other words not specific to SIIT-DC, it is
-        inherited from <xref target="RFC6145"/>. In spite of this, <xref
-        target="RFC6145"/> does not describe this consideration or any methods
-        of prevention. The requirements in this section is therefore novel to
-        SIIT-DC, even though they apply equally to <xref target="RFC6145"/>.
+        The trade-off is that the IPv4-translatable IPv6 Service Addresses
+        must be configured on the IPv6 nodes, and the applications must be set
+        up to use them - likely in addition to their primary
+        (non-IPv4-translatable) IPv6 addresses. The IPv4-translatable IPv6
+        Service Addresses must also be routed from the BR through the IDC's
+        IPv6 network infrastructure to the nodes on which they are assigned.
+        This essentially requires the entire IPv6 infrastructure to be made
+        aware of and handle translated IPv4 traffic as a special case, which
+        significantly increases complexity. Avoiding such drawbacks is a
+        design goal of SIIT-DC, cf.  <xref target="intro_v6only"/>, therefore
+        the use of IPv4-translatable IPv6 Service Addresses is discouraged.
         </t>
       </section>
     </section>
@@ -965,13 +781,6 @@ www.example.com.  IN A     192.0.2.1
       Yourtchenko.
       </t>
     </section>
-    <section title="Requirements Language">
-      <t>
-      The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-      "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-      document are to be interpreted as described in <xref target="RFC2119"/>.
-      </t>
-    </section>
     <section anchor="IANA" title="IANA Considerations">
       <t>
       This draft makes no request of the IANA. The RFC Editor may remove this
@@ -982,33 +791,19 @@ www.example.com.  IN A     192.0.2.1
       <section title="Mistaking the Translation Prefix for a Trusted Network">
         <t>
         If a Network-Specific Prefix from the provider's own address space is
-        chosen for the translation prefix, as is recommended, care must be
-        taken if the translation service is used in front of services that
-        have application-level ACLs that distinguish between the operator's
-        own networks and the Internet at large, as the translated IPv4 end
-        users on the Internet will appear to be located within the provider's
-        own IPv6 address space. It is therefore important that the translation
-        prefix is treated the same as the Internet at large, rather than as a
-        trusted network.
-        </t>
-      </section>
-      <section anchor="sec_loops"
-               title="Packets Looping Through the SIIT-DC Function">
-        <t>
-        If the SIIT-DC Gateway receives an IPv4 packet destined to an address
-        for which there is no Static Address Mapping, its destination address
-        will be rewritten according to <xref target="RFC6052"/>, making the
-        resulting IPv6 packet have a destination address within the
-        translation prefix, which is likely routed to back to the SIIT-DC
-        function. This will cause the packet to loop until its Time To Live /
-        Hop Limit reaches zero, potentially creating a Denial Of Service
-        vulnerability.
+        chosen for the translation prefix, as recommended in <xref
+        target="xlat_pfx"/>, care must be taken if the translation service is
+        used in front of services that have application-level ACLs that
+        distinguish between the operator's own networks and the Internet at
+        large, as traffic from translated IPv4 end users on the Internet might
+        appear to be originating from the provider's own network. It is
+        therefore important that the translation prefix is treated the same as
+        the Internet at large, rather than as a trusted network.
         </t>
         <t>
-        To avoid this, it should be ensured that packets sent to IPv4
-        destinations addresses for which there are no Static Address Mappings,
-        or whose resulting IPv6 address does not have a more-specific route to
-        the IPv6 network, are immediately discarded.
+        In order to alleviate this problem, the operator may opt to use a
+        Translation Prefix that is distinct from and not a subset of the IPv6
+        prefixes used elsewhere in the network infrastructure.
         </t>
       </section>
     </section>
@@ -1019,11 +814,12 @@ www.example.com.  IN A     192.0.2.1
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.6052"?>
       <?rfc include="reference.RFC.6145"?>
+      <?rfc include="reference.RFC.6791"?>
+      <?rfc include="reference.I-D.ietf-v6ops-siit-eam"?>
     </references>
     <references title="Informative References">
       <?rfc include="reference.RFC.0791"?>
       <?rfc include="reference.RFC.0959"?>
-      <?rfc include="reference.RFC.1918"?>
       <?rfc include="reference.RFC.1981"?>
       <?rfc include="reference.RFC.2460"?>
       <?rfc include="reference.RFC.2663"?>
@@ -1032,390 +828,125 @@ www.example.com.  IN A     192.0.2.1
       <?rfc include="reference.RFC.3022"?>
       <?rfc include="reference.RFC.3235"?>
       <?rfc include="reference.RFC.4213"?>
-      <?rfc include="reference.RFC.4217"?>
-      <?rfc include="reference.RFC.4291"?>
       <?rfc include="reference.RFC.6146"?>
       <?rfc include="reference.RFC.6147"?>
       <?rfc include="reference.RFC.6540"?>
+      <?rfc include="reference.RFC.6724"?>
       <?rfc include="reference.RFC.6883"?>
       <?rfc include="reference.RFC.6946"?>
+      <?rfc include="reference.RFC.7020"?>
       <?rfc include="reference.RFC.7230"?>
-      <?rfc include="reference.RFC.7269"?>
-      <?rfc include="reference.I-D.anderson-v6ops-siit-dc-2xlat"?>
+      <?rfc include="reference.I-D.ietf-v6ops-siit-dc-2xlat"?>
       <?rfc include="reference.I-D.ietf-6man-deprecate-atomfrag-generation"?>
       <?rfc include="reference.I-D.taylor-v6ops-fragdrop"?>
     </references>
-    <section title="Complete SIIT-DC topology example">
+    <section title="Complete SIIT-DC IDC topology example">
       <t>
-      This figure shows a more complete SIIT-DC topology, in order to better
-      demonstrate the beneficial properties it has. In particular, it tries to
-      highlight the following:
-      </t>
-      <t>
-      <list style="symbols">
-        <t>Stateless operation: Any number of SIIT-DC Gateways may be deployed
-        side-by side, or indeed anywhere in the IPv6 network, as any standard
-        routing mechanism may be used to direct traffic to them (shown here
-        with BGP on the IPv4 side and ECMP on the IPv6 side). This in turn
-        leads to high availability, should one of the SIIT-DC Gateways fail or
-        become unavailable, those standard routing mechanisms will ensure that
-        traffic is automatically redirect one of the remaining SIIT-DC
-        Gateways.</t>
-        <t>IPv4 address conservation: Even though the to customers in the
-        example have several hundred servers, most of them are not used for
-        externally available services, and thus do not require an IPv4
-        address. The network between the servers and the SIIT-DC Gateways
-        require no IPv4 addresses, either. Furthermore, the IPv4 addresses
-        that are used do not have to be assigned to customers in the form of
-        aggregated blocks or prefixes; which makes it easy to achieve 100%
-        effective utilisation of the IPv4 service address pools.</t>
-        <t>Application support: The translation-friendly applications HTTP and
-        SMTP will work through SIIT-DC without requiring any special
-        customisation. Furthermore, translation-unfriendly applications such
-        as FTP will also work if an host agent in present, cf.  <xref
-        target="I-D.anderson-v6ops-siit-dc-2xlat"/>.</t>
-        <t>Native IPv6 as the foundation: Every server, application, and
-        network component has access to native and untranslated IPv6
-        connectivity to each other and to the Internet. Traffic through the
-        SIIT-DC Gateways will diminish over time as IPv6 is deployed
-        throughout the Internet. Eventually they may be shut down entirely,
-        which causes no disruption to the application stacks' ability to
-        deliver their services over native IPv6.</t>
-      </list>
+      <xref target="fig_topology"/> attempts to "tie it all together" and show
+      a more complete SIIT-DC topology, in order to better demonstrate its
+      advantageous properties discussed in <xref target="intro"/>. These are
+      discussed in more detail below.
       </t>
       <t>
       <figure anchor="fig_topology" align="center">
-        <preamble>Example data centre topology using SIIT-DC</preamble>
+        <preamble>Example SIIT-DC IDC topology </preamble>
         <artwork align="center"><![CDATA[
-                /--------------------------------\ /---------------\
-                |          IPv4 Internet         | | IPv6 Internet |
-                \-+----------------------------+-/ \--------+------/
-                  |                            |            |
-                  | <----------[BGP]---------> |            |
-                  |                            |            |
-+---------<192.0.2.0/24>----------+ +---<192.0.2.0/24>---+  |
-|                                 | |                    |  |
-|        SIIT-DC Gateway 1        | | SIIT-DC Gateway 2  |  |
-|        =================        | | =================  |  |
-|                                 | |                    |  |
-|       Translation Prefix:       | |                    |  |
-|         2001:db8:46::/96        | |                    |  |
-|                                 | |                    |  |
-|     Static Address Mappings:    | | Exactly the same   |  |
-| 192.0.2.1 <=> 2001:db8:12:34::1 | | configuration as   |  |
-| 192.0.2.2 <=> 2001:db8:12:34::2 | | SIIT-DC Gateway 1  |  |
-| 192.0.2.3 <=> 2001:db8:fe:dc::1 | |                    |  |
-| 192.0.2.4 <=> 2001:db8:12:34::4 | |                    |  |
-| [...]                           | |                    |  |
-|                                 | |                    |  |
-+--------<2001:db8:46::/96>-------+ +-<2001:db8:46::/96>-+  |
-                  |                            |            |
-                  | <---------[ECMP]---------> |            |
-                  |                            |            |
-/-----------------+----------------------------+-\          |
-|            IPv6 data centre network            +----------+
-\-+-----------------------------------+----------/
-  |                                   |
-  | Customer A's server LAN           | Customer B's server LAN
-  | 2001:db8:12:34::/64               | 2001:db8:fe:dc::/64
-  |                                   |
-  |                                   |
-  +-- www      ::1 (IPv6+SIIT-DC)     +-- www ::1 (IPv6+SIIT-DC)
-  |                                   |
-  |                                   +-- file01 ::f:01 (IPv6)
-  +-- mta      ::2 (IPv6+SIIT-DC)     |   [...]                
-  |                                   +-- file99 ::f:99 (IPv6) 
-  +-- ftp      ::3 (IPv6)             
-  |            ::4 (SIIT-DC/Host Agent)
-  |                                   
-  +-- app01 ::a:01 (IPv6)
-  |   [...]
-  +-  app99 ::a:99 (IPv6)
-  |
-  +-- db01  ::d:01 (IPv6)
+             /--------------------------------\ /---------------\
+             |          IPv4 Internet         | | IPv6 Internet |
+             \-+----------------------------+-/ \--------+------/
+               |                            |            |
+               | <----------[BGP]---------> |          [BGP]
+               |                            |            |
++-------<192.0.2.0/24>---------+ +---<192.0.2.0/24>---+  |
+|                        BR #1 | | BR #2              |  |
+| EAM Table:                   | |                    |  |
+| ==========                   | |                    |  |
+| 192.0.2.1,2001:db8:12:34::1  | |                    |  |
+| 192.0.2.2,2001:db8:12:34::2  | |  Exactly the same  |  |
+| 192.0.2.3,2001:db8:fe:dc::1  | |  configuration as  |  |
+| 192.0.2.4,2001:db8:12:34::4  | |  BR #1 has         |  |
+| 192.0.2.5,2001:db8:fe:dc::e  | |                    |  |
+|                              | |                    |  |
+| XLAT Prefix 2001:db8:46::/96 | |                    |  |
+|                              | |                    |  |
++--------<2001:db8:46::/96>----+ +-<2001:db8:46::/96>-+  |
+                  |                      |               |
+                  | <------[ECMP]------> |               |
+                  |                      |               |
+/-----------------+----------------------+--\            |
+|         IPv6 IDC network w/OSPFv3         +------------/
+\-+--------------------------------+--------/
+  |                                |
+  | Tenant A's server LAN          | Tenant B's server LAN
+  | 2001:db8:12:34::/64            | 2001:db8:fe:dc::/64
+  |                                |
+  +-- www      ::1 (IPv6+SIIT-DC)  +-- www-lb ::1 (IPv6+SIIT-DC)
+  |                                |
+  +-- mta      ::2 (IPv6+SIIT-DC)  +-- web ::80:01 (IPv6-only)
+  |                                |   [...]
+  +-- ftp      ::3 (IPv6)          +-- web ::80:99 (IPv6-only)
+  |            ::4 (IPv4, via ER)  |
+  |                                |         +----+
+  +-- app01 ::a:01 (IPv6-only)     \---- ::e | ER | --\
+  |   [...]                                  +----+   |
+  +-  app99 ::a:99 (IPv6-only)                        |
+  |                                  ftp 192.0.2.5 ---/
+  +-- db01  ::d:01 (IPv6-only)
   |   [..]
-  +-- db99  ::d:99 (IPv6)
+  \-- db99  ::d:99 (IPv6-only)
         ]]></artwork>
       </figure>
       </t>
-    </section>
-    <section title="Comparison to Other Deployment Approaches">
       <t>
-      There are a number of alternative deployment strategies a data centre
-      operator may follow. They each have different properties and helps solve
-      a different set of challenges. This section aims to compare the SIIT-DC
-      approach with each of the most common ones, by highlighting the benefits
-      and disadvantages of each.
+      <list style="hanging">
+        <t hangText="Single Stack IPv6 Operation"><vspace/>As discussed in
+        <xref target="intro_v6only"/>, SIIT-DC facilitates an IPv6-only IDC
+        network infrastructure. The only places where IPv4 is absolutely
+        required is between the BRs and the IPv4 Internet, and between any ERs
+        and the IPv4-only applications or devices they are serving
+        (illustrated here as the two tenants' FTP servers). The figure also
+        illustrates how SIIT-DC does not interfere with native IPv6; when
+        there is no longer a need to support IPv4 clients, the BRs may be
+        decommissioned without causing any impact to native IPv6 traffic.</t>
+        <t hangText="Stateless Operation"><vspace/>As discussed in <xref
+        target="intro_stateless"/>, SIIT-DC operates in a stateless fashion.
+        In the illustration, both BRs are simultaneously advertising (i.e.,
+        anycasting) the IPv4 Service Address Pool and the IPv6 Translation
+        Prefix, so incoming traffic from the IPv4 Internet may arrive at
+        either of the BRs, while outgoing IPv6 traffic destined for IPv4
+        endpoints are load balanced between them using Equal-Cost Multipath
+        Routing. No continuous state synchronisation between the two BRs
+        occurs. Should one of the BRs fail, the BGP and OSPF protocols will
+        ensure that traffic converges on the remaining BR. Existing sessions
+        will not be disrupted, beyond any disruption caused by the BGP/OSPF
+        convergence process itself.</t>
+        <t hangText="IPv4 Address Conservation"><vspace/>As discussed in <xref
+        target="intro_v4conserv"/>, SIIT-DC conserves the IDC operator's IPv4
+        address space. Even though the two customers in the example above have
+        several hundred servers, the majority of them are not used to run
+        services made available directly from the Internet, and therefore do
+        not need to consume IPv4 addresses. The IDC network infrastructure
+        consumes no IPv4 addresses, either. Finally, the IPv4 addresses that
+        are assigned to the SIIT-DC function as IPv4 Service Address Pools may
+        assigned with 100% efficiency, one address at a time; there is no
+        requirement to assign multiple addresses to a single customer in a
+        contiguous block.</t>
+        <t hangText="Application support"><vspace/>As discussed in <xref
+        target="intro_compat"/>, as long as the application protocol is
+        translation-friendly (illustrated here with HTTP and SMTP), it will
+        work with SIIT-DC without requiring any special adaptation.
+        Furthermore, translation-unfriendly applications (illustrated here
+        with FTP) will also work when located behind an <xref
+        target="I-D.ietf-v6ops-siit-dc-2xlat">ER</xref>. Tenant A's FTP server
+        illustrates how an ER may be located in the networking stack of a
+        node, while Tenant B's FTP server illustrates how the ER may be
+        deployed as a network service. The latter approach enables SIIT-DC to
+        support IPv4-only nodes/devices.</t>
+      </list>
       </t>
-      <section title="IPv4-only">
-        <t>
-        At the time of writing, IPv4-only operation remains the status quo for
-        most operators. As such, it is well understood and supported. An
-        operator can reasonably expect everything to work correctly in an
-        IPv4-only environment.
-        </t>
-        <t>
-        Benefits of IPv4-only operation compared to SIIT-DC include:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>No translation occurs, the end-to-end principle is intact.</t>
-          <t>Compatible with all common application protocols.</t>
-          <t>Compatible with IPv4-only devices.</t>
-          <t>Compatible with IPv4-only application software, without requiring
-          a host agent.</t>
-        </list>
-        </t>
-        <t>
-        Disadvantages of IPv4-only operation compared to SIIT-DC include:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>Does not provide any form of IPv6 connectivity.</t>
-          <t>Does not alleviate IPv4 address scarcity.</t>
-        </list>
-        </t>
-      </section>
-      <section title="IPv4-only + NAPT44">
-        <t>
-        An operator who would otherwise chose a traditional IPv4-only
-        approach, but cannot due to having insufficient public IPv4 addresses
-        available, could chose to deploy using a combination of <xref
-        target="RFC1918">private IPv4 addresses</xref> and <xref
-        target="RFC3022">NAPT44</xref> devices which will translate between a
-        smaller number of public IPv4 addresses and the private addresses
-        assigned to the servers that provide public services to the Internet.
-        </t>
-        <t>
-        Benefits of IPv4-only + NAPT44 operation compared to SIIT-DC include:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>Compatible with IPv4-only devices.</t>
-          <t>Compatible with IPv4-only application software, without requiring
-          a host agent.</t>
-        </list>
-        </t>
-        <t>
-        Disadvantages of IPv4-only + NAPT44 operation compared to SIIT-DC
-        include:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>Does not provide any form of IPv6 availability.</t>
-          <t>Requires network devices that track all flow state, which may
-          create a performance bottleneck and be an easy target for Denial of
-          Service attacks.</t>
-          <t>Limits routing flexibility (prevents closest exit routing), as
-          outbound traffic must pass across the same NAPT44 device that
-          handled the inbound traffic.</t>
-          <t>Limited potential for horizontal scaling, as packets cannot be
-          load-balanced across multiple NAT devices.</t>
-          <t>
-          Depending on whether or not the NAPT44 device rewrites source
-          addresses in order to attract the return traffic to itself:
-          </t>
-          <t>
-          <list style="symbols">
-            <t>Obscures the true source address of the user from the
-            server/application, preventing it from e.g. performing
-            geo-location lookups, or:</t>
-            <t>Requires an IPv4 default route to be pointed to the NAPT44
-            device, also attracting native traffic that does not need to
-            undergo translation.</t>
-          </list>
-          </t>
-        </list>
-        </t>
-        <t>
-        In addition, application compatibility is a consideration with both
-        NAPT44 and SIIT-DC, but the exact nature depends from application to
-        application, so it is hard to objectively quantify if there is a clear
-        advantage to either approach here. Some translation-unfriendly
-        application protocols may work without host modifications through the
-        use of Application Layer Gateway support in the NAPT44 device (e.g.,
-        <xref target="RFC0959">FTP</xref>), or in the SIIT-DC architecture
-        when a host agent is being used <xref
-        target="I-D.anderson-v6ops-siit-dc-2xlat"/>.  Other application
-        protocols might not work with NAPT44 at all, but will work in the
-        SIIT-DC if a host agent is being used (e.g., <xref
-        target="RFC4217">FTP/TLS</xref>).
-        </t>
-        <t>
-        In summary, the most accurate statement would be to say that an NAPT44
-        architecture is more compatible with translation-unfriendly protocols
-        than plain SIIT-DC, while SIIT-DC is more compatible than NAPT44 if a
-        host agent is used.
-        </t>
-        <t>
-        For a more complete discussion of potential issues with running
-        NAPT44, see <xref target="RFC2993">Architectural Implications of
-        NAT</xref>.
-        </t>
-      </section>
-      <section title="IPv4-only + NAT64">
-        <t>
-        An operator who would otherwise chose a traditional IPv4-only
-        approach, but would in addition like to provide service availability
-        for IPv6 end users, could use <xref target="RFC6146">Stateful
-        NAT64</xref> to accomplish this. In a sense, this would be the mirror
-        image of an SIIT-DC architecture: The infrastructure and servers
-        remains single-stacked, while connectivity to the other IP stack is
-        provided through a translation system. Further information about
-        operating Stateful NAT64 is found in <xref target="RFC7269"/>.
-        </t>
-        <t>
-        Note that Stateful NAT64 can be deployed with or without NAPT44. With
-        the exception that IPv6 service availability is being provided, the
-        discussion in the previous two sections fully applies to an IPv4-only
-        environment that includes NAT64.
-        </t>
-        <t>
-        Benefits of IPv4-only + NAT64 operation compared to SIIT-DC include:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>Compatible with IPv4-only devices.</t>
-          <t>Compatible with IPv4-only application software, without requiring
-          a host agent.</t>
-        </list>
-        </t>
-        <t>
-        Disadvantages of IPv4-only + NAT64 operation compared to SIIT-DC
-        include:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>Does not alleviate IPv4 address scarcity (assuming NAPT44 isn't
-          used).</t>
-          <t>Requires network devices that track all flow state, which may
-          create a performance bottleneck and be an easy target for Denial of
-          Service attacks.</t>
-          <t>Limits routing flexibility (prevents closest exit routing), as
-          outbound traffic must pass across the same NAT64 device that handled
-          the inbound traffic.</t>
-          <t>Limited potential for horizontal scaling, as packets cannot be
-          load-balanced across multiple NAT devices.</t>
-          <t>Obscures the true source address of the user from the
-          server/application, preventing it from e.g. performing geo-location
-          lookups.</t>
-          <t>The traffic levels on the Stateful NAT64 routers will increase
-          over time, in lockstep with the increased deployment of IPv6 in the
-          Internet. For this reason, <xref target="RFC7269">Section 3.2 of
-          RFC7269</xref> notes that the use of Stateful NAT64 in a data centre
-          environment "is only reasonable at an early stage". With SIIT-DC,
-          the inverse is true; the traffic levels on the SIIT-DC Gateways will
-          decrease over time, as end users will prefer to use native IPv6 once
-          it is available to them.</t>
-        </list>
-        </t>
-      </section>
-      <section title="Dual Stack">
-        <t>
-        Dual Stack <xref target="RFC4213"/> <xref target="RFC6883"/> could be
-        used both with or without NAPT44 to handle IPv4. In general, the
-        benefits and disadvantages are equal to the corresponding IPv4-only
-        option, except for the fact that Dual Stack does provides IPv6
-        connectivity.  Therefore, his section only lists the benefits and
-        disadvantages which are unique to a Dual Stack environment.
-        </t>
-        <t>
-        Benefits of Dual Stack operation compared to SIIT-DC include:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>No translation occurring, the end-to-end principle is intact
-          (assuming NAPT44 isn't used).</t>
-          <t>Compatible with all common application protocols (assuming NAPT44
-          isn't used).</t>
-          <t>Compatible with IPv4-only devices.</t>
-          <t>Compatible with IPv4-only application software, without requiring
-          a host agent.</t>
-        </list>
-        </t>
-        <t>
-        Disadvantages of Dual Stack operation compared to SIIT-DC include:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>Does not alleviate IPv4 address scarcity (assuming NAPT44 isn't
-          used).</t>
-          <t>Increases the complexity of the infrastructure, as many things
-          must done twice (once for IPv4 and once for IPv6). Examples of
-          things that must be duplicated in this manner under Dual Stack
-          include: Firewall rules/ACLs, IGP topology, monitoring,
-          troubleshooting.</t>
-          <t>Encourages software developers, systems administrators, etc. to
-          build architectures that cannot operate correctly without IPv4. This
-          in turn makes it difficult to make use of Dual Stack as a short term
-          transitional stage, rather than a near-permanent end state.</t>
-          <t>Increases the amount of things that can encounter failures, and
-          increases the time required to locate and fix such failures. This
-          reduces reliability.</t>
-        </list>
-        </t>
-      </section>
-      <section title="Partial Dual Stack (IPv6-only back-end)">
-        <t>
-        It is possible to use the Dual Stack deployment strategy for front-end
-        services only. That is, the front-end servers (or load balancers) that
-        serves public Internet-available services are provisioned with both
-        native IPv4 and native IPv6 connectivity on their Internet-facing
-        interfaces, while the interfaces facing the back-end infrastructure
-        are IPv6 only. All back-end servers that do not communicate directly
-        with Internet clients are IPv6-only. All communication between
-        back-end servers as well as all traffic between the back-end servers
-        and the front-end servers will therefore use only IPv6.
-        </t>
-        <t>
-        One variation of this approach is to have a two separate sets of
-        front-end servers, where one set has IPv4-only Internet-facing
-        interfaces, while the other set has IPv6-only Internet-facing
-        interfaces. However, both sets must have IPv6-only interfaces facing
-        the back-end infrastructure.
-        </t>
-        <t>
-        Benefits of Partial Dual Stack operation compared to SIIT-DC include:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>No translation occurring, the end-to-end principle is intact.</t>
-          <t>Compatible with all common application protocols.</t>
-          <t>Compatible with IPv4-only devices (front-end only).</t>
-          <t>Compatible with IPv4-only application software (front-end
-          only).</t>
-        </list>
-        </t>
-        <t>
-        Disadvantages of Partial Dual Stack operation compared to SIIT-DC
-        include:
-        </t>
-        <t>
-        <list style="symbols">
-          <t>Increases the complexity of the front-end infrastructure, as many
-          things must done twice (once for IPv4 and once for IPv6). Examples
-          of things that must be duplicated in this manner under Partial Dual
-          Stack include: Firewall rules/ACLs, IGP topology, monitoring,
-          troubleshooting.</t>
-          <t>Can not support any IPv4-only devices or application software in
-          the back-end infrastructure.</t>
-        </list>
-        </t>
-        <t>
-        In addition, Partial Dual Stack will alleviate IPv4 address scarcity
-        compared to the normal Dual Stack approach, but not quite to the same
-        extent as SIIT-DC. This is primarily due to the data centre network
-        infrastructure having to be dual-stacked in order to provide native
-        IPv4 addressing to the front-end servers, and because the front-end
-        server LANs must be rounded up in size to the nearest CIDR boundary
-        which may result in IPv4 addresses being unused. However, depending on
-        the exact circumstances, this difference in IPv4 address consumption
-        between SIIT-DC and Partial Dual Stack may be negligible.
-        </t>
-      </section>
     </section>
   </back>
 
 </rfc>
-<!-- vim: syntax=xml tw=78 ai fo=2 et:
+<!-- vim: syntax=xml tw=78 ai fo=2 sw=2 et:
 -->
