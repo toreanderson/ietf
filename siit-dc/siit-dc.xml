@@ -81,7 +81,7 @@
         <t>To ensure that that the legacy users' IPv4 addresses remain visible
         to the nodes and applications.</t>
         <t>To conserve and maximise the utilisation of the operator's public
-        IP4 addresses.</t>
+        IPv4 addresses.</t>
         <t>To avoid introducing more complexity than absolutely necessary,
         especially on the nodes and applications.</t>
         <t>To be easy to scale and deploy in a fault-tolerant manner.</t>
@@ -195,10 +195,10 @@
                title="Compatible with Standard IPv4 and IPv6 Stacks">
         <t>
         Except for the introduction of the BRs themselves, no change to the
-        network, nodes , applications, or anything else is required in order
-        to support SIIT-DC. SIIT-DC is practically invisible from the point of
-        view of the IPv4 clients, the IPv6 node, the IPv6 data centre network,
-        and the IPv4 Internet. SIIT-DC interoperates with all
+        network, nodes, applications, or anything else is required in order to
+        support SIIT-DC. SIIT-DC is practically invisible from the point of
+        view of the IPv4 clients, the IPv6 nodes, the IPv6 data centre
+        network, and the IPv4 Internet. SIIT-DC interoperates with all
         standards-compliant IPv4 or IPv6 stacks.
         </t>
       </section>
@@ -277,8 +277,8 @@
       <figure anchor="fig_architecture" align="center">
         <preamble>SIIT-DC Architecture</preamble>
         <artwork align="center"><![CDATA[
-  IPv6-capable user      IPv4-only user  
-  <2001:db8::ab:cd>      <203.0.113.50>  
+  IPv6-capable user      IPv4-only user
+  <2001:db8::ab:cd>      <203.0.113.50>
     |                          |
  (the IPv6 internet)   (the IPv4 Internet)
     |                          |
@@ -353,7 +353,7 @@
         </figure>
         </t>
         <t>
-        The resulting IPv6 packet is routed to the IPv6-only server, who
+        The resulting IPv6 packet is routed to the IPv6-only server, which
         processes and responds to it as if it had been a native IPv6 packet
         all along. The server's IPv6 response packet is then routed back to
         the BR, where it is translated back to IPv4 as follows:
@@ -410,8 +410,8 @@
         payload are particularly problematic <xref target="RFC2663"/> <xref
         target="RFC2993"/> <xref target="RFC3022"/>. One well-known example of
         such a protocol is <xref target="RFC0959">FTP</xref>. Such protocols
-        can be made to work with SIIT-DC through the introduction of an ER.
-        The ER provides end-to-end IPv4 address transparency by reversing the
+        can be made to work with SIIT-DC through the introduction of an ER,
+        which provides end-to-end IPv4 address transparency by reversing the
         translations performed by the BR before passing the packets to the
         NAT-incompatible application. This approach is described in more
         detail in <xref target="I-D.ietf-v6ops-siit-dc-2xlat"/>.
@@ -423,11 +423,11 @@
         where IPv4-only clients on the Internet initiate traffic towards an
         IPv6-only service, which in turn is passively listening for inbound
         traffic and responding as necessary. In this case, an IPv4 client
-        (routed through SIIT-DC) looks exactly like an native IPv6 client from
-        the IPv6 service's point of view, and thus does not require any
-        special treatment. One particularly common application protocol that
-        follows this client/server communication pattern, and thus is ideally
-        suited for use with SIIT-DC, is <xref target="RFC7230">HTTP</xref>. 
+        looks exactly like an native IPv6 client from the IPv6 service's point
+        of view, and thus does not require any special treatment. One
+        particularly common application protocol that follows this
+        client/server communication pattern, and thus is ideally suited for
+        use with SIIT-DC, is <xref target="RFC7230">HTTP</xref>.
         </t>
         <t>
         It is also possible to combine SIIT-DC with <xref
@@ -436,21 +436,22 @@
         SIIT-DC. However, in this case, care must be taken so that all
         outgoing communication is sourced from an IPv6 Service Address that is
         found in an EAM configured in the BR. If another address is used, the
-        BR will most likely be unable to translate it to IPv4. This will in
-        turn cause the packet to be discarded. 
+        BR will most likely be unable to translate it to IPv4, causing the
+        packet to be discarded. This could be prevented by altering the <xref
+        target="RFC6724">Default Address Selection Policy Table</xref> on the
+        IPv6 node.
         </t>
         <t>
         An alternative approach to the above would be to place an ER in front
         of the application in question, as described <xref
-        target="I-D.ietf-v6ops-siit-dc-2xlat"/>. This will provides the
-        application with seemingly native IPv4 connectivity, which it may use
-        freely for bi-directional communication with the IPv4 Internet. An
-        application or node located behind an ER does not need to worry about
-        selecting a specific source address, as it will only have valid
-        options available.
+        target="I-D.ietf-v6ops-siit-dc-2xlat"/>. This provides the application
+        with seemingly native IPv4 connectivity, which it may use freely for
+        bi-directional communication with the IPv4 Internet. An application or
+        node located behind an ER does not need to worry about selecting a
+        specific source address, as it will only have valid options available.
         </t>
       </section>
-      <section title="Choice of Translation Prefix">
+      <section anchor="xlat_pfx" title="Choice of Translation Prefix">
         <t>
         Either a Network-Specific Prefix (NSP) from the provider's own IPv6
         address space or the IANA-allocated Well-Known Prefix 64:ff9b::/96
@@ -790,14 +791,14 @@
       <section title="Mistaking the Translation Prefix for a Trusted Network">
         <t>
         If a Network-Specific Prefix from the provider's own address space is
-        chosen for the translation prefix, as is recommended, care must be
-        taken if the translation service is used in front of services that
-        have application-level ACLs that distinguish between the operator's
-        own networks and the Internet at large, as traffic from translated
-        IPv4 end users on the Internet might appear to be originating from the
-        provider's own network. It is therefore important that the translation
-        prefix is treated the same as the Internet at large, rather than as a
-        trusted network.
+        chosen for the translation prefix, as recommended in <xref
+        target="xlat_pfx"/>, care must be taken if the translation service is
+        used in front of services that have application-level ACLs that
+        distinguish between the operator's own networks and the Internet at
+        large, as traffic from translated IPv4 end users on the Internet might
+        appear to be originating from the provider's own network. It is
+        therefore important that the translation prefix is treated the same as
+        the Internet at large, rather than as a trusted network.
         </t>
         <t>
         In order to alleviate this problem, the operator may opt to use a
@@ -830,6 +831,7 @@
       <?rfc include="reference.RFC.6146"?>
       <?rfc include="reference.RFC.6147"?>
       <?rfc include="reference.RFC.6540"?>
+      <?rfc include="reference.RFC.6724"?>
       <?rfc include="reference.RFC.6883"?>
       <?rfc include="reference.RFC.6946"?>
       <?rfc include="reference.RFC.7020"?>
@@ -881,7 +883,7 @@
   +-- www      ::1 (IPv6+SIIT-DC)  +-- www-lb ::1 (IPv6+SIIT-DC)
   |                                |
   +-- mta      ::2 (IPv6+SIIT-DC)  +-- web ::80:01 (IPv6-only)
-  |                                |   [...]                
+  |                                |   [...]
   +-- ftp      ::3 (IPv6)          +-- web ::80:99 (IPv6-only)
   |            ::4 (IPv4, via ER)  |
   |                                |         +----+
@@ -932,9 +934,9 @@
         <t hangText="Application support"><vspace/>As discussed in <xref
         target="intro_compat"/>, as long as the application protocol is
         translation-friendly (illustrated here with HTTP and SMTP), it will
-        work SIIT-DC without requiring any special adaptation.  Furthermore,
-        translation-unfriendly applications (illustrated here with FTP) will
-        also work when located behind an <xref
+        work with SIIT-DC without requiring any special adaptation.
+        Furthermore, translation-unfriendly applications (illustrated here
+        with FTP) will also work when located behind an <xref
         target="I-D.ietf-v6ops-siit-dc-2xlat">ER</xref>. Tenant A's FTP server
         illustrates how an ER may be located in the networking stack of a
         node, while Tenant B's FTP server illustrates how the ER may be
