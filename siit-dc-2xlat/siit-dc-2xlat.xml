@@ -30,6 +30,18 @@
         <uri>http://www.redpill-linpro.com</uri>
       </address>
     </author>
+    <author fullname="Sander Steffann" initials="S." surname="Steffann">
+      <organization>S.J.M. Steffann Consultancy</organization>
+      <address>
+        <postal>
+          <street>Tienwoningenweg 46</street>
+          <city>Apeldoorn, Gelderland</city>
+          <code>7312 DN</code>
+          <country>The Netherlands</country>
+        </postal>
+        <email>sander@steffann.nl</email>
+      </address>
+    </author>
     <date year="2015" />
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
