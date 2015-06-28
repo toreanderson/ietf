@@ -255,7 +255,7 @@
         fully explore the multitude of ways this could be accomplished,
         however considering that the IPv6 protocol is designed for having
         multiple addresses assigned to a single node, one particularly
-        straight-forward way would be to assign the ET's IPv6 Service
+        straight-forward way would be to assign the ER's IPv6 Service
         Addresses as secondary IPv6 addresses on the node itself so that it
         the upstream router learns of their location using the <xref
         target="RFC4861">IPv6 Neighbor Discovery Protocol</xref>.
@@ -263,7 +263,7 @@
       </section>
       <section anchor="et_netbased" title="Network-Based Edge Relay">
         <t>
-        <figure anchor="fig_netbased_et_basic" align="center">
+        <figure anchor="fig_netbased_er_basic" align="center">
           <preamble>A Basic Network-based Edge Relay</preamble>
           <artwork align="center"><![CDATA[
 [IPv4 Internet]  [IPv6 Internet]
@@ -283,7 +283,7 @@
         </figure>
         </t>
         <t>
-        A network-based ER performs the exact same as a node-based ET does,
+        A network-based ER performs the exact same as a node-based ER does,
         only that instead of assigning the IPv4 Service Addresses to an
         internal-only virtual network adapter, traffic destined for them are
         forwarded onto a network segment to which nodes that require IPv4
@@ -298,7 +298,7 @@
         target="examples_netbased_connectivity"/>.
         </t>
         <t>
-        The basic ER illustrated in <xref target="fig_netbased_et_basic"/>
+        The basic ER illustrated in <xref target="fig_netbased_er_basic"/>
         establishes an IPv4-only network segment between itself and the
         IPv4-only nodes it serves. This is fine if the nodes it provides IPv4
         access have no support for IPv6 whatsoever; however if they are
@@ -520,7 +520,7 @@
         is not desired for some other reason, intra-IDC IPv4 traffic may be
         facilitated by configuring additional EAMs on the ER for each service
         the IPv4-only node or application needs to communicate with. This
-        makes the IPv6 traffic between the ET and the target service's IPv6
+        makes the IPv6 traffic between the ER and the target service's IPv6
         Service Address follow the direct path through the IPv6 network. The
         traffic does not pass the BR, which means that this solution might
         yield better latency than the hairpinning approach.
@@ -698,7 +698,7 @@
         expense of wasting some potential IPv4 Service Addresses), or by
         ensuring that the overlapping IPv6 Service Addresses are only assigned
         to services which do not need to communicate with the IPv4 node(s)
-        behind the ET. A third way to avoid this problem is discussed in <xref
+        behind the ER. A third way to avoid this problem is discussed in <xref
         target="er_netbased_subnet_unrouted"/>.
         </t>
       </section>
