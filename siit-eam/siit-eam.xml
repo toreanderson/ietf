@@ -460,33 +460,36 @@
       should note that configuring EAMs with overlapping or identical IPv4 or
       IPv6 Prefixes in the EAMT may create configurations where the
       IPv4-to-IPv6 and IPv6-to-IPv4 address translations will not be
-      symmetric. This has the potential of making bi-directional communication
+      symmetric. This may in some cases make bi-directional communication
       impossible.
       </t>
       <t>
-      In <xref target="fig_example_overlap"/> below, the IPv6 Prefixes of the
-      two EAMs overlap, while the IPv4 Prefixes do not. This results in a
-      situation where a packet addressed to the IPv4 address 203.0.113.10
-      will be translated (according to EAM #1) to have the IPv6 destination
-      address 2001:db8:cb00:710a::, while a return packet sent from
-      2001:db8:cb00:710a:: will be translated (according to EAM #2) to have
-      the IPv4 source address 203.0.113.20. Because the IPv6-to-IPv4
-      translation in this example does not mirror the corresponding
-      IPv4-to-IPv6 translation, bi-directional communication might fail. In
+      The example EAMT in <xref target="fig_example_overlap"/> could be
+      thought of as implementing <xref target="usecase_ivi">IVI</xref> (EAM
+      #1), but additionally with a single exception in the style of <xref
+      target="usecase_siit_dc">SIIT-DC</xref> (EAM #2). The IPv4 Prefixes of
+      the two EAMs overlap, while the IPv6 Prefixes do not. This results in a
+      situation where the IPv6 address 2001:db8:ffc6:3364:4000:: will be
+      translated (according to EAM #1) to the IPv4 address 198.51.100.64.
+      However, when this IPv4 address is translated back to IPv6, it will be
+      translated (according to EAM #2) to the IPv6 address 2001:db8::abcd.
+      Because the IPv4-to-IPv6 translation in this example does not mirror the
+      corresponding IPv6-to-IPv4 translation, bi-directional communication
+      involving the IPv6 address 2001:db8:ffc6:3364:4000:: might fail. In
       order to help avoid such situations, implementations MAY warn the
       operator when a new EAM that overlaps with a previously existing one is
       inserted into the EAMT.
       </t>
       <t>
       <figure anchor="fig_example_overlap" align="center">
-        <preamble>EAMT with overlapping prefixes</preamble>
+        <preamble>EAMT containing overlapping IPv4 Prefixes</preamble>
         <artwork align="center"><![CDATA[
-+---+-----------------+--------------------------+
-| # |   IPv4 Prefix   |       IPv6 Prefix        |
-+---+-----------------+--------------------------+
-| 1 | 203.0.113.10/32 | 2001:db8::/32            |
-| 2 | 203.0.113.20/32 | 2001:db8:cb00:710a::/128 |
-+---+-----------------+--------------------------+
++---+------------------+--------------------+
+| # |   IPv4 Prefix    |    IPv6 Prefix     |
++---+------------------+--------------------+
+| 1 | 0.0.0.0/0        | 2001:db8:ff00::/40 |
+| 2 | 198.51.100.64/32 | 2001:db8::abcd/128 |
++---+------------------+--------------------+
         ]]></artwork>
       </figure>
       </t>
@@ -501,13 +504,13 @@
       </t>
       <t>
       <figure anchor="fig_example_identical" align="center">
-        <preamble>EAMT with identical prefixes</preamble>
+        <preamble>EAMT containing identical IPv6 prefixes</preamble>
         <artwork align="center"><![CDATA[
 +---+-----------------+-----------------+
 | # |   IPv4 Prefix   |   IPv6 Prefix   |
 +---+-----------------+-----------------+
-| 1 | 203.0.113.10/32 | 2001:db8::1/128 |
-| 2 | 203.0.113.20/32 | 2001:db8::1/128 |
+| 1 | 198.51.100.8/32 | 2001:db8::1/128 |
+| 2 | 198.51.100.9/32 | 2001:db8::1/128 |
 +---+-----------------+-----------------+
         ]]></artwork>
       </figure>
