@@ -637,10 +637,10 @@
           IPv6 packets".
           </t>
           <t>
-          Note that <xref
-          target="I-D.ietf-6man-deprecate-atomfrag-generation"/> seeks to
-          update <xref target="RFC6145"/>, making the functionality described
-          above as the standard and only mode of operation.
+          Note that IPv6 Atomic Fragments are currently being deprecated by
+          <xref target="I-D.bao-v6ops-rfc6145bis">RFC6145bis</xref>. As a
+          result, a BR that conforms to the updated standard is required to
+          behave as recommended above.
           </t>
           <t>
           In IPv6, the Identification value is located inside the
@@ -728,10 +728,13 @@
           protocol itself to provide the "link-specific fragmentation and
           reassembly at a layer below IPv6" required for links that "cannot
           convey a 1280-octet packet in one piece", to paraphrase <xref
-          target="RFC2460">Section 5 of RFC2460</xref>.  Note that <xref
-          target="I-D.ietf-6man-deprecate-atomfrag-generation"/> seeks to
-          update <xref target="RFC6145"/>, making the approach described above
-          as the standard and only mode of operation.
+          target="RFC2460">Section 5 of RFC2460</xref>.
+          </t>
+          <t>
+          Note that IPv6 Atomic Fragments are currently being deprecated by
+          <xref target="I-D.bao-v6ops-rfc6145bis">RFC6145bis</xref>. As a
+          result, a BR that conforms to the updated standard is required to
+          behave as suggested above.
           </t>
         </section>
       </section>
@@ -836,8 +839,8 @@
       <?rfc include="reference.RFC.6946"?>
       <?rfc include="reference.RFC.7020"?>
       <?rfc include="reference.RFC.7230"?>
+      <?rfc include="reference.I-D.bao-v6ops-rfc6145bis"?>
       <?rfc include="reference.I-D.ietf-v6ops-siit-dc-2xlat"?>
-      <?rfc include="reference.I-D.ietf-6man-deprecate-atomfrag-generation"?>
       <?rfc include="reference.I-D.taylor-v6ops-fragdrop"?>
     </references>
     <section title="Complete SIIT-DC IDC topology example">
