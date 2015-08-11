@@ -8,7 +8,7 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="info" docName="draft-ietf-v6ops-siit-dc-01" ipr="trust200902">
+<rfc category="info" docName="draft-ietf-v6ops-siit-dc-02" ipr="trust200902">
 
   <front>
     <title abbrev="SIIT-DC">SIIT-DC: Stateless IP/ICMP Translation for IPv6
