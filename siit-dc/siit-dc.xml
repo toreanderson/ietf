@@ -121,8 +121,8 @@
         single-stack services (e.g., <xref target="RFC6146">Stateful
         NAT64</xref> and Layer-4/7 proxies), or that provide conservation of
         IPv4 addresses (e.g., <xref target="RFC3022">NAPT44</xref>), SIIT-DC
-        does not keep any state between each packet in a single connection or
-        flow. In this sense it operates exactly like a regular IP router, and
+        does not maintain any state associated with individual connections or
+        flows. In this sense it operates exactly like a regular IP router, and
         has similar scaling properties - the limiting factors are packets per
         second and bandwidth. The number of concurrent flows and flow
         initiation rates are irrelevant for performance.
@@ -165,8 +165,8 @@
         to remove them entirely from nodes and applications that do not need
         to communicate with endpoints in the IPv4 Internet. One example would
         be servers that are operating in a supporting/back-end role and only
-        communicates with to other servers (database servers, file servers,
-        and so on). Another example would be the network infrastructure itself
+        communicates with other servers (database servers, file servers, and
+        so on). Another example would be the network infrastructure itself
         (router-to-router links, loopback addresses, and so on). Furthermore,
         as LAN prefix sizes must always be rounded up to the nearest power of
         two (or larger, if one reserves space for future growth), even more
@@ -315,8 +315,8 @@
       replace any occurrence of the IPv4 Service Address (192.0.2.1) with its
       corresponding IPv6 Service Address (2001:db8:12:34::1). Addresses that
       do not match any EAM configured in the BR are translated by inserting or
-      removing the Translation Prefix (2001:db8:46::/96), cf. <xref
-      target="RFC6052">Section 2.2 of RFC6052</xref>.
+      removing the Translation Prefix (2001:db8:46::/96), cf. Section 2.2 of
+      <xref target="RFC6052"/>.
       </t>
       <t>
       The BR can be deployed as a separate device or as a logical function in
@@ -388,13 +388,15 @@
         SIIT-DC as described in this document requires that the application
         (and/or the node the application is located on) supports IPv6
         networking, and that it has no dependency on local IPv4 network
-        connectivity. However, SIIT-DC supports IPv4-dependent applications
-        and nodes through the introduction of an ER. The ER provides the
-        application or node with seemingly native IPv4 connectivity, by
-        translating the packets (that were previously translated from IPv4 to
-        IPv6) by the BR back to IPv4 before passing them to the IPv4-dependent
-        application or node. This approach is described in more detail in
-        <xref target="I-D.ietf-v6ops-siit-dc-2xlat"/>.
+        connectivity.
+        </t>
+        <t>
+        SIIT-DC can however support legacy IPv4-dependent applications and
+        nodes through the introduction of an ER. The ER provides the legacy
+        application or node with seemingly native IPv4 Internet connectivity,
+        so that it may operate correctly in an otherwise IPv6-only network
+        environment. This approach is described in more detail in <xref
+        target="I-D.ietf-v6ops-siit-dc-2xlat"/>.
         </t>
       </section>
       <section title="Application Support for NAT">
@@ -470,16 +472,16 @@
         Autonomous Systems.
         </t>
         <t>
-        The Translation Prefix may use any of the lengths described in <xref
-        target="RFC6052">Section 2.2 of RFC6052</xref>, but /96 has two
-        distinct advantages over the others. First, converting it to IPv4 can
-        be done in a single operation by simply stripping off the first 96
-        bits; second, it allows for IPv4 addresses to be embedded directly
-        into the text representation of an IPv6 address using the familiar
-        dotted quad notation, e.g., "2001:db8::198.51.100.10" (cf. <xref
-        target="RFC6052">Section 2.4 of RFC6052</xref>)), instead of being
-        converted to hexadecimal notation. This makes it easier to write IPv6
-        ACLs and similar that match translated endpoints in the IPv4 Internet.
+        The Translation Prefix may use any of the lengths described in Section
+        2.2 of <xref target="RFC6052"/>, but /96 has two distinct advantages
+        over the others. First, converting it to IPv4 can be done in a single
+        operation by simply stripping off the first 96 bits; second, it allows
+        for IPv4 addresses to be embedded directly into the text
+        representation of an IPv6 address using the familiar dotted quad
+        notation, e.g., "2001:db8::198.51.100.10" (cf. Section 2.4 of <xref
+        target="RFC6052"/>)), instead of being converted to hexadecimal
+        notation. This makes it easier to write IPv6 ACLs and similar that
+        match translated endpoints in the IPv4 Internet.
         </t>
         <t>
         For the reasons discussed above, this document recommends that an NSP
@@ -623,19 +625,18 @@
         </section>
         <section title="IPv6 Atomic Fragments">
           <t>
-          In keeping with <xref target="RFC6145">the fifth paragraph of
-          Section 4 of RFC6145</xref>, a stateless translator like a BR will
-          by default add an IPv6 Fragmentation header to the resulting IPv6
-          packet when translating an IPv4 packet with the Don't Fragment flag
-          set to 0. This happens even though the resulting IPv6 packet isn't
-          actually fragmented into several pieces, resulting in an IPv6 Atomic
-          Fragment <xref target="RFC6946"/>. These Atomic Fragments are
-          generally not useful in an IDC environment, and it is therefore
-          recommended that this behaviour is disabled in the BRs. To this end,
-          <xref target="RFC6145">Section 4 of RFC6145</xref> notes that the
-          "translator MAY provide a configuration function that allows the
-          translator not to include the Fragment Header for the non-fragmented
-          IPv6 packets".
+          In keeping with the fifth paragraph of Section 4 of <xref
+          target="RFC6145"/>, a stateless translator like a BR will by default
+          add an IPv6 Fragmentation header to the resulting IPv6 packet when
+          translating an IPv4 packet with the Don't Fragment flag set to 0.
+          This happens even though the resulting IPv6 packet isn't actually
+          fragmented into several pieces, resulting in an IPv6 Atomic Fragment
+          <xref target="RFC6946"/>. These Atomic Fragments are generally not
+          useful in an IDC environment, and it is therefore recommended that
+          this behaviour is disabled in the BRs. To this end, Section 4 of
+          <xref target="RFC6145"/> notes that the "translator MAY provide a
+          configuration function that allows the translator not to include the
+          Fragment Header for the non-fragmented IPv6 packets".
           </t>
           <t>
           Note that IPv6 Atomic Fragments are currently being deprecated by
@@ -653,37 +654,35 @@
         </section>
         <section title="Minimum Path MTU Difference Between IPv4 and IPv6">
           <t>
-          <xref target="RFC2460">Section 5 of RFC2460</xref> specifies that
-          the minimum IPv6 link MTU is 1280 bytes. Therefore, an IPv6 node can
-          reasonably assume that if it transmits an IPv6 packet that is 1280
-          bytes or smaller, it is guaranteed to reach its destination without
-          requiring fragmentation or invoking the Path MTU Discovery algorithm
-          <xref target="RFC1981"/>. However, this assumption might prove false
-          if the destination is an IPv4 node reached through a protocol
+          Section 5 of <xref target="RFC2460"/> specifies that the minimum
+          IPv6 link MTU is 1280 bytes. Therefore, an IPv6 node can reasonably
+          assume that if it transmits an IPv6 packet that is 1280 bytes or
+          smaller, it is guaranteed to reach its destination without requiring
+          fragmentation or invoking the Path MTU Discovery algorithm <xref
+          target="RFC1981"/>. However, this assumption might prove false if
+          the destination is an IPv4 node reached through a protocol
           translator such as a BR, as the minimum IPv4 link MTU is 68 bytes.
-          See <xref target="RFC0791">Section 3.2 of RFC791</xref>.
+          See Section 3.2 of <xref target="RFC0791"/>.
           </t>
           <t>
-          <xref target="RFC6145">Section 5.1 of RFC6145</xref> specifies that
-          a stateless translator should set the IPv4 Don't Fragment flag to 1
-          when it translates a non-fragmented IPv6 packet to IPv4. This means
-          that when the path to the destination IPv4 node contains an IPv4
-          link with an MTU smaller than 1260 bytes (which corresponds to an
-          IPv6 MTU smaller than 1280 bytes, cf. <xref
-          target="ip_hdr_size_diff"/>), the Path MTU Discovery algorithm will
-          be invoked, even if the original IPv6 packet was only 1280 bytes
-          large. This happens as a result of the IPv4 router connecting to the
-          IPv4 link with the small MTU returning an ICMPv4 Need To Fragment
-          error with an MTU value smaller than 1260, which in turns is
-          translated by the BR to an ICMPv6 Packet Too Big error with an MTU
-          value smaller than 1280 which is then transmitted to the origin IPv6
-          node.
+          Section 5.1 of <xref target="RFC6145"/> specifies that a stateless
+          translator should set the IPv4 Don't Fragment flag to 1 when it
+          translates a non-fragmented IPv6 packet to IPv4. This means that
+          when the path to the destination IPv4 node contains an IPv4 link
+          with an MTU smaller than 1260 bytes (which corresponds to an IPv6
+          MTU smaller than 1280 bytes, cf. <xref target="ip_hdr_size_diff"/>),
+          the Path MTU Discovery algorithm will be invoked, even if the
+          original IPv6 packet was only 1280 bytes large. This happens as a
+          result of the IPv4 router connecting to the IPv4 link with the small
+          MTU returning an ICMPv4 Need To Fragment error with an MTU value
+          smaller than 1260, which in turns is translated by the BR to an
+          ICMPv6 Packet Too Big error with an MTU value smaller than 1280
+          which is then transmitted to the origin IPv6 node.
           </t>
           <t>
           When an IPv6 node receives an ICMPv6 Packet Too Big error indicating
-          an MTU value smaller than 1280, <xref target="RFC2460">the last
-          paragraph of Section 5 of RFC2460</xref> gives it two choices on how
-          to proceed:
+          an MTU value smaller than 1280, the last paragraph of Section 5 of
+          <xref target="RFC2460"/> gives it two choices on how to proceed:
           </t>
           <t>
           <list style="symbols">
@@ -704,10 +703,9 @@
           <t>
           If the use of the IPv6 Fragmentation header is problematic, and the
           operator has IPv6 nodes that implement the second option above, the
-          operator should consider enabling the functionality described as
-          <xref target="RFC6145"> the "second approach" in Section 6 of
-          RFC6145</xref>. This functionality changes the BR's behaviour as
-          follows:
+          operator should consider enabling the functionality described as the
+          "second approach" in Section 6 of <xref target="RFC6145"/>. This
+          functionality changes the BR's behaviour as follows:
           </t>
           <t>
           <list style="symbols">
@@ -728,8 +726,8 @@
           In summary, this approach could be seen as prompting the IPv4
           protocol itself to provide the "link-specific fragmentation and
           reassembly at a layer below IPv6" required for links that "cannot
-          convey a 1280-octet packet in one piece", to paraphrase <xref
-          target="RFC2460">Section 5 of RFC2460</xref>.
+          convey a 1280-octet packet in one piece", to paraphrase Section 5 of
+          <xref target="RFC2460"/>.
           </t>
           <t>
           Note that IPv6 Atomic Fragments are currently being deprecated by
@@ -742,10 +740,9 @@
       <section title="IPv4-translatable IPv6 Service Addresses">
         <t>
         SIIT-DC is designed so that the IPv6 Service Addresses are not
-        required to be IPv4-translatable IPv6 addresses. <xref
-        target="I-D.ietf-v6ops-siit-eam">Section 2 of
-        I-D.ietf-v6ops-siit-eam</xref> discusses why it is desirable to avoid
-        requiring the use of IPv4-translatable IPv6 addresses.
+        required to be IPv4-translatable IPv6 addresses. Section 2 of <xref
+        target="I-D.ietf-v6ops-siit-eam"/> discusses why it is desirable to
+        avoid requiring the use of IPv4-translatable IPv6 addresses.
         </t>
         <t>
         It is however quite possible to deploy SIIT-DC in combination with
@@ -757,8 +754,8 @@
           <t>The operator is not required to provision EAMs for
           IPv4-translatable IPv6 Service Addresses onto the BR/ERs.</t>
           <t><xref target="RFC6145"/> translation can be performed in a
-          checksum-neutral manner, cf. <xref target="RFC6052">Section 4.1 of
-          RFC6052</xref>.</t>
+          checksum-neutral manner, cf. Section 4.1 of <xref
+          target="RFC6052"/>.</t>
         </list>
         </t>
         <t>
@@ -770,9 +767,10 @@
         IPv6 network infrastructure to the nodes on which they are assigned.
         This essentially requires the entire IPv6 infrastructure to be made
         aware of and handle translated IPv4 traffic as a special case, which
-        significantly increases complexity. Avoiding such drawbacks is a
-        design goal of SIIT-DC, cf.  <xref target="intro_v6only"/>, therefore
-        the use of IPv4-translatable IPv6 Service Addresses is discouraged.
+        significantly increases complexity. As previously described in <xref
+        target="intro_v6only"/>, avoiding such drawbacks is a design goal of
+        SIIT-DC. The use of IPv4-translatable IPv6 Service Addresses is
+        therefore discouraged.
         </t>
       </section>
     </section>
@@ -781,8 +779,8 @@
       The author would like to thank the following individuals for their
       contributions, suggestions, corrections, and criticisms: Fred Baker,
       Cameron Byrne, Brian E Carpenter, Ross Chandler, Dagfinn Ilmari
-      Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, Knut A. Syed, Andrew
-      Yourtchenko.
+      Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, Knut A. Syed, Qin Wu,
+      Andrew Yourtchenko.
       </t>
     </section>
     <section anchor="IANA" title="IANA Considerations">
