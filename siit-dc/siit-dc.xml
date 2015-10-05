@@ -80,7 +80,7 @@
         <t>Provide IPv4 service availability for legacy users with no loss of
         performance or functionality.</t>
         <t>To ensure that that the legacy users' IPv4 addresses remain visible
-        to the nodes and applications.</t>
+        to the nodes and applications located in the IPv6 network.</t>
         <t>To conserve and maximise the utilisation of the operator's public
         IPv4 addresses.</t>
         <t>To avoid introducing more complexity than absolutely necessary,
@@ -110,9 +110,10 @@
         <t>
         When the day comes to discontinue all support for IPv4, no change
         needs to be made to the overall architecture - it's only a matter of
-        shutting off the BRs. Operators who deploy native IPv6 along with
-        SIIT-DC will thus avoid requiring any future migration or deployment
-        projects relating to IPv6 deployment and/or IPv4 sun-setting.
+        shutting off the SIIT-DC Border Relays (BRs). Operators who deploy
+        native IPv6 along with SIIT-DC will thus avoid requiring any future
+        migration or deployment projects relating to IPv6 deployment and/or
+        IPv4 sun-setting.
         </t>
       </section>
       <section anchor="intro_stateless" title="Stateless Operation">
@@ -187,9 +188,9 @@
         SIIT-DC uses the <xref target="RFC6052"/> algorithm to map the entire
         end-user's IPv4 source address into an predefined IPv6 Translation
         Prefix. This ensures that there is no loss of information; the
-        end-user's IPv4 source address remains available to the application,
-        allowing it to perform tasks like Geo-Location, logging, abuse
-        handling, and so forth.
+        end-user's IPv4 source address remains available to the application
+        located in the IPv6 network, allowing it to perform tasks like
+        Geo-Location, logging, abuse handling, and so forth.
         </t>
       </section>
       <section anchor="intro_compat"
@@ -778,15 +779,14 @@
       <t>
       The author would like to thank the following individuals for their
       contributions, suggestions, corrections, and criticisms: Fred Baker,
-      Cameron Byrne, Brian E Carpenter, Ross Chandler, Dagfinn Ilmari
-      Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, Knut A. Syed, Qin Wu,
-      Andrew Yourtchenko.
+      Cameron Byrne, Brian E Carpenter, Ross Chandler, Christer Holmberg,
+      Dagfinn Ilmari Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, Knut A.
+      Syed, Qin Wu, Andrew Yourtchenko.
       </t>
     </section>
     <section anchor="IANA" title="IANA Considerations">
       <t>
-      This draft makes no request of the IANA. The RFC Editor may remove this
-      section prior to publication.
+      This draft makes no request of the IANA.
       </t>
     </section>
     <section anchor="Security" title="Security Considerations">
