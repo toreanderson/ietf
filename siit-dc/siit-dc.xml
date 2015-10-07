@@ -233,12 +233,10 @@
        prefix length is equal to /32). The purpose of using a pool rather than
        host routes is to facilitate IPv4 route aggregation and ease
        provisioning of new IPv4 Service Addresses.</t>
-       <t hangText="IPv6 Service Address"><vspace/>A public IPv6 address
-       assigned to a node (such as a server or load-balancer) or an individual
-       application in the IPv6 network. IPv6-capable clients communicate
-       directly with the IPv6 Service Address using native IPv6. The service's
-       "IN AAAA" DNS record will typically point to the IPv6 Service Address.
-       IPv4-only clients indirectly communicate with the IPv6 Service Address
+       <t hangText="IPv6 Service Address"><vspace/>An IPv6 address assigned to
+       an application, node, or service; either directly or indirectly
+       (through an ER). It is coupled with an IPv4 Service Address using an
+       EAM. IPv4-only clients communicates with the IPv6 Service Address
        through SIIT-DC.</t>
        <t hangText="Explicit Address Mapping (EAM)"><vspace/>A bi-directional
        coupling between an IPv4 Service Address and an IPv6 Service Address
