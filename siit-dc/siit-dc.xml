@@ -222,10 +222,11 @@
        rather than on the IDC's outer network border. The ER is an optional
        component of SIIT-DC. It is discussed in more detail in <xref
        target="I-D.ietf-v6ops-siit-dc-2xlat"/>.</t>
-       <t hangText="IPv4 Service Address"><vspace/>A public IPv4 address with
-       which IPv4-only clients communicates. This communication will be
-       translated to IPv6 by a BR. The service's "IN A" DNS record will
-       typically point to the IPv4 Service Address.</t>
+       <t hangText="IPv4 Service Address"><vspace/>An IPv4 address
+       representing a node or service located in an IPv6 network. It is
+       coupled with an IPv6 Service Address using an EAM. Packets sent to this
+       address is translated to IPv6 by the BR, and possibly back to IPv4 by
+       an ER, before reaching the node or service.</t>
        <t hangText="IPv4 Service Address Pool"><vspace/>One or more IPv4
        prefixes routed to the BR's IPv4 interface. IPv4 Service Addresses are
        allocated from this pool. That this does not necessarily have to be a
@@ -242,16 +243,15 @@
        coupling between an IPv4 Service Address and an IPv6 Service Address
        configured in a BR or ER. When translating between IPv4 and IPv6, the
        BR/ER changes the address fields in the translated packet's IP header
-       according to any matching EAM. See <xref
+       according to any matching EAM. The EAM algorithm is specified in <xref
        target="I-D.ietf-v6ops-siit-eam"/>.</t>
        <t hangText="Translation Prefix"><vspace/>An IPv6 prefix into which the
-       entire IPv4 address space is mapped. This prefix is routed to the BR's
-       IPv6 interface. It is either a Network-Specific Prefix or the
-       Well-Known Prefix 64:ff9b::/96, cf. <xref target="RFC6052"/>. When
-       translating between IPv4 and IPv6, a BR/ER inserts or removes the
-       Translation Prefix from the address fields in the translated packet's
-       IP header, unless an EAM for the IP address being translated
-       exists.</t>
+       entire IPv4 address space is mapped, according to the algorithm in
+       <xref target="RFC6052"/>. The Translation Prefix is routed to the BR's
+       IPv6 interface. When translating between IPv4 and IPv6, an BR/ER will
+       insert/remove the Translation Prefix into/from the address fields in
+       the translated packet's IP header, unless an EAM exists for the IP
+       address that is being translated.</t>
        <t hangText="IPv4-translatable IPv6 addresses"><vspace/>As defined in
        Section 1.3 of <xref target="RFC6052"/>.</t>
        <t hangText="IDC"><vspace/>Short for "Internet Data Centre"; a data
