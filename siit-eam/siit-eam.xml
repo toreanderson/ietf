@@ -535,8 +535,7 @@
     </section>
     <section anchor="IANA" title="IANA Considerations">
       <t>
-      This draft makes no request of the IANA. The RFC Editor may remove this
-      section prior to publication.
+      This draft makes no request of the IANA.
       </t>
     </section>
     <section anchor="acks" title="Acknowledgements">
