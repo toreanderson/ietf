@@ -108,19 +108,21 @@
       <t>
       <list style="hanging">
        <t hangText="SIIT-DC Border Relay (BR)"><vspace/>A device or a logical
-       function that translates traffic between IPv4 clients and IPv6
-       services. See <xref target="I-D.ietf-v6ops-siit-dc"/>.</t>
+       function that performs stateless protocol translation between IPv4 and
+       IPv6 in accordance with <xref target="RFC6145"/> and <xref
+       target="I-D.ietf-v6ops-siit-eam"/>.</t>
        <t hangText="SIIT-DC Edge Relay (ER)"><vspace/>A device or logical
-       function that provides "native" IPv4 connectivity to IPv4-only nodes or
-       applications. It functions in the same way as a BR, but is located
-       close to the IPv4-only nodes/applications it is supporting rather than
-       on the network border.</t>
+       function that provides "native" IPv4 connectivity to IPv4-only devices
+       or application software. It is very similar in function to a BR, but is
+       typically located close to the IPv4-only component(s) it is supporting
+       rather than on the IDC's outer network border. An ER may be either
+       <xref target="er_nodebased">Node-Based</xref> or <xref
+       target="et_netbased">Network-Based</xref>.</t>
        <t hangText="IPv4 Service Address"><vspace/>An IPv4 address
-       representing an IPv6 service, with which IPv4-only clients
-       communicates. It is coupled with an IPv6 Service Address using an EAM.
-       Packets sent to this address is translated to IPv6 by the BR and
-       possibly back to IPv4 again by the ER, and vice versa in the opposite
-       direction.</t>
+       representing a node or service located in an IPv6 network. It is
+       coupled with an IPv6 Service Address using an EAM. Packets sent to this
+       address is translated to IPv6 by the BR, and possibly back to IPv4 by
+       an ER, before reaching the node or service.</t>
        <t hangText="IPv6 Service Address"><vspace/>An IPv6 address assigned to
        an application, node, or service; either directly or indirectly
        (through an ER). It is coupled with an IPv4 Service Address using an
@@ -128,7 +130,7 @@
        through SIIT-DC.</t>
        <t hangText="Explicit Address Mapping (EAM)"><vspace/>A bi-directional
        coupling between an IPv4 Service Address and an IPv6 Service Address
-       configured in an BR/ER. When translating between IPv4 and IPv6, the
+       configured in a BR or ER. When translating between IPv4 and IPv6, the
        BR/ER changes the address fields in the translated packet's IP header
        according to any matching EAM. The EAM algorithm is specified in <xref
        target="I-D.ietf-v6ops-siit-eam"/>.</t>
@@ -404,8 +406,8 @@
         <t>
         The IPv6 Path MTU between the ER and the BR will typically be larger
         than the default value defined in Section 4 of <xref
-        target="RFC6145"/> (1280), as it will typically contained within a
-        single administrative domain. Therefore, it is RECOMMENDED that the
+        target="RFC6145"/> (1280 bytes), as it will typically contained within
+        a single administrative domain. Therefore, it is RECOMMENDED that the
         IPv6 Path MTU configured in the ER is raised accordingly. It is
         RECOMMENDED that the ER and the BR use identical configured IPv6 Path
         MTU values.
@@ -465,12 +467,11 @@
       <section anchor="intra_idc_v4_hp"
                title="Hairpinning by the SIIT-DC Border Relay">
         <t>
-        If the BR supports hairpinning as described in <xref
-        target="I-D.ietf-v6ops-siit-eam">Section 4.2 of
-        I-D.ietf-v6ops-siit-eam</xref>, the easiest solution is to make the
-        target service available through SIIT-DC in the normal way, that is,
-        by provisioning an EAM to the BR that assigns an IPv4 Service Address
-        with the target service's IPv6 Service Address.
+        If the BR supports hairpinning as described in Section 4.2 of <xref
+        target="I-D.ietf-v6ops-siit-eam"/>, the easiest solution is to make
+        the target service available through SIIT-DC in the normal way, that
+        is, by provisioning an EAM to the BR that assigns an IPv4 Service
+        Address with the target service's IPv6 Service Address.
         </t>
         <t>
         This allows the IPv4-only node or application to transmit packets
@@ -605,46 +606,44 @@
       <t>
       The author would like also to thank the following individuals for their
       contributions, suggestions, corrections, and criticisms: Fred Baker,
-      Tobias Brox, Ray Hunter, Shucheng LIU (Will), Andrew Yourtchenko.
+      Tobias Brox, Christer Holmberg, Ray Hunter, Shucheng LIU (Will), Andrew
+      Yourtchenko.
       </t>
     </section>
     <section anchor="IANA" title="IANA Considerations">
       <t>
-      This draft makes no request of the IANA. The RFC Editor may remove this
-      section prior to publication.
+      This draft makes no request of the IANA.
       </t>
     </section>
     <section anchor="Security" title="Security Considerations">
       <t>
       This section discusses security considerations specific to the use of an
       ER. See the Security Considerations section in <xref
-      target="I-D.ietf-v6ops-siit-dc"/> for additional security considerations
-      applicable to the SIIT-DC architecture in general.
+      target="I-D.ietf-v6ops-siit-dc"/> for security considerations applicable
+      to the SIIT-DC architecture in general.
       </t>
-      <section anchor="sec_loops" title="Address Spoofing">
-        <t>
-        If the ER receives an IPv4 packet from the application/node from a
-        source address it does not have an EAM for, both the source and
-        destination addresses will be rewritten according to <xref
-        target="RFC6052"/>. After undergoing the reverse translation in the
-        BR, the resulting IPv4 packet routed to the IPv4 network will have a
-        spoofed IPv4 source address. The ER SHOULD therefore ensure that <xref
-        target="RFC2827">ingress filtering</xref> is used on the ER's IPv4
-        interface, so that such packets are immediately discarded.
-        </t>
-        <t>
-        If the ER receives an IPv6 packet with both the source and destination
-        address equal to one of its local IPv6 Service Addresses, the
-        resulting packet would appear to the IPv4-only application/node as
-        locally generated, as both the source address and the destination
-        address will be the same address. This could trick the application
-        into believing the packet came from a trusted source (itself). To
-        prevent this, the ER SHOULD discard any received IPv6 packets that
-        have a source address that is either 1) equal to any of its local IPv6
-        Service Addresses, or 2) after translation from IPv6 to IPv4, equal to
-        any of its local IPv4 Service Addresses.
-        </t>
-      </section>
+      <t>
+      If the ER receives an IPv4 packet from the application/node from a
+      source address it does not have an EAM for, both the source and
+      destination addresses will be rewritten according to <xref
+      target="RFC6052"/>. After undergoing the reverse translation in the BR,
+      the resulting IPv4 packet routed to the IPv4 network will have a spoofed
+      IPv4 source address. The ER SHOULD therefore ensure that <xref
+      target="RFC2827">ingress filtering</xref> is used on the ER's IPv4
+      interface, so that such packets are immediately discarded.
+      </t>
+      <t>
+      If the ER receives an IPv6 packet with both the source and destination
+      address equal to one of its local IPv6 Service Addresses, the resulting
+      packet would appear to the IPv4-only application/node as locally
+      generated, as both the source address and the destination address will
+      be the same address. This could trick the application into believing the
+      packet came from a trusted source (itself). To prevent this, the ER
+      SHOULD discard any received IPv6 packets that have a source address that
+      is either 1) equal to any of its local IPv6 Service Addresses, or 2)
+      after translation from IPv6 to IPv4, equal to any of its local IPv4
+      Service Addresses.
+      </t>
     </section>
   </middle>
 
