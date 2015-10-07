@@ -73,8 +73,8 @@
       through SIIT must be configured with IPv4-translatable IPv6 addresses.
       </t>
       <t>
-      The Explicit Address Mapping Table does not replace <xref
-      target="RFC6052"/>. For most use cases, it is expected that both
+      Translation using the Explicit Address Mapping Table does not replace
+      <xref target="RFC6052"/>. For most use cases, it is expected that both
       algorithms are used in concert. The Explicit Address Mapping algorithm
       is used only when a mapping matching the address to be translated
       exists. If no matching mapping exists, the <xref target="RFC6052"/>
@@ -149,7 +149,7 @@
       network using regular (non-IPv4-translatable) IPv6 addresses, and assign
       IPv4-translatable IPv6 addresses as secondary addresses on the nodes
       that want to communicate with IPv4 nodes through SIIT only. However,
-      doing so may result in a new set of undesired properties:
+      doing so may result in a new set of undesired consequences:
       </t>
       <t>
       <list style="hanging">
@@ -264,8 +264,9 @@
         When translating a packet between IPv4 and IPv6, an SIIT
         implementation MUST individually translate each IP address it
         encounters in the packet's IP headers (including any IP headers
-        contained within ICMP errors) according to <xref target="eam_xlat"/>.
-        See <xref target="hairpinning"/> for certain exceptions to this rule.
+        contained within ICMP errors) according to <xref target="eam_xlat"/>,
+        except for any address for which <xref target="hairpinning"/>
+        explicitly states that the EAM algorithm MUST NOT be used.
         </t>
       </section>
       <section anchor="eam_xlat" title="IP Address Translation Procedure">
@@ -416,7 +417,7 @@
         <section anchor="hp_intrinsic" title="Intrinsic Hairpinning Support">
           <t>
           When the intrinsic hairpinning feature is enabled, the translator
-          behaves as follows when receiving an IPv6 packet:
+          MUST behave as follows when receiving an IPv6 packet:
           </t>
           <t>
           If all the conditions in either of the two sets below is true, the
@@ -547,7 +548,7 @@
       <t>
       Valuable reviews, suggestions, and other feedback was given by Fred
       Baker, Mohamed Boucadair, Cameron Byrne, Brian E Carpenter, Ray Hunter,
-      Michael Richardson, Hemant Singh, and Andrew Yourtchenko.
+      Michael Richardson, Dan Romascanu, Hemant Singh, and Andrew Yourtchenko.
       </t>
     </section>
   </middle>
