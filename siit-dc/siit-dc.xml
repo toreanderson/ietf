@@ -219,7 +219,7 @@
        function that provides "native" IPv4 connectivity to IPv4-only devices
        or application software. It is very similar in function to a BR, but is
        typically located close to the IPv4-only component(s) it is supporting
-       rather than on the IDC's outer network border. The ERs is an optional
+       rather than on the IDC's outer network border. The ER is an optional
        component of SIIT-DC. It is discussed in more detail in <xref
        target="I-D.ietf-v6ops-siit-dc-2xlat"/>.</t>
        <t hangText="IPv4 Service Address"><vspace/>A public IPv4 address with
