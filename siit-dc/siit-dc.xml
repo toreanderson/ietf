@@ -263,15 +263,16 @@
        Providers.</t>
        <t hangText="SIIT"><vspace/>The Stateless IP/ICMP Translation
        algorithm, as specified in <xref target="RFC6145"/>.</t>
-       <t hangText="XLAT"><vspace/>Short for "translation".</t>
-     </list>
-     </t>
-     <t>
-     The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-     "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-     document are to be interpreted as described in <xref
-     target="RFC2119"/>.
-     </t>
+       <t hangText="XLAT"><vspace/>Short for "Translation". Used in figures to
+       indicate where a BR/ER uses <xref target="RFC6145">SIIT</xref> to
+       translate IPv4 packets to IPv6 and vice versa.</t>
+      </list>
+      </t>
+      <t>
+      The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+      "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+      document are to be interpreted as described in <xref target="RFC2119"/>.
+      </t>
     </section>
     <section anchor="overview" title="Architectural Overview">
       <t>
