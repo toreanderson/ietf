@@ -109,8 +109,8 @@
       <list style="hanging">
        <t hangText="SIIT-DC Border Relay (BR)"><vspace/>A device or a logical
        function that performs stateless protocol translation between IPv4 and
-       IPv6 in accordance with <xref target="RFC6145"/> and <xref
-       target="I-D.ietf-v6ops-siit-eam"/>.</t>
+       IPv6. It MUST do so in accordance with <xref target="RFC6145"/> and
+       <xref target="I-D.ietf-v6ops-siit-eam"/>.</t>
        <t hangText="SIIT-DC Edge Relay (ER)"><vspace/>A device or logical
        function that provides "native" IPv4 connectivity to IPv4-only devices
        or application software. It is very similar in function to a BR, but is
