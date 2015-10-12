@@ -213,8 +213,8 @@
       <list style="hanging">
        <t hangText="SIIT-DC Border Relay (BR)"><vspace/>A device or a logical
        function that performs stateless protocol translation between IPv4 and
-       IPv6 in accordance with <xref target="RFC6145"/> and <xref
-       target="I-D.ietf-v6ops-siit-eam"/>.</t>
+       IPv6. It MUST do so in accordance with <xref target="RFC6145"/> and
+       <xref target="I-D.ietf-v6ops-siit-eam"/>.</t>
        <t hangText="SIIT-DC Edge Relay (ER)"><vspace/>A device or logical
        function that provides "native" IPv4 connectivity to IPv4-only devices
        or application software. It is very similar in function to a BR, but is
@@ -510,10 +510,9 @@
         interfaces of the BRs and the network infrastructure required to
         connect the BRs to the IPv4 Internet. Therefore, the BRs must be
         located somewhere between the IPv4 Internet and the application
-        delivery stack. This should be understood to include all servers, load
-        balancers, firewalls, intrusion detection systems, and similar devices
-        that are processing traffic to a greater extent than merely forwarding
-        it.
+        delivery stack - which includes all servers, load balancers,
+        firewalls, intrusion detection systems, and similar devices that are
+        processing traffic to a greater extent than merely forwarding it.
         </t>
         <t>
         It is optimal to place the BRs as close as possible to the direct path
@@ -578,7 +577,7 @@
       <section title="MTU and Fragmentation">
         <t>
         There are some key differences between IPv4 and IPv6 relating to
-        packet sizes and fragmentation that one should consider when deploying
+        packet sizes and fragmentation that one MUST consider when deploying
         SIIT-DC. They result in a few problematic corner cases, which can be
         dealt with in a few different ways. The following subsections will
         discuss these in detail, and provide operational guidance.
@@ -778,9 +777,9 @@
       <t>
       The author would like to thank the following individuals for their
       contributions, suggestions, corrections, and criticisms: Fred Baker,
-      Cameron Byrne, Brian E Carpenter, Ross Chandler, Christer Holmberg,
-      Dagfinn Ilmari Mannsaaker, Lars Olafsen, Stig Sandbeck Mathisen, Knut A.
-      Syed, Qin Wu, Andrew Yourtchenko.
+      Cameron Byrne, Brian E Carpenter, Ross Chandler, Tobias Gondrom,
+      Christer Holmberg, Dagfinn Ilmari Mannsaaker, Lars Olafsen, Stig
+      Sandbeck Mathisen, Knut A.  Syed, Qin Wu, Andrew Yourtchenko.
       </t>
     </section>
     <section anchor="IANA" title="IANA Considerations">
@@ -793,7 +792,7 @@
         <t>
         If a Network-Specific Prefix from the provider's own address space is
         chosen for the translation prefix, as recommended in <xref
-        target="xlat_pfx"/>, care must be taken if the translation service is
+        target="xlat_pfx"/>, care MUST be taken if the translation service is
         used in front of services that have application-level ACLs that
         distinguish between the operator's own networks and the Internet at
         large, as traffic from translated IPv4 end users on the Internet might
