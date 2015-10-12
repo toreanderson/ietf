@@ -261,12 +261,10 @@
         suffix bits than its corresponding IPv6 Prefix value.
         </t>
         <t>
-        When translating a packet between IPv4 and IPv6, an SIIT
+        Unless otherwise specified in <xref target="hairpinning"/>, an SIIT
         implementation MUST individually translate each IP address it
         encounters in the packet's IP headers (including any IP headers
-        contained within ICMP errors) according to <xref target="eam_xlat"/>,
-        except for any address for which <xref target="hairpinning"/>
-        explicitly states that the EAM algorithm MUST NOT be used.
+        contained within ICMP errors) according to <xref target="eam_xlat"/>.
         </t>
       </section>
       <section anchor="eam_xlat" title="IP Address Translation Procedure">
