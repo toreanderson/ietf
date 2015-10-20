@@ -202,7 +202,12 @@
     </section>
     <section anchor="eam_def" title="Explicit Address Mapping Algorithm">
       <t>
-      This normative section defines the EAM algorithm.
+      This normative section defines the EAM algorithm, and formally updates
+      Section 4.1 and Section 5.1 of <xref target="RFC6145"/>. Specifically,
+      when the EAM algorithm is applied, it supplants <xref
+      target="RFC6145"/>'s requirement that a translator operating in the
+      stateless mode must translate the Source Address and Destination Address
+      IP header fields according to Section 2.3 of <xref target="RFC6052"/>.
       </t>
       <section anchor="eamt_spec" title="Explicit Address Mapping Table">
         <t>
@@ -542,8 +547,8 @@
       <t>
       Valuable reviews, suggestions, and other feedback was given by Fred
       Baker, Mohamed Boucadair, Cameron Byrne, Brian E Carpenter, Brian
-      Haberman, Ray Hunter, Michael Richardson, Dan Romascanu, Hemant Singh,
-      and Andrew Yourtchenko.
+      Haberman, Ray Hunter, Alvaro Retana, Michael Richardson, Dan Romascanu,
+      Hemant Singh, and Andrew Yourtchenko.
       </t>
     </section>
   </middle>
