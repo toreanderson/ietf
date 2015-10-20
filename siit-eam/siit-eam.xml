@@ -202,16 +202,14 @@
     </section>
     <section anchor="eam_def" title="Explicit Address Mapping Algorithm">
       <t>
-      This normative section defines the EAM algorithm. SIIT implementations
-      MUST support the specifications herein.
+      This normative section defines the EAM algorithm.
       </t>
       <section anchor="eamt_spec" title="Explicit Address Mapping Table">
         <t>
-        An SIIT implementation MUST include an Explicit Address Mapping Table
-        (EAMT). By default, the EAMT SHOULD be empty. The operator MUST be
-        able to populate the EAMT using the implementation's normal
-        configuration interfaces. The implementation MAY additionally support
-        other ways of populating the EAMT.
+        An SIIT implementation includes an EAMT, a conceptual table in which
+        each row represents an EAM. Each EAM describes a mapping between IPv4
+        and IPv6 prefixes/addresses. An operator populates the EAMT to provide
+        the mappings between the two address families.
         </t>
         <t>
         The EAMT consists of the following columns:
@@ -272,7 +270,7 @@
         This section describes step-by-step how an SIIT implementation
         translates addresses between IPv4 and IPv6. Only the outcome of the
         algorithm described should be considered normative, that is, an SIIT
-        implementation MAY implement the exact procedure differently than what
+        implementation may implement the exact procedure differently than what
         is described here, but the outcome of the algorithm MUST be the same.
         </t>
         <t>
@@ -386,9 +384,8 @@
         </t>
         <section anchor="hp_simple" title="Simple Hairpinning Support">
           <t>
-          When the simple hairpinning feature is enabled, the translator MUST
-          behave according to the following rules when translating from IPv4
-          to IPv6:
+          When the simple hairpinning feature is enabled, the translator
+          employs the following rules when translating from IPv4 to IPv6:
           </t>
           <t>
           <list style="numbers">
@@ -415,7 +412,7 @@
         <section anchor="hp_intrinsic" title="Intrinsic Hairpinning Support">
           <t>
           When the intrinsic hairpinning feature is enabled, the translator
-          MUST behave as follows when receiving an IPv6 packet:
+          employs the following rules when receiving an IPv6 packet:
           </t>
           <t>
           If all the conditions in either of the two sets below is true, the
@@ -544,8 +541,9 @@
       </t>
       <t>
       Valuable reviews, suggestions, and other feedback was given by Fred
-      Baker, Mohamed Boucadair, Cameron Byrne, Brian E Carpenter, Ray Hunter,
-      Michael Richardson, Dan Romascanu, Hemant Singh, and Andrew Yourtchenko.
+      Baker, Mohamed Boucadair, Cameron Byrne, Brian E Carpenter, Brian
+      Haberman, Ray Hunter, Michael Richardson, Dan Romascanu, Hemant Singh,
+      and Andrew Yourtchenko.
       </t>
     </section>
   </middle>
