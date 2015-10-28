@@ -50,7 +50,7 @@
       This document describes an extension of the Stateless IP/ICMP
       Translation for IPv6 Internet Data Centre Environments architecture
       (SIIT-DC), which allows applications, protocols, or nodes that are
-      incompatible with IPv6, and/or Network Address Translation to operate
+      incompatible with IPv6 and/or Network Address Translation to operate
       correctly in an SIIT-DC environment. This is accomplished by introducing
       a new component called an SIIT-DC Edge Relay, which reverses the
       translations made by an SIIT-DC Border Relay. The application and/or
