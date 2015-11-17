@@ -520,7 +520,7 @@
         the closest BR was located a long way from the direct path, all
         packets in both directions must make a detour in order to traverse the
         BR. This would increase the RTT between the service and the end user
-        by by two times the extra latency incurred by the detour, as well as
+        by two times the extra latency incurred by the detour, as well as
         cause unnecessary load on the network links on the detour path.
         </t>
         <t>
