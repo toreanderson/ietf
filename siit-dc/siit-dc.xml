@@ -326,8 +326,8 @@
       EAM Table.
       </t>
       <t>
-      The IPv6 Service Address of should be registered in DNS using an "IN
-      AAAA" record, while its corresponding IPv4 Service Address should be
+      The IPv6 Service Address should be registered in DNS using an "IN AAAA"
+      record, while its corresponding IPv4 Service Address should be
       registered using an "IN A" record. This ensures that IPv6-capable
       clients access the application/service directly using its native IPv6
       end-to-end, while IP4-only clients will access it through SIIT-DC.
