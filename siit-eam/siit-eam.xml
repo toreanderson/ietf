@@ -730,7 +730,7 @@
         <t>
         <xref target="fig_example_hp"/> illustrates how a normal (i.e., not an
         ICMP error) IPv6 packet sent from 2001:db8:aaaa:: towards
-        64:ff9b::192.0.2.2 is is hairpinned. In this example, rule #1 in <xref
+        64:ff9b::192.0.2.2 is hairpinned. In this example, rule #1 in <xref
         target="hp_simple"/> was applied in order to disable the EAM algorithm
         when translating the intermediate IPv4 source address to IPv6.
         </t>
