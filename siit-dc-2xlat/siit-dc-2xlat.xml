@@ -1,18 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="US-ASCII"?>
+
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
-<?rfc strict="yes" ?>
+
 <?rfc toc="yes"?>
 <?rfc tocdepth="4"?>
 <?rfc symrefs="yes"?>
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="info" docName="draft-ietf-v6ops-siit-dc-2xlat-02"
+<rfc category="info" number="7756" consensus="yes" submissionType="IETF"
      ipr="trust200902">
 
   <front>
-    <title abbrev="SIIT-DC-2XLAT">SIIT-DC: Dual Translation Mode</title>
+<!--[rfced] May we update the short title in the header as suggested below?
+
+Original:
+SIIT-DC-2XLAT
+
+Perhaps:
+SIIT-DC: Dual Translation Mode
+-->
+
+    <title abbrev="SIIT-DC-2XLAT"> Stateless IP/ICMP
+      Translation for IPv6 Internet Data&nbsp;Center&nbsp;(SIIT&nbhy;DC):&nbsp;Dual&nbsp;Translation&nbsp;Mode</title>
     <author fullname="Tore Anderson" initials="T." surname="Anderson">
       <organization>Redpill Linpro</organization>
       <address>
@@ -42,14 +53,19 @@
         <email>sander@steffann.nl</email>
       </address>
     </author>
-    <date year="2015" />
+    <date month="January" year="2016"></date>
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
+
+<!-- [rfced] Please insert any keywords (beyond those that appear in 
+the title) for use on http://www.rfc-editor.org/search.
+-->
+
     <abstract>
       <t>
       This document describes an extension of the Stateless IP/ICMP
-      Translation for IPv6 Internet Data Centre Environments architecture
-      (SIIT-DC), which allows applications, protocols, or nodes that are
+      Translation for IPv6 Internet Data Center Environments architecture (SIIT-DC), 
+      which allows applications, protocols, or nodes that are
       incompatible with IPv6 and/or Network Address Translation to operate
       correctly in an SIIT-DC environment. This is accomplished by introducing
       a new component called an SIIT-DC Edge Relay, which reverses the
@@ -59,7 +75,7 @@
       </t>
       <t>
       The reader is expected to be familiar with the SIIT-DC architecture
-      described in I-D.ietf-v6ops-siit-dc.
+      described in RFC 7755.
       </t>
     </abstract>
   </front>
@@ -67,7 +83,7 @@
   <middle>
     <section title="Introduction">
       <t>
-      <xref target="I-D.ietf-v6ops-siit-dc">SIIT-DC</xref> describes an
+      <xref target="RFC7755">SIIT-DC</xref> describes an
       architecture where IPv4-only users can access IPv6-only services through
       a stateless translator called an SIIT-DC Border Relay (BR). This
       approach has certain limitations, however. In particular, the following
@@ -77,10 +93,12 @@
       <list style="symbols">
         <t>Application protocols that do not support NAT (i.e., the lack of
         end-to-end transparency of IP addresses).</t>
-        <t>Nodes that cannot connect to IPv6 networks at all, or that can only
+
+        <t>Nodes that cannot connect to IPv6 networks at all or that can only
         connect such networks if they also provide IPv4 connectivity (i.e.,
         dual-stacked networks).</t>
-        <t>Application software which makes use of legacy IPv4-only APIs, or
+
+        <t>Application software that makes use of legacy IPv4-only APIs or
         otherwise makes assumptions that IPv4 connectivity is available.</t>
       </list>
       </t>
@@ -107,50 +125,58 @@
       </t>
       <t>
       <list style="hanging">
-       <t hangText="SIIT-DC Border Relay (BR)"><vspace/>A device or a logical
+       <t hangText="SIIT-DC Border Relay (BR):"><vspace/>A device or a logical
        function that performs stateless protocol translation between IPv4 and
        IPv6. It MUST do so in accordance with <xref target="RFC6145"/> and
-       <xref target="I-D.ietf-v6ops-siit-eam"/>.</t>
-       <t hangText="SIIT-DC Edge Relay (ER)"><vspace/>A device or logical
+       <xref target="RFC7757"/>.</t>
+
+       <t hangText="SIIT-DC Edge Relay (ER):"><vspace/>A device or logical
        function that provides "native" IPv4 connectivity to IPv4-only devices
-       or application software. It is very similar in function to a BR, but is
+       or application software. It is very similar in function to a BR but is
        typically located close to the IPv4-only component(s) it is supporting
-       rather than on the IDC's outer network border. An ER may be either
-       <xref target="er_nodebased">Node-Based</xref> or <xref
-       target="et_netbased">Network-Based</xref>.</t>
-       <t hangText="IPv4 Service Address"><vspace/>An IPv4 address
+       rather than on the outer network border of the Internet Data Center (IDC). An ER may be either
+       <xref target="er_nodebased">node based</xref> or <xref
+       target="et_netbased">network based</xref>.</t>
+
+       <t hangText="IPv4 Service Address:"><vspace/>An IPv4 address
        representing a node or service located in an IPv6 network. It is
-       coupled with an IPv6 Service Address using an EAM. Packets sent to this
-       address is translated to IPv6 by the BR, and possibly back to IPv4 by
+       coupled with an IPv6 Service Address using an Explicit Address Mapping (EAM). Packets sent to this
+       address are translated to IPv6 by the BR, and possibly back to IPv4 by
        an ER, before reaching the node or service.</t>
-       <t hangText="IPv6 Service Address"><vspace/>An IPv6 address assigned to
-       an application, node, or service; either directly or indirectly
+
+       <t hangText="IPv6 Service Address:"><vspace/>An IPv6 address assigned to
+       an application, node, or service either directly or indirectly
        (through an ER). It is coupled with an IPv4 Service Address using an
-       EAM. IPv4-only clients communicates with the IPv6 Service Address
+       EAM. IPv4-only clients communicate with the IPv6 Service Address
        through SIIT-DC.</t>
-       <t hangText="Explicit Address Mapping (EAM)"><vspace/>A bi-directional
+
+       <t hangText="Explicit Address Mapping (EAM):"><vspace/>A bidirectional
        coupling between an IPv4 Service Address and an IPv6 Service Address
        configured in a BR or ER. When translating between IPv4 and IPv6, the
        BR/ER changes the address fields in the translated packet's IP header
        according to any matching EAM. The EAM algorithm is specified in <xref
-       target="I-D.ietf-v6ops-siit-eam"/>.</t>
-       <t hangText="Translation Prefix"><vspace/>An IPv6 prefix into which the
+       target="RFC7757"/>.</t>
+
+       <t hangText="Translation Prefix:"><vspace/>An IPv6 prefix into which the
        entire IPv4 address space is mapped, according to the algorithm in
        <xref target="RFC6052"/>. The Translation Prefix is routed to the BR's
-       IPv6 interface. When translating between IPv4 and IPv6, an BR/ER will
+       IPv6 interface. When translating between IPv4 and IPv6, a BR/ER will
        insert/remove the Translation Prefix into/from the address fields in
        the translated packet's IP header, unless an EAM exists for the IP
        address that is being translated.</t>
-       <t hangText="IPv4-converted IPv6 addresses"><vspace/>As defined in
+
+       <t hangText="IPv4-Converted IPv6 Addresses:"><vspace/>As defined in
        Section 1.3 of <xref target="RFC6052"/>.</t>
-       <t hangText="IDC"><vspace/>Short for "Internet Data Centre"; a data
-       centre whose main purpose is to deliver services to the public
-       Internet, the use case SIIT-DC is primarily targeted at. IDCs are
+       <t hangText="IDC"><vspace/>Short for "Internet Data Center"; a data
+       center whose main purpose is to deliver services to the public
+       Internet the use case SIIT-DC is primarily targeted at. IDCs are
        typically operated by Internet Content Providers or Managed Services
        Providers.</t>
-       <t hangText="SIIT"><vspace/>The Stateless IP/ICMP Translation
+
+       <t hangText="SIIT:"><vspace/>The Stateless IP/ICMP Translation
        algorithm, as specified in <xref target="RFC6145"/>.</t>
-       <t hangText="XLAT"><vspace/>Short for "Translation". Used in figures to
+
+       <t hangText="XLAT:"><vspace/>Short for "Translation". Used in figures to
        indicate where a BR/ER uses <xref target="RFC6145">SIIT</xref> to
        translate IPv4 packets to IPv6 and vice versa.</t>
       </list>
@@ -164,15 +190,15 @@
     <section anchor="et_descr"
              title="Edge Relay Description">
       <t>
-      An Edge Relay (ER) is at its core an implementation of the <xref
+      An ER is at its core an implementation of the <xref
       target="RFC6145">Stateless IP/ICMP Translation algorithm</xref> that
-      supports <xref target="I-D.ietf-v6ops-siit-eam">Explicit Address
+      supports <xref target="RFC7757">Explicit Address
       Mappings</xref>. It provides virtual IPv4 connectivity for nodes or
-      applications which require this to operate correctly in an SIIT-DC
+      applications that require this to operate correctly in an SIIT-DC
       environment.
       </t>
       <t>
-      Packets from the IPv4 Internet destined for an IPv4 Service Address is
+      Packets from the IPv4 Internet destined for an IPv4 Service Address are
       first translated to IPv6 by a BR. The resulting IPv6 packets are
       subsequently forwarded to the ER that owns the IPv6 Service Address the
       translated packets are addressed to. The ER then translates them back to
@@ -187,13 +213,13 @@
       configuration.
       </t>
       <t>
-      An ER may be implemented in two distinct ways; as a software-based
-      service residing inside an otherwise IPv6-only node, or as a
+      An ER may be implemented in two distinct ways: as a software-based
+      service residing inside an otherwise IPv6-only node or as a
       network-based service that provides an isolated IPv4 network segment to
-      which nodes that require IPv4 can connect. In both cases native IPv6
+      which nodes that require IPv4 can connect. In both cases, native IPv6
       connectivity may be provided simultaneously with the virtual IPv4
       connectivity. Thus, dual-stack connectivity is facilitated in case the
-      node or application support it.
+      node or application supports it.
       </t>
       <t>
       The choice between a node- or network-based ER is made on a per-service
@@ -207,7 +233,7 @@
       <section anchor="er_nodebased" title="Node-Based Edge Relay">
         <t>
         <figure anchor="fig_nodebased_er_brief" align="center">
-          <preamble>A Node-based Edge Relay</preamble>
+          <preamble>A Node-Based Edge Relay</preamble>
           <artwork align="center"><![CDATA[
 [IPv4 Internet]  [IPv6 Internet]
       |            |
@@ -217,8 +243,8 @@
       |            |      +-----<IPv6-only node/server>----------+
 [IPv6-only IDC network]   |                    +----------------+|
    |                      |  /--(ER/XLAT)--AF_INET  Dual-stack  ||
-   \-------------------------+                 |    Application ||
-                          |  \------------AF_INET6  Software    ||
+   \-------------------------+                 |    application ||
+                          |  \------------AF_INET6  software    ||
                           |                    +----------------+|
                           +--------------------------------------+
           ]]></artwork>
@@ -229,13 +255,13 @@
         function that runs inside the operating system of an IPv6 node. It
         provides applications running on the same node with IPv4 connectivity.
         Its IPv4 Service Address SHOULD be considered a regular local address
-        that allows application running on the same node to use it with
+        that allows applications running on the same node to use it with
         IPv4-only API calls, e.g., to create AF_INET sockets that listen for
         and accept incoming connections to its IPv4 Service Address. An ER may
         accomplish this by creating a virtual network adapter to which it
         assigns the IPv4 Service Address and points a default IPv4 route.
-        This approach is similar to the "Bump-in-the-Stack" approach discussed
-        in <xref target="RFC6535"/>, however it does not include an Extension
+        This approach is similar to the "Bump&nbhy;in&nbhy;the&nbhy;Stack" approach discussed
+        in <xref target="RFC6535"/>; however, it does not include an Extension
         Name Resolver.
         </t>
         <t>
@@ -243,7 +269,7 @@
         application supports dual-stack operation, IPv6 clients will be able
         to communicate with it directly using native IPv6. Neither the BR nor
         the ER will intercept this communication. Support for IPv6 in the
-        application is however not a requirement; the application may opt not
+        application is, however, not a requirement; the application may opt not
         to establish any IPv6 sockets. Foregoing IPv6 in this manner will
         simply preclude connectivity to the service from IPv6-only clients;
         connectivity to the service from IPv4 clients (through the BR) will
@@ -254,11 +280,11 @@
         Address it has configured. The IPv6 network MUST forward traffic to
         these IPv6 Service Addresses to the node, whose operating system MUST
         in turn forward them to the ER. This document does not attempt to
-        fully explore the multitude of ways this could be accomplished,
-        however considering that the IPv6 protocol is designed for having
+        fully explore the multitude of ways this could be accomplished;
+        however, considering that the IPv6 protocol is designed for having
         multiple addresses assigned to a single node, one particularly
         straight-forward way would be to assign the ER's IPv6 Service
-        Addresses as secondary IPv6 addresses on the node itself so that it
+        Addresses as secondary IPv6 addresses on the node itself so that
         the upstream router learns of their location using the <xref
         target="RFC4861">IPv6 Neighbor Discovery Protocol</xref>.
         </t>
@@ -266,7 +292,7 @@
       <section anchor="et_netbased" title="Network-Based Edge Relay">
         <t>
         <figure anchor="fig_netbased_er_basic" align="center">
-          <preamble>A Basic Network-based Edge Relay</preamble>
+          <preamble>A Basic Network-Based Edge Relay</preamble>
           <artwork align="center"><![CDATA[
 [IPv4 Internet]  [IPv6 Internet]
       |             |
@@ -277,15 +303,15 @@
  [IPv6-only IDC network]   +--<IPv4-only node/server>--+
       |                    |         +----------------+|
 +-----|-----+   [v4-only]  |         |    IPv4-only   ||
-| (ER/XLAT)-----[network]--------AF_INET  Application ||
-+-----------+   [segment]  |         |    Software    ||
+| (ER/XLAT)-----[network]--------AF_INET  application ||
++-----------+   [segment]  |         |    software    ||
                            |         +----------------+|
                            +---------------------------+
           ]]></artwork>
         </figure>
         </t>
         <t>
-        A network-based ER performs the exact same as a node-based ER does,
+        A network-based ER performs the exact same way as a node-based ER does,
         only that instead of assigning the IPv4 Service Addresses to an
         internal-only virtual network adapter, traffic destined for them are
         forwarded onto a network segment to which nodes that require IPv4
@@ -303,22 +329,22 @@
         The basic ER illustrated in <xref target="fig_netbased_er_basic"/>
         establishes an IPv4-only network segment between itself and the
         IPv4-only nodes it serves. This is fine if the nodes it provides IPv4
-        access have no support for IPv6 whatsoever; however if they are
-        dual-stack capable, it is would not be ideal to take away their IPv6
+        access to have no support for IPv6 whatsoever; however, if they are
+        dual-stack capable, it would not be ideal to take away their IPv6
         connectivity in this manner. While it is RECOMMENDED to use a
         node-based ER in this case, appropriate implementations of a
         node-based ER might not be available for every node. If the
         application protocol in question does not work correctly in a NAT
         environment, standard SIIT-DC cannot be used either, which leaves a
-        network-based ER is the only remaining solution. The following
-        subsections contains examples on how the ER could be implemented in a
+        network-based ER as the only remaining solution. The following
+        subsections contain examples on how the ER could be implemented in a
         way that provides IPv6 connectivity for dual-stack capable nodes.
         </t>
         <section anchor="er_netbased_onastick"
-                 title='Edge Router "On A Stick"'>
+                 title='Edge Router "on a Stick"'>
           <t>
           <figure anchor="fig_netbased_er_onastick" align="center">
-            <preamble>A Network-based Edge Relay "On A Stick"</preamble>
+            <preamble>A Network-Based Edge Relay "on a Stick"</preamble>
             <artwork align="center"><![CDATA[
 [IPv4 Internet]  [IPv6 Internet]
       |             |
@@ -333,18 +359,18 @@
    |  | /      \    |
    +====  (ER/XLAT) |
    |  | \_    _/    |
-   |  |   IPv4      |          +--<Dual stack node/server>--+
+   |  |   IPv4      |          +--<Dual-stack node/server>--+
    |  +-------------+          |          +----------------+|
    |                           |  /---AF_INET  Dual-stack  ||
- [Dual-stack network segment]----<        |    Application ||
-                               |  \--AF_INET6  Software    ||
+ [Dual-stack network segment]----<        |    application ||
+                               |  \--AF_INET6  software    ||
                                |          +----------------+|
                                +----------------------------+
             ]]></artwork>
           </figure>
           </t>
           <t>
-          The ER "On A Stick" approach illustrated in <xref
+          The ER "on a stick" approach illustrated in <xref
           target="fig_netbased_er_onastick"/> ensures that the dual-stack
           capable node retains native IPv6 connectivity by connecting the ER's
           IPv4 and IPv6 interfaces to the same network segment, alternatively
@@ -359,10 +385,10 @@
           </t>
         </section>
         <section anchor="et_netbased_v6bridge"
-                 title="Edge Router that Bridges IPv6 Packets">
+                 title="Edge Router That Bridges IPv6 Packets">
           <t>
           <figure anchor="fig_transparent_er" align="center">
-            <preamble>A Network-based Edge Relay containing an IPv6
+            <preamble>A Network-Based Edge Relay Containing an IPv6
             Bridge</preamble>
             <artwork align="center"><![CDATA[
 [IPv4 Internet]  [IPv6 Internet]
@@ -378,11 +404,11 @@
 |     /             \      |
 | (IPv6 Bridge)  (ER/XLAT) |
 |     \____   _    _/      |
-|          \ / IPv4        |   +--<Dual stack node/server>--+
+|          \ / IPv4        |   +--<Dual-stack node/server>--+
 +-----------|--------------+   |          +----------------+|
             |                  |  /---AF_INET  Dual-stack  ||
- [Dual-stack network segment]----<        |    Application ||
-                               |  \--AF_INET6  Software    ||
+ [Dual-stack network segment]----<        |    application ||
+                               |  \--AF_INET6  software    ||
                                |          +----------------+|
                                +----------------------------+
             ]]></artwork>
@@ -391,12 +417,12 @@
           <t>
           The ER illustrated in <xref target="fig_transparent_er"/> will
           transparently bridge IPv6 frames between its upstream and downstream
-          interfaces. IPv6 packets addressed the ER's own IPv6 Service
+          interfaces. IPv6 packets that addressed the ER's own IPv6 Service
           Addresses from the upstream IDC network are intercepted (e.g., by
           responding to <xref target="RFC4861">IPv6 Neighbor Discovery</xref>
           messages for them) and routed through the translation function
           before being forwarded out its downstream interface as IPv4 packets.
-          The downstream network segment thus becomes dual-stacked.
+          The downstream network segment thus becomes dual stacked.
           </t>
         </section>
       </section>
@@ -406,9 +432,9 @@
         <t>
         The IPv6 Path MTU between the ER and the BR will typically be larger
         than the default value defined in Section 4 of <xref
-        target="RFC6145"/> (1280 bytes), as it will typically contained within
+        target="RFC6145"/> (1280 bytes), as it will typically be contained within
         a single administrative domain. Therefore, it is RECOMMENDED that the
-        IPv6 Path MTU configured in the ER is raised accordingly. It is
+        IPv6 Path MTU configured in the ER be raised accordingly. It is
         RECOMMENDED that the ER and the BR use identical configured IPv6 Path
         MTU values.
         </t>
@@ -417,18 +443,18 @@
         <t>
         In order to avoid IPv6 fragmentation, an ER SHOULD ensure that the
         IPv4 MTU used by applications or nodes is equal to the configured IPv6
-        Path MTU - 20, so that an maximum-sized IPv4 packet can fit in an
+        Path MTU -- 20 so that a maximum-sized IPv4 packet can fit in an
         unfragmented IPv6 packet. This ensures that the application may do its
         part in avoiding IP-level fragmentation from occurring, e.g., by
         segmenting/fragmenting outbound packets at the application layer, and
         advertising the maximum size its peer may use for inbound packets
-        (e.g., through the use of the TCP MSS option).
+        (e.g., through the use of the TCP Maximum Segment Size (MSS) option).
         </t>
         <t>
         A node-based ER could accomplish this by configuring this MTU value on
         the virtual network adapter, while a network-based ER could do so by
         advertising the MTU to its downstream nodes using the <xref
-        target="RFC2132">DHCPv4 Interface MTU Option</xref>.
+        target="RFC2132">DHCPv4 Interface MTU option</xref>.
         </t>
       </section>
       <section anchor="frag_id" title="IPv4 Identification Header">
@@ -436,20 +462,20 @@
         If the generation of IPv6 Atomic Fragments is disabled, the value of
         the IPv4 Identification header will be lost during the translation.
         Conversely, enabling the generation of IPv6 Atomic Fragments will
-        ensure that the IPv4 Identification Header will carried end-to-end.
-        Note that for this to work bi-directionally, IPv6 Atomic Fragment
+        ensure that the IPv4 Identification header will be carried end to end.
+        Note that for this to work bidirectionally, IPv6 Atomic Fragment
         generation MUST be enabled on both the BR and the ER.
         </t>
         <t>
         Apart from certain diagnostic tools, there are few (if any)
         application protocols that make use of the IPv4 Identification header.
-        Therefore, the loss of the IPv4 Identification value will therefore
+        Therefore, the loss of the IPv4 Identification value will
         generally not cause any problems.
         </t>
         <t>
         IPv6 Atomic Fragments and their impact on the IPv4 Identification
         header is further discussed in Section 4.9.2 of <xref
-        target="I-D.ietf-v6ops-siit-dc"/>.
+        target="RFC7755"/>.
         </t>
       </section>
     </section>
@@ -459,17 +485,17 @@
       between IPv4-only nodes on the Internet and services located in an
       IPv6-only IDC network, an IPv4-only node or application located behind
       an ER might need to communicate with other nodes or services in the IDC.
-      The IPv4-only node or application will need to so through the ER, as it
-      will typically be incapable to contact IPv6 destinations directly.  The
-      following subsections discusses various methods on how to facilitate
+      The IPv4-only node or application will need to go through the ER, as it
+      will typically be incapable of contacting IPv6 destinations directly.  The
+      following subsections discuss various methods on how to facilitate
       such communication.
       </t>
       <section anchor="intra_idc_v4_hp"
                title="Hairpinning by the SIIT-DC Border Relay">
         <t>
         If the BR supports hairpinning as described in Section 4.2 of <xref
-        target="I-D.ietf-v6ops-siit-eam"/>, the easiest solution is to make
-        the target service available through SIIT-DC in the normal way, that
+        target="RFC7757"/>, the easiest solution is to make
+        the target service available through SIIT-DC in the normal way; that
         is, by provisioning an EAM to the BR that assigns an IPv4 Service
         Address with the target service's IPv6 Service Address.
         </t>
@@ -485,7 +511,7 @@
         fashion.
         </t>
         <figure anchor="fig_hp" align="center">
-          <preamble>Hairpinned IPv4-IPv4 packet flow</preamble>
+          <preamble>Hairpinned IPv4-IPv4 Packet Flow</preamble>
           <artwork align="center"><![CDATA[
 +-[Pkt#1: IPv4]-+             +--[Pkt#2: IPv6]-------------+
 | SRC 192.0.2.1 |  (XLAT#1)   | SRC 2001:db8:a::           |
@@ -502,8 +528,8 @@
         <xref target="fig_hp"/> illustrates the flow of a hairpinned packet
         sent from the IPv4-only node/app behind ER A towards an IPv6-only
         node/app behind ER B. ER A is configured with the EAM
-        {192.0.2.1,2001:db8:a::}, ER B with {192.0.2.2,2001:db8:b::}. The BR
-        is configured with both EAMs, and supports hairpinning. Note that if
+        {192.0.2.1,2001:db8:a::} and ER B with {192.0.2.2,2001:db8:b::}.  The BR
+        is configured with both EAMs and supports hairpinning. Note that if
         the target service had not been located behind an ER, the third and
         final translation (XLAT#3) would not have happened, i.e., the target
         service/node would have received and responded to packet #3 directly.
@@ -532,11 +558,41 @@
         application will contact the target's assigned IPv4 Service Address
         using its own IPv4 Service Address as the source. The ER will then
         proceed to translate this to an IPv6 packet with the local
-        application/node's own IPv6 Service Address as source and the target
-        service's IPv6 Service Address as the destination, and forward this to
+        application/node's own IPv6 Service Address as the source and the target
+        service's IPv6 Service Address as the destination and forward this to
         the IPv6 network. Replies from the target service will undergo these
         translations in reverse.
         </t>
+
+<!-- [rfced] How may this be rephrased for clarity and to avoid
+"appication/node's"?
+
+Original:
+   The ER will then
+   proceed to translate this to an IPv6 packet with the local
+   application/node's own IPv6 Service Address as source and the target
+   service's IPv6 Service Address as the destination, and forward this
+   to the IPv6 network. 
+
+Perhaps:
+   The ER will then proceed to translate this to an IPv6 packet with the
+   source as the IPv6 Service Address of the local application (or node)
+   and the destination as the IPv6 Service Address of the target service,
+   and then forward the packet to the IPv6 network.
+
+And, similarly:
+
+Original:
+   If the target service is also located behind another ER, that other
+   ER MUST also be provisioned with an additional EAM that contains the
+   origin IPv4-only application/node's IPv4 and IPv6 Service Addresses.
+
+Perhaps:
+   If the target service is also located behind another ER, that other
+   ER MUST also be provisioned with an additional EAM that contains the
+   IPv4 and IPv6 Service Addresses of the origin IPv4-only application
+   (or node).
+-->
         <t>
         If the target service is also located behind another ER, that other ER
         MUST also be provisioned with an additional EAM that contains the
@@ -546,7 +602,7 @@
         </t>
         <t>
         <figure anchor="fig_v4v6v4" align="center">
-          <preamble>Non-hairpinned IPv4-IPv4 packet flow</preamble>
+          <preamble>Non-hairpinned IPv4-IPv4 Packet Flow</preamble>
           <artwork align="center"><![CDATA[
 +-[Pkt#1: IPv4]-+             +--[Pkt#2: IPv6]---+
 | SRC 192.0.2.1 |  (XLAT#1)   | SRC 2001:db8:a:: |
@@ -564,9 +620,9 @@
         <xref target="fig_v4v6v4"/> illustrates the flow of a packet carrying
         intra-IDC IPv4 traffic between two IPv4-only nodes/applications that
         are both located behind ERs. Both ER A and ER B are configured with
-        two EAMs: {192.0.2.1,2001:db8:a::} and {192.0.2.2,2001:db8:b::}. The
+        two EAMs: {192.0.2.1,2001:db8:a::} and {192.0.2.2,2001:db8:b::}.  The
         packet will follow the regular routing path through the IPv6 IDC
-        network; the BR is not involved and the packet will not be hairpinned.
+        network; the BR is not involved, and the packet will not be hairpinned.
         </t>
         <t>
         The above approach is not mutually exclusive with the hairpinning
@@ -595,31 +651,13 @@
         </t>
       </section>
     </section>
-    <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>
-      The author would like to especially thank the authors of <xref
-      target="RFC6877">464XLAT</xref>: Masataka Mawatari, Masanobu Kawashima,
-      and Cameron Byrne. The architecture described by this document is merely
-      an adaptation of their work to a data centre environment, and could not
-      have happened without them.
-      </t>
-      <t>
-      The author would like also to thank the following individuals for their
-      contributions, suggestions, corrections, and criticisms: Fred Baker,
-      Tobias Brox, Olafur Gudmundsson, Christer Holmberg, Ray Hunter, Shucheng
-      LIU (Will), Andrew Yourtchenko.
-      </t>
-    </section>
-    <section anchor="IANA" title="IANA Considerations">
-      <t>
-      This draft makes no request of the IANA.
-      </t>
-    </section>
+   
+   
     <section anchor="Security" title="Security Considerations">
       <t>
       This section discusses security considerations specific to the use of an
       ER. See the Security Considerations section in <xref
-      target="I-D.ietf-v6ops-siit-dc"/> for security considerations applicable
+      target="RFC7755"/> for security considerations applicable
       to the SIIT-DC architecture in general.
       </t>
       <t>
@@ -630,7 +668,7 @@
       the resulting IPv4 packet routed to the IPv4 network will have a spoofed
       IPv4 source address. The ER SHOULD therefore ensure that <xref
       target="RFC2827">ingress filtering</xref> is used on the ER's IPv4
-      interface, so that such packets are immediately discarded.
+      interface so that such packets are immediately discarded.
       </t>
       <t>
       If the ER receives an IPv6 packet with both the source and destination
@@ -640,7 +678,7 @@
       be the same address. This could trick the application into believing the
       packet came from a trusted source (itself). To prevent this, the ER
       SHOULD discard any received IPv6 packets that have a source address that
-      is either 1) equal to any of its local IPv6 Service Addresses, or 2)
+      is either 1) equal to any of its local IPv6 Service Addresses or 2)
       after translation from IPv6 to IPv4, equal to any of its local IPv4
       Service Addresses.
       </t>
@@ -650,8 +688,36 @@
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
-      <?rfc include="reference.I-D.ietf-v6ops-siit-eam"?>
-      <?rfc include="reference.I-D.ietf-v6ops-siit-dc"?>
+     
+<!--draft-ietf-v6ops-siit-eam; in EDIT state and moving with C270-->
+<reference anchor='RFC7757' target="http://www.rfc-editor.org/info/rfc7757">
+<front>
+<title>Explicit Address Mappings for Stateless IP/ICMP Translation</title>
+<author initials='T' surname='Anderson' fullname='Tore Anderson'>
+    <organization />
+</author>
+<author initials='A' surname='Leiva' fullname='Alberto Leiva'>
+    <organization />
+</author>
+<date month='January' year='2016' />
+</front>
+<seriesInfo name='RFC' value='7757' />
+<seriesInfo name='DOI' value='10.17487/RFC7757' />
+</reference>
+
+<!--draft-ietf-v6ops-siit-dc; in EDIT state and moving with C270-->
+<reference anchor='RFC7755' target="http://www.rfc-editor.org/info/rfc7755">
+<front>
+<title>SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Center Environments</title>
+<author initials='T' surname='Anderson' fullname='Tore Anderson'>
+    <organization />
+</author>
+<date month='January' year='2016' />
+</front>
+<seriesInfo name='RFC' value='7755' />
+<seriesInfo name='DOI' value='10.17487/RFC7755' />
+</reference>
+
     </references>
     <references title="Informative References">
       <?rfc include="reference.RFC.0826"?>
@@ -667,6 +733,7 @@
       <?rfc include="reference.RFC.6877"?>
       <?rfc include="reference.RFC.7335"?>
     </references>
+
     <section anchor="examples_netbased_connectivity"
              title="Examples: Network-Based IPv4 Connectivity">
       <section anchor="er_netbased_subnet_v4sa"
@@ -675,7 +742,7 @@
         One relatively straight-forward way to provide IPv4 connectivity
         between the ER and the IPv4 node(s) it serves is to ensure the IPv4
         Service Address(es) can be enclosed within a larger IPv4 prefix. The
-        ER may then claim one address in this prefix for itself, and use it to
+        ER may then claim one address in this prefix for itself and use it to
         provide an IPv4 default router address. The ER may then proceed to
         assign the IPv4 Service Address(es) to its downstream node(s) using
         <xref target="RFC2131">DHCPv4</xref>. For example, if the IPv4 Service
@@ -689,14 +756,14 @@
         SIIT-DC becomes impossible, if those other services are assigned IPv4
         Service Addresses that also are covered by the same IPv4 prefix (e.g.,
         192.0.2.28). This happens because the IPv4 nodes will mistakenly
-        believe they have an on-link route to the entire prefix, and attempt
+        believe they have an on-link route to the entire prefix and attempt
         to resolve the addresses using <xref target="RFC0826">ARP</xref>,
         instead of sending them to the ER for translation to IPv6. This
-        problem could however be overcome by avoiding assigning IPv4 Service
-        Addresses which overlaps with an IPv4 prefix handled by an ER (at the
-        expense of wasting some potential IPv4 Service Addresses), or by
+        problem could, however, be overcome by avoiding assigning IPv4 Service
+        Addresses that overlap with an IPv4 prefix handled by an ER (at the
+        expense of wasting some potential IPv4 Service Addresses) or by
         ensuring that the overlapping IPv6 Service Addresses are only assigned
-        to services which do not need to communicate with the IPv4 node(s)
+        to services that do not need to communicate with the IPv4 node(s)
         behind the ER. A third way to avoid this problem is discussed in <xref
         target="er_netbased_subnet_unrouted"/>.
         </t>
@@ -709,11 +776,11 @@
         that does not encompass the IPv4 Service Address(es) could be used to
         provide connectivity between the ER and the IPv4-only node(s) it
         serves. An IPv4-only node must then assign its IPv4 Service Address as
-        secondary local address, while the ER routes each of the IPv4 Service
+        a secondary local address, while the ER routes each of the IPv4 Service
         Addresses to its assigned node using that node's private on-link IPv4
-        address as the next-hop. This approach would ensure there are no
-        overlaps with IPv4 Service addresses elsewhere in the infrastructure,
-        but on the other hand it would preclude the use of <xref
+        address as the next hop. This approach would ensure there are no
+        overlaps with IPv4 Service Addresses elsewhere in the infrastructure,
+        but on the other hand, it would preclude the use of <xref
         target="RFC2131">DHCPv4</xref> for assigning the IPv4 Service
         Addresses.
         </t>
@@ -727,8 +794,21 @@
         </t>
       </section>
     </section>
+ <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">
+      <t>
+      The authors would like to especially thank the authors of <xref
+      target="RFC6877">464XLAT</xref>: Masataka Mawatari, Masanobu Kawashima,
+      and Cameron Byrne. The architecture described by this document is merely
+      an adaptation of their work to a data center environment and could not
+      have happened without them.
+      </t>
+      <t>
+      The authors would like also to thank the following individuals for their
+      contributions, suggestions, corrections, and criticisms: Fred Baker,
+      Tobias Brox, Olafur Gudmundsson, Christer Holmberg, Ray Hunter, Shucheng
+      LIU (Will), and Andrew Yourtchenko.
+      </t>
+    </section>
   </back>
 
 </rfc>
-<!-- vim: syntax=xml tw=78 ai fo=2 et:
--->
