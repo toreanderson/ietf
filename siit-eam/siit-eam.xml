@@ -50,11 +50,16 @@
     <date month="January" year="2016" />
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
-
-<!-- [rfced] Please insert any keywords (beyond those that appear in 
-the title) for use on http://www.rfc-editor.org/search.
--->
-
+    <keyword>Dual stack</keyword>
+    <keyword>Single stack</keyword>
+    <keyword>IPv4</keyword>
+    <keyword>IPv4 conservation</keyword>
+    <keyword>IPv4 exhaustion</keyword>
+    <keyword>IPv6-only</keyword>
+    <keyword>IPv6 only</keyword>
+    <keyword>IPv6 transition</keyword>
+    <keyword>IPv6 transition technology</keyword>
+    <keyword>XLAT</keyword>
     <abstract>
       <t>
       This document extends the Stateless IP/ICMP Translation Algorithm (SIIT)
