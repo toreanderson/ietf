@@ -112,7 +112,7 @@ the title) for use on http://www.rfc-editor.org/search.
          "Outer" qualifier, it should be considered as "Outer".</t>
 
          <t hangText="SIIT:"><vspace/>The Stateless IP/ICMP Translation
-         algorithm, as specified in <xref target="RFC6145"/>.</t>
+         Algorithm, as specified in <xref target="RFC6145"/>.</t>
 
          <t hangText="XLAT:"><vspace/>Short for "translation".</t>
 
@@ -269,15 +269,15 @@ For example, if the IPv6 node is a
       </section>
       <section anchor="eam_spec" title="Explicit Address Mapping Specification">
         <t>
-        An EAM consists of an IPv4 Prefix and an IPv6 Prefix. The prefix
+        An EAM consists of an IPv4 prefix and an IPv6 prefix. The prefix
         length MAY be omitted, in which case the implementation MUST assume it
         to be 32 for IPv4 and 128 for IPv6. <xref target="fig_example_eamt"/>
         illustrates an EAMT containing examples of valid EAMs.
         </t>
         <t>
 
-        <figure anchor="fig_example_eamt" align="center">
-          <preamble>Example EAMT</preamble>
+        <figure anchor="fig_example_eamt" align="center"
+         title="Example EAMT">
           <artwork align="center"><![CDATA[
 +---+----------------+----------------------+
 | # |  IPv4 Prefix   |     IPv6 Prefix      |
@@ -292,8 +292,8 @@ For example, if the IPv6 node is a
         </figure>
         </t>
         <t>
-        An EAM's IPv4 Prefix value MUST have an identical or smaller number of
-        suffix bits than its corresponding IPv6 Prefix value.
+        An EAM's IPv4 prefix value MUST have an identical or smaller number of
+        suffix bits than its corresponding IPv6 prefix value.
         </t>
         <t>
         Unless otherwise specified in <xref target="hairpinning"/>, an SIIT
@@ -318,9 +318,9 @@ For example, if the IPv6 node is a
                  title="Address Translation Steps: IPv4 to IPv6">
           <t>
           <list style="numbers">
-            <t>The IPv4 Prefix column of the EAMT is searched for the EAM
+            <t>The IPv4 prefix column of the EAMT is searched for the EAM
             entry that shares the longest common prefix with the IPv4 address
-            being translated. The IPv4 Prefix and IPv6 Prefix values of the
+            being translated. The IPv4 prefix and IPv6 prefix values of the
             EAM entry found is from now on referred to as EAM4 and EAM6,
             respectively.</t>
 
@@ -349,9 +349,9 @@ For example, if the IPv6 node is a
                  title="Address Translation Steps: IPv6 to IPv4">
           <t>
           <list style="numbers">
-            <t>The IPv6 Prefix column of the EAMT is searched for the EAM
+            <t>The IPv6 prefix column of the EAMT is searched for the EAM
             entry that shares the longest common prefix with the IPv6 address
-            being translated. The IPv4 Prefix and IPv6 Prefix values of the
+            being translated. The IPv4 prefix and IPv6 prefix values of the
             EAM entry found is from now on referred to as EAM4 and EAM6,
             respectively.</t>
 
@@ -504,7 +504,7 @@ For example, if the IPv6 node is a
       lookup in the EAMT in order to find the EAM entry that shares the
       longest common prefix with the address being translated. Operators
       should note that configuring EAMs with overlapping or identical IPv4 or
-      IPv6 Prefixes in the EAMT may create configurations where the
+      IPv6 prefixes in the EAMT may create configurations where the
       IPv4-to-IPv6 and IPv6-to-IPv4 address translations will not be
       symmetric. This may in some cases make bidirectional communication
       impossible.
@@ -531,8 +531,8 @@ Perhaps:
       The example EAMT in <xref target="fig_example_overlap"/> could be
       thought of as implementing <xref target="usecase_ivi">IVI</xref> (EAM
       #1) but additionally with a single exception in the style of <xref
-      target="usecase_siit_dc">SIIT-DC</xref> (EAM #2). The IPv4 Prefixes of
-      the two EAMs overlap, while the IPv6 Prefixes do not. This results in a
+      target="usecase_siit_dc">SIIT-DC</xref> (EAM #2). The IPv4 prefixes of
+      the two EAMs overlap, while the IPv6 prefixes do not. This results in a
       situation where the IPv6 address 2001:db8:ffc6:3364:4000:: will be
       translated (according to EAM #1) to the IPv4 address 198.51.100.64.
       However, when this IPv4 address is translated back to IPv6, it will be
@@ -545,8 +545,8 @@ Perhaps:
       inserted into the EAMT.
       </t>
       <t>
-      <figure anchor="fig_example_overlap" align="center">
-        <preamble>EAMT Containing Overlapping IPv4 Prefixes</preamble>
+      <figure anchor="fig_example_overlap" align="center"
+       title="EAMT Containing Overlapping IPv4 Prefixes">
         <artwork align="center"><![CDATA[
 +---+------------------+--------------------+
 | # |   IPv4 Prefix    |    IPv6 Prefix     |
@@ -558,17 +558,17 @@ Perhaps:
       </figure>
       </t>
       <t>
-      In <xref target="fig_example_identical"/>, the IPv6 Prefixes of the two
+      In <xref target="fig_example_identical"/>, the IPv6 prefixes of the two
       EAMs are identical. The behavior of the stateless translator when
       translating an IPv6 packet that contains the address 2001:db8::1 to IPv4
       is in this case unspecified. In order to prevent this situation from
       occurring, implementations MAY refuse to insert a new EAM, whose IPv4 or
-      IPv6 Prefix value is identical to that of an already existing EAM, into
+      IPv6 prefix value is identical to that of an already existing EAM, into
       the EAMT.
       </t>
       <t>
-      <figure anchor="fig_example_identical" align="center">
-        <preamble>EAMT Containing Identical IPv6 Prefixes</preamble>
+      <figure anchor="fig_example_identical" align="center"
+       title="EAMT Containing Identical IPv6 Prefixes">
         <artwork align="center"><![CDATA[
 +---+-----------------+-----------------+
 | # |   IPv4 Prefix   |   IPv6 Prefix   |
@@ -640,7 +640,7 @@ Perhaps:
       <section anchor="usecase_464xlat" title="464XLAT">
         <t>
         When the customer-side translator (CLAT) component in the <xref target="RFC6877">464XLAT</xref>
-        architecture does not have a dedicated IPv6 Prefix assigned, it may
+        architecture does not have a dedicated IPv6 prefix assigned, it may
         instead use "one interface IPv6 address that is claimed by the CLAT."
         This IPv6 address might not be IPv4-translatable. If this is the case,
         the CLAT essentially implements the EAM algorithm using an EAMT as
@@ -648,8 +648,8 @@ Perhaps:
         target="RFC7335">IPv4 Service Continuity Prefix</xref>):
         </t>
         <t>
-        <figure anchor="fig_eamt_464xlat" align="center">
-          <preamble>Example EAMT for an 464XLAT CLAT</preamble>
+        <figure anchor="fig_eamt_464xlat" align="center"
+         title="Example EAMT for an 464XLAT CLAT">
           <artwork align="center"><![CDATA[
 +---+--------------+-------------------------------+
 | # | IPv4 Prefix  |          IPv6 Prefix          |
@@ -678,8 +678,8 @@ Perhaps:
         the IVI address mapping differ from <xref target="RFC6052"/>.
         </t>
         <t>
-        <figure anchor="fig_eamt_ivi" align="center">
-          <preamble>Example EAMT for IVI</preamble>
+        <figure anchor="fig_eamt_ivi" align="center"
+         title="Example EAMT for IVI">
           <artwork align="center"><![CDATA[
 +---+-------------+--------------------+
 | # | IPv4 Prefix |    IPv6 Prefix     |
@@ -709,8 +709,8 @@ Perhaps:
         question):
         </t>
         <t>
-        <figure anchor="fig_eamt_siit_dc" align="center">
-          <preamble>Example EAMT for SIIT-DC</preamble>
+        <figure anchor="fig_eamt_siit_dc" align="center"
+         title="Example EAMT for SIIT-DC">
           <artwork align="center"><![CDATA[
 +---+----------------+----------------------+
 | # |  IPv4 Prefix   |     IPv6 Prefix      |
@@ -743,8 +743,8 @@ Perhaps:
       is configured to be 64:ff9b::/96 (per <xref target="RFC6052"/>).
       </t>
       <t>
-      <figure anchor="fig_example_eam_xlat" align="center">
-        <preamble>Example IP Address Translations</preamble>
+      <figure anchor="fig_example_eam_xlat" align="center"
+       title="Example IP Address Translations">
         <artwork align="center"><![CDATA[
 +--------------+------------------------+-----------------------+
 | IPv4 Address |      IPv6 Address      |        Comment        |
@@ -775,8 +775,8 @@ Perhaps:
         assumed to contain only the single address 198.51.100.1.
         </t>
         <t>
-        <figure anchor="fig_example_hp" align="center">
-          <preamble>Hairpinning of a Normal IPv6 Packet</preamble>
+        <figure anchor="fig_example_hp" align="center"
+         title="Hairpinning of a Normal IPv6 Packet">
           <artwork align="center"><![CDATA[
 +--------------+--------------------+---------------------+
 |  XLAT Stage  |   Source Address   | Destination Address |
@@ -798,8 +798,8 @@ Perhaps:
         when translating the intermediate IPv4 source address to IPv6.
         </t>
         <t>
-        <figure anchor="fig_example_hp_icmp" align="center">
-          <preamble>Hairpinning of a Router-Originated ICMPv6 Error</preamble>
+        <figure anchor="fig_example_hp_icmp" align="center"
+         title="Hairpinning of a Router-Originated ICMPv6 Error">
           <artwork align="center"><![CDATA[
 +--------------+-------+-----------------------+--------------------+
 |  XLAT Stage  | Loc.  |    Source Address     | Destination Addr.  |
@@ -825,8 +825,8 @@ Perhaps:
         IPv4 destination address to IPv6.
         </t>
         <t>
-        <figure anchor="fig_example_hp_icmp2" align="center">
-          <preamble>Hairpinning of a Host-Originated ICMPv6 Error</preamble>
+        <figure anchor="fig_example_hp_icmp2" align="center"
+         title="Hairpinning of a Host-Originated ICMPv6 Error">
           <artwork align="center"><![CDATA[
 +--------------+-------+--------------------+--------------------+
 |  XLAT Stage  | Loc.  |   Source Address   | Destination Addr.  |
@@ -853,8 +853,8 @@ Perhaps:
         IPv4 destination address to IPv6.
         </t>
         <t>
-        <figure anchor="fig_example_hp_2" align="center">
-          <preamble>Hairpinning of Normal Response Packet</preamble>
+        <figure anchor="fig_example_hp_2" align="center"
+         title="Hairpinning of Normal Response Packet">
           <artwork align="center"><![CDATA[
 +--------------+--------------------+---------------------+
 |  XLAT Stage  |   Source Address   | Destination Address |
