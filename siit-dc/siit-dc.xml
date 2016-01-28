@@ -18,10 +18,6 @@
       <address>
         <postal>
           <street>Vitaminveien 1A</street>
-          <!-- Embedding the postal code directly in the <city> element
-               instead of using <code> in necessary to get correct Norwegian
-               syntax. For more information, see:
-               http://trac.tools.ietf.org/tools/xml2rfc/trac/ticket/280 -->
           <city>0485 Oslo</city>
           <country>Norway</country>
         </postal>
@@ -41,7 +37,7 @@ the title) for use on http://www.rfc-editor.org/search.
     <abstract>
       <t>
       This document describes the use of the Stateless IP/ICMP Translation
-      (SIIT) algorithm in an IPv6 Internet Data Center (IDC). In this
+      Algorithm (SIIT) in an IPv6 Internet Data Center (IDC). In this
       deployment model, traffic from legacy IPv4-only clients on the Internet
       is translated to IPv6 upon reaching the IDC operator's network
       infrastructure. From that point on, it may be treated the same as
@@ -198,8 +194,8 @@ the title) for use on http://www.rfc-editor.org/search.
       <section title="Clients' IPv4 Source Addresses Visible to Applications">
         <t>
         SIIT-DC uses the <xref target="RFC6052"/> algorithm to map the entire
-        end-user's IPv4 source address into a predefined IPv6 Translation
-        Prefix. This ensures that there is no loss of information; the
+        end-user's IPv4 source address into a predefined IPv6 translation
+        prefix. This ensures that there is no loss of information; the
         end-user's IPv4 source address remains available to the application
         located in the IPv6 network, allowing it to perform tasks like
         geolocation, logging, abuse handling, and so forth.
@@ -266,9 +262,9 @@ the title) for use on http://www.rfc-editor.org/search.
 
        <t hangText="Translation Prefix:"><vspace/>An IPv6 prefix into which the
        entire IPv4 address space is mapped, according to the algorithm in
-       <xref target="RFC6052"/>. The Translation Prefix is routed to the BR's
+       <xref target="RFC6052"/>. The translation prefix is routed to the BR's
        IPv6 interface. When translating between IPv4 and IPv6, a BR/ER will
-       insert/remove the Translation Prefix into/from the address fields in
+       insert/remove the translation prefix into/from the address fields in
        the translated packet's IP header, unless an EAM exists for the IP
        address that is being translated.</t>
 
@@ -281,7 +277,7 @@ the title) for use on http://www.rfc-editor.org/search.
        typically operated by Internet Content Providers or Managed Services
        Providers.</t>
        <t hangText="SIIT:"><vspace/>The Stateless IP/ICMP Translation
-       algorithm, as specified in <xref target="RFC6145"/>.</t>
+       Algorithm, as specified in <xref target="RFC6145"/>.</t>
 
        <t hangText="XLAT:"><vspace/>Short for "Translation". Used in figures to
        indicate where a BR/ER uses <xref target="RFC6145">SIIT</xref> to
@@ -297,10 +293,9 @@ the title) for use on http://www.rfc-editor.org/search.
     <section anchor="overview" title="Architectural Overview">
       <t>
       This section describes the basic SIIT-DC architecture.
-      <figure anchor="fig_architecture" align="center">
+      <figure anchor="fig_architecture" align="center" 
+      title="SIIT-DC Architecture">
 
-
-        <preamble>SIIT-DC Architecture</preamble>
         <artwork align="center"><![CDATA[
   IPv6-capable user      IPv4-only user
   <2001:db8::ab:cd>      <203.0.113.50>
@@ -339,14 +334,14 @@ the title) for use on http://www.rfc-editor.org/search.
       replace any occurrence of the IPv4 Service Address (192.0.2.1) with its
       corresponding IPv6 Service Address (2001:db8:12:34::1). Addresses that
       do not match any EAM configured in the BR are translated by inserting or
-      removing the Translation Prefix (2001:db8:46::/96); cf. Section 2.2 of
+      removing the translation prefix (2001:db8:46::/96); cf. Section 2.2 of
       <xref target="RFC6052"/>.
       </t>
       <t>
       The BR can be deployed as a separate device or as a logical function in
       another multipurpose device, such as an IP router.  Any number of BRs
       may exist simultaneously in the IDC's network infrastructure, as long as
-      they are all configured with the same Translation Prefix and an identical
+      they are all configured with the same translation prefix and an identical
       EAM Table.
       </t>
       <t>
@@ -367,8 +362,8 @@ the title) for use on http://www.rfc-editor.org/search.
         there translated to IPv6 as follows:
         </t>
         <t>
-        <figure anchor="fig_xlat_v4v6" align="center">
-          <preamble>IPv4-to-IPv6 Translation</preamble>
+        <figure anchor="fig_xlat_v4v6" align="center"
+         title="IPv4-to-IPv6 Translation">
           <artwork align="center"><![CDATA[
 +--[IPv4]----------+     +--[IPv6]-----------------------+
 | SRC 203.0.113.50 |     | SRC 2001:db8:46::203.0.113.50 |
@@ -385,8 +380,8 @@ the title) for use on http://www.rfc-editor.org/search.
         the BR, where it is translated back to IPv4 as follows:
         </t>
         <t>
-        <figure anchor="fig_xlat_v6v4" align="center">
-          <preamble>IPv6-to-IPv4 Translation</preamble>
+        <figure anchor="fig_xlat_v6v4" align="center"
+          title="IPv6-to-IPv4 Translation">
           <artwork align="center"><![CDATA[
 +--[IPv6]-----------------------+      +--[IPv4]----------+
 | SRC 2001:db8:12:34::1         |      | SRC 192.0.2.1    |
@@ -401,7 +396,7 @@ the title) for use on http://www.rfc-editor.org/search.
         server/application need any special support to participate in SIIT&nbhy;DC.
         However, the application may optionally be taught to extract the
         embedded IPv4 source address from incoming IPv6 packets with source
-        addresses within the Translation Prefix. This will allow it to perform
+        addresses within the translation prefix. This will allow it to perform
         IPv4-specific tasks such as geolocation, logging, abuse handling, and
         so on.
         </t>
@@ -497,7 +492,7 @@ the title) for use on http://www.rfc-editor.org/search.
         Autonomous Systems.
         </t>
         <t>
-        The Translation Prefix may use any of the lengths described in Section
+        The translation prefix may use any of the lengths described in Section
         2.2 of <xref target="RFC6052"/>, but /96 has two distinct advantages
         over the others. First, converting it to IPv4 can be done in a single
         operation by simply stripping off the first 96 bits; second, it allows
@@ -527,7 +522,7 @@ translated endpoints in the IPv4 Internet.
       <section title="Routing Considerations">
         <t>
         The prefixes that constitute the IPv4 Service Address Pool and the
-        IPv6 Translation Prefix may be routed to the BRs as any other IPv4 or
+        IPv6 translation prefix may be routed to the BRs as any other IPv4 or
         IPv6 route in the provider's network. If more than one BR is being
         deployed, it is recommended that a routing protocol (IGP) be used to
         advertise the routes within the provider's network. This will ensure
@@ -568,7 +563,7 @@ had the topology been dual stacked.
 -->
         Where possible, it is beneficial to implement the BRs as a logical
         function within the routers would have handled the traffic anyway, had
-        the topology been dual stacked. This way, a SIIT-DC deployment does
+        the topology been dual stacked. This way, an SIIT-DC deployment does
         not require separate networks ports (which might become saturated and
         impact the service quality) nor will it require extra rack space and
         energy. Some particularly good choices of the location could be within
@@ -662,7 +657,7 @@ had the topology been dual stacked.
           incoming packets larger than their own MTU. If the nodes' IPv6
           implementation allows the initial Path MTU to be set differently for
           specific destinations, it MAY be increased to 1520 for destinations
-          within the Translation Prefix specifically.
+          within the translation prefix specifically.
           </t>
         </section>
         <section title="IPv6 Atomic Fragments">
@@ -836,7 +831,7 @@ had the topology been dual stacked.
         </t>
         <t>
         In order to alleviate this problem, the operator may opt to use a
-        Translation Prefix that is distinct from and not a subset of the IPv6
+        translation prefix that is distinct from and not a subset of the IPv6
         prefixes used elsewhere in the network infrastructure.
         </t>
       </section>
@@ -914,7 +909,8 @@ had the topology been dual stacked.
 <!--draft-ietf-v6ops-siit-dc-2xlat; Active - in EDIT and will move with C270-->
 <reference anchor='RFC7756' target='http://www.rfc-editor.org/info/rfc7756'>
 <front>
-<title>SIIT-DC: Dual Translation Mode</title>
+<title>Stateless IP/ICMP Translation for IPv6 Internet Data Center 
+Environments (SIIT-DC): Dual Translation Mode</title>
 <author initials='T' surname='Anderson' fullname='Tore Anderson'>
     <organization />
 </author>
@@ -963,8 +959,8 @@ had the topology been dual stacked.
       discussed in more detail below.
       </t>
       <t>
-      <figure anchor="fig_topology" align="center">
-        <preamble>Example SIIT-DC IDC Topology </preamble>
+      <figure anchor="fig_topology" align="center"
+       title="Example SIIT-DC IDC Topology">
         <artwork align="center"><![CDATA[
              /--------------------------------\ /---------------\
              |          IPv4 Internet         | | IPv6 Internet |
@@ -1027,8 +1023,8 @@ had the topology been dual stacked.
         <t hangText="Stateless Operation:"><vspace/>As discussed in <xref
         target="intro_stateless"/>, SIIT-DC operates in a stateless fashion.
         In the illustration, both BRs are simultaneously advertising (i.e.,
-        anycasting) the IPv4 Service Address Pool and the IPv6 Translation
-        Prefix, so incoming traffic from the IPv4 Internet may arrive at
+        anycasting) the IPv4 Service Address Pool and the IPv6 translation
+        prefix, so incoming traffic from the IPv4 Internet may arrive at
         either of the BRs, while outgoing IPv6 traffic destined for IPv4
         endpoints are load balanced between them using Equal-Cost Multipath
         Routing. No continuous state synchronization between the two BRs
