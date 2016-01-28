@@ -188,29 +188,12 @@
        <t hangText="Operational complexity:"><vspace/>The IPv4-translatable
        IPv6 addresses not only have to be assigned to the IPv6 nodes
        participating in SIIT, but also all applications and services on those nodes
-       must be configured to use them. 
-
-<!--[rfced] The terms 'Virtual Server' and 'High-Availability' typically
-appear lowercased in RFCs; may they be lowercased in the following
-paragraph, or is a specific meaning being used?
-
-Original:
-      For example, if the IPv6 node is a load balancer, it might require a
-      separate Virtual Server definition using the IPv4-translatable
-      IPv6 address in addition to one using the service's primary IPv6
-      address....  A High-Availability cluster service must be
-      set up to fail over both addresses between cluster nodes, and
-      depending on how the IPv6 network learns the location of the
-      IPv4-translatable IPv6 address, the fail-over mechanism used for
-      the two addresses might be completely different.
--->
-
-For example, if the IPv6 node is a
-       load balancer, it might require a separate Virtual Server definition
+       must be configured to use them. For example, if the IPv6 node is a
+       load balancer, it might require a separate virtual server definition
        using the IPv4-translatable IPv6 address in addition to one using the
        service's primary IPv6 address. A web server might require specific
        configuration to listen for connections on both the IPv4-translatable
-       and the primary IPv6 address. A High-Availability cluster service must
+       and the primary IPv6 address. A high-availability cluster service must
        be set up to fail over both addresses between cluster nodes, and
        depending on how the IPv6 network learns the location of the
        IPv4-translatable IPv6 address, the fail-over mechanism used for the
