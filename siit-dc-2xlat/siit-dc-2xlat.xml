@@ -13,16 +13,7 @@
      ipr="trust200902">
 
   <front>
-<!--[rfced] May we update the short title in the header as suggested below?
-
-Original:
-SIIT-DC-2XLAT
-
-Perhaps:
-SIIT-DC: Dual Translation Mode
--->
-
-    <title abbrev="SIIT-DC-2XLAT"> Stateless IP/ICMP
+    <title abbrev="SIIT-DC: Dual Translation Mode"> Stateless IP/ICMP
       Translation for IPv6 Internet Data Center Environments&nbsp;(SIIT&nbhy;DC):&nbsp;Dual&nbsp;Translation&nbsp;Mode</title>
     <author fullname="Tore Anderson" initials="T." surname="Anderson">
       <organization>Redpill Linpro</organization>
