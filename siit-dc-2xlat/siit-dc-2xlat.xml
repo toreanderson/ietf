@@ -550,46 +550,16 @@
         Service Address and an IPv4 Service Address. The IPv4-only node or
         application will contact the target's assigned IPv4 Service Address
         using its own IPv4 Service Address as the source. The ER will then
-        proceed to translate this to an IPv6 packet with the local
-        application/node's own IPv6 Service Address as the source and the target
-        service's IPv6 Service Address as the destination and forward this to
-        the IPv6 network. Replies from the target service will undergo these
-        translations in reverse.
+        proceed to translate the original IPv4 packet to an IPv6 packet. The
+        source address of the resulting IPv6 packet will be the IPv6 Service
+        Address of the local node or application, while the destination
+        address will be the IPv6 Service Address of the target. Any replies
+        from the target will undergo identical translation, only in reverse.
         </t>
-
-<!-- [rfced] How may this be rephrased for clarity and to avoid
-"appication/node's"?
-
-Original:
-   The ER will then
-   proceed to translate this to an IPv6 packet with the local
-   application/node's own IPv6 Service Address as source and the target
-   service's IPv6 Service Address as the destination, and forward this
-   to the IPv6 network. 
-
-Perhaps:
-   The ER will then proceed to translate this to an IPv6 packet with the
-   source as the IPv6 Service Address of the local application (or node)
-   and the destination as the IPv6 Service Address of the target service,
-   and then forward the packet to the IPv6 network.
-
-And, similarly:
-
-Original:
-   If the target service is also located behind another ER, that other
-   ER MUST also be provisioned with an additional EAM that contains the
-   origin IPv4-only application/node's IPv4 and IPv6 Service Addresses.
-
-Perhaps:
-   If the target service is also located behind another ER, that other
-   ER MUST also be provisioned with an additional EAM that contains the
-   IPv4 and IPv6 Service Addresses of the origin IPv4-only application
-   (or node).
--->
         <t>
-        If the target service is also located behind another ER, that other ER
-        MUST also be provisioned with an additional EAM that contains the
-        origin IPv4-only application/node's IPv4 and IPv6 Service Addresses.
+        If the target service is located behind another ER, that other ER MUST
+        also be provisioned with an additional EAM that contains the IPv4 and
+        IPv6 Service Addresses of the origin IPv4-only node or application.
         Otherwise, the target service's ER will be unable to translate the
         source address of the incoming packets.
         </t>
