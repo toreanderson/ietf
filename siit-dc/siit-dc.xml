@@ -544,22 +544,14 @@ the title) for use on http://www.rfc-editor.org/search.
         cause unnecessary load on the network links on the detour path.
         </t>
         <t>
-<!--[rfced] The following sentence does not parse. Please advise how
-it may be updated for clarity.
-
-Original:
-Where possible, it is beneficial to implement the BRs as a logical
-function within the routers would have handled the traffic anyway,
-had the topology been dual stacked. 
--->
         Where possible, it is beneficial to implement the BRs as a logical
-        function within the routers would have handled the traffic anyway, had
-        the topology been dual stacked. This way, an SIIT-DC deployment does
-        not require separate networks ports (which might become saturated and
-        impact the service quality) nor will it require extra rack space and
-        energy. Some particularly good choices of the location could be within
-        an IDC's access routers or within the Autonomous System's border
-        routers.
+        function within the routers that also handle the native IPv6 traffic
+        between the IPv6 Service Address and the IPv6 Internet. This way, an
+        SIIT-DC deployment does not require separate networks ports (which
+        might become saturated and impact the service quality) nor will it
+        require extra rack space and energy. Some particularly good choices of
+        the location could be within an IDC's access routers or within the
+        Autonomous System's border routers.
         </t>
         <t>
         Finally, another possibility is that the IDC operator outsources the
