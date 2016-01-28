@@ -516,21 +516,21 @@ Perhaps:
 -->
 
       <t>
-      The example EAMT in <xref target="fig_example_overlap"/> could be
-      thought of as implementing <xref target="usecase_ivi">IVI</xref> (EAM
-      #1) but additionally with a single exception in the style of <xref
-      target="usecase_siit_dc">SIIT-DC</xref> (EAM #2). The IPv4 prefixes of
-      the two EAMs overlap, while the IPv6 prefixes do not. This results in a
-      situation where the IPv6 address 2001:db8:ffc6:3364:4000:: will be
-      translated (according to EAM #1) to the IPv4 address 198.51.100.64.
-      However, when this IPv4 address is translated back to IPv6, it will be
-      translated (according to EAM #2) to the IPv6 address 2001:db8::abcd.
-      Because the IPv4-to-IPv6 translation in this example does not mirror the
-      corresponding IPv6-to-IPv4 translation, bidirectional communication
-      involving the IPv6 address 2001:db8:ffc6:3364:4000:: might fail. In
-      order to help avoid such situations, implementations MAY warn the
-      operator when a new EAM that overlaps with a previously existing one is
-      inserted into the EAMT.
+      EAM #1 in <xref target="fig_example_overlap">the example EAMT</xref>
+      could be thought of as implementing <xref
+      target="usecase_ivi">IVI</xref>, while EAM #2 introduces a single
+      exception in the style of <xref target="usecase_siit_dc">SIIT-DC</xref>.
+      The IPv4 prefixes of the two EAMs overlap, while the IPv6 prefixes do
+      not. This results in a situation where the IPv6 address
+      2001:db8:ffc6:3364:4000:: will be translated (according to EAM #1) to
+      the IPv4 address 198.51.100.64. However, when this IPv4 address is
+      translated back to IPv6, it will be translated (according to EAM #2) to
+      the IPv6 address 2001:db8::abcd. Because the IPv4-to-IPv6 translation in
+      this example does not mirror the corresponding IPv6-to-IPv4 translation,
+      bidirectional communication involving the IPv6 address
+      2001:db8:ffc6:3364:4000:: might fail. In order to help avoid such
+      situations, implementations MAY warn the operator when a new EAM that
+      overlaps with a previously existing one is inserted into the EAMT.
       </t>
       <t>
       <figure anchor="fig_example_overlap" align="center"
