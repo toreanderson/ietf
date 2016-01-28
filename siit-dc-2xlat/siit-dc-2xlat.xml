@@ -43,11 +43,18 @@
     <date month="January" year="2016"></date>
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
-
-<!-- [rfced] Please insert any keywords (beyond those that appear in 
-the title) for use on http://www.rfc-editor.org/search.
--->
-
+    <keyword>Data centre</keyword> <!-- for en_GB spellers -->
+    <keyword>Dual stack</keyword>
+    <keyword>Single stack</keyword>
+    <keyword>IDC</keyword>
+    <keyword>IPv4</keyword>
+    <keyword>IPv4 conservation</keyword>
+    <keyword>IPv4 exhaustion</keyword>
+    <keyword>IPv6-only</keyword>
+    <keyword>IPv6 only</keyword>
+    <keyword>IPv6 transition</keyword>
+    <keyword>IPv6 transition technology</keyword>
+    <keyword>XLAT</keyword>
     <abstract>
       <t>
       This document describes an extension of the Stateless IP/ICMP
