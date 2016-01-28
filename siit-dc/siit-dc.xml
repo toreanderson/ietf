@@ -500,17 +500,8 @@ the title) for use on http://www.rfc-editor.org/search.
         representation of an IPv6 address using the familiar dotted quad
         notation, e.g., "2001:db8::198.51.100.10" (cf. Section 2.4 of <xref
         target="RFC6052"/>), instead of being converted to hexadecimal
-        notation.
-<!--[rfced] Please clarify what 'similar' refers to in the
-following sentence (does it mean similar ACLs?).
-
-Original:
-This makes it easier to write IPv6 ACLs and similar that match
-translated endpoints in the IPv4 Internet.
--->
-        This makes it easier to write IPv6 Access Control Lists (ACLs) 
-        and similar that
-        match translated endpoints in the IPv4 Internet.
+        notation. This makes it easier to write literal IPv6 addresses (e.g.,
+        in ACLs) that correspond to translated endpoints in the IPv4 Internet.
         </t>
         <t>
         For the reasons discussed above, this document recommends that an NSP
