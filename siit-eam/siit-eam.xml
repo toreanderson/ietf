@@ -497,24 +497,6 @@
       symmetric. This may in some cases make bidirectional communication
       impossible.
       </t>
-<!-- [rfced] To clarify this sentence, may text such as
-'which is referred to as "EAM #1" in this document' or otherwise 
-be added?  The use of the two sets of two parentheticals is not clear.
-Also, please clarify the meaning of the "but additionally" phrase.
-
-Original:
-   The example EAMT in Figure 2 could be thought of as implementing IVI
-   (Appendix A.2) (EAM #1), but additionally with a single exception in
-   the style of SIIT-DC (Appendix A.3) (EAM #2).
-
-Perhaps:
-   The example EAMT in Figure 2 could be thought of as implementing IVI
-   (Appendix A.2), which is referred to as "EAM #1" in this document;
-   additionally, EAM can be implemented with a single exception in the
-   style of SIIT-DC (Appendix A.3), which is reffered to as "EAM #2" in this
-   document.
--->
-
       <t>
       EAM #1 in <xref target="fig_example_overlap">the example EAMT</xref>
       could be thought of as implementing <xref
