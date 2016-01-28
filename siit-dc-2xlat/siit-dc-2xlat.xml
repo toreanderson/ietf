@@ -23,16 +23,12 @@ SIIT-DC: Dual Translation Mode
 -->
 
     <title abbrev="SIIT-DC-2XLAT"> Stateless IP/ICMP
-      Translation for IPv6 Internet Data&nbsp;Center&nbsp;(SIIT&nbhy;DC):&nbsp;Dual&nbsp;Translation&nbsp;Mode</title>
+      Translation for IPv6 Internet Data Center Environments&nbsp;(SIIT&nbhy;DC):&nbsp;Dual&nbsp;Translation&nbsp;Mode</title>
     <author fullname="Tore Anderson" initials="T." surname="Anderson">
       <organization>Redpill Linpro</organization>
       <address>
         <postal>
           <street>Vitaminveien 1A</street>
-          <!-- Embedding the postal code directly in the <city> element
-               instead of using <code> in necessary to get correct Norwegian
-               syntax. For more information, see:
-               http://trac.tools.ietf.org/tools/xml2rfc/trac/ticket/280 -->
           <city>0485 Oslo</city>
           <country>Norway</country>
         </postal>
@@ -64,10 +60,10 @@ the title) for use on http://www.rfc-editor.org/search.
     <abstract>
       <t>
       This document describes an extension of the Stateless IP/ICMP
-      Translation for IPv6 Internet Data Center Environments architecture (SIIT-DC), 
+      Translation for IPv6 Internet Data Center Environments (SIIT-DC) architecture, 
       which allows applications, protocols, or nodes that are
       incompatible with IPv6 and/or Network Address Translation to operate
-      correctly in an SIIT-DC environment. This is accomplished by introducing
+      correctly in an SIIT-DC. This is accomplished by introducing
       a new component called an SIIT-DC Edge Relay, which reverses the
       translations made by an SIIT-DC Border Relay. The application and/or
       node is thus provided with seemingly native IPv4 connectivity that
@@ -159,9 +155,9 @@ the title) for use on http://www.rfc-editor.org/search.
 
        <t hangText="Translation Prefix:"><vspace/>An IPv6 prefix into which the
        entire IPv4 address space is mapped, according to the algorithm in
-       <xref target="RFC6052"/>. The Translation Prefix is routed to the BR's
+       <xref target="RFC6052"/>. The translation prefix is routed to the BR's
        IPv6 interface. When translating between IPv4 and IPv6, a BR/ER will
-       insert/remove the Translation Prefix into/from the address fields in
+       insert/remove the translation prefix into/from the address fields in
        the translated packet's IP header, unless an EAM exists for the IP
        address that is being translated.</t>
 
@@ -174,7 +170,7 @@ the title) for use on http://www.rfc-editor.org/search.
        Providers.</t>
 
        <t hangText="SIIT:"><vspace/>The Stateless IP/ICMP Translation
-       algorithm, as specified in <xref target="RFC6145"/>.</t>
+       Algorithm, as specified in <xref target="RFC6145"/>.</t>
 
        <t hangText="XLAT:"><vspace/>Short for "Translation". Used in figures to
        indicate where a BR/ER uses <xref target="RFC6145">SIIT</xref> to
@@ -191,11 +187,10 @@ the title) for use on http://www.rfc-editor.org/search.
              title="Edge Relay Description">
       <t>
       An ER is at its core an implementation of the <xref
-      target="RFC6145">Stateless IP/ICMP Translation algorithm</xref> that
+      target="RFC6145">Stateless IP/ICMP Translation Algorithm</xref> that
       supports <xref target="RFC7757">Explicit Address
       Mappings</xref>. It provides virtual IPv4 connectivity for nodes or
-      applications that require this to operate correctly in an SIIT-DC
-      environment.
+      applications that require this to operate correctly in an SIIT-DC.
       </t>
       <t>
       Packets from the IPv4 Internet destined for an IPv4 Service Address are
@@ -232,8 +227,8 @@ the title) for use on http://www.rfc-editor.org/search.
       </t>
       <section anchor="er_nodebased" title="Node-Based Edge Relay">
         <t>
-        <figure anchor="fig_nodebased_er_brief" align="center">
-          <preamble>A Node-Based Edge Relay</preamble>
+        <figure anchor="fig_nodebased_er_brief" align="center"
+         title="A Node-Based Edge Relay">
           <artwork align="center"><![CDATA[
 [IPv4 Internet]  [IPv6 Internet]
       |            |
@@ -291,8 +286,8 @@ the title) for use on http://www.rfc-editor.org/search.
       </section>
       <section anchor="et_netbased" title="Network-Based Edge Relay">
         <t>
-        <figure anchor="fig_netbased_er_basic" align="center">
-          <preamble>A Basic Network-Based Edge Relay</preamble>
+        <figure anchor="fig_netbased_er_basic" align="center"
+         title="A Basic Network-Based Edge Relay">
           <artwork align="center"><![CDATA[
 [IPv4 Internet]  [IPv6 Internet]
       |             |
@@ -343,8 +338,8 @@ the title) for use on http://www.rfc-editor.org/search.
         <section anchor="er_netbased_onastick"
                  title='Edge Router "on a Stick"'>
           <t>
-          <figure anchor="fig_netbased_er_onastick" align="center">
-            <preamble>A Network-Based Edge Relay "on a Stick"</preamble>
+          <figure anchor="fig_netbased_er_onastick" align="center"
+           title="A Network-Based Edge Relay &quot;on a Stick&quot;">
             <artwork align="center"><![CDATA[
 [IPv4 Internet]  [IPv6 Internet]
       |             |
@@ -387,9 +382,9 @@ the title) for use on http://www.rfc-editor.org/search.
         <section anchor="et_netbased_v6bridge"
                  title="Edge Router That Bridges IPv6 Packets">
           <t>
-          <figure anchor="fig_transparent_er" align="center">
-            <preamble>A Network-Based Edge Relay Containing an IPv6
-            Bridge</preamble>
+          <figure anchor="fig_transparent_er" align="center"
+            title="A Network-Based Edge Relay Containing an IPv6
+            Bridge">
             <artwork align="center"><![CDATA[
 [IPv4 Internet]  [IPv6 Internet]
       |             |
@@ -503,15 +498,15 @@ the title) for use on http://www.rfc-editor.org/search.
         This allows the IPv4-only node or application to transmit packets
         destined for the target service's IPv4 Service Address, which the ER
         will then translate to a corresponding IPv4-converted IPv6 address by
-        inserting the Translation Prefix <xref target="RFC6052"/>. When this
+        inserting the translation prefix <xref target="RFC6052"/>. When this
         IPv6 packet reaches the BR, it will be hairpinned and transmitted back
         to the target service's IPv6 Service Address (where it could possibly
         pass through another ER before reaching the target service). Return
         traffic from the target service will be hairpinned in the same
         fashion.
         </t>
-        <figure anchor="fig_hp" align="center">
-          <preamble>Hairpinned IPv4-IPv4 Packet Flow</preamble>
+        <figure anchor="fig_hp" align="center"
+         title="Hairpinned IPv4-IPv4 Packet Flow">
           <artwork align="center"><![CDATA[
 +-[Pkt#1: IPv4]-+             +--[Pkt#2: IPv6]-------------+
 | SRC 192.0.2.1 |  (XLAT#1)   | SRC 2001:db8:a::           |
@@ -601,8 +596,8 @@ Perhaps:
         source address of the incoming packets.
         </t>
         <t>
-        <figure anchor="fig_v4v6v4" align="center">
-          <preamble>Non-hairpinned IPv4-IPv4 Packet Flow</preamble>
+        <figure anchor="fig_v4v6v4" align="center"
+         title="Non-hairpinned IPv4-IPv4 Packet Flow">
           <artwork align="center"><![CDATA[
 +-[Pkt#1: IPv4]-+             +--[Pkt#2: IPv6]---+
 | SRC 192.0.2.1 |  (XLAT#1)   | SRC 2001:db8:a:: |
