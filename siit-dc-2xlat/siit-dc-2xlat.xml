@@ -188,7 +188,7 @@
       target="RFC6145">Stateless IP/ICMP Translation Algorithm</xref> that
       supports <xref target="RFC7757">Explicit Address
       Mappings</xref>. It provides virtual IPv4 connectivity for nodes or
-      applications that require this to operate correctly in an SIIT-DC.
+      applications that require this to operate correctly with SIIT-DC.
       </t>
       <t>
       Packets from the IPv4 Internet destined for an IPv4 Service Address are
