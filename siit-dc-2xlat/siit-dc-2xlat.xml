@@ -436,7 +436,7 @@
         <t>
         In order to avoid IPv6 fragmentation, an ER SHOULD ensure that the
         IPv4 MTU used by applications or nodes is equal to the configured IPv6
-        Path MTU -- 20 so that a maximum-sized IPv4 packet can fit in an
+        Path MTU - 20 so that a maximum-sized IPv4 packet can fit in an
         unfragmented IPv6 packet. This ensures that the application may do its
         part in avoiding IP-level fragmentation from occurring, e.g., by
         segmenting/fragmenting outbound packets at the application layer, and
