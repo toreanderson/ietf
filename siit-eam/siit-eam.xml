@@ -224,7 +224,7 @@
       This normative section defines the EAM algorithm and formally updates
       Sections 4.1 and 5.1 of <xref target="RFC6145"/>. Specifically,
       when the EAM algorithm is applied, it supplants the requirement in <xref
-      target="RFC6145"/>, which states that a translator operating in the
+      target="RFC6145"/> that states that a translator operating in the
       stateless mode must translate the Source Address and Destination Address
       IP header fields according to Section 2.3 of <xref target="RFC6052"/>.
       </t>
@@ -438,7 +438,7 @@
           </list>
           </t>
           <t>
-          Rule #2 and #3 are cumulative.
+          Rules #2 and #3 are cumulative.
           </t>
           <t>
           The addresses in question MUST instead be translated according to
@@ -448,7 +448,7 @@
         <section anchor="hp_intrinsic" title="Intrinsic Hairpinning Support">
           <t>
           When the intrinsic hairpinning feature is enabled, the translator
-          employs the following rules when receiving an IPv6 packet:
+          employs the following rules after having translated an IPv6 packet to IPv4:
           </t>
           <t>
           If all the conditions in either of the two sets below are true, the
@@ -463,21 +463,23 @@
             <t hangText="Condition set A:">
               <vspace/>
               <list style="format A%d.">
-                <t>The packet is not an ICMPv4 error</t>
+                <t>The packet is not an ICMPv4 error.</t>
 
                 <t>The destination address was translated using the 
-                 algorithm in <xref target="RFC6052"/></t>
+                 algorithm in <xref target="RFC6052"/>.</t>
 
-                <t>The destination address is found in the EAMT</t>
+                <t>The destination address is found in the EAMT.</t>
               </list>
             </t>
             <t hangText="Condition set B:">
               <vspace/>
               <list style="format B%d.">
-                <t>The packet is an ICMPv4 error</t>
+                <t>The packet is an ICMPv4 error.</t>
+
                 <t>The inner source address was translated using the
-                algorithm in <xref target="RFC6052"/></t>
-                <t>The inner source address is found in the EAMT</t>
+                algorithm in <xref target="RFC6052"/>.</t>
+
+                <t>The inner source address is found in the EAMT.</t>
               </list>
             </t>
           </list>
