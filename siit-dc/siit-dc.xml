@@ -84,7 +84,7 @@
       </t>
       <t>
       <list style="symbols">
-        <t>Promote the deployment of native IPv6 services (cf. <xref
+        <t>Promote the deployment of native IPv6 services (cf.&nbsp;<xref
         target="RFC6540"/>).</t>
 
         <t>Provide IPv4 service availability for legacy users with no loss of
@@ -164,10 +164,10 @@
       <section anchor="intro_v4conserv" title="IPv4 Address Conservation">
         <t>
         In most parts of the world, it is difficult or even impossible to
-        obtain generously sized IPv4 delegation from the <xref
+        obtain generously sized IPv4 delegations from the <xref
         target="RFC7020">Internet Numbers Registry System</xref>. The
         resulting scarcity in turn impacts individual end users and operators,
-        which might be forced to purchase IPv4 addresses from other operators
+        whom might be forced to purchase IPv4 addresses from other operators
         in order to cover their needs. This process can be risky to business
         continuity, in the case where no suitable block for sale can be located,
         and/or turn out to be prohibitively expensive. In spite of this, an
@@ -698,7 +698,7 @@
           translates a non&nbhy;fragmented IPv6 packet to IPv4. This means that
           when the path to the destination IPv4 node contains an IPv4 link
           with an MTU smaller than 1260 bytes (which corresponds to an IPv6
-          MTU smaller than 1280 bytes; cf. <xref target="ip_hdr_size_diff"/>),
+          MTU smaller than 1280 bytes; cf.&nbsp;<xref target="ip_hdr_size_diff"/>),
           the Path MTU Discovery algorithm will be invoked, even if the
           original IPv6 packet was only 1280 bytes large. This happens as a
           result of the IPv4 router connecting to the IPv4 link with the small
