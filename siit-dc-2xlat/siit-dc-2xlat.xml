@@ -161,7 +161,8 @@
 
        <t hangText="IPv4-Converted IPv6 Addresses:"><vspace/>As defined in
        Section 1.3 of <xref target="RFC6052"/>.</t>
-       <t hangText="IDC"><vspace/>Short for "Internet Data Center"; a data
+
+       <t hangText="IDC:"><vspace/>Short for "Internet Data Center"; a data
        center whose main purpose is to deliver services to the public
        Internet the use case SIIT-DC is primarily targeted at. IDCs are
        typically operated by Internet Content Providers or Managed Services
@@ -334,7 +335,7 @@
         way that provides IPv6 connectivity for dual-stack capable nodes.
         </t>
         <section anchor="er_netbased_onastick"
-                 title='Edge Router "on a Stick"'>
+                 title='Edge Relay "on a Stick"'>
           <t>
           <figure anchor="fig_netbased_er_onastick" align="center"
            title="A Network-Based Edge Relay &quot;on a Stick&quot;">
@@ -378,7 +379,7 @@
           </t>
         </section>
         <section anchor="et_netbased_v6bridge"
-                 title="Edge Router That Bridges IPv6 Packets">
+                 title="Edge Relay That Bridges IPv6 Packets">
           <t>
           <figure anchor="fig_transparent_er" align="center"
             title="A Network-Based Edge Relay Containing an IPv6
@@ -725,7 +726,7 @@
         problem could, however, be overcome by avoiding assigning IPv4 Service
         Addresses that overlap with an IPv4 prefix handled by an ER (at the
         expense of wasting some potential IPv4 Service Addresses) or by
-        ensuring that the overlapping IPv6 Service Addresses are only assigned
+        ensuring that the overlapping IPv4 Service Addresses are only assigned
         to services that do not need to communicate with the IPv4 node(s)
         behind the ER. A third way to avoid this problem is discussed in <xref
         target="er_netbased_subnet_unrouted"/>.
