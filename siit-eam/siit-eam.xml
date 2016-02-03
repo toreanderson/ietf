@@ -20,10 +20,6 @@
       <address>
         <postal>
           <street>Vitaminveien 1A</street>
-          <!-- Embedding the postal code directly in the <city> element
-               instead of using <code> in necessary to get correct Norwegian
-               syntax. For more information, see:
-               http://trac.tools.ietf.org/tools/xml2rfc/trac/ticket/280 -->
           <city>0485 Oslo</city>
           <country>Norway</country>
         </postal>
@@ -121,10 +117,10 @@
 
          <t hangText="XLAT:"><vspace/>Short for "translation".</t>
 
-         <t hangText="IPv4-converted IPv6 addresses:"><vspace/>As defined in
+         <t hangText="IPv4-Converted IPv6 Addresses:"><vspace/>As defined in
          Section 1.3 of <xref target="RFC6052"/>.</t>
 
-         <t hangText="IPv4-translatable IPv6 addresses:"><vspace/>As defined in
+         <t hangText="IPv4-Translatable IPv6 Addresses:"><vspace/>As defined in
          Section 1.3 of <xref target="RFC6052"/>.</t>
         </list>
         </t>
