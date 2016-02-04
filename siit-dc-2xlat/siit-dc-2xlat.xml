@@ -411,11 +411,11 @@
           <t>
           The ER illustrated in <xref target="fig_transparent_er"/> will
           transparently bridge IPv6 frames between its upstream and downstream
-          interfaces. IPv6 packets sent from the upstream IDC network to the ER's 
-          own IPv6 Service Addresses are intercepted (e.g., by
+          interfaces. IPv6 packets sent from the upstream IDC network to an  
+          IPv6 Service Address are intercepted by the ER (e.g., by
           responding to <xref target="RFC4861">IPv6 Neighbor Discovery</xref>
           messages for them) and routed through the translation function
-          before being forwarded out its downstream interface as IPv4 packets.
+          before being forwarded out the ER's downstream interface as IPv4 packets.
           The downstream network segment thus becomes dual stacked.
           </t>
         </section>
