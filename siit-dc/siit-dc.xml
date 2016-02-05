@@ -29,7 +29,7 @@
     <date month="January" year="2016"/>
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
-    <keyword>Data centre</keyword> <!-- for en_GB spellers -->
+    <keyword>Data centre</keyword> 
     <keyword>Dual stack</keyword>
     <keyword>Single stack</keyword>
     <keyword>IDC</keyword>
@@ -280,9 +280,9 @@
 
        <t hangText="IDC:"><vspace/>Short for "Internet Data Center"; a data
        center whose main purpose is to deliver services to the public
-       Internet that the use case SIIT-DC is primarily targeted at. IDCs are
-       typically operated by Internet Content Providers or Managed Services
-       Providers.</t>
+       Internet. SIIT-DC is primarily targeted at being deployed in an IDC. An IDC is
+       typically operated by an Internet Content Provider or a Managed Services
+       Provider.</t>
        <t hangText="SIIT:"><vspace/>The Stateless IP/ICMP Translation
        Algorithm, as specified in <xref target="RFC6145"/>.</t>
 
@@ -337,7 +337,7 @@
       routed to the BR's IPv4-facing network interface.
       </t>
       <t>
-      When translating packets between IPv4 and IPv6, the BR uses the EAM to
+      When translating packets between IPv4 and IPv6, the BR uses EAM #1 to
       replace any occurrence of the IPv4 Service Address (192.0.2.1) with its
       corresponding IPv6 Service Address (2001:db8:12:34::1). Addresses that
       do not match any EAM configured in the BR are translated by inserting or
@@ -556,8 +556,8 @@
         between the IPv6 Service Address and the IPv6 Internet. This way, an
         SIIT-DC deployment does not require separate networks ports (which
         might become saturated and impact the service quality) nor will it
-        require extra rack space and energy. Some particularly good choices of
-        the location could be within an IDC's access routers or within the
+        require extra rack space and energy. Some particularly good choices for
+        the location could be within the IDC's access routers or within the
         Autonomous System's border routers.
         </t>
         <t>
@@ -1026,7 +1026,7 @@ Environments (SIIT-DC): Dual Translation Mode</title>
         <t hangText="IPv4 Address Conservation:"><vspace/>As discussed in <xref
         target="intro_v4conserv"/>, SIIT-DC conserves the IDC operator's IPv4
         address space. Even though the two customers in the example above have
-        several hundred servers, the majority of them are not used to running
+        several hundred servers, the majority of the servers are not used for running
         services made available directly from the Internet and therefore do
         not need to consume IPv4 addresses. The IDC network infrastructure
         consumes no IPv4 addresses, either. Finally, the IPv4 addresses that
