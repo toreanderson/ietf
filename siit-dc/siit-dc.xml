@@ -708,33 +708,20 @@
           which is then transmitted to the origin IPv6 node.
           </t>
           <t>
-          When an IPv6 node receives an ICMPv6 Packet Too Big error indicating
-          an MTU value smaller than 1280, the last paragraph of Section 5 of
-          <xref target="RFC2460"/> gives it two choices on how to proceed:
+         When an IPv6 node receives an ICMPv6 Packet Too Big error indicating
+ an MTU value smaller than 1280, it is not allowed to reduce its Path
+ MTU estimation to the indicated value.  It must instead include a
+ Fragmentation header in subsequent packets sent on that path
+  <xref target="RFC1981"/>.  In other words, the IPv6 node will start emitting Atomic
+ Fragments.  The Fragmentation header signals to the BR that the Don't
+ Fragment flag should be set to 0 in the resulting IPv4 packet, and it
+ also provides the Identification value.
           </t>
-          <t>
-          <list style="symbols">
-            <t>It may reduce its Path MTU value to the value indicated in the
-            Packet Too Big, i.e., limit the size of subsequent packets
-            transmitted to that destination to the indicated value. This
-            approach causes no problems for the SIIT-DC function, as it simply
-            allows Path MTU Discovery to work transparently across the BR.</t>
-
-            <t>It may reduce its Path MTU value to exactly 1280 and in
-            addition include a Fragmentation header in subsequent packets sent
-            to that destination. In other words, the IPv6 node will start
-            emitting Atomic Fragments. The Fragmentation header signals to the
-            BR that the Don't Fragment flag should be set to 0 in the
-            resulting IPv4 packet, and it also provides the Identification
-            value.</t>
-          </list>
-          </t>
-          <t>
-          If the use of the IPv6 Fragmentation header is problematic, and the
-          operator has IPv6 nodes that implement the second option above, the
-          operator should consider enabling the functionality described as the
-          "second approach" in Section 6 of <xref target="RFC6145"/>. This
-          functionality changes the BR's behavior as follows:
+        
+            <t> If the use of the IPv6 Fragmentation header is problematic, the
+ operator should consider enabling the functionality described as the
+ "second approach" in Section 6 of <xref target="RFC6145"/>.  This functionality
+ changes the BR's behavior as follows:
           </t>
           <t>
           <list style="symbols">
