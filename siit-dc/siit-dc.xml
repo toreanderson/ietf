@@ -250,7 +250,7 @@
        prefixes routed to the BR's IPv4 interface. IPv4 Service Addresses are
        allocated from this pool. This does not necessarily have to be a
        "pool" per se, as it could also be one or more host routes (whose
-       prefix length is equal to /32). The purpose of using a pool rather than
+       prefix lengths are equal to /32). The purpose of using a pool rather than
        host routes is to facilitate IPv4 route aggregation and ease
        provisioning of new IPv4 Service Addresses.</t>
 
@@ -356,7 +356,7 @@
       The IPv6 Service Address should be registered in DNS using an "IN
       AAAA" record, while its corresponding IPv4 Service Address should be
       registered using an "IN A" record. This ensures that IPv6-capable
-      clients access the application/service directly using its native IPv6
+      clients access the application/service directly using native IPv6
       end to end, while IP4-only clients will access it through SIIT-DC.
       </t>
       <section title="Packet Flow">
@@ -520,7 +520,7 @@
       <section title="Routing Considerations">
         <t>
         The prefixes that constitute the IPv4 Service Address Pool and the
-        IPv6 translation prefix may be routed to the BRs as any other IPv4 or
+        IPv6 translation prefix may be routed to the BRs like any other IPv4 or
         IPv6 route in the provider's network. If more than one BR is being
         deployed, it is recommended that a routing protocol (IGP) be used to
         advertise the routes within the provider's network. This will ensure
@@ -617,8 +617,8 @@
         fragmentation.
         </t>
         <t>
-        Unless otherwise stated, the following subsections assume that the MTU
-        in both the IPv4 and IPv6 domains is 1500 bytes.
+        Unless otherwise stated, the following subsections assume that the MTUs
+        in both the IPv4 and IPv6 domains are 1500 bytes.
         </t>
         <section anchor="ip_hdr_size_diff"
                  title="IPv4/IPv6 Header Size Difference">
