@@ -43,7 +43,7 @@
     <date month="January" year="2016"></date>
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
-    <keyword>Data centre</keyword> <!-- for en_GB spellers -->
+    <keyword>Data centre</keyword>
     <keyword>Dual stack</keyword>
     <keyword>Single stack</keyword>
     <keyword>IDC</keyword>
@@ -164,9 +164,9 @@
 
        <t hangText="IDC:"><vspace/>Short for "Internet Data Center"; a data
        center whose main purpose is to deliver services to the public
-       Internet the use case SIIT-DC is primarily targeted at. IDCs are
-       typically operated by Internet Content Providers or Managed Services
-       Providers.</t>
+       Internet. SIIT-DC is primarily targeted at being deployed in an IDC. An IDC is
+       typically operated by an Internet Content Provider or a Managed Services
+       Provider.</t>
 
        <t hangText="SIIT:"><vspace/>The Stateless IP/ICMP Translation
        Algorithm, as specified in <xref target="RFC6145"/>.</t>
@@ -305,7 +305,7 @@
         </figure>
         </t>
         <t>
-        A network-based ER performs the exact same way as a node-based ER does,
+        A network-based ER functions the exact same way as a node-based ER does,
         only that instead of assigning the IPv4 Service Addresses to an
         internal-only virtual network adapter, traffic destined for them are
         forwarded onto a network segment to which nodes that require IPv4
@@ -704,10 +704,10 @@
                title="Subnet with IPv4 Service Addresses">
         <t>
         One relatively straight-forward way to provide IPv4 connectivity
-        between the ER and the IPv4 node(s) it serves is to ensure the IPv4
+        between a network-based ER and the IPv4 node(s) it serves is to ensure the IPv4
         Service Address(es) can be enclosed within a larger IPv4 prefix. The
         ER may then claim one address in this prefix for itself and use it to
-        provide an IPv4 default router address. The ER may then proceed to
+        provide an IPv4 default router address and 
         assign the IPv4 Service Address(es) to its downstream node(s) using
         <xref target="RFC2131">DHCPv4</xref>. For example, if the IPv4 Service
         Addresses are 192.0.2.26 and 192.0.2.27, the ER would configure the
