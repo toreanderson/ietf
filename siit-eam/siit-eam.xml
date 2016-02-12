@@ -209,7 +209,7 @@
       used, the IPv4-translatable IPv6 addresses create a secondary "stack"
       in the infrastructure that must be treated and operated separately from
       the primary one. This increases the complexity of the overall
-      infrastructure, in turn increasing operational overhead, and reduces
+      infrastructure, in turn increasing operational overhead and reducing
       reliability. An operator who for such reasons finds the use of dual stack
       unappealing might feel the same way about using SIIT with
       IPv4-translatable IPv6 addresses. 
@@ -270,7 +270,8 @@
 | 2 | 192.0.2.2/32   | 2001:db8:bbbb::b/128 |
 | 3 | 192.0.2.16/28  | 2001:db8:cccc::/124  |
 | 4 | 192.0.2.128/26 | 2001:db8:dddd::/64   |
-| 5 | 192.0.2.192/31 | 64:ff9b::/127        |
+| 5 | 192.0.2.192/29 | 2001:db8:eeee:8::/62 |   
+| 6 | 192.0.2.224/31 | 64:ff9b::/127        |
 +---+----------------+----------------------+
           ]]></artwork>
         </figure>
@@ -552,7 +553,7 @@
     <section title="Lack of Checksum Neutrality">
       <t>
       When one or both of the address fields in an IP/ICMP packet are
-      translated according to EAM, the translation cannot be relied upon to
+      translated according to the EAM algorithm, the translation cannot be relied upon to
       be checksum neutral, even if the well-known prefix 64:ff9b::/96 is used.
       This consideration is discussed in more detail in Section 4.1 of <xref
       target="RFC6052"/>. 
@@ -602,7 +603,7 @@
     </references>
     <section anchor="usecases" title="Use Cases">
       <t>
-      The following subsections list some use cases that at the time of
+      The following subsections describe some use cases that at the time of
       writing leverage SIIT with the EAM algorithm.
       </t>
       <section anchor="usecase_464xlat" title="464XLAT">
@@ -617,7 +618,7 @@
         </t>
         <t>
         <figure anchor="fig_eamt_464xlat" align="center"
-         title="Example EAMT for an 464XLAT CLAT">
+         title="Example EAMT for a 464XLAT CLAT">
           <artwork align="center"><![CDATA[
 +---+--------------+-------------------------------+
 | # | IPv4 Prefix  |          IPv6 Prefix          |
@@ -726,8 +727,9 @@
 | 192.0.2.152  | 2001:db8:dddd:0:6000:: | According to EAM #4   |
 | 192.0.2.183  | 2001:db8:dddd:0:dc00:: | According to EAM #4   |
 | 192.0.2.191  | 2001:db8:dddd:0:fc00:: | According to EAM #4   |
-| 192.0.2.193  | 64:ff9b::1             | According to EAM #5   |
-| 192.0.2.200  | 64:ff9b::c000:2c8      | According to RFC 6052 |
+| 192.0.2.195  | 2001:db8:eeee:9:8000:: | According to EAM #5   |
+| 192.0.2.225  | 64:ff9b::1             | According to EAM #6   |   
+| 192.0.2.248  | 64:ff9b::c000:2f8      | According to RFC 6052 |
 +--------------+------------------------+-----------------------+
         ]]></artwork>
       </figure>
@@ -818,7 +820,7 @@
         example, rules #2 and #3 in <xref target="hp_simple"/> were both
         applied in order to disable the EAM algorithm when translating the
         intermediate inner IPv4 destination address and the intermediate outer
-        IPv4 destination address to IPv6.
+        IPv4 source address to IPv6.
         </t>
         <t>
         <figure anchor="fig_example_hp_2" align="center"
