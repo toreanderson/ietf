@@ -40,7 +40,7 @@
         <email>sander@steffann.nl</email>
       </address>
     </author>
-    <date month="January" year="2016"></date>
+    <date month="February" year="2016"></date>
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
     <keyword>Data centre</keyword>
@@ -663,7 +663,7 @@
 <author initials='A' surname='Leiva' fullname='Alberto Leiva'>
     <organization />
 </author>
-<date month='January' year='2016' />
+<date month='February' year='2016' />
 </front>
 <seriesInfo name='RFC' value='7757' />
 <seriesInfo name='DOI' value='10.17487/RFC7757' />
@@ -676,7 +676,7 @@
 <author initials='T' surname='Anderson' fullname='Tore Anderson'>
     <organization />
 </author>
-<date month='January' year='2016' />
+<date month='February' year='2016' />
 </front>
 <seriesInfo name='RFC' value='7755' />
 <seriesInfo name='DOI' value='10.17487/RFC7755' />
