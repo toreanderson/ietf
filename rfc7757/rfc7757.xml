@@ -43,7 +43,7 @@
         <uri>http://www.nicmexico.mx/</uri>
       </address>
     </author>
-    <date month="January" year="2016" />
+    <date month="February" year="2016" />
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
     <keyword>Dual stack</keyword>
@@ -593,7 +593,7 @@
 <author initials='T' surname='Anderson' fullname='Tore Anderson'>
     <organization />
 </author>
-<date month='January' year='2016' />
+<date month='February' year='2016' />
 </front>
 <seriesInfo name='RFC' value='7755' />
 <seriesInfo name='DOI' value='10.17487/RFC7755' />
