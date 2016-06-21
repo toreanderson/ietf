@@ -8,7 +8,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-anderson-v6ops-v4v6-xlat-prefix-00"
+<rfc category="std" docName="draft-anderson-v6ops-v4v6-xlat-prefix-01"
      ipr="trust200902">
 
   <front>
@@ -135,6 +135,15 @@
       translation mechanism deployed within his network.
       </t>
       <t>
+      By default, IPv6 nodes and applications must not treat IPv6 addresses
+      within 64::/16 and outside 64:ff9b::/96 different from other globally
+      scoped IPv6 addresses. In particular, they must not make any
+      assumptions regarding the syntax or properties of those addresses (e.g.,
+      the existence and location of embedded IPv4 addresses), or the type of
+      associated translation mechanism (e.g., whether it is stateful or
+      stateless).
+      </t>
+      <t>
       64:ff9b::/96 may only be used according to <xref target="RFC6052"/>.
       </t>
       <t>
@@ -163,6 +172,12 @@
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.6052"?>
     </references>
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>
+      The author would like to thank Holger Metschulat for contributing to the
+      creation of this document.
+      </t>
+    </section>
   </back>
 
 </rfc>
