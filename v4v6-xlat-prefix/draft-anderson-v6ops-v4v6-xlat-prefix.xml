@@ -8,11 +8,11 @@
 <?rfc sortrefs="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-anderson-v6ops-v4v6-xlat-prefix-01"
-     ipr="trust200902">
+<rfc category="std" docName="draft-anderson-v6ops-v4v6-xlat-prefix-02"
+     ipr="trust200902" updates="6890">
 
   <front>
-    <title>64::/16: An IPv4/IPv6 translation prefix</title>
+    <title>Local-use IPv4/IPv6 Translation Prefix</title>
     <author fullname="Tore Anderson" initials="T." surname="Anderson">
       <organization>Redpill Linpro</organization>
       <address>
@@ -35,22 +35,20 @@
     <workgroup>IPv6 Operations</workgroup>
     <abstract>
       <t>
-      This document reserves the IPv6 prefix 64::/16 for use with IPv4/IPv6
-      translation mechanisms.
+      This document reserves the IPv6 prefix 64:ff9b:1::/48 for local use with
+      IPv4/IPv6 translation mechanisms. It updates RFC6890 in order to reflect
+      this reservation.
       </t>
     </abstract>
   </front>
   <middle>
     <section anchor="intro" title="Introduction">
       <t>
-      <xref target="RFC6052"/> reserves the IPv6 prefix 64:ff9b::/96 for use
-      with IPv4/IPv6 translation mechanisms using the stateless IP address
-      translation algorithm specified in the same document.
-      </t>
-      <t>
-      This document extends this reservation to 64::/16. This facilitates the
-      co-existence of multiple IPv4/IPv6 translation mechanisms in the same
-      network without requiring the use of a Network-Specific Prefix.
+      This document reserves 64:ff9b:1::/48 for local use with IPv4/IPv6
+      translation mechanisms. This facilitates the co-existence of multiple
+      IPv4/IPv6 translation mechanisms in the same network without requiring
+      the use of a Network-Specific Prefix assigned from the operator's
+      allocated global unicast address space.
       </t>
     </section>
     <section anchor="terminology" title="Terminology">
@@ -90,7 +88,7 @@
       The WKP is reserved specifically for use with the algorithm specified in
       <xref target="RFC6052"/>. More recent IETF documents describe IPv4/IPv6
       translation mechanisms that use different algorithms. An operator
-      deploying such mechanisms can not use of the WKP in a legitimate
+      deploying such mechanisms can not make use of the WKP in a legitimate
       fashion.
       </t>
       <t>
@@ -104,63 +102,122 @@
       necessarily use the <xref target="RFC6052"/> algorithm).
       </t>
     </section>
-    <section anchor="choice" title="Choosing 64::/16">
+    <section anchor="choice" title="Choosing 64:ff9b:1::/48">
       <t>
-      The prefix described in this document is intended as a generic
-      reservation that may be used for all present and future IPv4/IPv6
-      translation mechanisms, including the one described in <xref
-      target="RFC6052"/>. Therefore, in order to prevent needless
-      fragmentation of the IPv6 address space, it is prudent to choose a
-      prefix that encompasses the <xref target="RFC6052"/> WKP.
+      The primary reason for choosing 64:ff9b:1::/48 is that it is adjacent to
+      the <xref target="RFC6052"/> WKP 64:ff9b::/96. As these two prefixes are
+      intended for very similar uses, it is prudent to allow them to be
+      referred to using a single aggregate (64:ff9b::/47).
       </t>
       <t>
-      The <xref target="RFC6052"/> algorithm specifies possible prefix lengths
-      as short as /32. As previously discussed in <xref
-      target="problem_statement"/>, this document intends to facilitate
-      simultaneous operation of multiple IPv4/IPv6 translation mechanisms in a
-      single network. This means that the reservation must necessarily have a
-      prefix length shorter than /32. Furthermore, as IPv6 addresses are
-      divided into groups of 16 bits each, it is natural to use a prefix
-      length that aligns with a 16-bit boundary.
+      The prefix length of 48 bits was chosen in order to attain the goal of
+      facilitating multiple simultaneous deployments of IPv4/IPv6 translation
+      in a single network. The shortest IPv4/IPv6 translation prefixes
+      reported to the V6OPS working group as being used in production was 64
+      bits. 64:ff9b:1::/48 will accommodate up to 65536 such prefixes.
       </t>
       <t>
-      Taking all the above considerations account, the only possible prefix
-      value remaining is 64::/16.
+      While the <xref target="RFC6052"/> algorithm specifies IPv4/IPv6
+      translation prefixes as short as /32, facilitating for multiple
+      instances of these was considered as too wasteful by the V6OPS working
+      group.
       </t>
     </section>
     <section anchor="deployment" title="Deployment Considerations">
       <t>
-      64::/16 is intended as a technology-agnostic and generic reservation. A
-      network operator may freely use it in combination with any IPv4/IPv6
-      translation mechanism deployed within his network.
+      64:ff9b:1::/48 is intended as a technology-agnostic and generic
+      reservation. A network operator may freely use it in combination with
+      any kind of IPv4/IPv6 translation mechanism deployed within his network.
       </t>
       <t>
       By default, IPv6 nodes and applications must not treat IPv6 addresses
-      within 64::/16 and outside 64:ff9b::/96 different from other globally
-      scoped IPv6 addresses. In particular, they must not make any
-      assumptions regarding the syntax or properties of those addresses (e.g.,
-      the existence and location of embedded IPv4 addresses), or the type of
-      associated translation mechanism (e.g., whether it is stateful or
-      stateless).
+      within 64:ff9b:1::/48 different from other globally scoped IPv6
+      addresses. In particular, they must not make any assumptions regarding
+      the syntax or properties of those addresses (e.g., the existence and
+      location of embedded IPv4 addresses), or the type of associated
+      translation mechanism (e.g., whether it is stateful or stateless).
       </t>
       <t>
-      64:ff9b::/96 may only be used according to <xref target="RFC6052"/>.
+      64:ff9b:1::/48 or any other more-specific prefix may not be advertised
+      in inter-domain routing, except by explicit agreement between all
+      involved parties. Such prefixes MUST NOT be advertised to the
+      default-free zone.
       </t>
       <t>
-      64::/16 or any other more-specific prefix may not be advertised in
-      inter-domain routing, except by explicit agreement between all involved
-      parties. Such prefixes MUST NOT be advertised to the default-free zone.
+      When 64:ff9b:1::/48 or a more-specific prefix is used with the <xref
+      target="RFC6052"/> algorithm, it is considered to be a
+      Network-Specific Prefix.
+      </t>
+    </section>
+    <section anchor="checksum" title="Checksum Neutrality">
+      <t>
+      Use of 64:ff9b:1::/48 does not in itself guarantee checksum neutrality,
+      as many of the IPv4/IPv6 translation algorithms it can be used with are
+      fundamentally incompatible with checksum-neutral address translations.
+      </t>
+      <t>
+      The Stateless IP/ICMP Translation algorithm <xref target="RFC7915"/> is
+      one well-known algorithm that can operate in a checksum-neutral manner,
+      when using the <xref target="RFC6052"/> algorithm for all of its address
+      translations. However, in order to attain checksum neutrality is
+      imperative that the translation prefix is chosen carefully.
+      Specifically, in order for a 96-bit <xref target="RFC6052"/> prefix to
+      be checksum neutral, all the six 16-bit words in the prefix must add up
+      to a multiple of 0xffff.
+      </t>
+      <t>
+      The following non-exhaustive list contains examples of translation
+      prefixes that are checksum neutral when used with the <xref
+      target="RFC7915"/> and <xref target="RFC6052"/> algorithms:
+      <list style="symbols">
+        <t>64:ff9b:1:fffe::/96</t>
+        <t>64:ff9b:1:fffd:1::/96</t>
+        <t>64:ff9b:1:fffc:2::/96</t>
+        <t>64:ff9b:1:abcd:0:5431::/96</t>
+      </list>
+      </t>
+      <t>
+      Section 4.1 of <xref target="RFC6052"/> contains further discussion
+      about IPv4/IPv6 translation and checksum neutrality.
       </t>
     </section>
     <section anchor="IANA" title="IANA Considerations">
       <t>
-      The IANA is requested to reserve the IPv6 prefix 64::/16 for use with
-      IPv4/IPv6 translation.
+      The IANA is requested to add the following entry to the IPv6
+      Special-Purpose Address Registry:
+      </t>
+      <t>
+      <figure>
+        <artwork align="center"><![CDATA[
++----------------------+---------------------+
+| Attribute            | Value               |
++----------------------+---------------------+
+| Address Block        | 64:ff9b:1::/48      |
+| Name                 | IPv4-IPv6 Translat. |
+| RFC                  | (TBD)               |
+| Allocation Date      | (TBD)               |
+| Termination Date     | N/A                 |
+| Source               | True                |
+| Destination          | True                |
+| Forwardable          | True                |
+| Global               | False               |
+| Reserved-by-Protocol | False               |
++----------------------+---------------------+
+        ]]></artwork>
+      </figure>
+      </t>
+      <t>
+      The IANA is furthermore requested to add the following footnote to the
+      0000::/8 entry of the Internet Protocol Version 6 Address Space
+      registry:
+      <list>
+        <t>64:ff9b:1::/48 reserved for Local-use IPv4/IPv6 Translation [TBD]</t>
+      </list>
       </t>
     </section>
     <section anchor="Security" title="Security Considerations">
       <t>
-      The reservation of 64::/16 is not known to cause any new security
+      The reservation of 64:ff9b:1::/48 is not known to cause any new security
       considerations beyond those documented in Section 5 of <xref
       target="RFC6052"/>.
       </t>
@@ -172,10 +229,14 @@
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.6052"?>
     </references>
+    <references title="Informative References">
+      <?rfc include="reference.RFC.7915"?>
+    </references>
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
-      The author would like to thank Holger Metschulat for contributing to the
-      creation of this document.
+      The author would like to thank Fred Baker, David Farmer, Holger
+      Metschulat and Pier Carlo Chiodi for contributing to the creation of
+      this document.
       </t>
     </section>
   </back>
