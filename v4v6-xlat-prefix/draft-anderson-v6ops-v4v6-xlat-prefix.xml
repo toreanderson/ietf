@@ -138,9 +138,9 @@
       translation mechanism (e.g., whether it is stateful or stateless).
       </t>
       <t>
-      64:ff9b:1::/48 or any other more-specific prefix may not be advertised
-      in inter-domain routing, except by explicit agreement between all
-      involved parties. Such prefixes MUST NOT be advertised to the
+      64:ff9b:1::/48 or any other more-specific prefix SHOULD NOT be
+      advertised in inter-domain routing, except by explicit agreement between
+      all involved parties. Such prefixes MUST NOT be advertised to the
       default-free zone.
       </t>
       <t>
@@ -234,9 +234,9 @@
     </references>
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
-      The author would like to thank Fred Baker, David Farmer, Holger
-      Metschulat and Pier Carlo Chiodi for contributing to the creation of
-      this document.
+      The author would like to thank Fred Baker, Brian E Carpenter, David
+      Farmer, Holger Metschulat and Pier Carlo Chiodi for contributing to the
+      creation of this document.
       </t>
     </section>
   </back>
