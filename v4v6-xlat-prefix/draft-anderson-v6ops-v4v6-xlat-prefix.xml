@@ -58,7 +58,7 @@
       <t>
       <list style="hanging">
        <t hangText="Network-Specific Prefix (NSP)"><vspace/>A globally unique
-       prefix assigned by a network operator for use with and IPv4/IPv6
+       prefix assigned by a network operator for use with an IPv4/IPv6
        translation mechanism <xref target="RFC6052"/>.</t>
        <t hangText="Well-Known Prefix (WKP)"><vspace/>The prefix 64:ff9b::/96,
        which is reserved for use with the <xref target="RFC6052"/> IPv4/IPv6
