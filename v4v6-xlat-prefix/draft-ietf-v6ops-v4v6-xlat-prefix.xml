@@ -8,7 +8,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-anderson-v6ops-v4v6-xlat-prefix-02"
+<rfc category="std" docName="draft-ietf-v6ops-v4v6-xlat-prefix-00"
      ipr="trust200902" updates="6890">
 
   <front>
@@ -30,7 +30,7 @@
         <uri>http://www.redpill-linpro.com</uri>
       </address>
     </author>
-    <date year="2016"/>
+    <date year="2017"/>
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
     <abstract>
