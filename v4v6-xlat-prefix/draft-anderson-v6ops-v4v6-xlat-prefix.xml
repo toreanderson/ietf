@@ -130,7 +130,7 @@
         <t>
         The shortest translation prefix that was reported to the IPv6
         Operations working group to be deployed in a live network was /64. The
-        longest 16-bit-aligned prefix length that can accomodate multiple
+        longest 16-bit-aligned prefix length that can accommodate multiple
         instances of /64 is /48. The prefix length of /48 was therefore
         chosen, as it satisfies both the criteria above, while at the same
         time avoids wasting too much of the IPv6 address space.
