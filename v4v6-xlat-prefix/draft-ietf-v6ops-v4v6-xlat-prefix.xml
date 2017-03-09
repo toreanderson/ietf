@@ -123,8 +123,8 @@
         The <xref target="RFC6052"/> algorithm specifies IPv4/IPv6 translation
         prefixes as short as /32. In order to facilitate multiple instances of
         translation mechanisms using /32s, while at the same time aligning on
-        a 16-bit boundary, a /16 would be need to be reserved. Doing so was
-        however considered as too wasteful by the IPv6 Operations working
+        a 16-bit boundary, it would be necessary to reserve a /16. Doing so
+        was however considered as too wasteful by the IPv6 Operations working
         group.
         </t>
         <t>
