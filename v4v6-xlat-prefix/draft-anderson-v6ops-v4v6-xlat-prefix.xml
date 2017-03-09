@@ -92,8 +92,10 @@
       </t>
       <t>
       Section 3.1 of <xref target="RFC6052"/> imposes certain restrictions on
-      the use of the WKP. These restrictions might conflict with the
-      operator's desired use of an IPv4/IPv6 translation mechanism.
+      the use of the WKP, such as forbidding its use in combination with <xref
+      target="RFC1918">private IPv4 addresses</xref>. These restrictions
+      might conflict with the operator's desired use of an IPv4/IPv6
+      translation mechanism.
       </t>
       <t>
       In summary, there is a need for a local-use prefix that facilitates the
@@ -104,26 +106,83 @@
       </t>
     </section>
     <section anchor="choice" title="Why 64:ff9b:1::/48?">
-      <t>
-      The primary reason for choosing 64:ff9b:1::/48 is that it is adjacent to
-      the <xref target="RFC6052"/> WKP 64:ff9b::/96. As these two prefixes are
-      intended for very similar uses, it is prudent to allow them to be
-      referred to using a single aggregate (64:ff9b::/47).
-      </t>
-      <t>
-      The prefix length of 48 bits was chosen in order to attain the goal of
-      facilitating multiple simultaneous deployments of IPv4/IPv6 translation
-      in a single network. The shortest IPv4/IPv6 translation prefixes
-      reported to the IPv6 Operations working group as being used in
-      production was 64 bits. 64:ff9b:1::/48 will accommodate up to 65536 such
-      prefixes.
-      </t>
-      <t>
-      While the <xref target="RFC6052"/> algorithm specifies IPv4/IPv6
-      translation prefixes as short as /32, facilitating for multiple
-      instances of these was considered as too wasteful by the V6OPS working
-      group.
-      </t>
+      <section anchor="prefix_length" title="Prefix Length">
+        <t>
+        One of the primary goals of this document is to facilitate multiple
+        simultaneous deployments of IPv4/IPv6 translation mechanisms in a
+        single network. The first criterion is therefore that the prefix
+        length chosen must be shorter than the prefix length used by any
+        individual translation mechanism.
+        </t>
+        <t>
+        The second criterion is that the prefix length chosen is is a multiple
+        of 16. This ensures the prefix ends on a colon boundary when
+        representing it in text, easing operator interaction with it.
+        </t>
+        <t>
+        The <xref target="RFC6052"/> algorithm specifies IPv4/IPv6 translation
+        prefixes as short as /32. In order to facilitate multiple instances of
+        translation mechanisms using /32s, while at the same time aligning on
+        a 16-bit boundary, a /16 would be need to be reserved. Doing so was
+        however considered as too wasteful by the IPv6 Operations working
+        group.
+        </t>
+        <t>
+        The shortest translation prefix that was reported to the IPv6
+        Operations working group to be deployed in a live network was /64. The
+        longest 16-bit-aligned prefix length that can accomodate multiple
+        instances of /64 is /48. The prefix length of /48 was therefore
+        chosen, as it satisfies both the criteria above, while at the same
+        time avoids wasting too much of the IPv6 address space.
+        </t>
+      </section>
+      <section anchor="prefix_value" title="Prefix Value">
+        <t>
+        It is desirable to minimise the amount of additional "pollution" in
+        the unallocated IPv6 address space caused by the reservation made by
+        this document. Ensuring the reserved prefix is adjacent to the
+        64:ff9b::/96 WKP already reserved by <xref target="RFC6052"/>
+        accomplishes this.
+        </t>
+        <t>
+        Given the previous decision to use a prefix length of /48, this leaves
+        two options: 64:ff9a:ffff:ffff::/48 and 64:ff9b:1::/48.
+        </t>
+        <t>
+        64:ff9a:ffff:ffff::/48 has the benefit that it is completely adjacent
+        to the <xref target="RFC6052"/> WKP. That is, 64:ff9a:ffff:ffff::/48
+        and 64:ff9b::/96 combines to form a uninterrupted range of IPv6
+        addresses starting with 64:ff9a:ffff:ffff:: and ending with
+        64:ff9b::ffff:ffff.
+        </t>
+        <t>
+        64:ff9b:1::/48 is, on the other hand, not completely adjacent to
+        64:ff9b::/96. The range starting with 64:ff9b::1:0:0 and ending with
+        64:ff9b:0:ffff:ffff:ffff:ffff:ffff would remain unallocated.
+        </t>
+        <t>
+        This particular drawback is, however, balanced by the fact that the
+        smallest possible aggregate prefix that covers both the <xref
+        target="RFC6052"/> WKP and 64:ff9a:ffff:ffff::/48 is much larger
+        than the smallest possible aggregate prefix that covers both the <xref
+        target="RFC6052"/> WKP and 64:ff9b:1::/96. These aggregate prefixes
+        are 64:ff9a::/31 and 64:ff9b::/47, respectively. IPv6 address space is
+        allocated using prefixes rather than address ranges, so it could be
+        argued that 64:ff9b:1::/96 is the option that would cause special-use
+        prefixes reserved for IPv4/IPv6 translation to "pollute" the minimum
+        possible amount of unallocated IPv6 address space.
+        </t>
+        <t>
+        Finally, 64:ff9b:1::/48 also has the advantage that its textual
+        representation is considerably shorter than 64:ff9a:ffff:ffff::/48.
+        While this might seem insignificant, the preference human network
+        operators have for addresses that are simple to type should not be
+        underestimated.
+        </t>
+        <t>
+        After weighing the above pros and cons, 64:ff9b:1::/48 was chosen.
+        </t>
+      </section>
     </section>
     <section anchor="deployment" title="Deployment Considerations">
       <t>
@@ -149,6 +208,14 @@
       When 64:ff9b:1::/48 or a more-specific prefix is used with the <xref
       target="RFC6052"/> algorithm, it is considered to be a
       Network-Specific Prefix.
+      </t>
+      <t>
+      Operators tempted to use the covering aggregate prefix 64:ff9b::/47 to
+      refer to all special-use prefixes currently reserved for IPv4/IPv6
+      translation should be warned that this aggregate includes <xref
+      target="prefix_value">a range of unallocated addresses</xref> that the
+      IETF could potentially reserve in the future for entirely different
+      purposes.
       </t>
     </section>
     <section anchor="checksum" title="Checksum Neutrality">
@@ -232,13 +299,14 @@
       <?rfc include="reference.RFC.6052"?>
     </references>
     <references title="Informative References">
+      <?rfc include="reference.RFC.1918"?>
       <?rfc include="reference.RFC.7915"?>
     </references>
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
       The author would like to thank Fred Baker, Mohamed Boucadair, Brian E
-      Carpenter, Pier Carlo Chiodi, David Farmer and Holger Metschulat for
-      contributing to the creation of this document.
+      Carpenter, Pier Carlo Chiodi, David Farmer, Holger Metschulat and David
+      Schinazi for contributing to the creation of this document.
       </t>
     </section>
   </back>
