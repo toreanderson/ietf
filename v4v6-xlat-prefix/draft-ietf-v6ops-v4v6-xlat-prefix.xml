@@ -253,6 +253,11 @@
     </section>
     <section anchor="IANA" title="IANA Considerations">
       <t>
+      (Note to the RFC Editor: Please replace occurrences of "TBD" in this
+      section with the assigned RFC number of this document and delete this
+      note.)
+      </t>
+      <t>
       The IANA is requested to add the following entry to the IPv6
       Special-Purpose Address Registry:
       </t>
