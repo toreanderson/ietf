@@ -165,10 +165,10 @@
         smallest possible aggregate prefix that covers both the <xref
         target="RFC6052"/> WKP and 64:ff9a:ffff:ffff::/48 is much larger
         than the smallest possible aggregate prefix that covers both the <xref
-        target="RFC6052"/> WKP and 64:ff9b:1::/96. These aggregate prefixes
+        target="RFC6052"/> WKP and 64:ff9b:1::/48. These aggregate prefixes
         are 64:ff9a::/31 and 64:ff9b::/47, respectively. IPv6 address space is
         allocated using prefixes rather than address ranges, so it could be
-        argued that 64:ff9b:1::/96 is the option that would cause special-use
+        argued that 64:ff9b:1::/48 is the option that would cause special-use
         prefixes reserved for IPv4/IPv6 translation to "pollute" the minimum
         possible amount of unallocated IPv6 address space.
         </t>
