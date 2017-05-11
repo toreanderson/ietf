@@ -87,7 +87,7 @@
       </t>
       <t>
       Also, because the WKP is a /96, an operator preferring to use the WKP
-      over an NSP can only do so for only one of his IPv4/IPv6 translation
+      over an NSP can only do so for only one of their IPv4/IPv6 translation
       mechanisms. All others must necessarily use an NSP.
       </t>
       <t>
@@ -188,7 +188,8 @@
       <t>
       64:ff9b:1::/48 is intended as a technology-agnostic and generic
       reservation. A network operator may freely use it in combination with
-      any kind of IPv4/IPv6 translation mechanism deployed within his network.
+      any kind of IPv4/IPv6 translation mechanism deployed within their
+      network.
       </t>
       <t>
       By default, IPv6 nodes and applications must not treat IPv6 addresses
@@ -199,10 +200,9 @@
       translation mechanism (e.g., whether it is stateful or stateless).
       </t>
       <t>
-      64:ff9b:1::/48 or any other more-specific prefix SHOULD NOT be
-      advertised in inter-domain routing, except by explicit agreement between
-      all involved parties. Such prefixes MUST NOT be advertised to the
-      default-free zone.
+      64:ff9b:1::/48 or any more-specific prefix may only be used in
+      inter-domain routing if done in accordance with the rules described in
+      Section 3.2 of <xref target="RFC6052"/>.
       </t>
       <t>
       Note that 64:ff9b:1::/48 (or any more-specific prefix) is distinct from
@@ -226,6 +226,10 @@
       fundamentally incompatible with checksum-neutral address translations.
       </t>
       <t>
+      Section 4.1 of <xref target="RFC6052"/> contains further discussion
+      about IPv4/IPv6 translation and checksum neutrality.
+      </t>
+      <t>
       The Stateless IP/ICMP Translation algorithm <xref target="RFC7915"/> is
       one well-known algorithm that can operate in a checksum-neutral manner,
       when using the <xref target="RFC6052"/> algorithm for all of its address
@@ -245,10 +249,6 @@
         <t>64:ff9b:1:fffc:2::/96</t>
         <t>64:ff9b:1:abcd:0:5431::/96</t>
       </list>
-      </t>
-      <t>
-      Section 4.1 of <xref target="RFC6052"/> contains further discussion
-      about IPv4/IPv6 translation and checksum neutrality.
       </t>
     </section>
     <section anchor="IANA" title="IANA Considerations">
@@ -304,12 +304,12 @@
       <?rfc include="reference.RFC.6146"?>
       <?rfc include="reference.RFC.7915"?>
     </references>
-    <section anchor="Acknowledgements" title="Acknowledgements">
+    <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">
       <t>
       The author would like to thank Fred Baker, Mohamed Boucadair, Brian E
-      Carpenter, Pier Carlo Chiodi, Joe Clarke, David Farmer, Holger
-      Metschulat and David Schinazi for contributing to the creation of this
-      document.
+      Carpenter, Pier Carlo Chiodi, Joe Clarke, David Farmer, Warren Kumari,
+      Holger Metschulat and David Schinazi for contributing to the creation of
+      this document.
       </t>
     </section>
   </back>
