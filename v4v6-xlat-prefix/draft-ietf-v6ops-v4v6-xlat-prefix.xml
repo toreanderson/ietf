@@ -64,11 +64,6 @@
        address translation algorithm.</t>
       </list>
       </t>
-      <t>
-      The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-      "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-      document are to be interpreted as described in <xref target="RFC2119"/>.
-      </t>
     </section>
     <section anchor="problem_statement" title="Problem Statement">
       <t>
@@ -301,7 +296,6 @@
 
   <back>
     <references title="Normative References">
-      <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.6052"?>
     </references>
     <references title="Informative References">
