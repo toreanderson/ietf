@@ -84,19 +84,7 @@
 
       <t>
       The WKP is reserved specifically for use with the algorithms specified
-      in <xref target="RFC6052"/>.
-
-<!-- [rfced]  The term "IETF documents" is usually used to refer to both RFCs
-and Internet-Drafts that are part of the IETF Standards Process (see RFC
-8179). Is this sentence referring to both RFCs and Internet-Drafts? Or is
-it referring to just RFCs?
-
-Original
-   More recent IETF documents describe IPv4/IPv6
-   translation mechanisms that use different algorithms.
--->
-
-More recent IETF documents describe IPv4/IPv6
+      in <xref target="RFC6052"/>. More recent RFCs describe IPv4/IPv6
       translation mechanisms that use different algorithms. An operator
       deploying such mechanisms cannot make use of the WKP in a legitimate
       fashion.
