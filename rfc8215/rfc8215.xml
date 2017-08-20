@@ -67,15 +67,9 @@
        <t hangText="Network-Specific Prefix (NSP)"><vspace/>A globally unique
        prefix assigned by a network operator for use with an IPv4/IPv6
        translation mechanism <xref target="RFC6052"/>.</t>
-
-<!-- [rfced]  This document refers to "the [RFC6052] algorithm" a number of
-times. We note that Section 2.3 of RFC 6052 describes two algorithms. Please
-review and let us know if any updates are needed.
--->
-
        <t hangText="Well-Known Prefix (WKP)"><vspace/>The prefix 64:ff9b::/96,
        which is reserved for use with the <xref target="RFC6052"/> IPv4/IPv6
-       address translation algorithm.</t>
+       address translation algorithms.</t>
       </list>
       </t>
     </section>
@@ -89,8 +83,8 @@ review and let us know if any updates are needed.
       </t>
 
       <t>
-      The WKP is reserved specifically for use with the algorithm specified in
-      <xref target="RFC6052"/>. 
+      The WKP is reserved specifically for use with the algorithms specified
+      in <xref target="RFC6052"/>.
 
 <!-- [rfced]  The term "IETF documents" is usually used to refer to both RFCs
 and Internet-Drafts that are part of the IETF Standards Process (see RFC
@@ -124,8 +118,8 @@ All others must necessarily use an NSP.
       In summary, there is a need for a local-use prefix that facilitates the
       coexistence of multiple IPv4/IPv6 translation mechanisms in a single
       network domain, as well as the deployment of translation mechanisms that
-      do not use the <xref target="RFC6052"/> algorithm or adhere to its usage
-      restrictions.
+      do not use the <xref target="RFC6052"/> algorithms or adhere to its
+      usage restrictions.
       </t>
     </section>
     <section anchor="choice" title="Why 64:ff9b:1::/48?">
@@ -143,12 +137,12 @@ All others must necessarily use an NSP.
         it in text, easing operator interaction with it.
         </t>
         <t>
-        The <xref target="RFC6052"/> algorithm specifies IPv4/IPv6 translation
-        prefixes as short as /32. In order to facilitate multiple instances of
-        translation mechanisms using /32s, while at the same time aligning on
-        a 16-bit boundary, it would be necessary to reserve a /16. Doing so,
-        however, was considered as too wasteful by the IPv6 Operations Working
-        Group.
+        The <xref target="RFC6052"/> algorithms specifies IPv4/IPv6
+        translation prefixes as short as /32. In order to facilitate multiple
+        instances of translation mechanisms using /32s, while at the same time
+        aligning on a 16-bit boundary, it would be necessary to reserve a /16.
+        Doing so, however, was considered as too wasteful by the IPv6
+        Operations Working Group.
         </t>
         <t>
         The shortest translation prefix that was reported to the IPv6
@@ -254,9 +248,9 @@ All others must necessarily use an NSP.
       <t>
       The Stateless IP/ICMP Translation algorithm <xref target="RFC7915"/> is
       one well-known algorithm that can operate in a checksum-neutral manner,
-      when using the <xref target="RFC6052"/> algorithm for all of its address
-      translations. However, in order to attain checksum neutrality, it is
-      imperative that the translation prefix be chosen carefully.
+      when using the <xref target="RFC6052"/> algorithms for all of its
+      address translations. However, in order to attain checksum neutrality,
+      it is imperative that the translation prefix be chosen carefully.
       Specifically, in order for a 96-bit <xref target="RFC6052"/> prefix to
       be checksum neutral, all the six 16-bit words in the prefix must add up
       to a multiple of 0xffff.
