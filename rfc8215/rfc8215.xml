@@ -34,15 +34,13 @@
     <date month="July" year="2017"/>
     <area>General</area>
     <workgroup>IPv6 Operations</workgroup>
-
-<!-- [rfced] Please insert any keywords (beyond those that appear in 
-the title) for use on https://www.rfc-editor.org/search.
--->
-
-<keyword>example</keyword>
-
-
-
+    <keyword>IPv6 transition</keyword>
+    <keyword>IVI</keyword>
+    <keyword>MAP</keyword>
+    <keyword>NAT64</keyword>
+    <keyword>SIIT</keyword>
+    <keyword>SIIT-DC</keyword>
+    <keyword>Transition</keyword>
     <abstract>
       <t>
       This document reserves the IPv6 prefix 64:ff9b:1::/48 for local use
